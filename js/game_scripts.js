@@ -341,7 +341,7 @@ function gameLoadScreen (screen)
         menuShip = new ship (null, playerColors [0], 450, gameText [0].y + 15, 50, 90, 2);
         changeTab ("menu");
         resetHuds (0, 0, true, 0);
-        if (wss == null) wssOpen ();
+        if (wss == null || wss == 1000 || wss == 3000) wssOpen ();
     }
     else if (gameScreen == "high_scores")
     {
