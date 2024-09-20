@@ -167,10 +167,9 @@ function wssOpen ()
     
     wss.onclose = function (event)
     {
-        if (event.code == 1000 || event.code == 3000) wss = null;
-        else
+        wss = event.code;
+        if (wss != 1000 && wss != 3000)
         {
-            wss = event.code;
             if (gameModes.findIndex (mode => mode.active == true) == 3 && gameScreen == "game" && gameConfirm.length == 0) gameOpenModal ("exit", "Server disconnected");
             else if (gameScreen == "menu")
             {   

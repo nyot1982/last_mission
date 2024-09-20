@@ -459,7 +459,7 @@ function component (type, src, color, x, y, width, height, max, control)
             ctx.beginPath ();
             ctx.arc (this.x, this.y, this.height, 0, 2 * Math.PI);
             if (wss != null && wss.readyState == WebSocket.OPEN) this.color = "#0C0";
-            else if (wss > 1000 && wss < 3000) this.color = "red";
+            else if (wss >= 1000) this.color = "red";
             else
             {
                 if (gameArea.frame % 20 == 0)
