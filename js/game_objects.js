@@ -388,13 +388,16 @@ function component (type, src, color, x, y, width, height, max, control)
         ctx.shadowBlur = 0;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
-        if (this.type == "image" && this.color != "hidden")
+        if (this.type == "image")
         {
-            ctx.save ();
-            ctx.translate (this.x, this.y);
-            ctx.rotate (this.radians);
-            ctx.drawImage (this.image, -(this.width / 2), -(this.height / 2), this.width, this.height);
-            ctx.restore ();
+            if (!(gameScreen == "menu" && idComponent == 11 && (wss == null || wss.readyState !== 1)))
+            {
+                ctx.save ();
+                ctx.translate (this.x, this.y);
+                ctx.rotate (this.radians);
+                ctx.drawImage (this.image, -(this.width / 2), -(this.height / 2), this.width, this.height);
+                ctx.restore ();
+            }
         }
         else if (this.type == "text" || this.type == "input" || this.type == "type" || this.type == "skin")
         {
@@ -441,7 +444,8 @@ function component (type, src, color, x, y, width, height, max, control)
             else if (this.type != "type")
             {
                 ctx.fillStyle = this.color;
-                if (this.type == "skin")
+                if (gameScreen == "menu" && idComponent == 12 && wss != null && wss.readyState === 1) ctx.fillText (usersPlaying, this.x, this.y + 1);
+                else if (this.type == "skin")
                 {
                     if (this.src * 1 > -1) ctx.fillText (playerSkins [this.src * 1].name, this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 1);
                     ctx.fillStyle = "white";
@@ -454,10 +458,15 @@ function component (type, src, color, x, y, width, height, max, control)
         {
             ctx.beginPath ();
             ctx.arc (this.x, this.y, this.height, 0, 2 * Math.PI);
-            if (gameArea.frame % 20 == 0)
+            if (wss != null && wss.readyState == WebSocket.OPEN) this.color = "#0C0";
+            else if (wss >= 1000) this.color = "red";
+            else
             {
-                if (this.color == "yellow") this.color = "black";
-                else if (this.color == "black") this.color = "yellow";
+                if (gameArea.frame % 20 == 0)
+                {
+                    if (this.color != "black") this.color = "black";
+                    else if (this.color != "yellow") this.color = "yellow";
+                }
             }
             ctx.fillStyle = this.color;
             ctx.fill ();

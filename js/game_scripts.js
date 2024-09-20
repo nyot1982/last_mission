@@ -165,6 +165,7 @@ var fpsMonitor = false,
             this.ctx.clearRect (0, 0, this.canvas.width, this.canvas.height);
         }
     },
+    usersPlaying = 0,
     playersConnecting = 0,
     wssServer = "wss://nyot.ddns.net:4000",
     wss = null;
@@ -334,23 +335,13 @@ function gameLoadScreen (screen)
         gameText.push (new component ("text", "FPS Monitor", "white", 575, gameText [6].y + 25, "left", 10));
         gameText.push (new component ("text", "High Scores", "white", 575, gameText [7].y + 25, "left", 10));
         gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", gameWidth / 2, 445, "center", 10));
-        gameText.push (new component ("circle", "", "#0C0", 645, 295, "", 5));
-        gameText.push (new component ("image", "svgs/user.svg", "hidden", 660, 295, 10, 10));
+        gameText.push (new component ("circle", "", "black", 645, 295, "", 5));
+        gameText.push (new component ("image", "svgs/user.svg", "", 660, 295, 10, 10));
         gameText.push (new component ("text", "", "orange", 670, 295, "left", 10));
         menuShip = new ship (null, playerColors [0], 450, gameText [0].y + 15, 50, 90, 2);
         changeTab ("menu");
         resetHuds (0, 0, true, 0);
-        if (wss != null && wss.readyState == WebSocket.OPEN)
-        {
-            gameText [10].color = "#0C0";
-            gameText [11].color = "";
-            gameText [12].src = "0";
-        }
-        else
-        {
-            gameText [10].color = "red";
-            wssOpen ();
-        }
+        if (wss == null) wssOpen ();
     }
     else if (gameScreen == "high_scores")
     {

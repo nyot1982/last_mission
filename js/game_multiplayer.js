@@ -1,12 +1,8 @@
 function wssOpen ()
 {
-    if (wss == null)
-    {
-        gameText [10].color = "yellow";
-        wss = new WebSocket (wssServer);
-    }
+    wss = new WebSocket (wssServer);
 
-    wss.onopen = function ()
+    /*wss.onopen = function ()
     {
         if (wss.readyState === 1)
         {
@@ -14,7 +10,7 @@ function wssOpen ()
             gameText [11].color = "";
             gameText [12].src = "0";
         }
-    };
+    };*/
 
     wss.onmessage = function (event)
     {
@@ -34,7 +30,7 @@ function wssOpen ()
             playersConnecting = data.players_connecting;
         }
         if (data.action == "open") playerId = data.player_id;
-        else if (data.action == "players") gameText [12].src = data.players;
+        else if (data.action == "players") usersPlaying = data.players;
         else if (data.action == "connected")
         {
             gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
@@ -171,25 +167,19 @@ function wssOpen ()
     
     wss.onclose = function (event)
     {
-        wss = null;
+        wss = event.code;
         if (gameModes.findIndex (mode => mode.active == true) == 3 && gameScreen == "game" && gameConfirm.length == 0) gameOpenModal ("exit", "Server disconnected");
-        else if (gameScreen == "menu" && event.code != 1000 && event.code != 3000)
+        else if (gameScreen == "menu")
         {   
             if (gameModes.findIndex (mode => mode.active == true) == 3 && gameInput.length > 0) gameLoadScreen ("menu");
-            else
-            {
-                gameText [10].color = "red";
-                gameText [11].color = "hidden";
-                gameText [12].src = "";
-                setTimeout
-                (
-                    function ()
-                    {
-                        wssOpen ();
-                    },
-                    3000
-                );
-            }
+            setTimeout
+            (
+                function ()
+                {
+                    wssOpen ();
+                },
+                3000
+            );
         }
     };
 }
