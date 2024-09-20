@@ -167,19 +167,23 @@ function wssOpen ()
     
     wss.onclose = function (event)
     {
-        wss = event.code;
-        if (gameModes.findIndex (mode => mode.active == true) == 3 && gameScreen == "game" && gameConfirm.length == 0) gameOpenModal ("exit", "Server disconnected");
-        else if (gameScreen == "menu")
-        {   
-            if (gameModes.findIndex (mode => mode.active == true) == 3 && gameInput.length > 0) gameLoadScreen ("menu");
-            setTimeout
-            (
-                function ()
-                {
-                    wssOpen ();
-                },
-                3000
-            );
+        if (event.code == 1000 || event.code == 3000) wss = null;
+        else
+        {
+            wss = event.code;
+            if (gameModes.findIndex (mode => mode.active == true) == 3 && gameScreen == "game" && gameConfirm.length == 0) gameOpenModal ("exit", "Server disconnected");
+            else if (gameScreen == "menu")
+            {   
+                if (gameModes.findIndex (mode => mode.active == true) == 3 && gameInput.length > 0) gameLoadScreen ("menu");
+                setTimeout
+                (
+                    function ()
+                    {
+                        wssOpen ();
+                    },
+                    3000
+                );
+            }
         }
     };
 }
