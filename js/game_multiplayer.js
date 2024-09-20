@@ -142,7 +142,7 @@ function wssOpen ()
             }
             document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
             if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
-            else document.getElementById ("lifesHud").style.height = "23px";
+            else if (gameScreen == "game") document.getElementById ("lifesHud").style.height = "23px";
             gameObjects = gameShips.concat (gameItems).concat (gameShots);
             gameObjects.sort ((ship1, ship2) => ship1.z - ship2.z);
             if (data.action == "ship")
