@@ -17,6 +17,15 @@ var fpsMonitor = false,
     colorPickerInput = null,
     keysPressed = [],
     buttonsPressed = [],
+    mousePressed = [],
+    mousePosition =
+    {
+        x: 0,
+        y: 0,
+        wheelX: 0,
+        wheelY: 0,
+        wheelZ: 0
+    },
     menuShots = [],
     menuHits = [],
     gameObjects = [],
@@ -36,7 +45,178 @@ var fpsMonitor = false,
     players = [],
     storedPlayers = [],
     playerColors = ["#A5FF9A", "skin0", "skin1", "skin2", "skin3", "skin4", "skin5", "skin6", "skin7"],
-    playerSkins = [], 
+    playerSkins = [],
+    userActions =
+    [
+        {
+            screen: "menu",
+            action: "input_back",
+            keyboard: 8, // Backspace
+            gamepad: null,
+            joystick: null
+        },
+        {
+            screen: "menu",
+            action: "input_change",
+            keyboard: 9, // Tab
+            gamepad: 0, // A
+            joystick: 0
+        },
+        {
+            screen: "menu",
+            action: "input_check",
+            keyboard: 13, // Enter
+            gamepad: [1, 9], // B, Start
+            joystick: 1
+        },
+        {
+            screen: "menu",
+            action: "input_exit",
+            keyboard: 27, // Scape
+            gamepad: [2, 8], // X, Select
+            joystick: 2
+        },
+        {
+            screen: "menu",
+            action: "skin_prev",
+            keyboard: [37, 40], // Left, Dowmn
+            gamepad: [12, 14], // Down, Left
+            joystick: null
+        },
+        {
+            screen: "menu",
+            action: "skin_next",
+            keyboard: [38, 39], // Right, Up
+            gamepad: [13, 15], // Up, Right
+            joystick: null
+        },
+        {
+            screen: "menu",
+            action: "strafe_up",
+            keyboard: 40, // Up
+            gamepad: 13, // Up
+            joystick: null
+        },
+        {
+            screen: "menu",
+            action: "strafe_down",
+            keyboard: 38, // Down
+            gamepad: 12, // Down
+            joystick: null
+        },
+        {
+            screen: "menu",
+            action: "fire",
+            keyboard: [13, 32], // Enter, Space
+            gamepad: [6, 7], // L2, R2
+            joystick: 0
+        },
+        {
+            screen: "menu",
+            action: "close_modal",
+            keyboard: 27, // Scape
+            gamepad: [9, 16], // Start, Home
+            joystick: 7
+        },
+        {
+            screen: "menu",
+            action: "confirm_no",
+            keyboard: 78, // N
+            gamepad: 8, // Select
+            joystick: 0
+        },
+        {
+            screen: "menu",
+            action: "confirm_yes",
+            keyboard: 89, // Y
+            gamepad: 9, // Start
+            joystick: 1
+        },
+        {
+            screen: "game",
+            action: "fire",
+            keyboard: 32, // Space
+            gamepad: [6, 7], // L2, R2
+            joystick: 0
+        },
+        {
+            screen: "game",
+            action: "change_weapon",
+            keyboard: 9, // Tab
+            gamepad: [3, 8], // Y, Select
+            joystick: 1
+        },
+        {
+            screen: "game",
+            action: "speed_up",
+            keyboard: 81, // Q
+            gamepad: 5, // R1
+            joystick: 5
+        },
+        {
+            screen: "game",
+            action: "speed_down",
+            keyboard: 65, // A
+            gamepad: 4, // L1
+            joystick: 4
+        },
+        {
+            screen: "game",
+            action: "moveZ",
+            keyboard: 17, // Control
+            gamepad: [0, 1, 2], // A, B, X
+            joystick: 6
+        },
+        {
+            screen: "game",
+            action: "turn_left",
+            keyboard: 37, // Left
+            gamepad: 14, // Left
+            joystick: null
+        },
+        {
+            screen: "game",
+            action: "turn_right",
+            keyboard: 39, // Right
+            gamepad: 15, // Right
+            joystick: null
+        },
+        {
+            screen: "game",
+            action: "strafe_left",
+            keyboard: 90, // Z
+            gamepad: null,
+            joystick: 3
+        },
+        {
+            screen: "game",
+            action: "strafe_right",
+            keyboard: 88, // X
+            gamepad: null,
+            joystick: 2
+        },
+        {
+            screen: "game",
+            action: "move_front",
+            keyboard: 40, // Up
+            gamepad: 13, // Up
+            joystick: null
+        },
+        {
+            screen: "game",
+            action: "move_back",
+            keyboard: 38, // Down
+            gamepad: 12, // Down
+            joystick: null
+        },
+        {
+            screen: "game",
+            action: "open_modal",
+            keyboard: 27, // Scape
+            gamepad: [9, 16], // Start, Home
+            joystick: 7
+        }
+    ],
     startPoints =
     [
         {
@@ -132,6 +312,20 @@ var fpsMonitor = false,
             this.canvas.innerText = "Este navegador no soporta la etiqueta de canvas.";
             this.ctx = this.canvas.getContext ("2d");
             document.getElementsByTagName ("article")[0].insertBefore (this.canvas, document.getElementsByTagName ("article")[0].childNodes [0]);
+            this.canvas.setAttribute ("onmousemove", "javascript: mouseMove (event);");
+            this.canvas.setAttribute ("onmousedown", "javascript: mouseDown (event);");
+            this.canvas.setAttribute ("onmouseup", "javascript: mouseUp (event);");
+            document.addEventListener
+            (
+                "wheel",
+                function (e)
+                {
+                    mouseWheel (e);
+                },
+                {
+                    passive: true
+                }
+            );
             this.frame = 0;
             this.fps = 0;
             this.timer = Date.now ();
@@ -170,12 +364,29 @@ var fpsMonitor = false,
     wssServer = "wss://nyot.ddns.net:4000",
     wss = null;
 
-/*$(window).on
+/*$(window)
+.on
+(
+    "mousedown",
+    function (event)
+    {
+        console.log ("mousedown",event);
+    }
+)
+.on
+(
+    "mouseup",
+    function (event)
+    {
+        console.log ("mouseup", event);
+    }
+)
+.on
 (
     "beforeunload",
-    function ()
+    function (event)
     {
-        console.log ("Bye now!");
+        console.log ("beforeunload", event);
     }
 );*/
 
