@@ -49,174 +49,182 @@ var fpsMonitor = false,
     userActions =
     [
         {
-            screen: "menu",
+            screen: ["input"],
             action: "input_back",
-            keyboard: 8, // Backspace
-            gamepad: null,
-            joystick: null
+            keyboard: [8], // Backspace
+            gamepad: [],
+            joystick: []
         },
         {
-            screen: "menu",
+            screen: ["input", "color", "skin"],
             action: "input_change",
-            keyboard: 9, // Tab
-            gamepad: 0, // A
-            joystick: 0
+            keyboard: [9], // Tab
+            gamepad: [0], // A
+            joystick: [0]
         },
         {
-            screen: "menu",
+            screen: ["input"],
             action: "input_check",
-            keyboard: 13, // Enter
+            keyboard: [13], // Enter
             gamepad: [1, 9], // B, Start
-            joystick: 1
+            joystick: [1]
         },
         {
-            screen: "menu",
+            screen: ["input", "color", "skin"],
             action: "input_exit",
-            keyboard: 27, // Scape
+            keyboard: [27], // Scape
             gamepad: [2, 8], // X, Select
-            joystick: 2
+            joystick: [2]
         },
         {
-            screen: "menu",
+            screen: ["skin"],
             action: "skin_prev",
             keyboard: [37, 40], // Left, Dowmn
             gamepad: [12, 14], // Down, Left
-            joystick: null
+            joystick: []
         },
         {
-            screen: "menu",
+            screen: ["skin"],
             action: "skin_next",
             keyboard: [38, 39], // Right, Up
             gamepad: [13, 15], // Up, Right
-            joystick: null
+            joystick: []
         },
         {
-            screen: "menu",
+            screen: ["menu"],
             action: "strafe_up",
-            keyboard: 40, // Up
-            gamepad: 13, // Up
-            joystick: null
+            keyboard: [40], // Up
+            gamepad: [13], // Up
+            joystick: []
         },
         {
-            screen: "menu",
+            screen: ["menu"],
             action: "strafe_down",
-            keyboard: 38, // Down
-            gamepad: 12, // Down
-            joystick: null
+            keyboard: [38], // Down
+            gamepad: [12], // Down
+            joystick: []
         },
         {
-            screen: "menu",
+            screen: ["menu"],
             action: "fire",
             keyboard: [13, 32], // Enter, Space
             gamepad: [6, 7], // L2, R2
-            joystick: 0
+            joystick: [0]
         },
         {
-            screen: "menu",
+            screen: ["modal"],
             action: "close_modal",
-            keyboard: 27, // Scape
+            keyboard: [27], // Scape
             gamepad: [9, 16], // Start, Home
-            joystick: 7
+            joystick: [7]
         },
         {
-            screen: "menu",
+            screen: ["confirm"],
             action: "confirm_no",
-            keyboard: 78, // N
-            gamepad: 8, // Select
-            joystick: 0
+            keyboard: [78], // N
+            gamepad: [8], // Select
+            joystick: [0]
         },
         {
-            screen: "menu",
+            screen: ["confirm"],
             action: "confirm_yes",
-            keyboard: 89, // Y
-            gamepad: 9, // Start
-            joystick: 1
+            keyboard: [89], // Y
+            gamepad: [9], // Start
+            joystick: [1]
         },
         {
-            screen: "game",
+            screen: ["game"],
             action: "fire",
-            keyboard: 32, // Space
+            keyboard: [32], // Space
             gamepad: [6, 7], // L2, R2
-            joystick: 0
+            joystick: [0]
         },
         {
-            screen: "game",
+            screen: ["game"],
             action: "change_weapon",
-            keyboard: 9, // Tab
+            keyboard: [9], // Tab
             gamepad: [3, 8], // Y, Select
-            joystick: 1
+            joystick: [1]
         },
         {
-            screen: "game",
+            screen: ["game"],
             action: "speed_up",
-            keyboard: 81, // Q
-            gamepad: 5, // R1
-            joystick: 5
+            keyboard: [81], // Q
+            gamepad: [5], // R1
+            joystick: [5]
         },
         {
-            screen: "game",
+            screen: ["game"],
             action: "speed_down",
-            keyboard: 65, // A
-            gamepad: 4, // L1
-            joystick: 4
+            keyboard: [65], // A
+            gamepad: [4], // L1
+            joystick: [4]
         },
         {
-            screen: "game",
+            screen: ["game"],
             action: "moveZ",
-            keyboard: 17, // Control
+            keyboard: [17], // Control
             gamepad: [0, 1, 2], // A, B, X
-            joystick: 6
+            joystick: [6]
         },
         {
-            screen: "game",
+            screen: ["game"],
             action: "turn_left",
-            keyboard: 37, // Left
-            gamepad: 14, // Left
-            joystick: null
+            keyboard: [37], // Left
+            gamepad: [14], // Left
+            joystick: []
         },
         {
-            screen: "game",
+            screen: ["game"],
             action: "turn_right",
-            keyboard: 39, // Right
-            gamepad: 15, // Right
-            joystick: null
+            keyboard: [39], // Right
+            gamepad: [15], // Right
+            joystick: []
         },
         {
-            screen: "game",
+            screen: ["game"],
             action: "strafe_left",
-            keyboard: 90, // Z
-            gamepad: null,
-            joystick: 3
+            keyboard: [90], // Z
+            gamepad: [],
+            joystick: [3]
         },
         {
-            screen: "game",
+            screen: ["game"],
             action: "strafe_right",
-            keyboard: 88, // X
-            gamepad: null,
-            joystick: 2
+            keyboard: [88], // X
+            gamepad: [],
+            joystick: [2]
         },
         {
-            screen: "game",
+            screen: ["game"],
             action: "move_front",
-            keyboard: 40, // Up
-            gamepad: 13, // Up
-            joystick: null
+            keyboard: [40], // Up
+            gamepad: [13], // Up
+            joystick: []
         },
         {
-            screen: "game",
+            screen: ["game"],
             action: "move_back",
-            keyboard: 38, // Down
-            gamepad: 12, // Down
-            joystick: null
+            keyboard: [38], // Down
+            gamepad: [12], // Down
+            joystick: []
         },
         {
-            screen: "game",
+            screen: ["game"],
             action: "open_modal",
-            keyboard: 27, // Scape
+            keyboard: [27], // Scape
             gamepad: [9, 16], // Start, Home
-            joystick: 7
+            joystick: [7]
         }
     ],
+    userActions [-1] =
+    {
+        screen: ["input"],
+        action: "input_key",
+        keyboard: [],
+        gamepad: [],
+        joystick: []
+    },
     startPoints =
     [
         {
