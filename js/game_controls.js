@@ -235,9 +235,15 @@ function userActionDown (control, bt_code, bt_value, gameShip)
         if (gameInput.length > 0) changeTab ("input");
         else changeTab ("menu");
     }
-    else if (gameConfirm.length > 0)
+    else
     {
-        switch (userActions [userActions.findIndex (action => action.screen.includes ("confirm") && action [control].includes (bt_code))].action)
+        if (gameConfirm.length > 0) var screen = "confirm";
+        else if (gameInput.length > 0 && gameAlert.length == 0) var screen = gameInput [idInputAct].type;
+        else if (gameScreen == "menu" && menuShip != null && gameModal == null) var screen = "menu";
+        else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null) var screen = "game";
+        else var screen = "modal";
+        
+        switch (userActions [userActions.findIndex (action => action.screen.includes (screen) && action [control].includes (bt_code))].action)
         {
             case 'confirm_no':
                 gameConfirm = [];
@@ -263,12 +269,6 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                     wss.send (JSON.stringify (data));    
                 }
             break;
-        }
-    }
-    else if (gameInput.length > 0 && gameAlert.length == 0)
-    {
-        switch (userActions [userActions.findIndex (action => action.screen.includes (gameInput [idInputAct].type) && action [control].includes (bt_code))].action)
-        {
             case 'input_back':
                 gameInput [idInputAct].src = gameInput [idInputAct].src.slice (0, -1);
             break;
@@ -406,19 +406,7 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                     else menuShip.changeColor (colorPickerInput.value);
                 }
             break;
-            default:
-                if (gameInput [idInputAct].type == "input" && bt_value.length == 1 && gameInput [idInputAct].src.length < gameInput [idInputAct].max) gameInput [idInputAct].src += bt_value;
-            break;
-        }
-    }
-    else if (gameModal == "menu" || gameScreen == "menu")
-    {
-        switch (userActions [userActions.findIndex (action => action.screen.includes ("menu") && action [control].includes (bt_code))].action)
-        {
-            case 'close_modal':
-                if (gameModal != null) gameCloseModal ();
-            break;
-            case 'fire':
+            case 'fire_menu':
                 menuShip.firing (true);
             break;
             case 'strafe_down':
@@ -426,15 +414,6 @@ function userActionDown (control, bt_code, bt_value, gameShip)
             break;
             case 'strafe_up':
                 menuShip.strafing (1);
-            break;
-        }
-    }
-    else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null)
-    {
-        switch (userActions [userActions.findIndex (action => action.screen.includes ("game") && action [control].includes (bt_code))].action)
-        {
-            case 'open_modal':
-                gameOpenModal ("menu");
             break;
             case 'change_weapon':
                 gameShips [gameShip].changeWeapon ();
@@ -469,30 +448,33 @@ function userActionDown (control, bt_code, bt_value, gameShip)
             case 'strafe_left':
                 gameShips [gameShip].strafing (-1);
             break;
-        }
-    }
-    else switch (userActions [userActions.findIndex (action => action.screen.includes ("modal") && action [control].includes (bt_code))].action)
-    {
-        case 'close_modal':
-            if (gameModal == "exit")
-            {
-                $("#blackScreen").fadeIn (1000);
-                setTimeout
-                (
-                    function ()
-                    {
-                        gameLoadScreen ("menu");
-                    },
-                    1000
-                );
-            }
-            else if (gameModal == "continue") 
-            {
+            case 'open_modal':
                 gameOpenModal ("menu");
-                gameArea.play ();
-            }
-            else if (gameModal != null) gameCloseModal ();
-        break;
+            break;
+            case 'close_modal':
+                if (gameModal == "exit")
+                {
+                    $("#blackScreen").fadeIn (1000);
+                    setTimeout
+                    (
+                        function ()
+                        {
+                            gameLoadScreen ("menu");
+                        },
+                        1000
+                    );
+                }
+                else if (gameModal == "continue") 
+                {
+                    gameOpenModal ("menu");
+                    gameArea.play ();
+                }
+                else if (gameModal != null) gameCloseModal ();
+            break;
+            default:
+                if (gameInput [idInputAct].type == "input" && bt_value.length == 1 && gameInput [idInputAct].src.length < gameInput [idInputAct].max) gameInput [idInputAct].src += bt_value;
+            break;
+        }
     }
 }
 

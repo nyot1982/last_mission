@@ -113,13 +113,13 @@ var fpsMonitor = false,
         },
         {
             screen: ["menu"],
-            action: "fire",
+            action: "fire_menu",
             keyboard: [13, 32], // Enter, Space
             gamepad: [6, 7], // L2, R2
             joystick: [0]
         },
         {
-            screen: ["menu", "modal"],
+            screen: ["modal"],
             action: "close_modal",
             keyboard: [27], // Scape
             gamepad: [9, 16], // Start, Home
