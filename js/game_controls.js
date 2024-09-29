@@ -117,7 +117,7 @@ function buttonDown (id_control, control, button)
             var player = players.findIndex (player => player.control == id_control);
             var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
         }
-        userActionDown (control, button, gameShip);
+        userActionDown (control, button, null, gameShip);
     }
 }
 
@@ -142,13 +142,17 @@ function buttonUp (id_control, control, button)
 function keyDown (e)
 {
     e.preventDefault ();
-    if (!keysPressed.includes (e.keyCode))
+    if (gameScreen == "menu" && gameInput.length > 0 && gameInput [idInputAct].type == "input" && e.keyCode != 13 && e.keyCode != 27)    
+    {
+        if (!keysPressed.includes (e.keyCode)) keysPressed.push (e.keyCode);
+        userActionDown ("keyboard", (e.keyCode == 8 ? 8 : -1), e.key, gameShip);
+    }
+    else if (!keysPressed.includes (e.keyCode))
     {
         keysPressed.push (e.keyCode);
         if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl != "keyboard" || gameScreen != "game") changeControl ("keyboard");
         if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
-        if (gameInput.length > 0 && gameInput [idInputAct].type == "input") userActionDown ("keyboard", e.key, gameShip);
-        else userActionDown ("keyboard", e.keyCode, gameShip);
+        userActionDown ("keyboard", e.keyCode, null, gameShip);
     }
 }
 
@@ -165,7 +169,7 @@ function keyUp (e)
     }
 }
 
-function userActionDown (control, button, gameShip)
+function userActionDown (control, bt_code, bt_value, gameShip)
 {
     if (gameScreen == "start")
     {
@@ -233,7 +237,7 @@ function userActionDown (control, button, gameShip)
     }
     else if (gameConfirm.length > 0)
     {
-        switch (userActions [userActions.findIndex (action => action.screen.includes ("confirm") && action [control].includes (button))].action)
+        switch (userActions [userActions.findIndex (action => action.screen.includes ("confirm") && action [control].includes (bt_code))].action)
         {
             case 'confirm_no':
                 gameConfirm = [];
@@ -263,7 +267,7 @@ function userActionDown (control, button, gameShip)
     }
     else if (gameInput.length > 0 && gameAlert.length == 0)
     {
-        switch (userActions [userActions.findIndex (action => action.screen.includes (gameInput [idInputAct].type) && action [control].includes (button))].action)
+        switch (userActions [userActions.findIndex (action => action.screen.includes (gameInput [idInputAct].type) && action [control].includes (bt_code))].action)
         {
             case 'input_back':
                 gameInput [idInputAct].src = gameInput [idInputAct].src.slice (0, -1);
@@ -339,7 +343,7 @@ function userActionDown (control, button, gameShip)
                     }
                     else
                     {
-                        if (wss != null) wss.close (3000);
+                        if (wss != null && wss.readyState === 1) wss.close (3000);
                         if (gameModes.findIndex (mode => mode.active == true) == 2)
                         {
                             $("#blackScreen").fadeIn (1000);
@@ -403,13 +407,13 @@ function userActionDown (control, button, gameShip)
                 }
             break;
             default:
-                if (gameInput [idInputAct].type == "input" && button.length == 1 && gameInput [idInputAct].src.length < gameInput [idInputAct].max) gameInput [idInputAct].src += button;
+                if (gameInput [idInputAct].type == "input" && bt_value.length == 1 && gameInput [idInputAct].src.length < gameInput [idInputAct].max) gameInput [idInputAct].src += bt_value;
             break;
         }
     }
     else if (gameModal == "menu" || gameScreen == "menu")
     {
-        switch (userActions [userActions.findIndex (action => action.screen.includes ("menu") && action [control].includes (button))].action)
+        switch (userActions [userActions.findIndex (action => action.screen.includes ("menu") && action [control].includes (bt_code))].action)
         {
             case 'close_modal':
                 if (gameModal != null) gameCloseModal ();
@@ -427,7 +431,7 @@ function userActionDown (control, button, gameShip)
     }
     else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null)
     {
-        switch (userActions [userActions.findIndex (action => action.screen.includes ("game") && action [control].includes (button))].action)
+        switch (userActions [userActions.findIndex (action => action.screen.includes ("game") && action [control].includes (bt_code))].action)
         {
             case 'open_modal':
                 gameOpenModal ("menu");
@@ -467,7 +471,7 @@ function userActionDown (control, button, gameShip)
             break;
         }
     }
-    else switch (userActions [userActions.findIndex (action => action.screen.includes ("modal") && action [control].includes (button))].action)
+    else switch (userActions [userActions.findIndex (action => action.screen.includes ("modal") && action [control].includes (bt_code))].action)
     {
         case 'close_modal':
             if (gameModal == "exit")
@@ -492,11 +496,20 @@ function userActionDown (control, button, gameShip)
     }
 }
 
-function userActionUp (control, button, gameShip)
+function userActionUp (control, bt_code, gameShip)
 {
-    if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0)
+    if ((gameScreen == "menu" || gameModal == "menu") && menuShip != null && gameConfirm.length == 0 && gameInput.length == 0)
     {
-        switch (userActions [userActions.findIndex (action => action [control].includes (button))].action)
+        switch (userActions [userActions.findIndex (action => action [control].includes (bt_code))].action)
+        {
+            case 'fire':
+                gameShips [gameShip].firing (false);
+            break;
+        }
+    }
+    else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0)
+    {
+        switch (userActions [userActions.findIndex (action => action [control].includes (bt_code))].action)
         {
             case 'fire':
                 gameShips [gameShip].firing (false);

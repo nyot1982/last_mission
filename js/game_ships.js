@@ -232,16 +232,24 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
             this.engine2inc = true;
             if (gameModal == "menu" || gameScreen == "menu")
             {
-                if (gameScreen == "menu") var menuItems = 7;
-                else if (gameModal == "menu") var menuItems = 4;
+                if (gameScreen == "menu") this.menuItems = 8;
+                else if (gameModal == "menu") this.menuItems = 5;
                 if (direction == 0) this.strafe = 0;
                 else if (this.strafe == 0)
                 {
                     if (this.menuItem === undefined) this.menuItem = 0;
-                    if (direction < 0 && this.menuItem > 0 || direction > 0 && this.menuItem < menuItems)
+                    if (direction < 0 && this.menuItem > 0 || direction > 0 && this.menuItem < this.menuItems - 1)
                     {
-                        this.startStrafe = this.y;
+                        this.endStrafe = this.y + 25 * direction;
                         this.strafe = this.speed * direction;
+                        this.menuItem += direction;
+                    }
+                    else
+                    {
+                        this.endStrafe = this.y + (this.menuItems - 1) * 25 * direction * -1;
+                        this.strafe = this.speed * 4 * direction * -1;
+                        if (this.menuItem == 0) this.menuItem = this.menuItems - 1;
+                        else if (this.menuItem == this.menuItems - 1) this.menuItem = 0;
                     }
                 }
             }
@@ -303,21 +311,15 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
                     this.y -= this.strafe * Math.cos ((this.degrees + 90) * Math.PI / 180);
                     if (gameModal == "menu" || gameScreen == "menu")
                     {
-                        if (this.startStrafe > this.y && this.startStrafe - this.y > 25)
+                        if (this.y > this.endStrafe && this.strafe > 0 || this.y < this.endStrafe && this.strafe < 0)
                         {
-                            this.y = this.startStrafe - 25;
+                            this.y = this.endStrafe;
+                            if (this.y > this.endStrafe && this.menuItem < 0) this.menuItem = 0;
+                            else if (this.y < this.endStrafe && this.menuItem >= this.menuItems) this.menuItem = this.menuItems - 1;
+                            this.endStrafe = null;
                             this.strafe = 0;
-                            this.menuItem--;
-                            if (keysPressed.includes (38)) menuShip.strafing (-1);
-                            else if (keysPressed.includes (40)) menuShip.strafing (1);
-                        }
-                        else if (this.y > this.startStrafe && this.y - this.startStrafe > 25)
-                        {
-                            this.y = this.startStrafe + 25;
-                            this.strafe = 0;
-                            this.menuItem++;
-                            if (keysPressed.includes (38)) menuShip.strafing (-1);
-                            else if (keysPressed.includes (40)) menuShip.strafing (1);
+                            if (keysPressed.includes (38)) this.strafing (-1);
+                            else if (keysPressed.includes (40)) this.strafing (1);
                         }
                     }
                 }

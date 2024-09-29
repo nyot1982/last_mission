@@ -50,6 +50,13 @@ var fpsMonitor = false,
     [
         {
             screen: ["input"],
+            action: "input_key",
+            keyboard: [-1],
+            gamepad: [],
+            joystick: []
+        },
+        {
+            screen: ["input"],
             action: "input_back",
             keyboard: [8], // Backspace
             gamepad: [],
@@ -112,7 +119,7 @@ var fpsMonitor = false,
             joystick: [0]
         },
         {
-            screen: ["modal"],
+            screen: ["menu", "modal"],
             action: "close_modal",
             keyboard: [27], // Scape
             gamepad: [9, 16], // Start, Home
@@ -217,14 +224,6 @@ var fpsMonitor = false,
             joystick: [7]
         }
     ],
-    userActions [-1] =
-    {
-        screen: ["input"],
-        action: "input_key",
-        keyboard: [],
-        gamepad: [],
-        joystick: []
-    },
     startPoints =
     [
         {
