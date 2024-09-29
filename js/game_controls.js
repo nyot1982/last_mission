@@ -241,7 +241,7 @@ function userActionDown (control, bt_code, bt_value, gameShip)
         else if (gameInput.length > 0 && gameAlert.length == 0) var screen = gameInput [idInputAct].type;
         else if (gameScreen == "menu" && menuShip != null && gameModal == null) var screen = "menu";
         else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null) var screen = "game";
-        else var screen = "modal";
+        else var screen = "modal_" + gameModal;
 
         var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control].includes (bt_code));
 
@@ -455,25 +455,23 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                 case 'open_modal':
                     gameOpenModal ("menu");
                 break;
+                case 'close_exit':
+                    $("#blackScreen").fadeIn (1000);
+                    setTimeout
+                    (
+                        function ()
+                        {
+                            gameLoadScreen ("menu");
+                        },
+                        1000
+                    );
+                break;
+                case 'close_continue':
+                    gameOpenModal ("menu");
+                    gameArea.play ();
+                break;
                 case 'close_modal':
-                    if (gameModal == "exit")
-                    {
-                        $("#blackScreen").fadeIn (1000);
-                        setTimeout
-                        (
-                            function ()
-                            {
-                                gameLoadScreen ("menu");
-                            },
-                            1000
-                        );
-                    }
-                    else if (gameModal == "continue") 
-                    {
-                        gameOpenModal ("menu");
-                        gameArea.play ();
-                    }
-                    else if (gameModal != null) gameCloseModal ();
+                    gameCloseModal ();
                 break;
                 default:
                     if (gameInput [idInputAct].type == "input" && bt_value.length == 1 && gameInput [idInputAct].src.length < gameInput [idInputAct].max) gameInput [idInputAct].src += bt_value;

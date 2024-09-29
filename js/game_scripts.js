@@ -98,28 +98,42 @@ var fpsMonitor = false,
             joystick: []
         },
         {
-            screen: ["menu"],
+            screen: ["menu", "modal_menu"],
             action: "strafe_up",
             keyboard: [40], // Up
             gamepad: [13], // Up
             joystick: []
         },
         {
-            screen: ["menu"],
+            screen: ["menu", "modal_menu"],
             action: "strafe_down",
             keyboard: [38], // Down
             gamepad: [12], // Down
             joystick: []
         },
         {
-            screen: ["menu"],
+            screen: ["menu", "modal_menu"],
             action: "fire_menu",
             keyboard: [13, 32], // Enter, Space
             gamepad: [6, 7], // L2, R2
             joystick: [0]
         },
         {
-            screen: ["modal"],
+            screen: ["modal_continue"],
+            action: "close_continue",
+            keyboard: [27], // Scape
+            gamepad: [9, 16], // Start, Home
+            joystick: [7]
+        },
+        {
+            screen: ["modal_exit"],
+            action: "close_exit",
+            keyboard: [27], // Scape
+            gamepad: [9, 16], // Start, Home
+            joystick: [7]
+        },
+        {
+            screen: ["modal_menu"],
             action: "close_modal",
             keyboard: [27], // Scape
             gamepad: [9, 16], // Start, Home
