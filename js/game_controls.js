@@ -242,218 +242,18 @@ function userActionDown (control, bt_code, bt_value, gameShip)
         else if (gameScreen == "menu" && menuShip != null && gameModal == null) var screen = "menu";
         else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null) var screen = "game";
         else var screen = "modal";
-        
-        switch (userActions [userActions.findIndex (action => action.screen.includes (screen) && action [control].includes (bt_code))].action)
+
+        var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control].includes (bt_code));
+
+        if (userAction > -1)
         {
-            case 'confirm_no':
-                gameConfirm = [];
-                changeTab ("menu");
-            break;
-            case 'confirm_yes': 
-                $("#blackScreen").fadeIn (1000);
-                setTimeout
-                (
-                    function ()
-                    {
-                        gameLoadScreen ("menu");
-                    },
-                    1000
-                );
-                if (gameModes.findIndex (mode => mode.active == true) == 3)
-                {
-                    const data =
-                    {
-                        action: "start",
-                        player_id: playerId,
-                    };
-                    wss.send (JSON.stringify (data));    
-                }
-            break;
-            case 'input_back':
-                gameInput [idInputAct].src = gameInput [idInputAct].src.slice (0, -1);
-            break;
-            case 'input_change':
-                idInputAct++;
-                if (idInputAct == gameInput.length) idInputAct = 0;
-                for (var i = idInputAct; i < gameInput.length; i++)
-                {
-                    if (gameInput [i].type == "input" || gameInput [i].type == "color" || gameInput [i].type == "skin")
-                    {
-                        idInputAct = i;
-                        break;
-                    }
-                }
-            break;
-            case 'input_check':
-                if ((gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.length < 2)
-                {
-                    gameAlert.push (new component ("text", "Connect other controllers", "red", 745, 270, "left", 10));
-                    gameAlert.push (new component ("text", "to add more players.", "red", 745, 295, "left", 10));
-                    changeTab ("alert");
-                }           
-                else
-                {
-                    players = [];
-                    gameAlert = [];
-                    for (var input in gameInput)
-                    {
-                        if (gameInput [input].type == "input")
-                        {
-                            players [input] =
-                            {
-                                name: gameInput [input].src || "Player" + (input > 0 ? (" " + (input * 1 + 1)) : ""),
-                                color: playerColors [input],
-                                skin: input - 1,
-                                control: gameInput [input].control
-                            };
-                        }
-                        else if (gameInput [input].type == "color")
-                        {
-                            players [0].color = colorPickerInput.value || playerColors [0];
-                            if (players [0].color.trim () == "") players [0].color = playerColors [0];
-                        }
-                        else if (gameInput [input].type == "skin")
-                        {
-                            gameInput [input].src = gameInput [input].src * 1;
-                            players [0].skin = gameInput [input].src;
-                            if (gameInput [input].src > -1)
-                            {
-                                gameInput [input - 1].src = "skin" + gameInput [input].src;
-                                players [0].color = "skin" + gameInput [input].src;
-                            }
-                        }
-                    }
-                    if (gameModes.findIndex (mode => mode.active == true) == 3)
-                    {
-                        if (colorPickerInput && colorPicker && colorPicker.style && colorPicker.style.display == "block")
-                        {
-                            colorPickerInput.blur ();
-                            colorPicker.style.display = "none";
-                            colorPicker = null;
-                            colorPickerInput = null;
-                        }
-                        const data =
-                        {
-                            action: "ship",
-                            player_id: playerId,
-                            name: players [0].name,
-                            color: players [0].color
-                        };
-                        wss.send (JSON.stringify (data));    
-                    }
-                    else
-                    {
-                        if (wss != null && wss.readyState === 1) wss.close (3000);
-                        if (gameModes.findIndex (mode => mode.active == true) == 2)
-                        {
-                            $("#blackScreen").fadeIn (1000);
-                            setTimeout
-                            (
-                                function ()
-                                {
-                                    gameLoadScreen ("game");
-                                },
-                                1000
-                            );
-                        }
-                        else
-                        {
-                            $("#blackScreen").fadeIn (1000);
-                            setTimeout
-                            (
-                                function ()
-                                {
-                                    gameLoadScreen ("intro");
-                                },
-                                1000
-                            );
-                        }
-                    }
-                }
-            break;
-            case 'input_exit':
-                if (colorPickerInput && colorPicker && colorPicker.style && colorPicker.style.display == "block")
-                {
-                    colorPickerInput.blur ();
-                    colorPicker.style.display = "none";
-                }
-                gameLoadScreen ("menu");
-                if (gameModes.findIndex (mode => mode.active == true) == 3)
-                {
-                    const data =
-                    {
-                        action: "start",
-                        player_id: playerId,
-                    };
-                    wss.send (JSON.stringify (data));    
-                }
-            break;
-            case 'skin_prev':
-                if (gameInput [idInputAct].type == "skin")
-                {
-                    gameInput [idInputAct].src = gameInput [idInputAct].src * 1 - 1;
-                    if (gameInput [idInputAct].src < -1) gameInput [idInputAct].src = playerSkins.length - 1;
-                    if (gameInput [idInputAct].src > -1) menuShip.changeColor ("skin" + gameInput [idInputAct].src);
-                    else menuShip.changeColor (colorPickerInput.value);
-                }
-            break;
-            case 'skin_next':
-                if (gameInput [idInputAct].type == "skin")
-                {
-                    gameInput [idInputAct].src = gameInput [idInputAct].src * 1 + 1;
-                    if (gameInput [idInputAct].src >= playerSkins.length) gameInput [idInputAct].src = -1;
-                    if (gameInput [idInputAct].src > -1) menuShip.changeColor ("skin" + gameInput [idInputAct].src);
-                    else menuShip.changeColor (colorPickerInput.value);
-                }
-            break;
-            case 'fire_menu':
-                menuShip.firing (true);
-            break;
-            case 'strafe_down':
-                menuShip.strafing (-1);
-            break;
-            case 'strafe_up':
-                menuShip.strafing (1);
-            break;
-            case 'change_weapon':
-                gameShips [gameShip].changeWeapon ();
-            break;
-            case 'moveZ':
-                gameShips [gameShip].movingZ ();    
-            break;
-            case 'speed_up':
-                gameShips [gameShip].speeding (-1);  
-            break;
-            case 'speed_up':
-                gameShips [gameShip].speeding (1);  
-            break;
-            case 'fire':
-                gameShips [gameShip].firing (true);
-            break;
-            case 'turn_left':
-                gameShips [gameShip].turning (-1);
-            break;
-            case 'turn_right':
-                gameShips [gameShip].turning (1);
-            break;
-            case 'move_back':
-                gameShips [gameShip].moving (1);
-            break;
-            case 'move_front':
-                gameShips [gameShip].moving (-1);
-            break;
-            case 'strafe_right':
-                gameShips [gameShip].strafing (1);
-            break;
-            case 'strafe_left':
-                gameShips [gameShip].strafing (-1);
-            break;
-            case 'open_modal':
-                gameOpenModal ("menu");
-            break;
-            case 'close_modal':
-                if (gameModal == "exit")
-                {
+            switch (userActions [userAction].action)
+            {
+                case 'confirm_no':
+                    gameConfirm = [];
+                    changeTab ("menu");
+                break;
+                case 'confirm_yes': 
                     $("#blackScreen").fadeIn (1000);
                     setTimeout
                     (
@@ -463,36 +263,240 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                         },
                         1000
                     );
-                }
-                else if (gameModal == "continue") 
-                {
+                    if (gameModes.findIndex (mode => mode.active == true) == 3)
+                    {
+                        const data =
+                        {
+                            action: "start",
+                            player_id: playerId,
+                        };
+                        wss.send (JSON.stringify (data));    
+                    }
+                break;
+                case 'input_back':
+                    gameInput [idInputAct].src = gameInput [idInputAct].src.slice (0, -1);
+                break;
+                case 'input_change':
+                    idInputAct++;
+                    if (idInputAct == gameInput.length) idInputAct = 0;
+                    for (var i = idInputAct; i < gameInput.length; i++)
+                    {
+                        if (gameInput [i].type == "input" || gameInput [i].type == "color" || gameInput [i].type == "skin")
+                        {
+                            idInputAct = i;
+                            break;
+                        }
+                    }
+                break;
+                case 'input_check':
+                    if ((gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.length < 2)
+                    {
+                        gameAlert.push (new component ("text", "Connect other controllers", "red", 745, 270, "left", 10));
+                        gameAlert.push (new component ("text", "to add more players.", "red", 745, 295, "left", 10));
+                        changeTab ("alert");
+                    }           
+                    else
+                    {
+                        players = [];
+                        gameAlert = [];
+                        for (var input in gameInput)
+                        {
+                            if (gameInput [input].type == "input")
+                            {
+                                players [input] =
+                                {
+                                    name: gameInput [input].src || "Player" + (input > 0 ? (" " + (input * 1 + 1)) : ""),
+                                    color: playerColors [input],
+                                    skin: input - 1,
+                                    control: gameInput [input].control
+                                };
+                            }
+                            else if (gameInput [input].type == "color")
+                            {
+                                players [0].color = colorPickerInput.value || playerColors [0];
+                                if (players [0].color.trim () == "") players [0].color = playerColors [0];
+                            }
+                            else if (gameInput [input].type == "skin")
+                            {
+                                gameInput [input].src = gameInput [input].src * 1;
+                                players [0].skin = gameInput [input].src;
+                                if (gameInput [input].src > -1)
+                                {
+                                    gameInput [input - 1].src = "skin" + gameInput [input].src;
+                                    players [0].color = "skin" + gameInput [input].src;
+                                }
+                            }
+                        }
+                        if (gameModes.findIndex (mode => mode.active == true) == 3)
+                        {
+                            if (colorPickerInput && colorPicker && colorPicker.style && colorPicker.style.display == "block")
+                            {
+                                colorPickerInput.blur ();
+                                colorPicker.style.display = "none";
+                                colorPicker = null;
+                                colorPickerInput = null;
+                            }
+                            const data =
+                            {
+                                action: "ship",
+                                player_id: playerId,
+                                name: players [0].name,
+                                color: players [0].color
+                            };
+                            wss.send (JSON.stringify (data));    
+                        }
+                        else
+                        {
+                            if (wss != null && wss.readyState === 1) wss.close (3000);
+                            if (gameModes.findIndex (mode => mode.active == true) == 2)
+                            {
+                                $("#blackScreen").fadeIn (1000);
+                                setTimeout
+                                (
+                                    function ()
+                                    {
+                                        gameLoadScreen ("game");
+                                    },
+                                    1000
+                                );
+                            }
+                            else
+                            {
+                                $("#blackScreen").fadeIn (1000);
+                                setTimeout
+                                (
+                                    function ()
+                                    {
+                                        gameLoadScreen ("intro");
+                                    },
+                                    1000
+                                );
+                            }
+                        }
+                    }
+                break;
+                case 'input_exit':
+                    if (colorPickerInput && colorPicker && colorPicker.style && colorPicker.style.display == "block")
+                    {
+                        colorPickerInput.blur ();
+                        colorPicker.style.display = "none";
+                    }
+                    gameLoadScreen ("menu");
+                    if (gameModes.findIndex (mode => mode.active == true) == 3)
+                    {
+                        const data =
+                        {
+                            action: "start",
+                            player_id: playerId,
+                        };
+                        wss.send (JSON.stringify (data));    
+                    }
+                break;
+                case 'skin_prev':
+                    if (gameInput [idInputAct].type == "skin")
+                    {
+                        gameInput [idInputAct].src = gameInput [idInputAct].src * 1 - 1;
+                        if (gameInput [idInputAct].src < -1) gameInput [idInputAct].src = playerSkins.length - 1;
+                        if (gameInput [idInputAct].src > -1) menuShip.changeColor ("skin" + gameInput [idInputAct].src);
+                        else menuShip.changeColor (colorPickerInput.value);
+                    }
+                break;
+                case 'skin_next':
+                    if (gameInput [idInputAct].type == "skin")
+                    {
+                        gameInput [idInputAct].src = gameInput [idInputAct].src * 1 + 1;
+                        if (gameInput [idInputAct].src >= playerSkins.length) gameInput [idInputAct].src = -1;
+                        if (gameInput [idInputAct].src > -1) menuShip.changeColor ("skin" + gameInput [idInputAct].src);
+                        else menuShip.changeColor (colorPickerInput.value);
+                    }
+                break;
+                case 'fire_menu':
+                    menuShip.firing (true);
+                break;
+                case 'strafe_down':
+                    menuShip.strafing (-1);
+                break;
+                case 'strafe_up':
+                    menuShip.strafing (1);
+                break;
+                case 'change_weapon':
+                    gameShips [gameShip].changeWeapon ();
+                break;
+                case 'moveZ':
+                    gameShips [gameShip].movingZ ();    
+                break;
+                case 'speed_up':
+                    gameShips [gameShip].speeding (-1);  
+                break;
+                case 'speed_up':
+                    gameShips [gameShip].speeding (1);  
+                break;
+                case 'fire':
+                    gameShips [gameShip].firing (true);
+                break;
+                case 'turn_left':
+                    gameShips [gameShip].turning (-1);
+                break;
+                case 'turn_right':
+                    gameShips [gameShip].turning (1);
+                break;
+                case 'move_back':
+                    gameShips [gameShip].moving (1);
+                break;
+                case 'move_front':
+                    gameShips [gameShip].moving (-1);
+                break;
+                case 'strafe_right':
+                    gameShips [gameShip].strafing (1);
+                break;
+                case 'strafe_left':
+                    gameShips [gameShip].strafing (-1);
+                break;
+                case 'open_modal':
                     gameOpenModal ("menu");
-                    gameArea.play ();
-                }
-                else if (gameModal != null) gameCloseModal ();
-            break;
-            default:
-                if (gameInput [idInputAct].type == "input" && bt_value.length == 1 && gameInput [idInputAct].src.length < gameInput [idInputAct].max) gameInput [idInputAct].src += bt_value;
-            break;
+                break;
+                case 'close_modal':
+                    if (gameModal == "exit")
+                    {
+                        $("#blackScreen").fadeIn (1000);
+                        setTimeout
+                        (
+                            function ()
+                            {
+                                gameLoadScreen ("menu");
+                            },
+                            1000
+                        );
+                    }
+                    else if (gameModal == "continue") 
+                    {
+                        gameOpenModal ("menu");
+                        gameArea.play ();
+                    }
+                    else if (gameModal != null) gameCloseModal ();
+                break;
+                default:
+                    if (gameInput [idInputAct].type == "input" && bt_value.length == 1 && gameInput [idInputAct].src.length < gameInput [idInputAct].max) gameInput [idInputAct].src += bt_value;
+                break;
+            }
         }
     }
 }
 
 function userActionUp (control, bt_code, gameShip)
 {
-    if ((gameScreen == "menu" || gameModal == "menu") && menuShip != null && gameConfirm.length == 0 && gameInput.length == 0)
+    if ((gameScreen == "menu" || gameModal == "menu") && menuShip != null && gameConfirm.length == 0 && gameInput.length == 0) var screen = "modal";
+    else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0) var screen = "game";
+    
+    var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control].includes (bt_code));
+
+    if (userAction > -1)
     {
-        switch (userActions [userActions.findIndex (action => action [control].includes (bt_code))].action)
+        switch (userActions [userAction].action)
         {
-            case 'fire':
-                gameShips [gameShip].firing (false);
+            case 'fire_menu':
+                menuShip.firing (false);
             break;
-        }
-    }
-    else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0)
-    {
-        switch (userActions [userActions.findIndex (action => action [control].includes (bt_code))].action)
-        {
             case 'fire':
                 gameShips [gameShip].firing (false);
             break;
