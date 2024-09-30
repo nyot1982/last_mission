@@ -142,10 +142,11 @@ function buttonUp (id_control, control, button)
 function keyDown (e)
 {
     e.preventDefault ();
-    if (gameScreen == "menu" && gameInput.length > 0 && gameInput [idInputAct].type == "input" && e.keyCode != 13 && e.keyCode != 27)    
+    if (gameScreen == "menu" && gameInput.length > 0 && ((gameInput [idInputAct].type == "input" && e.keyCode != 9 && e.keyCode != 13 && e.keyCode != 27) || (gameInput [idInputAct].type == "skin" && e.keyCode > 36 && e.keyCode < 41)))
     {
         if (!keysPressed.includes (e.keyCode)) keysPressed.push (e.keyCode);
-        userActionDown ("keyboard", (e.keyCode == 8 ? 8 : -1), e.key, gameShip);
+        if (gameInput [idInputAct].type == "input") userActionDown ("keyboard", (e.keyCode == 8 ? 8 : -1), e.key, gameShip);
+        else if (gameInput [idInputAct].type == "skin") userActionDown ("keyboard", e.keyCode, null, gameShip);
     }
     else if (!keysPressed.includes (e.keyCode))
     {
