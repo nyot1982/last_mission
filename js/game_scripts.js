@@ -4,6 +4,7 @@ var fpsMonitor = false,
     enemies = 0,
     idTypeAct = 0,
     idInputAct = null,
+    blackScreen = false,
     gameScreen = null,
     gameModal = null,
     gameTitle = null,
@@ -753,7 +754,18 @@ function gameLoadScreen (screen)
         changeTab ("game");
         resetHuds (1, 0, true, 100);
     }
-    if (document.getElementById ("blackScreen").style.display == 'block') $("#blackScreen").fadeOut (1000);
+    if (document.getElementById ("blackScreen").style.display == 'block')
+    {
+        $("#blackScreen").fadeOut (1000);
+        setTimeout
+        (
+            function ()
+            {
+                blackScreen = false;
+            },
+            1000
+        );
+    }
 }
 
 function gameOpenModal (modal, text)

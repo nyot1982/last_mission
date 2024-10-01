@@ -413,6 +413,7 @@ function bossHit (gameShot, engine)
         (
             function ()
             {
+                blackScreen = true
                 $("#blackScreen").fadeIn (1000);
                 setTimeout
                 (

@@ -194,41 +194,53 @@ function userActionDown (control, bt_code, bt_value, gameShip)
     }
     else if (gameScreen == "intro")
     {
-        $("#blackScreen").fadeIn (1000);
-        setTimeout
-        (
-            function ()
-            {
-                gameSound.sounds ["type"].stop ();
-                gameLoadScreen ("game");
-            },
-            1000
-        );
+        if (!blackScreen)
+        {
+            blackScreen = true;
+            $("#blackScreen").fadeIn (1000);
+            setTimeout
+            (
+                function ()
+                {
+                    gameSound.sounds ["type"].stop ();
+                    gameLoadScreen ("game");
+                },
+                1000
+            );
+        }
     }
     else if (gameScreen == "high_scores")
     {
-        $("#blackScreen").fadeIn (1000);
-        setTimeout
-        (
-            function ()
-            {
-                gameLoadScreen ("menu");
-            },
-            1000
-        );
+        if (!blackScreen)
+        {
+            blackScreen = true;
+            $("#blackScreen").fadeIn (1000);
+            setTimeout
+            (
+                function ()
+                {
+                    gameLoadScreen ("menu");
+                },
+                1000
+            );
+        }
     }
     else if (gameScreen == "game_over" || gameScreen == "game_completed")
     {
-        gameSound.sounds ["type"].stop ();
-        $("#blackScreen").fadeIn (1000);
-        setTimeout
-        (
-            function ()
-            {
-                gameLoadScreen ("high_scores");
-            },
-            1000
-        );
+        if (!blackScreen)
+        {
+            blackScreen = true;
+            $("#blackScreen").fadeIn (1000);
+            setTimeout
+            (
+                function ()
+                {
+                    gameSound.sounds ["type"].stop ();
+                    gameLoadScreen ("high_scores");
+                },
+                1000
+            );
+        }
     }
     else if (gameAlert.length > 0)
     {
@@ -254,16 +266,20 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                     gameConfirm = [];
                     changeTab ("menu");
                 break;
-                case 'confirm_yes': 
-                    $("#blackScreen").fadeIn (1000);
-                    setTimeout
-                    (
-                        function ()
-                        {
-                            gameLoadScreen ("menu");
-                        },
-                        1000
-                    );
+                case 'confirm_yes':
+                    if (!blackScreen)
+                    {
+                        blackScreen = true;
+                        $("#blackScreen").fadeIn (1000);
+                        setTimeout
+                        (
+                            function ()
+                            {
+                                gameLoadScreen ("menu");
+                            },
+                            1000
+                        );
+                    }
                     if (gameModes.findIndex (mode => mode.active == true) == 3)
                     {
                         const data =
@@ -346,33 +362,20 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                             };
                             wss.send (JSON.stringify (data));    
                         }
-                        else
+                        else if (!blackScreen)
                         {
-                            if (wss != null && wss.readyState === 1) wss.close (3000);
-                            if (gameModes.findIndex (mode => mode.active == true) == 2)
-                            {
-                                $("#blackScreen").fadeIn (1000);
-                                setTimeout
-                                (
-                                    function ()
-                                    {
-                                        gameLoadScreen ("game");
-                                    },
-                                    1000
-                                );
-                            }
-                            else
-                            {
-                                $("#blackScreen").fadeIn (1000);
-                                setTimeout
-                                (
-                                    function ()
-                                    {
-                                        gameLoadScreen ("intro");
-                                    },
-                                    1000
-                                );
-                            }
+                            blackScreen = true;
+                            $("#blackScreen").fadeIn (1000);
+                            setTimeout
+                            (
+                                function ()
+                                {
+                                    if (wss != null && wss.readyState === 1) wss.close (3000);
+                                    if (gameModes.findIndex (mode => mode.active == true) == 2) gameLoadScreen ("game");
+                                    else gameLoadScreen ("intro");
+                                },
+                                1000
+                            );
                         }
                     }
                 break;
