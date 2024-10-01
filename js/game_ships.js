@@ -445,7 +445,7 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
                 ctx.fillStyle = this.hook1Color;
                 ctx.fill (this.hook1Path);
             }
-            if (this.hook2Color != null && this.hook1Color != this.shipColor)
+            if (this.hook2Color != null && this.hook2Color != this.shipColor)
             {
                 ctx.fillStyle = this.hook2Color;
                 ctx.fill (this.hook2Path);
