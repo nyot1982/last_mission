@@ -81,17 +81,36 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
     this.changeColor = function (color)
     {
         this.shipColor = color || null;
+        this.gunColor = null;
+        this.hook1Color = null;
+        this.hook2Color = null;
+        this.wing1Color = null;
+        this.wing2Color = null;
+        this.engine1Color = null;
+        this.engine2Color = null;
+        this.lightStroke = null;
+        this.skin = null;
+        this.pattern = null;
+
         if (this.shipColor.substring (0, 4) == "skin")
         {
             this.skin = this.shipColor.substring (4, this.shipColor.length);
-            this.pattern = ctx.createPattern (playerSkins [this.skin].image, "repeat");
             this.shipColor = playerSkins [this.skin].shipColor;
+            if (playerSkins [this.skin].image != null) this.pattern = ctx.createPattern (playerSkins [this.skin].image, "repeat");
+            else
+            {
+                this.gunColor = playerSkins [this.skin].gunColor;
+                this.hook1Color = playerSkins [this.skin].hook1Color;
+                this.hook2Color = playerSkins [this.skin].hook2Color;
+                this.wing1Color = playerSkins [this.skin].wing1Color;
+                this.wing2Color = playerSkins [this.skin].wing2Color;
+                this.engine1Color = playerSkins [this.skin].engine1Color;
+                this.engine2Color = playerSkins [this.skin].engine2Color;
+                this.lightStroke = playerSkins [this.skin].lightStroke;
+            }
         }
-        else
-        {
-            this.skin = null;
-            this.pattern = null;
-        }
+        if (tinycolor (this.shipColor).isDark ()) this.varColor = tinycolor (this.shipColor).lighten (15).toHexString ();
+        else this.varColor = tinycolor (this.shipColor).darken (15).toHexString ();
         this.modColor = tinycolor (this.shipColor).toRgb ();
         this.modColor.r = 255 - this.modColor.r;
         this.modColor.g = 255 - this.modColor.g;
@@ -345,21 +364,24 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
             ctx.rotate (this.radians);
             ctx.translate (-(this.width / 2), -(this.height / 2));
             ctx.transform ((this.z + 50) / 100, 0, 0, (this.z + 50) / 100, (this.width / 2) - (this.width * (this.z + 50) / 100 / 2), (this.height / 2) - (this.height * (this.z + 50) / 100 / 2));
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = this.modColor + "CC";
+            this.cockpitPath = new Path2D ();
+            this.cockpitPath.rect (9, 13, 10, 1);
+            this.cockpitPath.rect (8, 14, 12, 1);
+            this.cockpitPath.rect (7, 15, 14, 14);
+            this.hook1Path = new Path2D ();
+            this.hook1Path.rect (5, 19, 2, 8);
+            this.cockpitPath.addPath (this.hook1Path);
+            this.hook2Path = new Path2D ();
+            this.hook2Path.rect (21, 19, 2, 8);
+            this.cockpitPath.addPath (this.hook2Path);
             this.shipPath = new Path2D ();
-            this.shipPath.rect (9, 13, 10, 1);
-            this.shipPath.rect (8, 14, 12, 1);
-            this.shipPath.rect (7, 15, 14, 14);
-            this.shipPath.rect (5, 19, 2, 8);
-            this.shipPath.rect (21, 19, 2, 8);
-            ctx.stroke (this.shipPath);
+            this.shipPath.addPath (this.cockpitPath);
             if (this.gunStatus)
             {
                 this.gunPath = new Path2D ();
                 this.gunPath.roundRect (13, 1, 2, 7, 1);
                 this.gunPath.roundRect (11, 7, 6, 7, 2);
-                ctx.stroke (this.gunPath);
+                this.shipPath.addPath (this.gunPath);
             }
             if (this.wing1Status)
             {
@@ -367,7 +389,7 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
                 this.wing1Path.roundRect (3, 9, 2, 6, 2);
                 this.wing1Path.roundRect (1, 13, 4, 16, 2);
                 this.wing1Path.roundRect (1, 26, 2, 5, 2);
-                ctx.stroke (this.wing1Path);     
+                this.shipPath.addPath (this.wing1Path);
             }
             if (this.wing2Status)
             {
@@ -375,35 +397,73 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
                 this.wing2Path.roundRect (23, 9, 2, 6, 2);
                 this.wing2Path.roundRect (23, 13, 4, 16, 2);
                 this.wing2Path.roundRect (25, 26, 2, 5, 2);
-                ctx.stroke (this.wing2Path);
+                this.shipPath.addPath (this.wing2Path);
             }
             if (this.engine1Status)
             {
                 this.engine1Path = new Path2D ();
                 this.engine1Path.roundRect (7, 29, 4, 2, 1);
-                ctx.strokeStyle = this.shipColor + "CC";
-                ctx.stroke (this.engine1Path);
+                this.shipPath.addPath (this.engine1Path);
             }
             if (this.engine2Status)
             {
                 this.engine2Path = new Path2D ();
                 this.engine2Path.roundRect (17, 29, 4, 2, 1);
-                ctx.strokeStyle = this.shipColor + "CC";
-                ctx.stroke (this.engine2Path);
+                this.shipPath.addPath (this.engine2Path);
             }
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = this.modColor + "CC";
+            ctx.stroke (this.shipPath);
+            ctx.strokeStyle = this.shipColor + "CC";
+            if (this.engine1Color == null) ctx.stroke (this.engine1Path);
+            if (this.engine2Color == null) ctx.stroke (this.engine2Path);
             if (gameModal != "menu" && gameScreen != "menu") ctx.shadowColor = "#00000066";
-            else ctx.shadowColor = "transparent";
-            if (this.pattern) ctx.fillStyle = this.pattern;
-            else if (tinycolor (this.shipColor).isDark ()) ctx.fillStyle = tinycolor (this.shipColor).lighten (15).toHexString ();
-            else ctx.fillStyle = tinycolor (this.shipColor).darken (15).toHexString ();
-            if (this.gunStatus) ctx.fill (this.gunPath);    
-            if (this.wing1Status) ctx.fill (this.wing1Path);
-            if (this.wing2Status) ctx.fill (this.wing2Path);
-            ctx.fillStyle = this.modColor;
-            if (this.engine1Status) ctx.fill (this.engine1Path);
-            if (this.engine2Status) ctx.fill (this.engine2Path);
+            else ctx.shadowColor = "transparent";            
+            if (this.engine1Status)
+            {
+                if (this.engine1Color != null) ctx.fillStyle = this.engine1Color;
+                else ctx.fillStyle = this.modColor;
+                ctx.fill (this.engine1Path);
+            }
+            if (this.engine2Status)
+            {
+                if (this.engine2Color != null) ctx.fillStyle = this.engine2Color;
+                else ctx.fillStyle = this.modColor;
+                ctx.fill (this.engine2Path);
+            }
             ctx.fillStyle = this.pattern || this.shipColor;
-            ctx.fill (this.shipPath);
+            ctx.fill (this.cockpitPath);
+            if (this.hook1Color != null && this.hook1Color != this.shipColor)
+            {
+                ctx.fillStyle = this.hook1Color;
+                ctx.fill (this.hook1Path);
+            }
+            if (this.hook2Color != null && this.hook1Color != this.shipColor)
+            {
+                ctx.fillStyle = this.hook2Color;
+                ctx.fill (this.hook2Path);
+            }
+            if (this.gunStatus)
+            {
+                if (this.pattern) ctx.fillStyle = this.pattern;
+                else if (this.gunColor != null) ctx.fillStyle = this.gunColor;
+                else ctx.fillStyle = this.varColor;
+                ctx.fill (this.gunPath);
+            }
+            if (this.wing1Status)
+            {
+                if (this.pattern) ctx.fillStyle = this.pattern;
+                else if (this.wing1Color != null) ctx.fillStyle = this.wing1Color;
+                else ctx.fillStyle = this.varColor;
+                ctx.fill (this.wing1Path);
+            }
+            if (this.wing2Status)
+            {
+                if (this.pattern) ctx.fillStyle = this.pattern;
+                else if (this.wing2Color != null) ctx.fillStyle = this.wing2Color;
+                else ctx.fillStyle = this.varColor;
+                ctx.fill (this.wing2Path);
+            }
             this.lightPath = new Path2D ();
             this.lightPath.roundRect (21, 1, 8, 8, 2);
             ctx.fillStyle = this.lightColor;
@@ -411,7 +471,8 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
             ctx.shadowColor = "transparent";
             ctx.lineWidth = 1;
             if (this.pattern) ctx.strokeStyle = this.modColor + "CC";
-            else ctx.strokeStyle = "#00000022";
+            else if (this.lightStroke != null) ctx.strokeStyle = this.lightStroke;
+            else ctx.strokeStyle = this.varColor;
             ctx.fill (this.lightPath);
             ctx.stroke (this.lightPath);
             ctx.rotate (-45 * Math.PI / 180);
@@ -480,16 +541,6 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
                 var idShip = gameShips.findIndex (ship => ship.name == this.name);
                 ctx.translate (-this.x, -this.y);
                 ctx.translate (this.width / 2, this.height / 2);
-                /*ctx.fillStyle = "#FF0000CC";
-                ctx.fillRect (this.x - 4, this.y - 16, 8, 12);
-                ctx.fillStyle = "#0000FFCC";
-                ctx.fillRect (this.x - 14, this.y - 8, 6, 24);
-                ctx.fillRect (this.x + 8, this.y - 8, 6, 24);
-                ctx.fillStyle = "#00FFFFCC";
-                ctx.fillRect (this.x - 8, this.y + 14, 6, 2);
-                ctx.fillRect (this.x + 2, this.y + 14, 6, 2);
-                ctx.fillStyle = "#FFFF00CC";
-                ctx.fillRect (this.x - 8, this.y - 4, 16, 18);*/
                 for (var gameShot in gameShots)
                 {
                     if (this.name != gameShots [gameShot].name)
