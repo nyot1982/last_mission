@@ -431,6 +431,13 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
                 else ctx.fillStyle = this.modColor;
                 ctx.fill (this.engine2Path);
             }
+            if (this.gunStatus)
+            {
+                if (this.pattern) ctx.fillStyle = this.pattern;
+                else if (this.gunColor != null) ctx.fillStyle = this.gunColor;
+                else ctx.fillStyle = this.varColor;
+                ctx.fill (this.gunPath);
+            }
             ctx.fillStyle = this.pattern || this.shipColor;
             ctx.fill (this.cockpitPath);
             if (this.hook1Color != null && this.hook1Color != this.shipColor)
@@ -442,13 +449,6 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
             {
                 ctx.fillStyle = this.hook2Color;
                 ctx.fill (this.hook2Path);
-            }
-            if (this.gunStatus)
-            {
-                if (this.pattern) ctx.fillStyle = this.pattern;
-                else if (this.gunColor != null) ctx.fillStyle = this.gunColor;
-                else ctx.fillStyle = this.varColor;
-                ctx.fill (this.gunPath);
             }
             if (this.wing1Status)
             {

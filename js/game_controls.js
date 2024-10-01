@@ -518,26 +518,26 @@ function userActionUp (control, bt_code, gameShip)
 function mouseMove (e)
 {
     e.preventDefault ();
-    mousePosition.x = e.clientX;
-    mousePosition.y = e.clientY;
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
 }
 
 function mouseDown (e)
 {
     e.preventDefault ();
-    if (!mousePressed.includes (e.button)) mousePressed.push (e.button);
+    if (!mouse.pressed.includes (e.button)) mouse.pressed.push (e.button);
 }
 
 function mouseUp (e)
 {
-    if (mousePressed.includes (e.button)) mousePressed.splice (mousePressed.indexOf (e.button), 1);
+    if (mouse.pressed.includes (e.button)) mouse.pressed.splice (mouse.pressed.indexOf (e.button), 1);
 }
 
 function mouseWheel (e)
 {
-    mousePosition.wheelX = e.deltaX;
-    mousePosition.wheelY = e.deltaY;
-    mousePosition.wheelZ = e.deltaZ;
+    mouse.wheelX = e.deltaX;
+    mouse.wheelY = e.deltaY;
+    mouse.wheelZ = e.deltaZ;
 }
 
 function vibrate (duration, id_control)

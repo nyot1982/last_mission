@@ -17,14 +17,14 @@ var fpsMonitor = false,
     colorPickerInput = null,
     keysPressed = [],
     buttonsPressed = [],
-    mousePressed = [],
-    mousePosition =
+    mouse =
     {
         x: 0,
         y: 0,
         wheelX: 0,
         wheelY: 0,
-        wheelZ: 0
+        wheelZ: 0,
+        pressed: []
     },
     menuShots = [],
     menuHits = [],
