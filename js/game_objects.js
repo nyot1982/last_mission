@@ -664,7 +664,7 @@ function component (type, src, color, x, y, width, height, max, control)
                             );
                         break;
                         case "Exit":
-                            gameConfirm.push (new component ("text", ">>> Are you sure?", "yellow", startPoint.x + 705, startPoint.y + 355, "left", 10));
+                            gameConfirm.push (new component ("text", ">>> Are you sure?", "yellow", startPoint.x + 705, gameText [gameText.length - 2].y, "left", 10));
                             changeTab ("confirm");
                         break;
                     }

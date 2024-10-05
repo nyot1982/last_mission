@@ -40,7 +40,7 @@ function wssOpen ()
             gameText.push (new component ("text", "Select your ship skin:", "orange", 745, 320, "left", 10));
             gameInput.push (new component ("skin", (storedPlayers [0] && storedPlayers [0].skin > -1) ? storedPlayers [0].skin : -1, "black", 750, 345, "center", 10, 16, -1));
             colorPickerInput.value = (storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0];
-            menuShip.changeColor (storedPlayers [0].color || playerColors [0]);
+            menuShip.changeColor ((storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0]);
             idInputAct = 0;
             changeTab ("input");
         }
@@ -96,13 +96,13 @@ function wssOpen ()
                         )
                     );
                     document.getElementById ("scoreHud").style.lineHeight = null;
-                    var modColor = tinycolor (data.game_ships [game_ship].color).toRgb ();
-                    modColor.r = 255 - modColor.r;
-                    modColor.g = 255 - modColor.g;
-                    modColor.b = 255 - modColor.b;
-                    modColor = tinycolor (modColor).toHexString ();
-                    scoreHud (gameShips.length - 1, modColor);
-                    lifesHud (gameShips.length - 1, modColor, 5);
+                    var invColor = tinycolor (data.game_ships [game_ship].color).toRgb ();
+                    invColor.r = 255 - invColor.r;
+                    invColor.g = 255 - invColor.g;
+                    invColor.b = 255 - invColor.b;
+                    invColor = tinycolor (invColor).toHexString ();
+                    scoreHud (gameShips.length - 1);
+                    lifesHud (gameShips.length - 1, 5);
                 }
                 else
                 {

@@ -683,13 +683,13 @@ function gameLoadScreen (screen)
                 else
                 {
                     document.getElementById ("scoreHud").style.lineHeight = null;
-                    var modColor = tinycolor (players [i].color).toRgb ();
-                    modColor.r = 255 - modColor.r;
-                    modColor.g = 255 - modColor.g;
-                    modColor.b = 255 - modColor.b;
-                    modColor = tinycolor (modColor).toHexString ();
-                    scoreHud (gameShips.length - 1, modColor);
-                    lifesHud (gameShips.length - 1, modColor, 5);
+                    var invColor = tinycolor (players [i].color).toRgb ();
+                    invColor.r = 255 - invColor.r;
+                    invColor.g = 255 - invColor.g;
+                    invColor.b = 255 - invColor.b;
+                    invColor = tinycolor (invColor).toHexString ();
+                    scoreHud (gameShips.length - 1, invColor);
+                    lifesHud (gameShips.length - 1, invColor, 5);
                 }
             }
             document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
@@ -795,11 +795,16 @@ function gameOpenModal (modal, text)
     {
         gameTitle = new component ("image", "svgs/title.svg", "", gameArea.centerPoint.x, startPoint.y + 100, 203, 92);
         gameText.push (new component ("text", "Options:", "white", startPoint.x + 310, gameTitle.y + 105, "left", 10));
-        gameText.push (new component ("text", "Pause", "white", startPoint.x + 575, startPoint.y + 255, "left", 10));
-        gameText.push (new component ("text", "Sound", "white", startPoint.x + 575, gameText [1].y + 25, "left", 10));
-        gameText.push (new component ("text", "Music", "white", startPoint.x + 575, gameText [2].y + 25, "left", 10));
-        gameText.push (new component ("text", "FPS Monitor", "white", startPoint.x + 575, gameText [3].y + 25, "left", 10));
-        gameText.push (new component ("text", "Exit", "white", startPoint.x + 575, gameText [4].y + 25, "left", 10));
+        var startMenu = startPoint.y + 255;
+        if (gameModes.findIndex (mode => mode.active == true) < 3)
+        {
+            gameText.push (new component ("text", "Pause", "white", startPoint.x + 575, startMenu, "left", 10));
+            startMenu += 25;
+        }
+        gameText.push (new component ("text", "Sound", "white", startPoint.x + 575, startMenu, "left", 10));
+        gameText.push (new component ("text", "Music", "white", startPoint.x + 575, gameText [gameText.length - 1].y + 25, "left", 10));
+        gameText.push (new component ("text", "FPS Monitor", "white", startPoint.x + 575, gameText [gameText.length - 1].y + 25, "left", 10));
+        gameText.push (new component ("text", "Exit", "white", startPoint.x + 575, gameText [gameText.length - 1].y + 25, "left", 10));
         gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", gameArea.centerPoint.x, startPoint.y + 445, "center", 10));
         menuShip = new ship (null, playerColors [0], startPoint.x + 450, startPoint.y + 255, 50, 90, 2);
     }
