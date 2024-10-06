@@ -142,7 +142,12 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
 
     this.turning = function (turn)
     {
-        if (gameScreen == "game" && this.z > 0)
+        if (gameScreen == "menu")
+        {
+            if (turn == 0) this.turn = 0;
+            else if (this.turn == 0) this.turn = turn;
+        }
+        else if (gameScreen == "game" && this.z > 0)
         {
             if (turn == 0 || turn < 0 && !this.wing1Status || turn > 0 && !this.wing2Status) this.turn = 0;
             else if (turn < 0 && this.turn > -10)
@@ -313,7 +318,7 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
             {
                 if (this.turn != 0) this.degrees = (this.degrees + this.turn) % 360;
                 if (this.turnZ != 0) this.degrees = (this.degrees + this.turnZ) % 360;
-                if (this.name == players [0].name) document.getElementById ("degreesHud").style = "left: " + (-371.25 - this.degrees) + "px;";
+                if (gameScreen == "game" && this.name == players [0].name) document.getElementById ("degreesHud").style = "left: " + (-371.25 - this.degrees) + "px;";
             }
             this.radians = this.degrees * Math.PI / 180;
             if (this.moveX != 0 || this.moveY != 0 || this.move != 0 || this.strafe != 0)

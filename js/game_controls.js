@@ -301,8 +301,6 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                         if (gameInput [i].type == "input" || gameInput [i].type == "color" || gameInput [i].type == "skin")
                         {
                             idInputAct = i;
-                            if ((gameInput [idInputAct].type == "color" || gameInput [idInputAct].type == "skin") && menuShip.degrees == 90) menuShip.turn (-90);
-                            else if ((gameInput [idInputAct].type != "color" && gameInput [idInputAct].type != "skin") && menuShip.degrees == 0) menuShip.turn (90);
                             break;
                         }
                     }
