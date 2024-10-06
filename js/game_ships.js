@@ -1,11 +1,12 @@
-function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, time)
+function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, time)
 {
     this.name = name || null;
     this.x = x || gameWidth / 2;
     this.y = y || gameHeight / 2;
     this.z = z || 0;
     this.degrees = degrees || 0;
-    this.speed = speed || 1;
+    this.speed = speed || 0;
+    this.maxSpeed = maxSpeed || 1;
     this.fire = fire || false;
     this.weapon = weapon || 0;
     if (this.name == null)
@@ -196,8 +197,6 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
             if (direction == 0 || (!this.engine1Status && !this.engine2Status)) this.move = 0;
             else if (!this.engine1Status || !this.engine2Status) this.move = (this.speed / 2) * direction;
             else this.move = this.speed * direction;
-            if (this.move == 0) meterHud (0);
-            else meterHud (this.speed);
         }
     }
 
@@ -212,8 +211,6 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
             if (move == 0 || (!this.engine1Status && !this.engine2Status)) this.moveX = 0;
             else if (!this.engine1Status || !this.engine2Status) this.moveX = (this.speed / 2) * move;
             else this.moveX = this.speed * move;
-            if (this.moveX == 0) meterHud (0);
-            else meterHud (this.speed);
         }
     }
 
@@ -228,8 +225,6 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
             if (move == 0 || (!this.engine1Status && !this.engine2Status)) this.moveY = 0;
             else if (!this.engine1Status || !this.engine2Status) this.moveY = -(this.speed / 2 * move);
             else this.moveY = -(this.speed * move);
-            if (this.moveY == 0) meterHud (0);
-            else meterHud (this.speed);
         }
     }
 
@@ -283,27 +278,24 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
                 if (direction == 0 || (!this.engine1Status && !this.engine2Status)) this.strafe = 0;
                 else if (!this.engine1Status || !this.engine2Status) this.strafe = (this.speed / 2) * direction;
                 else this.strafe = this.speed * direction;
-                if (this.strafe == 0) meterHud (0);
-                else meterHud (this.speed);
             }
         }
     }
 
     this.speeding = function (increment)
     {
-        if ((this.speed > 1 && increment < 0) || (this.speed < 6 && increment > 0))
+        if ((this.maxSpeed > 1 && increment < 0) || (this.maxSpeed < 6 && increment > 0))
         {
-            this.speed += increment;
-            if (this.move > 0) this.move = this.speed;
-            else if (this.move < 0) this.move = -this.speed;
-            speedHud (this.speed);
+            this.maxSpeed += increment;
+            //if (this.move > 0) this.move = this.speed;
+            //else if (this.move < 0) this.move = -this.speed;
+            maxSpeedHud (this.maxSpeed);
             if (this.move != 0)
             {
                 this.engine1 = 0;
                 this.engine2 = 0;
                 this.engine1inc = true;
                 this.engine2inc = true;
-                meterHud (this.speed);
             }
         }
     }
@@ -352,8 +344,8 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
                 else if (this.x > gameWidth * 4) this.x = gameWidth * 4;
                 if (this.y < 0) this.y = 0;
                 else if (this.y > gameHeight * 4) this.y = gameHeight * 4;
-                this.engine1max = this.speed * 8;
-                this.engine2max = this.speed * 8;
+                this.engine1max = this.maxSpeed * 8;
+                this.engine2max = this.maxSpeed * 8;
             }
             if (gameScreen == "game" && gameModal == null)
             {
@@ -461,13 +453,8 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
                         else this.engine2inc = true;
                     }
                 }
-                if (gameScreen == "game" && this.name == players [0].name) speedHud (this.speed);
             }
-            else if (gameScreen == "game" && this.name == players [0].name)
-            {
-                speedHud (0);
-                meterHud (0);
-            }
+            else if (gameScreen == "game" && this.name == players [0].name) maxSpeedHud (0);
             if (gameScreen == "game" && gameModal == null) ctx.shadowColor = "#00000066";
             else ctx.shadowColor = "transparent";            
             if (this.engine1Status)
@@ -990,7 +977,8 @@ function playerDead (gameShip)
                 gameShips [gameShip].y = startPoints [startPoints.findIndex (startPoint => startPoint.ship == gameShips [gameShip].name)].y;
                 gameShips [gameShip].z = startPoints [startPoints.findIndex (startPoint => startPoint.ship == gameShips [gameShip].name)].z;
                 gameShips [gameShip].degrees = 0;
-                gameShips [gameShip].speed = 1;
+                gameShips [gameShip].speed = 0;
+                gameShips [gameShip].maxSpeed = 1;
                 gameShips [gameShip].fire = false;
                 gameShips [gameShip].weapon = 0;
                 gameShips [gameShip].engine1 = 0;
@@ -1022,7 +1010,7 @@ function playerDead (gameShip)
                     if (newPoint < gameArea.centerPoint.y) ctx.translate (0, gameArea.centerPoint.y - newPoint);
                     else if (newPoint > gameArea.centerPoint.y) ctx.translate (0, -(newPoint - gameArea.centerPoint.y));
                     gameArea.centerPoint.y = newPoint;
-                    resetHuds (1, 0, false, 100);
+                    resetHuds (1, false, 100);
                 }
                 if (gameMusic.active)
                 {

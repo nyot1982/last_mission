@@ -1,7 +1,6 @@
-function resetHuds (speed, meter, enemies, vitals)
+function resetHuds (maxSpeed, enemies, vitals)
 {
-    speedHud (speed);
-    meterHud (meter);
+    maxSpeedHud (maxSpeed);
     weaponHud (enemies);
     document.getElementById ("degreesHud").style.left = "-371.25px";
     document.getElementById ("zHud").innerHTML = "0 m";
@@ -12,7 +11,7 @@ function resetHuds (speed, meter, enemies, vitals)
     vitalsHud ("fuel", vitals, color);
     vitalsHud ("ammo", vitals, color);
     vitalsHud ("shield", 0, "red");
-    if (speed == 0 && vitals == 0 && gameModes.findIndex (mode => mode.active == true) > -1) gameModeHud (-1);
+    if (maxSpeed == 0 && vitals == 0 && gameModes.findIndex (mode => mode.active == true) > -1) gameModeHud (-1);
 }
 
 function scoreHud (gameShip)
@@ -56,8 +55,16 @@ function lifesHud (gameShip, ships)
 {
     if (gameShips [gameShip].skin)
     {
-        var skin = '<defs><pattern id="skin" patternUnits="userSpaceOnUse" width="27" height="30"><image href="skins/' + gameShips [gameShip].skin + '.png" x="0" y="0" width="27" height="30" /></pattern></defs>';
-        var shipColor = 'url(#skin)';
+        if (playerSkins [gameShips [gameShip].skin].image != null)
+        {
+            var skin = '<defs><pattern id="skin" patternUnits="userSpaceOnUse" width="27" height="30"><image href="skins/' + gameShips [gameShip].skin + '.png" x="0" y="0" width="27" height="30" /></pattern></defs>';
+            var shipColor = 'url(#skin)';
+        }
+        else
+        {
+            var skin = "";
+            var shipColor = null;
+        }
     }
     else
     {
@@ -66,36 +73,46 @@ function lifesHud (gameShip, ships)
     }
     for (var i = 0; i < ships; i++)
     {
-        document.getElementById ("lifesHud").innerHTML += '<svg id="life' + gameShips [gameShip].name + i + '" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + gameShips [gameShip].invColor + '; border: solid 2px ' + gameShips [gameShip].invColor + ';"><title>' + gameShips [gameShip].name + ' Life ' + (i + 1) + '</title>' +
-                                                          skin +
-                                                          '<g><path fill="' + shipColor + '" d="m12 3c0 1.7-0.5 3-1 3-0.6 0-1 1.2-1 2.8 0 1.6-0.8 3.3-2 4.2-1.1 0.8-2 2.3-2 3.3 0 0.9-0.4 1.7-1 1.7-0.6 0-1-2.3-1-5 0-2.8-0.4-5-1-5-0.6 0-1 0.9-1 2 0 1.1-0.4 2-1 2-0.6 0-1 3.7-1 9 0 5 0.3 9 0.8 9 0.4 0 1.4-0.9 2.2-2 0.8-1.1 1.8-2 2.3-2 0.4 0 0.7 0.9 0.7 2q0 2 2 2c1.1 0 2-0.5 2-1 0-0.5 1.6-1 3.5-1 1.9 0 3.5 0.5 3.5 1 0 0.5 0.9 1 2 1q2 0 2-2c0-1.1 0.3-2 0.8-2 0.4 0 1.4 0.9 2.2 2 0.8 1.1 1.8 2 2.3 2 0.4 0 0.7-4 0.7-9 0-5.3-0.4-9-1-9-0.5 0-1-0.9-1-2 0-1.1-0.5-2-1-2-0.5 0-1 2.3-1 5 0 2.8-0.5 5-1 5-0.5 0-1-0.8-1-1.7 0-1-0.9-2.5-2-3.3-1.2-0.9-2-2.6-2-4.3 0-1.5-0.5-2.7-1-2.7-0.5 0-1-1.3-1-3q0-3-1.5-3-1.5 0-1.5 3z"/>' +
-                                                          '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5z"/></g></svg>';
+        if (shipColor != null) document.getElementById ("lifesHud").innerHTML += '<svg id="life' + gameShips [gameShip].name + i + '" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + gameShips [gameShip].invColor + '; border: solid 2px ' + gameShips [gameShip].invColor + ';"><title>' + gameShips [gameShip].name + ' Life ' + (i + 1) + '</title>' +
+                                                                             skin + '<g><path fill="' + shipColor + '" d="m12 3c0 1.7-0.5 3-1 3-0.6 0-1 1.2-1 2.8 0 1.6-0.8 3.3-2 4.2-1.1 0.8-2 2.3-2 3.3 0 0.9-0.4 1.7-1 1.7-0.6 0-1-2.3-1-5 0-2.8-0.4-5-1-5-0.6 0-1 0.9-1 2 0 1.1-0.4 2-1 2-0.6 0-1 3.7-1 9 0 5 0.3 9 0.8 9 0.4 0 1.4-0.9 2.2-2 0.8-1.1 1.8-2 2.3-2 0.4 0 0.7 0.9 0.7 2q0 2 2 2c1.1 0 2-0.5 2-1 0-0.5 1.6-1 3.5-1 1.9 0 3.5 0.5 3.5 1 0 0.5 0.9 1 2 1q2 0 2-2c0-1.1 0.3-2 0.8-2 0.4 0 1.4 0.9 2.2 2 0.8 1.1 1.8 2 2.3 2 0.4 0 0.7-4 0.7-9 0-5.3-0.4-9-1-9-0.5 0-1-0.9-1-2 0-1.1-0.5-2-1-2-0.5 0-1 2.3-1 5 0 2.8-0.5 5-1 5-0.5 0-1-0.8-1-1.7 0-1-0.9-2.5-2-3.3-1.2-0.9-2-2.6-2-4.3 0-1.5-0.5-2.7-1-2.7-0.5 0-1-1.3-1-3q0-3-1.5-3-1.5 0-1.5 3 z"/>' +
+                                                                             '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg>';
+        else document.getElementById ("lifesHud").innerHTML += '<svg id="life' + gameShips [gameShip].name + i + '" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + gameShips [gameShip].invColor + '; border: solid 2px ' + gameShips [gameShip].invColor + ';"><title>' + gameShips [gameShip].name + ' Life ' + (i + 1) + '</title>' +
+                                                               '<g><path fill="' + playerSkins [gameShips [gameShip].skin].engine1Color + '" d="m 6 28 q 0 2 2 2 c 1.1 0 2 -0.5 2 -2 z"/>' +
+                                                               '<path fill="' + playerSkins [gameShips [gameShip].skin].engine2Color + '" d="m 17 28 c 0 1.5 1 2 2 2 q 2 0 2 -2 z"/>' +
+                                                               '<path fill="' + playerSkins [gameShips [gameShip].skin].hook1Color + '" d="m 6 16.3 c 0 0.9 -0.4 1.7 -1 1.7 c -0.6 0 -1 -2.3 -1 -5 l 0 13.8 c 0 0 0.8 -0.8 1.3 -0.8 c 0.4 0 0.7 0.9 0.7 2 z"/>' +
+                                                               '<path fill="' + playerSkins [gameShips [gameShip].skin].hook2Color + '" d="m 21 28 c 0 -1.1 0.3 -2 0.8 -2 c 0.4 0 1.2 0.7 1.2 0.7 l 0 -13.7 c 0 2.8 -0.5 5 -1 5 c -0.5 0 -1 -0.8 -1 -1.7 z"/>' +
+                                                               '<path fill="' + playerSkins [gameShips [gameShip].skin].gunColor + '" d="m 12 3 c 0 1.7 -0.5 3 -1 3 c -0.6 0 -1 1.2 -1 2.8 c 0 1.6 -0.8 3.3 -2 4.2 L 19 13 c -1.2 -0.9 -2 -2.6 -2 -4.3 c 0 -1.5 -0.5 -2.7 -1 -2.7 c -0.5 0 -1 -1.3 -1 -3 q 0 -3 -1.5 -3 q -1.5 0 -1.5 3 z"/>' +
+                                                               '<path fill="' + playerSkins [gameShips [gameShip].skin].shipColor + '" d="m 8 13 c -1.1 0.8 -2 2.3 -2 3.3 l 0 11.7 l 15 0 l 0 -11.7 c 0 -1 -0.9 -2.5 -2 -3.3 l -11 0 z"/>' +
+                                                               '<path fill="' + playerSkins [gameShips [gameShip].skin].wing1Color + '" d="m 4 13 c 0 -2.8 -0.4 -5 -1 -5 c -0.6 0 -1 0.9 -1 2 c 0 1.1 -0.4 2 -1 2 c -0.6 0 -1 3.7 -1 9 c 0 5 0.3 9 0.8 9 c 0.4 0 1.4 -0.9 2.2 -2 l 1 -1.2 z"/>' +
+                                                               '<path fill="' + playerSkins [gameShips [gameShip].skin].wing2Color + '" d="m 23 26.8 l 1 1.3 c 0.8 1.1 1.8 2 2.3 2 c 0.4 0 0.7 -4 0.7 -9 c 0 -5.3 -0.4 -9 -1 -9 c -0.5 0 -1 -0.9 -1 -2 c 0 -1.1 -0.5 -2 -1 -2 c -0.5 0 -1 2.3 -1 5 z"/>' +
+                                                               '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg>';
     }
     document.getElementById ("lifesHud").innerHTML += ' ';
 }
 
-function speedHud (speed)
+function maxSpeedHud (maxSpeed)
 {
     var speedHud = document.getElementById ("speedHud"),
         speedElements = speedHud.getElementsByClassName ("speed");
 
     for (var i = 0; i < speedElements.length; i++)
     {
-        if (i <= speed) speedElements [i].setAttribute ("class", "speed active");
+        if (i <= maxSpeed) speedElements [i].setAttribute ("class", "speed active");
         else speedElements [i].setAttribute ("class", "speed");
     }
 }
 
-function meterHud (speed)
+function speedHud ()
 {
-    var speedHud = document.getElementById ("speedHud"),
+    var gameShip = gameShips.findIndex (ship => ship.name == players [0].name),
+        speedHud = document.getElementById ("speedHud"),
         meterHud = speedHud.getElementById ("meterHud"),
         kphElements = speedHud.getElementsByClassName ("kph");
 
-    meterHud.setAttribute ("class", "speed" + speed);
+    meterHud.setAttribute ("style", "transform: rotate(" + (gameShip > -1 ? gameShips [gameShip].speed * 30 : 0) + "deg);");
     for (var i = 0; i < kphElements.length; i++)
     {
-        if (i == speed) kphElements [i].setAttribute ("class", "kph active");
+        if (gameShip > -1 && gameShips [gameShip].speed >= i) kphElements [i].setAttribute ("class", "kph active");
         else kphElements [i].setAttribute ("class", "kph");
     }
 }

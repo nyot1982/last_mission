@@ -73,6 +73,7 @@ function wssOpen ()
                             data.game_ships [game_ship].z,
                             data.game_ships [game_ship].degrees,
                             data.game_ships [game_ship].speed,
+                            data.game_ships [game_ship].maxSpeed,
                             data.game_ships [game_ship].fire,
                             data.game_ships [game_ship].weapon,
                             data.game_ships [game_ship].weapons,
@@ -97,11 +98,8 @@ function wssOpen ()
                         )
                     );
                     document.getElementById ("scoreHud").style.lineHeight = null;
-                    var invColor = tinycolor (data.game_ships [game_ship].color).toRgb ();
-                    invColor.r = 255 - invColor.r;
-                    invColor.g = 255 - invColor.g;
-                    invColor.b = 255 - invColor.b;
-                    invColor = tinycolor (invColor).toHexString ();
+                    //scoreHud (game_ship);
+                    //lifesHud (game_ship, 5);
                     scoreHud (gameShips.length - 1);
                     lifesHud (gameShips.length - 1, 5);
                 }
@@ -118,6 +116,7 @@ function wssOpen ()
                         gameShips [gameShip].z = data.game_ships [game_ship].z;
                         gameShips [gameShip].degrees = data.game_ships [game_ship].degrees;
                         gameShips [gameShip].speed = data.game_ships [game_ship].speed;
+                        gameShips [gameShip].maxSpeed = data.game_ships [game_ship].maxSpeed;
                         gameShips [gameShip].fire = data.game_ships [game_ship].fire;
                         gameShips [gameShip].weapon = data.game_ships [game_ship].weapon;
                         gameShips [gameShip].weapons = data.game_ships [game_ship].weapons;
@@ -141,9 +140,17 @@ function wssOpen ()
                     }
                 }
             }
-            document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
-            if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
-            else if (gameScreen == "game") document.getElementById ("lifesHud").style.height = "23px";
+            if (gameScreen != "game" || gameModal != null)
+            {
+                document.getElementById ("scoreHud").style.height = "0px";
+                document.getElementById ("lifesHud").style.height = "0px";
+            }
+            else
+            {
+                document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
+                if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
+                else if (gameScreen == "game") document.getElementById ("lifesHud").style.height = "23px";
+            }
             gameObjects = gameShips.concat (gameItems).concat (gameShots);
             gameObjects.sort ((ship1, ship2) => ship1.z - ship2.z);
             if (data.action == "ship")
@@ -169,7 +176,7 @@ function wssOpen ()
     wss.onclose = function (event)
     {
         wss = event.code;
-        if (wss != 1000 && wss != 3000)
+        if (wss != 3000)
         {
             if (gameModes.findIndex (mode => mode.active == true) == 3 && gameScreen == "game" && gameConfirm.length == 0) gameOpenModal ("exit", "Server disconnected");
             else if (gameScreen == "menu")
@@ -222,6 +229,7 @@ function wssSend ()
                 z: gameShips [gameShip].z,
                 degrees: gameShips [gameShip].degrees,
                 speed: gameShips [gameShip].speed,
+                maxSpeed: gameShips [gameShip].maxSpeed,
                 fire: gameShips [gameShip].fire,
                 weapon: gameShips [gameShip].weapon,
                 weapons: gameShips [gameShip].weapons,

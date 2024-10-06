@@ -573,7 +573,7 @@ function gameLoadScreen (screen)
         gameText.push (new component ("text", "", "orange", 670, 295, "left", 10));
         menuShip = new ship (null, playerColors [0], 450, gameText [0].y + 15, 50, 90, 2);
         changeTab ("menu");
-        resetHuds (0, 0, true, 0);
+        resetHuds (0, true, 0);
         if (wss == null || wss == 1000 || wss == 3000) wssOpen ();
     }
     else if (gameScreen == "high_scores")
@@ -688,8 +688,8 @@ function gameLoadScreen (screen)
                     invColor.g = 255 - invColor.g;
                     invColor.b = 255 - invColor.b;
                     invColor = tinycolor (invColor).toHexString ();
-                    scoreHud (gameShips.length - 1, invColor);
-                    lifesHud (gameShips.length - 1, invColor, 5);
+                    scoreHud (gameShips.length - 1);
+                    lifesHud (gameShips.length - 1, 5);
                 }
             }
             document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
@@ -752,7 +752,7 @@ function gameLoadScreen (screen)
             gameMusic.musics.game.play ();
         }
         changeTab ("game");
-        resetHuds (1, 0, true, 100);
+        resetHuds (1, true, 100);
     }
     if (document.getElementById ("blackScreen").style.display == 'block')
     {
@@ -897,6 +897,7 @@ function updateGameArea ()
             if (gameHits.findIndex (hit => hit.name == gameObjects [object].name) > -1) for (var hit in gameHits.filter (hit => hit.name == gameObjects [object].name)) gameHits [hit].update ();
         }
         for (var hit in gameHits.filter (hit => hit.name == "hit0")) gameHits [hit].update ();
+        speedHud ();
     }
     if (gameModal != null || gameScreen != "game")
     {

@@ -311,9 +311,12 @@ article p
 }
 .floatHuds svg
 {
+    display: inline-block;
     height: 15px;
     border-radius: 5px;
     margin: 2px 0;
+    overflow-clip-margin: content-box;
+    overflow: clip;
 }
 #scoreHud
 {
@@ -407,7 +410,6 @@ article p
 #speedHud .speed
 {
     fill: var(--colorSpeed);
-    transition: all 0.5s ease 0s;
 }
 #speedHud #speed0.active
 {
@@ -436,36 +438,9 @@ article p
     fill: var(--color10);
     transform-origin: 50% 89%;
     transition: all 0.25s ease 0s;
-}
-#speedHud #meterHud.speed0
-{
     transform: rotate(0deg);
 }
-#speedHud #meterHud.speed1
-{
-    transform: rotate(30deg);
-}
-#speedHud #meterHud.speed2
-{
-    transform: rotate(60deg);
-}
-#speedHud #meterHud.speed3
-{
-    transform: rotate(90deg);
-}
-#speedHud #meterHud.speed4
-{
-    transform: rotate(120deg);
-}
-#speedHud #meterHud.speed5
-{
-    transform: rotate(150deg);
-}
-#speedHud #meterHud.speed6
-{
-    transform: rotate(180deg);
-}
-#speedHud #eix
+#speedHud #axis
 {
     fill: var(--color12);
 }
@@ -476,45 +451,40 @@ article p
 #speedHud .kph path,
 #speedHud .kph .kmh
 {
-    display: none;
-}
-#speedHud .kph.active path,
-#speedHud .kph.active .kmh
-{
     display: block;
     fill: var(--color5);
 }
-#speedHud .kph.active .kmh
+#speedHud .kph .kmh
 {
     font-size: 50pt;
     font-family: system-ui;
 }
-#speedHud #kph0.active path.on,
-#speedHud #kph0.active .kmh
+#speedHud .kph0 path.on,
+#speedHud .kph0 .kmh
 {
     fill: var(--color10);
 }
-#speedHud #kph1.active path.on,
-#speedHud #kph2.active path.on,
-#speedHud #kph3.active path.on,
-#speedHud #kph1.active .kmh,
-#speedHud #kph2.active .kmh,
-#speedHud #kph3.active .kmh
+#speedHud .kph1 path.on,
+#speedHud .kph2 path.on,
+#speedHud .kph3 path.on,
+#speedHud .kph1 .kmh,
+#speedHud .kph2 .kmh,
+#speedHud .kph3 .kmh
 {
     fill: var(--color7);
 }
-#speedHud #kph4.active path.on,
-#speedHud #kph4.active .kmh
+#speedHud .kph4 path.on,
+#speedHud .kph4 .kmh
 {
     fill: var(--color13);
 }
-#speedHud #kph5.active path.on,
-#speedHud #kph5.active .kmh
+#speedHud .kph5 path.on,
+#speedHud .kph5 .kmh
 {
     fill: var(--color9);
 }
-#speedHud #kph6.active path.on,
-#speedHud #kph6.active .kmh
+#speedHud .kph6 path.on,
+#speedHud .kph6 .kmh
 {
     fill: var(--color6);
 }
