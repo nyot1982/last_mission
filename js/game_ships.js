@@ -450,17 +450,21 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                 {
                     ctx.beginPath ();
                     ctx.fillStyle = "#D88F95EE";
+                    console.log ("this.engine1 =", this.engine1);
+                    console.log ("this.engine1max =", this.engine1max);
                     ctx.ellipse (9, 33, 2, this.engine1, 0, 0, Math.PI);
                     ctx.fill ();
                     if (this.engine1inc)
                     {
                         if (this.engine1 < this.engine1max) this.engine1 += 0.25 * this.engine1max;
                         else this.engine1inc = false;
+                        if (this.engine1 > this.engine1max) this.engine1 = this.engine1max;
                     }
                     else
                     {
                         if (this.engine1 > 0) this.engine1 -= 0.25 * this.engine1max;
                         else this.engine1inc = true;
+                        if (this.engine1 < 0) this.engine1 = 0;
                     }
                 }
                 if (this.engine2Status)
@@ -473,11 +477,13 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                     {
                         if (this.engine2 < this.engine2max) this.engine2 += 0.25 * this.engine2max;
                         else this.engine2inc = false;
+                        if (this.engine2 > this.engine2max) this.engine2 = this.engine2max;
                     }
                     else
                     {
                         if (this.engine2 > 0) this.engine2 -= 0.25 * this.engine2max;
                         else this.engine2inc = true;
+                        if (this.engine2 < 0) this.engine2 = 0;
                     }
                 }
             }
