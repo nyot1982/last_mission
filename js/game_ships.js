@@ -241,10 +241,6 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
     {
         if (this.z > 0)
         {
-            this.engine1 = 0;
-            this.engine2 = 0;
-            this.engine1inc = true;
-            this.engine2inc = true;
             if (gameModal == "menu" || gameScreen == "menu")
             {
                 if (gameScreen == "menu") this.menuItems = 8;
