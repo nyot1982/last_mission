@@ -263,7 +263,7 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                     {
                         this.speed = 6;
                         this.endStrafe = this.y + (this.menuItems - 1) * 25 * direction * -1;
-                        this.strafe = (this.speed + 2) * direction * -1;
+                        this.strafe = this.speed * direction * -1;
                         if (this.menuItem == 0) this.menuItem = this.menuItems - 1;
                         else if (this.menuItem == this.menuItems - 1) this.menuItem = 0;
                     }
