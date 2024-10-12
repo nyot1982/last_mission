@@ -48,6 +48,8 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
     }
     this.engine1 = engine1 || 0;
     this.engine2 = engine2 || 0;
+    this.engine1max = 4;
+    this.engine2max = 4;
     this.engine1inc = engine1inc || true;
     this.engine2inc = engine2inc || true;
     this.shadowOffset = shadowOffset || (this.z == 50 ? 18 : 1);
@@ -289,8 +291,6 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
     {
         if (this.life > 0)
         {
-            this.engine1max = 4;
-            this.engine2max = 4;
             if (this.turn != 0 || this.turnZ != 0)
             {
                 if (this.turn != 0) this.degrees = (this.degrees + this.turn) % 360;
@@ -345,8 +345,23 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                         this.endStrafe = null;
                         this.strafe = 0;
                         this.speed = 0;
+                        this.engine1max = 4;
+                        this.engine2max = 4;
                         if (keysPressed.includes (38)) this.strafing (-1);
                         else if (keysPressed.includes (40)) this.strafing (1);
+                        else
+                        {
+                            if (this.engine1 > this.engine1max)
+                            {
+                                this.engine1 = this.engine1max;
+                                this.engine1inc = false;
+                            }
+                            if (this.engine2 > this.engine2max)
+                            {
+                                this.engine2 = this.engine2max;
+                                this.engine2inc = false;
+                            }
+                        }
                     }
                 }
             }
@@ -354,11 +369,6 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
             else if (this.x > gameWidth * 4) this.x = gameWidth * 4;
             if (this.y < 0) this.y = 0;
             else if (this.y > gameHeight * 4) this.y = gameHeight * 4;
-            if (this.speed > 0)
-            {
-                this.engine1max = this.speed * 8;
-                this.engine2max = this.speed * 8;
-            }
             if (gameScreen == "game" && gameModal == null)
             {
                 if (this.name == players [0].name) mapHud ("mapItemPlayer", this.x, this.y, this.degrees);
@@ -439,15 +449,21 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                     ctx.fill ();
                     if (this.engine1inc)
                     {
-                        if (this.engine1 < this.engine1max) this.engine1 += 0.25 * this.engine1max;
-                        else this.engine1inc = false;
-                        if (this.engine1 > this.engine1max) this.engine1 = this.engine1max;
+                        this.engine1 += 0.25 * this.engine1max;
+                        if (this.engine1 >= this.engine1max)
+                        {
+                            this.engine1 = this.engine1max;
+                            this.engine1inc = false;
+                        }
                     }
                     else
                     {
-                        if (this.engine1 > 0) this.engine1 -= 0.25 * this.engine1max;
-                        else this.engine1inc = true;
-                        if (this.engine1 < 0) this.engine1 = 0;
+                        this.engine1 -= 0.25 * this.engine1max;
+                        if (this.engine1 <= 0)
+                        {
+                            this.engine1 = 0;
+                            this.engine1inc = true;
+                        }
                     }
                 }
                 if (this.engine2Status)
@@ -458,16 +474,32 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                     ctx.fill ();
                     if (this.engine2inc)
                     {
-                        if (this.engine2 < this.engine2max) this.engine2 += 0.25 * this.engine2max;
-                        else this.engine2inc = false;
-                        if (this.engine2 > this.engine2max) this.engine2 = this.engine2max;
+                        this.engine2 += 0.25 * this.engine2max;
+                        if (this.engine2 >= this.engine2max)
+                        {
+                            this.engine2 = this.engine2max;
+                            this.engine2inc = false;
+                        }
                     }
                     else
                     {
-                        if (this.engine2 > 0) this.engine2 -= 0.25 * this.engine2max;
-                        else this.engine2inc = true;
-                        if (this.engine2 < 0) this.engine2 = 0;
+                        this.engine2 -= 0.25 * this.engine2max;
+                        if (this.engine2 <= 0)
+                        {
+                            this.engine2 = 0;
+                            this.engine2inc = true;
+                        }
                     }
+                }
+                if (this.speed > 0)
+                {
+                    this.engine1max = this.speed * 8;
+                    this.engine2max = this.speed * 8;
+                }
+                else
+                {
+                    this.engine1max = 4;
+                    this.engine2max = 4;
                 }
             }
             if (gameScreen == "game" && gameModal == null) ctx.shadowColor = "#00000066";
