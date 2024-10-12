@@ -683,14 +683,14 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                     this.moveY = 0;
                     this.moveZ = 0;
                     this.strafe = 0;
-                    for (var ground in gameGround) if (gameGround [ground].type == "base" && this.x >= gameGround [ground].x && this.x <= gameGround [ground].x + gameGround [ground].width && this.y >= gameGround [ground].y && this.y <= gameGround [ground].y + gameGround [ground].height)
+                    console.log ("this.ground =", this.ground);
+                    if (this.ground == "base")
                     {
                         this.gunStatus = true;
                         this.wing1Status = true;
                         this.wing2Status = true;
                         this.engine1Status = true;
                         this.engine2Status = true;
-                        break;
                     }
                 }
                 else if (this.z == 50)

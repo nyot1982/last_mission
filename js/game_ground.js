@@ -34,6 +34,7 @@ function ground (type, color, x, y, width, height)
             ctx.strokeStyle = "#00000033";
             ctx.fillStyle = this.color;
             ctx.rect (this.x, this.y, this.width, this.height);
+            for (var gameShip in gameShips) if (ctx.isPointInPath (gameShips [gameShip].x, gameShips [gameShip].y)) gameShips [gameShip].ground = this.type;
             ctx.fill ();
             ctx.stroke ();
             squares ("black", "yellow", this.x + 7, this.y + 7, 15, 17, 2, 2, false);
@@ -68,6 +69,7 @@ function ground (type, color, x, y, width, height)
                 this.pattern = ctx.createPattern (patternCanvas, "repeat");
                 ctx.fillStyle = this.pattern;
                 ctx.fillRect (this.x, this.y, this.width, this.height);
+                for (var gameShip in gameShips) gameShips [gameShip].ground = "water";
             }
             else
             {
@@ -125,6 +127,7 @@ function ground (type, color, x, y, width, height)
                 ctx.beginPath ();
                 ctx.moveTo (x, y);
                 for (var vertex in width) ctx.lineTo (width [vertex], height [vertex]);
+                for (var gameShip in gameShips) if (ctx.isPointInPath (gameShips [gameShip].x, gameShips [gameShip].y)) gameShips [gameShip].ground = this.type;
                 ctx.fillStyle = this.pattern;
                 ctx.fill ();
             }  
