@@ -190,10 +190,7 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
     {
         if (gameScreen == "game" && this.z > 0)
         {
-            this.engine1 = 0;
-            this.engine2 = 0;
-            this.engine1inc = true;
-            this.engine2inc = true;
+            if (direction != 0) this.direction = direction;
             if (!this.engine1Status && !this.engine2Status) this.move = 0;
             else this.move = direction;
         }
@@ -289,13 +286,6 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
         {
             this.maxSpeed += increment;
             maxSpeedHud (this.maxSpeed);
-            if (this.move != 0)
-            {
-                this.engine1 = 0;
-                this.engine2 = 0;
-                this.engine1inc = true;
-                this.engine2inc = true;
-            }
         }
     }
 
@@ -320,30 +310,29 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                 {
                     if (this.speed < this.maxSpeed)
                     {
-                        this.speed = this.speed * 10 * this.move + 1;
+                        this.speed = this.speed * 10 + 0.5;
                         this.speed /= 10;
                     }
                 }
                 else if (this.move == 0 && this.speed > 0)
                 {
-                    this.speed = this.speed * 10 - 1;
+                    this.speed = this.speed * 10 - 0.5;
                     this.speed /= 10;
                 }
                 if (this.speed > 0)
                 {
                     var moveX = (!this.engine1Status || !this.engine2Status ? this.speed / 2 : this.speed) * Math.sin (this.radians);
                     var moveY = (!this.engine1Status || !this.engine2Status ? this.speed / 2 : this.speed) * Math.cos (this.radians);
-                    if (this.move > 0)
+                    if (this.move >= 0 && this.direction > 0)
                     {
                         this.x += moveX;
                         this.y -= moveY;
                     }
-                    else if (this.move < 0)
+                    else if (this.move <= 0 && this.direction < 0)
                     {
                         this.x -= moveX;
                         this.y += moveY;
                     }
-                    console.log ("this.speed = ", this.speed);
                 }
             }
             if (this.strafe != 0)
@@ -450,8 +439,6 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                 {
                     ctx.beginPath ();
                     ctx.fillStyle = "#D88F95EE";
-                    console.log ("this.engine1 =", this.engine1);
-                    console.log ("this.engine1max =", this.engine1max);
                     ctx.ellipse (9, 33, 2, this.engine1, 0, 0, Math.PI);
                     ctx.fill ();
                     if (this.engine1inc)
