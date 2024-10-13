@@ -14,28 +14,29 @@ function ground (type, color, x, y, width, height)
         ctx.shadowBlur = 0;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
+        ctx.beginPath ();
         if (this.type == "pattern")
         {
             this.image = new Image ();
             this.image.src = this.color;
             this.pattern = ctx.createPattern (this.image, "repeat");
+            ctx.rect (this.x, this.y, this.width, this.height);
             ctx.fillStyle = this.pattern;
-            ctx.fillRect (this.x, this.y, this.width, this.height);
+            ctx.fill ();
         }
         else if (this.type == "menu")
         {
+            ctx.rect (this.x, this.y, this.width, this.height);
             ctx.fillStyle = this.color;
-            ctx.fillRect (this.x, this.y, this.width, this.height);
+            ctx.fill ();
         }
         else if (this.type == "base")
         {
-            ctx.beginPath ();
             ctx.lineWidth = 4;
-            ctx.strokeStyle = "#00000033";
-            ctx.fillStyle = this.color;
             ctx.rect (this.x, this.y, this.width, this.height);
-            for (var gameShip in gameShips) if (ctx.isPointInPath (gameShips [gameShip].x, gameShips [gameShip].y)) gameShips [gameShip].ground = this.type;
+            ctx.fillStyle = this.color;
             ctx.fill ();
+            ctx.strokeStyle = "#00000033";
             ctx.stroke ();
             squares ("black", "yellow", this.x + 7, this.y + 7, 15, 17, 2, 2, false);
             squares ("red", "white", this.x + 43, this.y + 7, 15, 17, 2, 2, false);
@@ -67,9 +68,9 @@ function ground (type, color, x, y, width, height)
                 patternContext.fillStyle = "white";
                 patternContext.fill (this.path);
                 this.pattern = ctx.createPattern (patternCanvas, "repeat");
+                ctx.rect (this.x, this.y, this.width, this.height);
                 ctx.fillStyle = this.pattern;
-                ctx.fillRect (this.x, this.y, this.width, this.height);
-                for (var gameShip in gameShips) gameShips [gameShip].ground = "water";
+                ctx.fill ();
             }
             else
             {
@@ -93,11 +94,11 @@ function ground (type, color, x, y, width, height)
                 {
                     patternContext.fillStyle = this.color;
                     patternContext.fillRect (0, 0, 18, 18);
-                    patternContext.lineWidth = 1;
-                    patternContext.strokeStyle = "#00000044";
                     patternContext.arc (0, 0, 12, 0, 0.5 * Math.PI);
                     patternContext.fillStyle = this.color;
                     patternContext.fill ();
+                    patternContext.lineWidth = 1;
+                    patternContext.strokeStyle = "#00000044";
                     patternContext.stroke ();
                 }
                 else if (this.type == "concrete")
@@ -123,14 +124,53 @@ function ground (type, color, x, y, width, height)
                     patternContext.fillRect (15, 21, 2, 10);
                     patternContext.fillRect (25, 15, 2, 10);
                 }
+                else if (this.type == "lava")
+                {
+                    patternContext.fillStyle = "orange";
+                    patternContext.beginPath ();
+                    patternContext.arc (5, 5, 3, 0, 2 * Math.PI);
+                    patternContext.fill ();
+                    patternContext.beginPath ();
+                    patternContext.arc (15, 15, 2, 0, 2 * Math.PI);
+                    patternContext.fill ();
+                    patternContext.beginPath ();
+                    patternContext.arc (20, 10, 1, 0, 2 * Math.PI);
+                    patternContext.fill ();
+                    patternContext.beginPath ();
+                    patternContext.arc (7, 25, 4, 0, 2 * Math.PI);
+                    patternContext.fill ();
+                    patternContext.beginPath ();
+                    patternContext.arc (25, 27, 2, 0, 2 * Math.PI);
+                    patternContext.fill ();
+                }
                 this.pattern = ctx.createPattern (patternCanvas, "repeat");
-                ctx.beginPath ();
                 ctx.moveTo (x, y);
                 for (var vertex in width) ctx.lineTo (width [vertex], height [vertex]);
-                for (var gameShip in gameShips) if (ctx.isPointInPath (gameShips [gameShip].x, gameShips [gameShip].y)) gameShips [gameShip].ground = this.type;
                 ctx.fillStyle = this.pattern;
                 ctx.fill ();
+                if (this.type == "concrete")
+                {
+                    ctx.setLineDash ([6, 7]);
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = "#FFFFFF";
+                    ctx.stroke ();
+                    ctx.setLineDash ([]);
+                }
             }  
+        }
+        if (gameScreen == "game" && gameModal == null)
+        {
+            for (var gameShip in gameShips)
+            {
+                var pos = 
+                {
+                    x: gameShips [gameShip].x,
+                    y: gameShips [gameShip].y
+                }
+                if (gameArea.centerPoint.x > gameWidth / 2 && gameArea.centerPoint.x < gameWidth * 3 + gameWidth / 2) pos.x -= gameArea.centerPoint.x - gameWidth / 2;
+                if (gameArea.centerPoint.y > gameHeight / 2 && gameArea.centerPoint.y < gameHeight * 3 + gameHeight / 2) pos.y -= gameArea.centerPoint.y - gameHeight / 2;
+                if (ctx.isPointInPath (pos.x, pos.y)) gameShips [gameShip].ground = this.type;
+            }
         }
     }
 }

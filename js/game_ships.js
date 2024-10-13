@@ -124,7 +124,7 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
 
     this.changeWeapon = function ()
     {
-        if (this.z == 50) 
+        if (this.z > 0) 
         {
             this.weapon++;
             if (this.weapon == this.weapons.length) this.weapon = 0;
@@ -383,6 +383,8 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
             ctx.translate (this.x, this.y);
             ctx.rotate (this.radians);
             ctx.translate (-(this.width / 2), -(this.height / 2));
+            if (this.z < 0) ctx.globalAlpha = 0.5;
+            else ctx.globalAlpha = 1;
             ctx.transform ((this.z + 50) / 100, 0, 0, (this.z + 50) / 100, (this.width / 2) - (this.width * (this.z + 50) / 100 / 2), (this.height / 2) - (this.height * (this.z + 50) / 100 / 2));
             this.cockpitPath = new Path2D ();
             this.cockpitPath.rect (9, 13, 10, 1);
@@ -674,8 +676,17 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                 }
                 this.z += this.moveZ;
                 if (this.moveZ != 0 && this.name == players [0].name) document.getElementById ("zHud").innerHTML = (this.z * 10) + " m";
-                if (this.z == 0)
+                if (this.z == -50)
                 {
+                    this.moveZ = 0;
+                    if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
+                    this.life = 0;
+                    playerDead (idShip);
+                    return;
+                }
+                else if (this.z == 0)
+                {
+                    this.speed = 0;
                     this.turn = 0;
                     this.turnZ = 0;
                     this.move = 0;
@@ -683,7 +694,6 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                     this.moveY = 0;
                     this.moveZ = 0;
                     this.strafe = 0;
-                    console.log ("this.ground =", this.ground);
                     if (this.ground == "base")
                     {
                         this.gunStatus = true;
@@ -722,7 +732,16 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                     this.shadowOffset -= (18 / 50);
                     this.nameOffset -= (16 / 50);
                 }
-                if (this.z == 0 && (this.fuel == 0 || !this.engine1Status && !this.engine2Status))
+                if (this.z == 0 && this.ground == "water")
+                {
+                    if (gameSound.active)
+                    {
+                        gameSound.sounds ["hit2"].stop ();
+                        gameSound.sounds ["hit2"].play ();
+                    }
+                    this.moveZ = -0.1
+                }
+                else if (this.z == 0 && (this.ground == "lava" || this.fuel == 0 || !this.engine1Status && !this.engine2Status))
                 {
                     gameHits.push (new hit ("hit0", this.x, this.y, 20, 1));
                     if (gameSound.active)
