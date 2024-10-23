@@ -458,8 +458,16 @@ function component (type, src, color, x, y, width, height, max, control)
         {
             ctx.beginPath ();
             ctx.arc (this.x, this.y, this.height, 0, 2 * Math.PI);
-            if (wss != null && wss.readyState == WebSocket.OPEN) this.color = "#0C0";
-            else if (wss >= 1000) this.color = "red";
+            if (wss != null && wss.readyState == WebSocket.OPEN)
+            {
+                this.color = "#0C0";
+                this.rollover = "Connected!";
+            }
+            else if (wss >= 1000)
+            {
+                this.color = "red";
+                this.rollover = "Disconnected";
+            }
             else
             {
                 if (gameArea.frame % 20 == 0)
@@ -467,9 +475,28 @@ function component (type, src, color, x, y, width, height, max, control)
                     if (this.color != "black") this.color = "black";
                     else if (this.color != "yellow") this.color = "yellow";
                 }
+                this.rollover = "Connecting..."
             }
             ctx.fillStyle = this.color;
             ctx.fill ();
+            if (ctx.isPointInPath (mouse.x, mouse.y)) mouse.rollover = new component ("rollover", this.rollover);
+            else if (!ctx.isPointInPath (mouse.x, mouse.y) && mouse.rollover != null && mouse.rollover.src == this.rollover) mouse.rollover = null;
+        }
+        else if (this.type == "rollover")
+        {
+            ctx.font = "10px PressStart2P";
+            var textMeasure = ctx.measureText (this.src);
+            ctx.beginPath ();
+            ctx.roundRect (mouse.x, mouse.y - 18, textMeasure.width + 8, 18, 5);
+            ctx.fillStyle = "#FFFFFFBB";
+            ctx.fill ();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "red";
+            ctx.stroke ();
+            ctx.fillStyle = "black";
+            ctx.textAlign = "left";
+            ctx.textBaseline = "bottom";
+            ctx.fillText (this.src, mouse.x + 4, mouse.y - 4);
         }
         else if (this.type == "color")
         {

@@ -25,7 +25,8 @@ var fpsMonitor = false,
         wheelX: 0,
         wheelY: 0,
         wheelZ: 0,
-        pressed: []
+        pressed: [],
+        rollover: null
     },
     menuShots = [],
     menuHits = [],
@@ -919,6 +920,7 @@ function updateGameArea ()
         for (var alert in gameAlert) gameAlert [alert].update ();
         if (menuShip) menuShip.update ();
     }
+    if (mouse.rollover != null) mouse.rollover.update ();
     gameArea.frame++;
     gameArea.animation = window.requestAnimationFrame (updateGameArea);
 }

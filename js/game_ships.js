@@ -675,7 +675,7 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                     }
                 }
                 this.z += this.moveZ;
-                if (this.moveZ != 0 && this.name == players [0].name) document.getElementById ("zHud").innerHTML = (this.z * 10) + " m";
+                if (this.moveZ != 0 && this.name == players [0].name) document.getElementById ("zHud").innerHTML = Math.round (this.z * 10) + " m";
                 if (this.z == -50)
                 {
                     this.moveZ = 0;
@@ -739,7 +739,7 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                         gameSound.sounds ["hit2"].stop ();
                         gameSound.sounds ["hit2"].play ();
                     }
-                    this.moveZ = -0.1
+                    this.moveZ = -0.25;
                 }
                 else if (this.z == 0 && (this.ground == "lava" || this.fuel == 0 || !this.engine1Status && !this.engine2Status))
                 {
