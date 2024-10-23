@@ -370,9 +370,15 @@ function component (type, src, color, x, y, width, height, max, control)
     {
         this.image = new Image ();
         this.image.src = this.src;
+        this.color = "";
+        this.rollover = color;
     }
-    else if (this.type == "type") this.typeFrame = 1;
-    this.color = color;
+    else
+    {
+        this.color = color;
+        this.rollover = "";
+        if (this.type == "type") this.typeFrame = 1;
+    }
     this.x = x;
     this.y = y;
     this.width = width;
@@ -479,8 +485,6 @@ function component (type, src, color, x, y, width, height, max, control)
             }
             ctx.fillStyle = this.color;
             ctx.fill ();
-            if (ctx.isPointInPath (mouse.x, mouse.y)) mouse.rollover = new component ("rollover", this.rollover);
-            else if (!ctx.isPointInPath (mouse.x, mouse.y) && mouse.rollover != null && mouse.rollover.src == this.rollover) mouse.rollover = null;
         }
         else if (this.type == "rollover")
         {
@@ -524,6 +528,11 @@ function component (type, src, color, x, y, width, height, max, control)
                     colorPicker.style.display = "none";
                 }
             }
+        }
+        if (this.rollover != "")
+        {
+            if (ctx.isPointInPath (mouse.x, mouse.y)) mouse.rollover = new component ("rollover", this.rollover);
+            else if (!ctx.isPointInPath (mouse.x, mouse.y) && mouse.rollover != null && mouse.rollover.src == this.rollover) mouse.rollover = null;
         }
         if (gameModal == "menu" || gameScreen == "menu")
         {
