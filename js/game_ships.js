@@ -91,6 +91,9 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
         this.wing2Color = null;
         this.engine1Color = null;
         this.engine2Color = null;
+        this.shipStroke = null;
+        this.engine1Stroke = null;
+        this.engine2Stroke = null;
         this.lightStroke = null;
         this.skin = null;
         this.pattern = null;
@@ -109,6 +112,9 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                 this.wing2Color = playerSkins [this.skin].wing2Color;
                 this.engine1Color = playerSkins [this.skin].engine1Color;
                 this.engine2Color = playerSkins [this.skin].engine2Color;
+                this.shipStroke = playerSkins [this.skin].shipStroke;
+                this.engine1Stroke = playerSkins [this.skin].engine1Stroke;
+                this.engine2Stroke = playerSkins [this.skin].engine2Stroke;
                 this.lightStroke = playerSkins [this.skin].lightStroke;
             }
         }
@@ -434,11 +440,21 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                 this.shipPath.addPath (this.engine2Path);
             }
             ctx.lineWidth = 2;
-            ctx.strokeStyle = this.invColor + "CC";
+            if (this.shipStroke != null) ctx.strokeStyle = this.shipStroke;
+            else ctx.strokeStyle = this.invColor + "CC";
             ctx.stroke (this.shipPath);
-            ctx.strokeStyle = this.shipColor + "CC";
-            if (this.engine1Status && this.engine1Color == null && this.skin == null) ctx.stroke (this.engine1Path);
-            if (this.engine2Status && this.engine2Color == null && this.skin == null) ctx.stroke (this.engine2Path);
+            if (this.engine1Status && this.engine1Color == null && this.skin == null)
+            {
+                if (this.engine1Stroke != null) ctx.strokeStyle = this.engine1Stroke;
+                else ctx.strokeStyle = this.shipColor + "CC";
+                ctx.stroke (this.engine1Path);
+            }
+            if (this.engine2Status && this.engine2Color == null && this.skin == null)
+            {
+                if (this.engine2Stroke != null) ctx.strokeStyle = this.engine2Stroke;
+                else ctx.strokeStyle = this.shipColor + "CC";
+                ctx.stroke (this.engine2Path);
+            }
             if (this.z > 0)
             {
                 if (gameScreen == "game" && gameModal == null) ctx.shadowColor = "#00000044";
@@ -559,8 +575,8 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
             ctx.rotate (45 * Math.PI / 180);
             ctx.shadowColor = "transparent";
             ctx.lineWidth = 1;
-            if (this.pattern) ctx.strokeStyle = this.invColor + "66";
-            else if (this.lightStroke != null) ctx.strokeStyle = this.lightStroke;
+            if (this.lightStroke != null) ctx.strokeStyle = this.lightStroke;
+            else if (this.pattern) ctx.strokeStyle = this.invColor + "66";
             else ctx.strokeStyle = this.varColor;
             ctx.fill (this.lightPath);
             ctx.stroke (this.lightPath);
