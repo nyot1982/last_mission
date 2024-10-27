@@ -107,14 +107,73 @@ function speedHud ()
     var gameShip = gameShips.findIndex (ship => ship.name == players [0].name),
         speedHud = document.getElementById ("speedHud"),
         meterHud = speedHud.getElementById ("meterHud"),
-        kphElements = speedHud.getElementsByClassName ("kph");
+        kphElement = speedHud.getElementById ("kph"),
+        speed = gameShip > -1 ? gameShips [gameShip].speed * 300 : 0;        
 
     meterHud.setAttribute ("style", "transform: rotate(" + (gameShip > -1 ? gameShips [gameShip].speed * 30 : 0) + "deg);");
-    for (var i = 0; i < kphElements.length; i++)
+    kphElement.setAttribute ("class", "kph" + Math.floor (gameShip > -1 ? gameShips [gameShip].speed : 0));
+    speed = speed.toString ();
+    if (speed.length == 4)
     {
-        if (gameShip > -1 && gameShips [gameShip].speed >= i) kphElements [i].setAttribute ("class", "kph active");
-        else kphElements [i].setAttribute ("class", "kph");
+        speedDigits (3, speed.at (0));
+        speedDigits (2, speed.at (1));
+        speedDigits (1, speed.at (2));
+        speedDigits (0, speed.at (3));
     }
+    else if (speed.length == 3)
+    {
+        speedDigits (3, null);
+        speedDigits (2, speed.at (0));
+        speedDigits (1, speed.at (1));
+        speedDigits (0, speed.at (2));
+    }
+    else if (speed.length == 2)
+    {
+        speedDigits (3, null);
+        speedDigits (2, null);
+        speedDigits (1, speed.at (0));
+        speedDigits (0, speed.at (1));
+    }
+    else if (speed.length == 1)
+    {
+        speedDigits (3, null);
+        speedDigits (2, null);
+        speedDigits (1, null);
+        speedDigits (0, speed);
+    }
+    else
+    {
+        speedDigits (3, null);
+        speedDigits (2, null);
+        speedDigits (1, null);
+        speedDigits (0, null);
+    }
+}
+
+function speedDigits (digit, number)
+{
+    var d0 = document.getElementById ("d" + digit + "l0"),
+        d1 = document.getElementById ("d" + digit + "l1"),
+        d2 = document.getElementById ("d" + digit + "l2"),
+        d3 = document.getElementById ("d" + digit + "l3"),
+        d4 = document.getElementById ("d" + digit + "l4"),
+        d5 = document.getElementById ("d" + digit + "l5"),
+        d6 = document.getElementById ("d" + digit + "l6");
+
+    if (number == 0 || number == 2 || number == 3 || number == 5 || number == 6 || number == 7 || number == 8 || number == 9) d0.setAttribute ("class", "on");
+    else d0.removeAttribute ("class");
+    if (number == 0 || number == 4 || number == 5 || number == 6 || number == 8 || number == 9) d1.setAttribute ("class", "on");
+    else d1.removeAttribute ("class");
+    if (number == 0 || number == 1 || number == 2 || number == 3 || number == 4 || number == 7 || number == 8 || number == 9) d2.setAttribute ("class", "on");
+    else d2.removeAttribute ("class");
+    if (number == 2 || number == 3 || number == 4 || number == 5 || number == 6 || number == 8 || number == 9) d3.setAttribute ("class", "on");
+    else d3.removeAttribute ("class");
+    if (number == 0 || number == 2 || number == 6 || number == 8) d4.setAttribute ("class", "on");
+    else d4.removeAttribute ("class");
+    if (number == 0 || number == 1 || number == 3 || number == 4 || number == 5 || number == 6 || number == 7 || number == 8 || number == 9) d5.setAttribute ("class", "on");
+    else d5.removeAttribute ("class");
+    if (number == 0 || number == 2 || number == 3 || number == 5 || number == 6 || number == 8 || number == 9) d6.setAttribute ("class", "on");
+    else d6.removeAttribute ("class");
 }
 
 function weaponHud (reset)

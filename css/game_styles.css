@@ -448,13 +448,25 @@ article p
 {
     fill: var(--colorKph);
 }
-#speedHud .kph path,
-#speedHud .kph .kmh
+#speedHud .kph0 path,
+#speedHud .kph1 path,
+#speedHud .kph2 path,
+#speedHud .kph3 path,
+#speedHud .kph4 path,
+#speedHud .kph5 path,
+#speedHud .kph6 path,
+#speedHud .kph0 .kmh,
+#speedHud .kph1 .kmh,
+#speedHud .kph2 .kmh,
+#speedHud .kph3 .kmh,
+#speedHud .kph4 .kmh,
+#speedHud .kph5 .kmh,
+#speedHud .kph6 .kmh
 {
     display: block;
     fill: var(--color5);
 }
-#speedHud .kph .kmh
+#speedHud #kph .kmh
 {
     font-size: 50pt;
     font-family: system-ui;
