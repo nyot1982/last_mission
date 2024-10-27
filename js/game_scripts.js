@@ -570,7 +570,7 @@ function gameLoadScreen (screen)
         gameText.push (new component ("text", "High Scores", "white", 575, gameText [7].y + 25, "left", 10));
         gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", gameWidth / 2, 445, "center", 10));
         gameText.push (new component ("circle", "", "black", 645, 295, "", 5));
-        gameText.push (new component ("image", "svgs/user.svg", "", 660, 295, 10, 10));
+        gameText.push (new component ("image", "svgs/user.svg", "Players in game", 660, 295, 10, 10));
         gameText.push (new component ("text", "", "orange", 670, 295, "left", 10));
         menuShip = new ship (null, playerColors [0], 450, gameText [0].y + 15, 50, 90, 0, 2);
         changeTab ("menu");
