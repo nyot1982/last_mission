@@ -100,7 +100,7 @@ function speedHud ()
 
     for (var i = 0; i < speedElements.length; i++)
     {
-        if (i <= Math.abs (gameShips [gameShip].speed)) speedElements [i].setAttribute ("class", "speed active");
+        if (gameShip > -1 && i <= Math.abs (gameShips [gameShip].speed)) speedElements [i].setAttribute ("class", "speed active");
         else speedElements [i].setAttribute ("class", "speed");
     }
     meterHud.setAttribute ("style", "transform: rotate(" + (gameShip > -1 ? Math.abs (gameShips [gameShip].speed) * 30 : 0) + "deg);");
