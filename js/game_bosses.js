@@ -24,7 +24,7 @@ function boss (type, x, y)
         }
     ];
     this.lastShotFrame = -this.weapons [this.weapon].fireRate;
-    this.shotDegrees = 0;
+    this.shotHeading = 0;
 
     if (this.type == 0)
     {
@@ -407,14 +407,14 @@ function boss (type, x, y)
                 }
                 else if (this.weapon == 1)
                 {
-                    if (this.shotDegrees == 360) this.shotDegrees = 0;
-                    if (this.shotDegrees % 10 == 0)
+                    if (this.shotHeading == 360) this.shotHeading = 0;
+                    if (this.shotHeading % 10 == 0)
                     {
-                        gameShots.push (new shot ("boss", 5, "#B2B2B2", this.x + 32 * Math.sin (this.shotDegrees * Math.PI / 180), this.y - 32 * Math.cos (this.shotDegrees * Math.PI / 180), 4, 4, 8, this.shotDegrees));
-                        gameShots.push (new shot ("boss", 5, "#B2B2B2", this.x + 48 * Math.sin ((this.shotDegrees + 5) * Math.PI / 180), this.y - 48 * Math.cos ((this.shotDegrees + 5) * Math.PI / 180), 4, 4, 8, (this.shotDegrees + 5)));
-                        gameShots.push (new shot ("boss", 5, "#B2B2B2", this.x + 64 * Math.sin ((this.shotDegrees + 10) * Math.PI / 180), this.y - 64 * Math.cos ((this.shotDegrees + 10) * Math.PI / 180), 4, 4, 8, (this.shotDegrees + 10)));
+                        gameShots.push (new shot ("boss", 5, "#B2B2B2", this.x + 32 * Math.sin (this.shotHeading * Math.PI / 180), this.y - 32 * Math.cos (this.shotHeading * Math.PI / 180), 4, 4, 8, this.shotHeading));
+                        gameShots.push (new shot ("boss", 5, "#B2B2B2", this.x + 48 * Math.sin ((this.shotHeading + 5) * Math.PI / 180), this.y - 48 * Math.cos ((this.shotHeading + 5) * Math.PI / 180), 4, 4, 8, (this.shotHeading + 5)));
+                        gameShots.push (new shot ("boss", 5, "#B2B2B2", this.x + 64 * Math.sin ((this.shotHeading + 10) * Math.PI / 180), this.y - 64 * Math.cos ((this.shotHeading + 10) * Math.PI / 180), 4, 4, 8, (this.shotHeading + 10)));
                     }
-                    this.shotDegrees++;
+                    this.shotHeading++;
                 }
                 else if (this.weapon == 2 && (gameArea.frame - this.lastShotFrame) >= this.weapons [this.weapon].fireRate)
                 {

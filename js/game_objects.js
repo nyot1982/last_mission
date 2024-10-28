@@ -57,7 +57,7 @@ function audio (src, loop)
     this.load ();
 }
 
-function shot (name, weapon, color, x, y, width, height, speed, degrees)
+function shot (name, weapon, color, x, y, width, height, speed, heading)
 {
     this.name = name;
     this.weapon = weapon;
@@ -68,8 +68,8 @@ function shot (name, weapon, color, x, y, width, height, speed, degrees)
     this.width = width;
     this.height = height;
     this.speed = speed;
-    this.degrees = degrees;
-    this.radians = this.degrees * Math.PI / 180;
+    this.heading = heading;
+    this.radians = this.heading * Math.PI / 180;
     this.move = 0;
     this.turn = 0;
     this.hit = false;
@@ -79,8 +79,8 @@ function shot (name, weapon, color, x, y, width, height, speed, degrees)
         if (!this.hit)
         {
             this.move = this.speed;
-            this.degrees = (this.degrees + this.turn) % 360;
-            this.radians = this.degrees * Math.PI / 180;
+            this.heading = (this.heading + this.turn) % 360;
+            this.radians = this.heading * Math.PI / 180;
             this.x += this.move * Math.sin (this.radians);
             this.y -= this.move * Math.cos (this.radians);
 

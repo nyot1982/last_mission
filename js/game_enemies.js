@@ -1,10 +1,10 @@
-function enemy (type, x, y, degrees)
+function enemy (type, x, y, heading)
 {
     this.id = gameEnemies.length;
     this.type = type;
     this.x = x;
     this.y = y;
-    this.degrees = degrees || 0;
+    this.heading = heading || 0;
     this.fire = false;
     this.lastShotFrame = -50;
     if (this.type < 3) this.weapon = 0;
@@ -106,8 +106,8 @@ function enemy (type, x, y, degrees)
                     }
                 }
                 this.enginemax = 4;
-                if (this.turn != 0) this.degrees = (this.degrees + this.turn) % 360;
-                this.radians = this.degrees * Math.PI / 180;
+                if (this.turn != 0) this.heading = (this.heading + this.turn) % 360;
+                this.radians = this.heading * Math.PI / 180;
                 if (this.move != 0)
                 {
                     this.x += this.move * Math.sin (this.radians);
@@ -136,7 +136,7 @@ function enemy (type, x, y, degrees)
                 }
                 ctx.shadowColor = "transparent";
             }
-            if (gameScreen == "game" && gameModal == null) mapHud ((this.type < 3 ? 'enemyItem' : 'enemyItem2'), this.x, this.y, this.degrees);
+            if (gameScreen == "game" && gameModal == null) mapHud ((this.type < 3 ? 'enemyItem' : 'enemyItem2'), this.x, this.y, this.heading);
             ctx.save ();
             ctx.translate (this.x, this.y);
             if (this.type == 6) ctx.translate (4, 4);
@@ -688,9 +688,9 @@ function enemy (type, x, y, degrees)
                 ctx.lineTo (54, 2);
                 ctx.stroke ();
                 ctx.translate (this.width / 2 - 4, this.height / 2 - 5);
-                ctx.rotate (this.degrees * Math.PI / 180);
-                this.degrees++;
-                if (this.degrees == 360) this.degrees = 0;
+                ctx.rotate (this.heading * Math.PI / 180);
+                this.heading++;
+                if (this.heading == 360) this.heading = 0;
                 ctx.fillStyle = "#000";
                 ctx.fillRect (-4, -16, 8, 5);
                 ctx.beginPath ();
@@ -773,17 +773,17 @@ function enemy (type, x, y, degrees)
             }
             if (this.fire && (gameArea.frame - this.lastShotFrame) >= 50)
             {
-                if (this.weapon == 0) gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.height / 2 + 24) * Math.sin (this.degrees * Math.PI / 180), this.y - (this.height / 2 + 24) * Math.cos (this.degrees * Math.PI / 180), 24, 3, 12, this.degrees));
+                if (this.weapon == 0) gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.height / 2 + 24) * Math.sin (this.heading * Math.PI / 180), this.y - (this.height / 2 + 24) * Math.cos (this.heading * Math.PI / 180), 24, 3, 12, this.heading));
                 else if (this.weapon == 4)
                 {
-                    if (this.type == 4) var startDegrees = -45;
-                    else if (this.type == 5) var startDegrees = 0;
-                    gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.height / 2 + 28) * Math.sin ((this.degrees + startDegrees) * Math.PI / 180), this.y - (this.height / 2 + 28) * Math.cos ((this.degrees + startDegrees) * Math.PI / 180), 28, 3, 10, this.degrees + startDegrees));
-                    gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.width / 2 + 28) * Math.sin ((this.degrees + startDegrees + 90) * Math.PI / 180), this.y - (this.width / 2 + 28) * Math.cos ((this.degrees + startDegrees + 90) * Math.PI / 180), 28, 3, 10, this.degrees + startDegrees + 90));
-                    gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.height / 2 + 28) * Math.sin ((this.degrees + startDegrees + 180) * Math.PI / 180), this.y - (this.height / 2 + 28) * Math.cos ((this.degrees + startDegrees + 180) * Math.PI / 180), 28, 3, 10, this.degrees + startDegrees + 180));
-                    gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.width / 2 + 28) * Math.sin ((this.degrees + startDegrees + 270) * Math.PI / 180), this.y - (this.width / 2 + 28) * Math.cos ((this.degrees + startDegrees + 270) * Math.PI / 180), 28, 3, 10, this.degrees + startDegrees + 270));
+                    if (this.type == 4) var startHeading = -45;
+                    else if (this.type == 5) var startHeading = 0;
+                    gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.height / 2 + 28) * Math.sin ((this.heading + startHeading) * Math.PI / 180), this.y - (this.height / 2 + 28) * Math.cos ((this.heading + startHeading) * Math.PI / 180), 28, 3, 10, this.heading + startHeading));
+                    gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.width / 2 + 28) * Math.sin ((this.heading + startHeading + 90) * Math.PI / 180), this.y - (this.width / 2 + 28) * Math.cos ((this.heading + startHeading + 90) * Math.PI / 180), 28, 3, 10, this.heading + startHeading + 90));
+                    gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.height / 2 + 28) * Math.sin ((this.heading + startHeading + 180) * Math.PI / 180), this.y - (this.height / 2 + 28) * Math.cos ((this.heading + startHeading + 180) * Math.PI / 180), 28, 3, 10, this.heading + startHeading + 180));
+                    gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.width / 2 + 28) * Math.sin ((this.heading + startHeading + 270) * Math.PI / 180), this.y - (this.width / 2 + 28) * Math.cos ((this.heading + startHeading + 270) * Math.PI / 180), 28, 3, 10, this.heading + startHeading + 270));
                 }
-                else if (this.weapon == 5) gameShots.push (new shot ("enemy" + this.id, this.weapon, "#B2B2B2", this.x + 16 * Math.sin (this.degrees * Math.PI / 180), this.y - 16 * Math.cos (this.degrees * Math.PI / 180), 4, 4, 8, this.degrees));
+                else if (this.weapon == 5) gameShots.push (new shot ("enemy" + this.id, this.weapon, "#B2B2B2", this.x + 16 * Math.sin (this.heading * Math.PI / 180), this.y - 16 * Math.cos (this.heading * Math.PI / 180), 4, 4, 8, this.heading));
                 this.lastShotFrame = gameArea.frame;
             }
         }

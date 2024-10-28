@@ -661,13 +661,13 @@ article p
     margin-top: 8px;
     color: var(--color7);
 }
-#degreesHud
+#headingHud
 {
     position: absolute;
     left: -371.25px;
     text-wrap: nowrap;
 }
-#degreesHud div
+#headingHud div
 {
     display: inline-block;
     width: 22.50px;

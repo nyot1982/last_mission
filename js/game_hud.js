@@ -1,7 +1,7 @@
 function resetHuds (enemies, vitals)
 {
     weaponHud (enemies);
-    document.getElementById ("degreesHud").style.left = "-371.25px";
+    document.getElementById ("headingHud").style.left = "-371.25px";
     document.getElementById ("zHud").innerHTML = "0 m";
     if (enemies) document.getElementById ("enemyHud2").style.width = "270px";
     if (vitals == 0) var color = "red";
@@ -226,7 +226,7 @@ function vitalsHud (hud, width, color)
     );
 }
 
-function mapHud (itemClass, x, y, degrees)
+function mapHud (itemClass, x, y, heading)
 {
     var mapHud = document.getElementById ("mapHud"),
     mapItem = document.createElement ('div'),
@@ -244,7 +244,7 @@ function mapHud (itemClass, x, y, degrees)
     if (itemClass != "enemyItem2" && itemClass != "bossItem")
     {
         mapItem.setAttribute ('class', 'fa fa-location-arrow ' + itemClass);
-        mapItem.style.transform = 'rotate(' + (degrees - 45) + 'deg)';
+        mapItem.style.transform = 'rotate(' + (heading - 45) + 'deg)';
     }
     mapItem.style.left = (x / 29 + offSetX) + "px";
     mapItem.style.top = (y / 29 + offSetY) + "px";

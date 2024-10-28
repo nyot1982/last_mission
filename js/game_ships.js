@@ -1,10 +1,10 @@
-function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, time)
+function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, time)
 {
     this.name = name || null;
     this.x = x || gameWidth / 2;
     this.y = y || gameHeight / 2;
     this.z = z || 0;
-    this.degrees = degrees || 0;
+    this.heading = heading || 0;
     this.speed = speed || 0;
     this.fire = fire || false;
     this.weapon = weapon || 0;
@@ -290,11 +290,11 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
         {
             if (this.turn != 0 || this.turnZ != 0)
             {
-                if (this.turn != 0) this.degrees = (this.degrees + this.turn) % 360;
-                if (this.turnZ != 0) this.degrees = (this.degrees + this.turnZ) % 360;
-                if (gameScreen == "game" && this.name == players [0].name) document.getElementById ("degreesHud").style = "left: " + (-371.25 - this.degrees) + "px;";
+                if (this.turn != 0) this.heading = (this.heading + this.turn) % 360;
+                if (this.turnZ != 0) this.heading = (this.heading + this.turnZ) % 360;
+                if (gameScreen == "game" && this.name == players [0].name) document.getElementById ("headingHud").style = "left: " + (-371.25 - this.heading) + "px;";
             }
-            this.radians = this.degrees * Math.PI / 180;
+            this.radians = this.heading * Math.PI / 180;
             if (gameScreen == "game" && gameModal == null)
             {
                 if (this.moveX != 0) this.x += this.moveX;
@@ -330,8 +330,8 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
             }
             if (this.strafe != 0)
             {
-                this.x += this.strafe * Math.sin ((this.degrees + 90) * Math.PI / 180);
-                this.y -= this.strafe * Math.cos ((this.degrees + 90) * Math.PI / 180);
+                this.x += this.strafe * Math.sin ((this.heading + 90) * Math.PI / 180);
+                this.y -= this.strafe * Math.cos ((this.heading + 90) * Math.PI / 180);
                 if (gameModal == "menu" || gameScreen == "menu")
                 {
                     if (this.y > this.endStrafe && this.strafe > 0 || this.y < this.endStrafe && this.strafe < 0)
@@ -368,8 +368,8 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
             else if (this.y > gameHeight * 4) this.y = gameHeight * 4;
             if (gameScreen == "game" && gameModal == null)
             {
-                if (this.name == players [0].name) mapHud ("mapItemPlayer", this.x, this.y, this.degrees);
-                else mapHud ("mapItem", this.x, this.y, this.degrees);
+                if (this.name == players [0].name) mapHud ("mapItemPlayer", this.x, this.y, this.heading);
+                else mapHud ("mapItem", this.x, this.y, this.heading);
             }
             ctx = gameArea.ctx;
             ctx.shadowColor = "transparent";
@@ -921,44 +921,44 @@ function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engi
             {
                 if (gameModal == "menu" || gameScreen == "menu")
                 {
-                    menuShots.push (new shot (this.name, 0, "#c66d73", this.x + (this.height / 2) * Math.sin (this.degrees * Math.PI / 180), this.y - (this.height / 2) * Math.cos (this.degrees * Math.PI / 180), 24, 3, 16, this.degrees));
+                    menuShots.push (new shot (this.name, 0, "#c66d73", this.x + (this.height / 2) * Math.sin (this.heading * Math.PI / 180), this.y - (this.height / 2) * Math.cos (this.heading * Math.PI / 180), 24, 3, 16, this.heading));
                     this.fire = false;
                 }
                 else if (gameScreen == "game" && gameModal == null && this.ammo > 0)
                 {
                     if (this.weapon == 0)
                     {
-                        gameShots.push (new shot (this.name, this.weapon, "black", this.x + (this.height / 2 + 24) * Math.sin (this.degrees * Math.PI / 180), this.y - (this.height / 2 + 24) * Math.cos (this.degrees * Math.PI / 180), 24, 3 * (this.weapons [this.weapon].power < 3 ? this.weapons [this.weapon].power : 1), 12, this.degrees));
+                        gameShots.push (new shot (this.name, this.weapon, "black", this.x + (this.height / 2 + 24) * Math.sin (this.heading * Math.PI / 180), this.y - (this.height / 2 + 24) * Math.cos (this.heading * Math.PI / 180), 24, 3 * (this.weapons [this.weapon].power < 3 ? this.weapons [this.weapon].power : 1), 12, this.heading));
                     }
                     else if (this.weapon == 1)
                     {
-                        gameShots.push (new shot (this.name, this.weapon, "#BBB", this.x, this.y, 12, 3, 8, this.degrees - 90));
-                        gameShots.push (new shot (this.name, this.weapon, "#BBB", this.x, this.y, 12, 3, 8, this.degrees));
-                        gameShots.push (new shot (this.name, this.weapon, "#BBB", this.x, this.y, 12, 3, 8, this.degrees + 90));
+                        gameShots.push (new shot (this.name, this.weapon, "#BBB", this.x, this.y, 12, 3, 8, this.heading - 90));
+                        gameShots.push (new shot (this.name, this.weapon, "#BBB", this.x, this.y, 12, 3, 8, this.heading));
+                        gameShots.push (new shot (this.name, this.weapon, "#BBB", this.x, this.y, 12, 3, 8, this.heading + 90));
                     }
                     else if (this.weapon == 2)
                     {
-                        gameShots.push (new shot (this.name, this.weapon, "#292C9C", this.x + 48 * Math.sin ((this.degrees - 90) * Math.PI / 180), this.y - 48 * Math.cos ((this.degrees - 90) * Math.PI / 180), 16, 0, 10, this.degrees));
-                        gameShots.push (new shot (this.name, this.weapon, "#292C9C", this.x, this.y, 16, 0, 10, this.degrees));
-                        gameShots.push (new shot (this.name, this.weapon, "#292C9C", this.x + 48 * Math.sin ((this.degrees + 90) * Math.PI / 180), this.y - 48 * Math.cos ((this.degrees + 90) * Math.PI / 180), 16, 0, 10, this.degrees));
+                        gameShots.push (new shot (this.name, this.weapon, "#292C9C", this.x + 48 * Math.sin ((this.heading - 90) * Math.PI / 180), this.y - 48 * Math.cos ((this.heading - 90) * Math.PI / 180), 16, 0, 10, this.heading));
+                        gameShots.push (new shot (this.name, this.weapon, "#292C9C", this.x, this.y, 16, 0, 10, this.heading));
+                        gameShots.push (new shot (this.name, this.weapon, "#292C9C", this.x + 48 * Math.sin ((this.heading + 90) * Math.PI / 180), this.y - 48 * Math.cos ((this.heading + 90) * Math.PI / 180), 16, 0, 10, this.heading));
                         if (this.weapons [this.weapon].power > 1)
                         {
-                            gameShots.push (new shot (this.name, this.weapon, "#292C9C", this.x + 96 * Math.sin ((this.degrees - 90) * Math.PI / 180), this.y - 96 * Math.cos ((this.degrees - 90) * Math.PI / 180), 16, 0, 10, this.degrees));
-                            gameShots.push (new shot (this.name, this.weapon, "#292C9C", this.x + 96 * Math.sin ((this.degrees + 90) * Math.PI / 180), this.y - 96 * Math.cos ((this.degrees + 90) * Math.PI / 180), 16, 0, 10, this.degrees));
+                            gameShots.push (new shot (this.name, this.weapon, "#292C9C", this.x + 96 * Math.sin ((this.heading - 90) * Math.PI / 180), this.y - 96 * Math.cos ((this.heading - 90) * Math.PI / 180), 16, 0, 10, this.heading));
+                            gameShots.push (new shot (this.name, this.weapon, "#292C9C", this.x + 96 * Math.sin ((this.heading + 90) * Math.PI / 180), this.y - 96 * Math.cos ((this.heading + 90) * Math.PI / 180), 16, 0, 10, this.heading));
                         }
                     }
                     else if (this.weapon == 3)
                     {
-                        gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.degrees - 45));
-                        gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.degrees));
-                        gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.degrees + 45));
-                        gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.degrees - 135));
-                        gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.degrees + 180));
-                        gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.degrees + 135));
+                        gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.heading - 45));
+                        gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.heading));
+                        gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.heading + 45));
+                        gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.heading - 135));
+                        gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.heading + 180));
+                        gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.heading + 135));
                         if (this.weapons [this.weapon].power > 1)
                         {
-                            gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.degrees - 90));
-                            gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.degrees + 90));
+                            gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.heading - 90));
+                            gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.heading + 90));
                         }
                     }
                     this.ammo--;
@@ -1049,7 +1049,7 @@ function playerDead (gameShip)
                 gameShips [gameShip].x = startPoints [startPoints.findIndex (startPoint => startPoint.ship == gameShips [gameShip].name)].x;
                 gameShips [gameShip].y = startPoints [startPoints.findIndex (startPoint => startPoint.ship == gameShips [gameShip].name)].y;
                 gameShips [gameShip].z = startPoints [startPoints.findIndex (startPoint => startPoint.ship == gameShips [gameShip].name)].z;
-                gameShips [gameShip].degrees = 0;
+                gameShips [gameShip].heading = 0;
                 gameShips [gameShip].speed = 0;
                 gameShips [gameShip].fire = false;
                 gameShips [gameShip].weapon = 0;

@@ -129,7 +129,7 @@ const wss = createServerFrom
                                     x: startPoints [data.player_id].x,
                                     y: startPoints [data.player_id].y,
                                     z: startPoints [data.player_id].z,
-                                    degrees: 0,
+                                    heading: 0,
                                     speed: 0,
                                     fire: false,
                                     weapon: 0,
@@ -185,7 +185,7 @@ const wss = createServerFrom
                         gameShips [gameShip].x = data.x;
                         gameShips [gameShip].y = data.y;
                         gameShips [gameShip].z = data.z;
-                        gameShips [gameShip].degrees = data.degrees;
+                        gameShips [gameShip].heading = data.heading;
                         gameShips [gameShip].speed = data.speed;
                         gameShips [gameShip].fire = data.fire;
                         gameShips [gameShip].weapon = data.weapon;
