@@ -198,9 +198,23 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
     {
         if (gameScreen == "game" && this.z > 0)
         {
-            if (direction != 0) this.direction = direction;
-            if (!this.engine1Status && !this.engine2Status) this.move = 0;
-            else this.move = direction;
+            if (!this.engine1Status && !this.engine2Status) direction = 0;
+            if (direction < 0)
+            {
+                if (this.speed <= 0) this.move = -0.5;
+                else if (this.speed > 0) this.move = -1;
+            }
+            else if (direction > 0)
+            {
+                if (this.speed < 0) this.move = 1;
+                else if (this.speed >= 0) this.move = 0.5;
+            }
+            else if (direction == 0)
+            {
+                if (this.speed < 0) this.move = 0.5;
+                else if (this.speed > 0) this.move = -0.5;
+                else if (this.speed == 0) this.move = 0; 
+            }
         }
     }
 
@@ -299,33 +313,30 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
             {
                 if (this.moveX != 0) this.x += this.moveX;
                 if (this.moveY != 0) this.y -= this.moveY;
-                if (this.move != 0)
+                if (this.speed != 0 || this.move != 0)
                 {
-                    if (this.speed < this.maxSpeed)
+                    if (this.speed == 0 && this.move != 0 || this.speed != 0 && Math.abs (this.speed) <= this.maxSpeed)
                     {
-                        this.speed = this.speed * 10 + 0.5;
+                        this.speed = this.speed * 10 + this.move;
                         this.speed /= 10;
+                        if (this.speed < 0 && this.move < 0 && this.speed <= -this.maxSpeed)
+                        {
+                            this.speed = -this.maxSpeed;
+                            this.move = 0;
+                        }
+                        else if (this.speed > 0 && this.move > 0 && this.speed >= this.maxSpeed)
+                        {
+                            this.speed = this.maxSpeed;
+                            this.move = 0;
+                        }
+                        else if (this.speed <= 0 && this.move == -1) this.move = -0.5;
+                        else if (this.speed >= 0 && this.move == 1) this.move = 0.5;
+                        else if (this.speed == 0) this.move = 0;
                     }
-                }
-                else if (this.move == 0 && this.speed > 0)
-                {
-                    this.speed = this.speed * 10 - 0.5;
-                    this.speed /= 10;
-                }
-                if (this.speed > 0)
-                {
                     var moveX = (!this.engine1Status || !this.engine2Status ? this.speed / 2 : this.speed) * Math.sin (this.radians);
                     var moveY = (!this.engine1Status || !this.engine2Status ? this.speed / 2 : this.speed) * Math.cos (this.radians);
-                    if (this.move >= 0 && this.direction > 0)
-                    {
-                        this.x += moveX;
-                        this.y -= moveY;
-                    }
-                    else if (this.move <= 0 && this.direction < 0)
-                    {
-                        this.x -= moveX;
-                        this.y += moveY;
-                    }
+                    this.x += moveX;
+                    this.y -= moveY;
                 }
             }
             if (this.strafe != 0)
@@ -500,10 +511,10 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                         }
                     }
                 }
-                if (this.speed > 0)
+                if (this.speed != 0)
                 {
-                    this.engine1max = this.speed * 8;
-                    this.engine2max = this.speed * 8;
+                    this.engine1max = Math.abs (this.speed) * 8;
+                    this.engine2max = Math.abs (this.speed) * 8;
                 }
                 else
                 {

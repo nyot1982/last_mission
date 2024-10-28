@@ -40,7 +40,6 @@ function stopUserInteractions (player)
     gameShips [gameShip].movingY (0);
     gameShips [gameShip].movingZ (0);
     gameShips [gameShip].strafing (0);
-    gameShips [gameShip].speeding (0);
     gameShips [gameShip].turning (0);
     gameShips [gameShip].turningZ (0)    
 }
