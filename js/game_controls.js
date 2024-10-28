@@ -429,12 +429,6 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                 case 'moveZ':
                     gameShips [gameShip].movingZ ();    
                 break;
-                case 'speed_down':
-                    gameShips [gameShip].speeding (-1);  
-                break;
-                case 'speed_up':
-                    gameShips [gameShip].speeding (1);  
-                break;
                 case 'fire':
                     gameShips [gameShip].firing (true);
                 break;

@@ -1,4 +1,4 @@
-function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, time)
+function ship (name, color, x, y, z, degrees, speed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, time)
 {
     this.name = name || null;
     this.x = x || gameWidth / 2;
@@ -6,7 +6,6 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
     this.z = z || 0;
     this.degrees = degrees || 0;
     this.speed = speed || 0;
-    this.maxSpeed = maxSpeed || 1;
     this.fire = fire || false;
     this.weapon = weapon || 0;
     if (this.name == null)
@@ -68,6 +67,7 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
     this.time = time || null;
     this.width = 28;
     this.height = 32;
+    this.maxSpeed = 6;
     this.move = 0;
     this.moveX = 0;
     this.moveY = 0;
@@ -257,7 +257,7 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                 if (direction == 0) this.strafe = 0;
                 else if (this.strafe == 0)
                 {
-                    this.speed = this.maxSpeed;
+                    this.speed = 2;
                     if (this.menuItem === undefined) this.menuItem = 0;
                     if (direction < 0 && this.menuItem > 0 || direction > 0 && this.menuItem < this.menuItems - 1)
                     {
@@ -281,15 +281,6 @@ function ship (name, color, x, y, z, degrees, speed, maxSpeed, fire, weapon, wea
                 else if (!this.engine1Status || !this.engine2Status) this.strafe = (this.speed / 2) * direction;
                 else this.strafe = this.speed * direction;
             }
-        }
-    }
-
-    this.speeding = function (increment)
-    {
-        if ((this.maxSpeed > 1 && increment < 0) || (this.maxSpeed < 6 && increment > 0))
-        {
-            this.maxSpeed += increment;
-            maxSpeedHud (this.maxSpeed);
         }
     }
 
@@ -1060,7 +1051,6 @@ function playerDead (gameShip)
                 gameShips [gameShip].z = startPoints [startPoints.findIndex (startPoint => startPoint.ship == gameShips [gameShip].name)].z;
                 gameShips [gameShip].degrees = 0;
                 gameShips [gameShip].speed = 0;
-                gameShips [gameShip].maxSpeed = 1;
                 gameShips [gameShip].fire = false;
                 gameShips [gameShip].weapon = 0;
                 gameShips [gameShip].engine1 = 0;
@@ -1092,7 +1082,7 @@ function playerDead (gameShip)
                     if (newPoint < gameArea.centerPoint.y) ctx.translate (0, gameArea.centerPoint.y - newPoint);
                     else if (newPoint > gameArea.centerPoint.y) ctx.translate (0, -(newPoint - gameArea.centerPoint.y));
                     gameArea.centerPoint.y = newPoint;
-                    resetHuds (1, false, 100);
+                    resetHuds (false, 100);
                 }
                 if (gameMusic.active)
                 {

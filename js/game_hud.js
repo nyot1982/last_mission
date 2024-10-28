@@ -1,6 +1,5 @@
-function resetHuds (maxSpeed, enemies, vitals)
+function resetHuds (enemies, vitals)
 {
-    maxSpeedHud (maxSpeed);
     weaponHud (enemies);
     document.getElementById ("degreesHud").style.left = "-371.25px";
     document.getElementById ("zHud").innerHTML = "0 m";
@@ -11,7 +10,7 @@ function resetHuds (maxSpeed, enemies, vitals)
     vitalsHud ("fuel", vitals, color);
     vitalsHud ("ammo", vitals, color);
     vitalsHud ("shield", 0, "red");
-    if (maxSpeed == 0 && vitals == 0 && gameModes.findIndex (mode => mode.active == true) > -1) gameModeHud (-1);
+    if (vitals == 0 && gameModes.findIndex (mode => mode.active == true) > -1) gameModeHud (-1);
 }
 
 function scoreHud (gameShip)
@@ -90,25 +89,20 @@ function lifesHud (gameShip, ships)
     document.getElementById ("lifesHud").innerHTML += ' ';
 }
 
-function maxSpeedHud (maxSpeed)
-{
-    var speedHud = document.getElementById ("speedHud"),
-        speedElements = speedHud.getElementsByClassName ("speed");
-
-    for (var i = 0; i < speedElements.length; i++)
-    {
-        if (i <= maxSpeed) speedElements [i].setAttribute ("class", "speed active");
-        else speedElements [i].setAttribute ("class", "speed");
-    }
-}
-
 function speedHud ()
 {
     var gameShip = gameShips.findIndex (ship => ship.name == players [0].name),
         speedHud = document.getElementById ("speedHud"),
+        speedElements = speedHud.getElementsByClassName ("speed"),
         meterHud = speedHud.getElementById ("meterHud"),
         kphElement = speedHud.getElementById ("kph"),
-        speed = gameShip > -1 ? gameShips [gameShip].speed * 300 : 0;        
+        speed = gameShip > -1 ? gameShips [gameShip].speed * 300 : 0;
+
+    for (var i = 0; i < speedElements.length; i++)
+    {
+        if (i <= gameShips [gameShip].speed) speedElements [i].setAttribute ("class", "speed active");
+        else speedElements [i].setAttribute ("class", "speed");
+    }
 
     meterHud.setAttribute ("style", "transform: rotate(" + (gameShip > -1 ? gameShips [gameShip].speed * 30 : 0) + "deg);");
     kphElement.setAttribute ("class", "kph" + Math.floor (gameShip > -1 ? gameShips [gameShip].speed : 0));

@@ -178,10 +178,6 @@
                         </div>
                         <div id="gameTab-keyboard" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
-                                <p><span class="key">Q</span> Increase speed</p>
-                                <p><span class="key">A</span> Decrease speed</p>
-                            </div>
-                            <div class="col">
                                 <p><span class="fa fa-up key"></span> Move forward</p>
                                 <p><span class="fa fa-down key"></span> Move backward</p>
                             </div>
@@ -239,10 +235,6 @@
                             </div>
                         </div>
                         <div id="gameTab-gamepad" class="tabContent cont-cols margin-1 toggle">
-                            <div class="col">
-                                <p><span class="button4">R1</span> Increase speed</p>
-                                <p><span class="button3">L1</span> Decrease speed</p>
-                            </div>
                             <div class="col">
                                 <p><span class="fa fa-caret-up e1"></span><span class="button silver">LS</span> Move forward</p>
                                 <p><span class="button silver">LS</span> Move backward<span class="fa fa-caret-down e1"></span></p>
