@@ -302,6 +302,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
     {
         if (this.life > 0)
         {
+            var idShip = gameShips.findIndex (ship => ship.name == this.name);
             if (this.z > 0 || this.ground != "snow")
             {
                 if (this.turn != 0 || this.turnZ != 0)
@@ -400,12 +401,14 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 this.cockpitPath.rect (9, 13, 10, 1);
                 this.cockpitPath.rect (8, 14, 12, 1);
                 this.cockpitPath.rect (7, 15, 14, 14);
+                this.lightPath = new Path2D ();
+                this.lightPath.roundRect (21, 1, 8, 8, 2);
                 this.hook1Path = new Path2D ();
                 this.hook1Path.rect (5, 19, 2, 8);
                 this.hook2Path = new Path2D ();
                 this.hook2Path.rect (21, 19, 2, 8);
                 if (this.hook1Color == null || this.hook1Color == this.shipColor) this.cockpitPath.addPath (this.hook1Path);
-                if (this.hook2Color == null || this.hook2Color == this.shipColor) this.cockpitPath.addPath (this.hook2Path);            
+                if (this.hook2Color == null || this.hook2Color == this.shipColor) this.cockpitPath.addPath (this.hook2Path);
                 this.shipPath = new Path2D ();
                 this.shipPath.addPath (this.cockpitPath);
                 if (this.gunStatus)
@@ -532,6 +535,12 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                     else if (this.engine1Color != null) ctx.fillStyle = this.engine1Color;
                     else ctx.fillStyle = this.invColor;
                     ctx.fill (this.engine1Path);
+                    var gameShot = gameShots.findIndex (shot => ctx.isPointInPath (this.engine1Path, shot.x, shot.y));
+                    if (this.engine1Status && gameShot > -1 && this.z == 50)
+                    {
+                        this.engine1Status = false;
+                        shipHit (idShip, gameShot);
+                    }
                 }
                 if (this.engine2Status)
                 {   
@@ -539,6 +548,12 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                     else if (this.engine2Color != null) ctx.fillStyle = this.engine2Color;
                     else ctx.fillStyle = this.invColor;
                     ctx.fill (this.engine2Path);
+                    var gameShot = gameShots.findIndex (shot => ctx.isPointInPath (this.engine2Path, shot.x, shot.y));
+                    if (this.engine2Status && gameShot > -1 && this.z == 50)
+                    {
+                        this.engine2Status = false;
+                        shipHit (idShip, gameShot);
+                    }
                 }
                 if (this.gunStatus)
                 {
@@ -546,6 +561,12 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                     else if (this.gunColor != null) ctx.fillStyle = this.gunColor;
                     else ctx.fillStyle = this.varColor;
                     ctx.fill (this.gunPath);
+                    var gameShot = gameShots.findIndex (shot => ctx.isPointInPath (this.gunPath, shot.x, shot.y));
+                    if (this.gunStatus && gameShot > -1 && this.z == 50)
+                    {
+                        this.gunStatus = false;
+                        shipHit (idShip, gameShot);
+                    }
                 }
                 if (this.hook1Color != null && this.hook1Color != this.shipColor)
                 {
@@ -559,24 +580,8 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 }
                 ctx.fillStyle = this.pattern || this.shipColor;
                 ctx.fill (this.cockpitPath);
-                if (this.wing1Status)
-                {
-                    if (this.pattern) ctx.fillStyle = this.pattern;
-                    else if (this.wing1Color != null) ctx.fillStyle = this.wing1Color;
-                    else ctx.fillStyle = this.varColor;
-                    ctx.fill (this.wing1Path);
-                }
-                if (this.wing2Status)
-                {
-                    if (this.pattern) ctx.fillStyle = this.pattern;
-                    else if (this.wing2Color != null) ctx.fillStyle = this.wing2Color;
-                    else ctx.fillStyle = this.varColor;
-                    ctx.fill (this.wing2Path);
-                }
-                this.lightPath = new Path2D ();
-                this.lightPath.roundRect (21, 1, 8, 8, 2);
-                ctx.fillStyle = this.lightColor;
                 ctx.rotate (45 * Math.PI / 180);
+                ctx.fillStyle = this.lightColor;
                 ctx.shadowColor = "transparent";
                 ctx.lineWidth = 1;
                 if (this.lightStroke != null) ctx.strokeStyle = this.lightStroke;
@@ -585,6 +590,32 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 ctx.fill (this.lightPath);
                 ctx.stroke (this.lightPath);
                 ctx.rotate (-45 * Math.PI / 180);
+                if (this.wing1Status)
+                {
+                    if (this.pattern) ctx.fillStyle = this.pattern;
+                    else if (this.wing1Color != null) ctx.fillStyle = this.wing1Color;
+                    else ctx.fillStyle = this.varColor;
+                    ctx.fill (this.wing1Path);
+                    var gameShot = gameShots.findIndex (shot => ctx.isPointInPath (this.wing1Path, shot.x, shot.y));
+                    if (gameShot > -1 && this.z == 50)
+                    {
+                        this.wing1Status = false;
+                        shipHit (idShip, gameShot);
+                    }
+                }
+                if (this.wing2Status)
+                {
+                    if (this.pattern) ctx.fillStyle = this.pattern;
+                    else if (this.wing2Color != null) ctx.fillStyle = this.wing2Color;
+                    else ctx.fillStyle = this.varColor;
+                    ctx.fill (this.wing2Path);
+                    var gameShot = gameShots.findIndex (shot => ctx.isPointInPath (this.wing2Path, shot.x, shot.y));
+                    if (gameShot > -1 && this.z == 50)
+                    {
+                        this.wing2Status = false;
+                        shipHit (idShip, gameShot);
+                    }
+                }
                 if (this.shield > 0 && this.z == 50)
                 {
                     ctx.shadowColor = "#00000022";
@@ -600,62 +631,25 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                         this.shieldColor++;
                         if (this.shieldColor == this.shieldColors.length) this.shieldColor = 0;
                     }
+                    var gameShot = gameShots.findIndex (shot => ctx.isPointInPath (shot.x, shot.y));
+                    if (gameShot > -1)
+                    {
+                        gameShots [gameShot].hit = true;
+                        gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
+                        if (gameSound.active)
+                        {
+                            gameSound.sounds ["hit1"].stop ();
+                            gameSound.sounds ["hit1"].play ();
+                        }
+                        vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
+                        this.shield--;
+                        if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
+                    }
                 }
                 if (this.name)
                 {
-                    var idShip = gameShips.findIndex (ship => ship.name == this.name);
                     ctx.translate (-this.x, -this.y);
                     ctx.translate (this.width / 2, this.height / 2);
-                    for (var gameShot in gameShots)
-                    {
-                        if (this.name != gameShots [gameShot].name)
-                        {
-                            var dx = this.x - gameShots [gameShot].x;
-                            var dy = this.y - gameShots [gameShot].y;
-                            if (this.shield > 0 && Math.sqrt (dx * dx + dy * dy) < 30 && this.z == 50)
-                            {
-                                gameShots [gameShot].hit = true;
-                                gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
-                                if (gameSound.active)
-                                {
-                                    gameSound.sounds ["hit1"].stop ();
-                                    gameSound.sounds ["hit1"].play ();
-                                }
-                                vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
-                                this.shield--;
-                                if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
-                            }
-                            else
-                            {
-                                if (this.gunStatus && gameShots [gameShot].x >= this.x - 4 && gameShots [gameShot].x <= this.x + 4 && gameShots [gameShot].y >= this.y - 16 && gameShots [gameShot].y <= this.y - 4 && this.z == 50)
-                                {
-                                    this.gunStatus = false;
-                                    shipHit (idShip, gameShot);
-                                }
-                                else if (this.wing1Status && gameShots [gameShot].x >= this.x - 14 && gameShots [gameShot].x <= this.x - 8 && gameShots [gameShot].y >= this.y - 8 && gameShots [gameShot].y <= this.y + 16 && this.z == 50)
-                                {
-                                    this.wing1Status = false;
-                                    shipHit (idShip, gameShot);
-                                }
-                                else if (this.wing2Status && gameShots [gameShot].x >= this.x + 8 && gameShots [gameShot].x <= this.x + 14 && gameShots [gameShot].y >= this.y - 8 && gameShots [gameShot].y <= this.y + 16 && this.z == 50)
-                                {
-                                    this.wing2Status = false;
-                                    shipHit (idShip, gameShot);
-                                }
-                                else if (this.engine1Status && gameShots [gameShot].x >= this.x - 8 && gameShots [gameShot].x <= this.x - 2 && gameShots [gameShot].y >= this.y + 14 && gameShots [gameShot].y <= this.y + 16 && this.z == 50)
-                                {
-                                    this.engine1Status = false;
-                                    shipHit (idShip, gameShot);
-                                }
-                                else if (this.engine2Status && gameShots [gameShot].x >= this.x + 2 && gameShots [gameShot].x <= this.x + 8 && gameShots [gameShot].y >= this.y + 14 && gameShots [gameShot].y <= this.y + 16 && this.z == 50)
-                                {
-                                    this.engine2Status = false;
-                                    shipHit (idShip, gameShot);
-                                }
-                                else if (gameShots [gameShot].x >= this.x - 8 && gameShots [gameShot].x <= this.x + 8 && gameShots [gameShot].y >= this.y - 4 && gameShots [gameShot].y <= this.y + 14 && this.z == 50) shipHit (idShip, gameShot);
-                            }
-                        }
-                    }
                 }
                 ctx.restore ();
                 if (gameArea.frame % 50 == 0 && this.z > 0)
