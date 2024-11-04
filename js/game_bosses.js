@@ -38,11 +38,11 @@ function boss (type, x, y)
         this.engine2inc = true;
         this.engine3inc = true;
         this.engine4inc = true;
-        this.engine1Life = 0;
-        this.engine2Life = 0;
-        this.engine3Life = 0;
-        this.engine4Life = 0;
-        this.life = 100;    
+        this.engine1Life = 100;
+        this.engine2Life = 100;
+        this.engine3Life = 100;
+        this.engine4Life = 100;
+        this.life = 500;    
         this.speed = 2;
         this.moveX = 0;
         this.moveY = 0;

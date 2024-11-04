@@ -627,7 +627,7 @@ function gameLoadScreen (screen)
         gameGround.push (new digital ("8", "black", "yellow", 3599, 1740, 1, 0.075));
         if (gameModes.findIndex (mode => mode.active == true) < 2)
         {
-            enemies = 0;
+            enemies = 270;
             gameEnemies.push (new enemy (3, 150, 100, 0));
             gameEnemies.push (new enemy (3, 900, 200, 0));
             gameEnemies.push (new enemy (3, 200, 400, 0));
@@ -653,6 +653,10 @@ function gameLoadScreen (screen)
                 }
             }
         }
+        gameShots.push (new shot ("enemy999", 0, "black", 200, 200, 24, 3, 0, 0));
+        gameShots.push (new shot ("enemy999", 0, "black", 300, 100, 24, 3, 0, 0));
+        gameShots.push (new shot ("enemy999", 0, "black", 400, 200, 24, 3, 0, 0));
+        gameShots.push (new shot ("enemy999", 0, "black", 500, 100, 24, 3, 0, 0));
         fetchLoad ("highScoreHud");
         document.getElementById ("highScoreHud").style.height = "23px";
         document.getElementById ("scoreHud").innerHTML = '';

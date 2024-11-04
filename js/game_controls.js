@@ -69,7 +69,7 @@ function gamepadConnected (e)
 {
     if (e.gamepad.mapping == "standard") var newControl = "gamepad";
     else if (e.gamepad.id.toLowerCase ().includes ("joystick")) var newControl = "joystick";
-    if (document.getElementById (newControl).style.display == 'none') $('#' + newControl).fadeIn (1000);
+    if (newControl && document.getElementById (newControl).style.display == 'none') $('#' + newControl).fadeIn (1000);
     buttonsPressed [e.gamepad.index * 1] = [];
     if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl != newControl || gameScreen != "game") changeControl (newControl);
     if (gameAlert.length > 0)
