@@ -536,7 +536,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                     else ctx.fillStyle = this.invColor;
                     ctx.fill (this.engine1Path);
                     var gameShot = gameShots.findIndex (shot => ctx.isPointInPath (this.engine1Path, shot.x, shot.y));
-                    if (this.engine1Status && gameShot > -1 && this.z == 50)
+                    if (gameShot > -1 && this.z == 50)
                     {
                         this.engine1Status = false;
                         shipHit (idShip, gameShot);
@@ -549,7 +549,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                     else ctx.fillStyle = this.invColor;
                     ctx.fill (this.engine2Path);
                     var gameShot = gameShots.findIndex (shot => ctx.isPointInPath (this.engine2Path, shot.x, shot.y));
-                    if (this.engine2Status && gameShot > -1 && this.z == 50)
+                    if (gameShot > -1 && this.z == 50)
                     {
                         this.engine2Status = false;
                         shipHit (idShip, gameShot);
@@ -562,7 +562,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                     else ctx.fillStyle = this.varColor;
                     ctx.fill (this.gunPath);
                     var gameShot = gameShots.findIndex (shot => ctx.isPointInPath (this.gunPath, shot.x, shot.y));
-                    if (this.gunStatus && gameShot > -1 && this.z == 50)
+                    if (gameShot > -1 && this.z == 50)
                     {
                         this.gunStatus = false;
                         shipHit (idShip, gameShot);
@@ -580,6 +580,8 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 }
                 ctx.fillStyle = this.pattern || this.shipColor;
                 ctx.fill (this.cockpitPath);
+                var gameShot = gameShots.findIndex (shot => ctx.isPointInPath (this.cockpitPath, shot.x, shot.y));
+                if (gameShot > -1 && this.z == 50) shipHit (idShip, gameShot);
                 ctx.rotate (45 * Math.PI / 180);
                 ctx.fillStyle = this.lightColor;
                 ctx.shadowColor = "transparent";
