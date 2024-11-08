@@ -655,10 +655,6 @@ function gameLoadScreen (screen)
                 }
             }
         }
-        gameShots.push (new shot ("enemy999", 0, "black", 200, 200, 24, 3, 0, 0));
-        gameShots.push (new shot ("enemy999", 0, "black", 300, 100, 24, 3, 0, 0));
-        gameShots.push (new shot ("enemy999", 0, "black", 400, 200, 24, 3, 0, 0));
-        gameShots.push (new shot ("enemy999", 0, "black", 500, 100, 24, 3, 0, 0));
         fetchLoad ("highScoreHud");
         document.getElementById ("highScoreHud").style.height = "23px";
         document.getElementById ("scoreHud").innerHTML = '';
