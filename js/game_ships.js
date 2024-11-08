@@ -602,7 +602,17 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 ctx.fillStyle = this.pattern || this.shipColor;
                 ctx.fill (this.cockpitPath);
                 var gameShot = gameShots.findIndex (shot => ctx.isPointInStroke (this.cockpitPath, shot.x, shot.y) || ctx.isPointInPath (this.cockpitPath, shot.x, shot.y));
-                if (gameShot > -1 && this.z == 50) shipHit (idShip, gameShot);
+                if (gameShot > -1 && this.z == 50)
+                {
+                    /*ctx.beginPath ();
+                    ctx.lineWidth = 1;
+                    ctx.arc (gameShots [gameShot].x, gameShots [gameShot].y, 1, 0, 2 * Math.PI);
+                    ctx.fillStyle = "#000";
+                    ctx.fill ();
+                    ctx.strokeStyle = "#FFF";
+                    ctx.stroke ();*/
+                    shipHit (idShip, gameShot);
+                }
                 ctx.rotate (45 * Math.PI / 180);
                 ctx.fillStyle = this.lightColor;
                 ctx.shadowColor = "transparent";
@@ -619,7 +629,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                     else if (this.wing1Color != null) ctx.fillStyle = this.wing1Color;
                     else ctx.fillStyle = this.varColor;
                     ctx.fill (this.wing1Path);
-                    var gameShot = gameShots.findIndex (shot => ctx.isPointInStroke (this.wing1Path, shot.x, shot.y) || x.isPointInPath (this.wing1Path, shot.x, shot.y));
+                    var gameShot = gameShots.findIndex (shot => ctx.isPointInStroke (this.wing1Path, shot.x, shot.y) || ctx.isPointInPath (this.wing1Path, shot.x, shot.y));
                     if (gameShot > -1 && this.z == 50)
                     {
                         this.wing1Status = false;
