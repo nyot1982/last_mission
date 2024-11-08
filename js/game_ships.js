@@ -298,6 +298,27 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
         }
     }
 
+    this.shotsHit = function ()
+    {
+        for (var gameShot in gameShots)
+        {
+            ctx.save ();
+            ctx.translate (-(gameWidth / 2), -(gameHeight / 2));
+            ctx.translate (gameShots [gameShot].x - 4.5, gameShots [gameShot].y + this.width - 7);
+            ctx.rotate (this.radians);
+            ctx.rotate (gameShots [gameShot].radians);
+            ctx.fillStyle = "white";
+            for (var i = 0; i < gameShots [gameShot].width; i++)
+            {
+                for (var j = 0; j < gameShots [gameShot].height; j++)
+                {
+                    ctx.fillRect (j, i, 1, 1);
+                }
+            }
+            ctx.restore ();
+        }
+    }
+
     this.update = function ()
     {
         if (this.life > 0)
