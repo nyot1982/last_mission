@@ -320,6 +320,8 @@ var fpsMonitor = false,
             this.canvas.height = gameHeight;
             this.canvas.innerText = "Este navegador no soporta la etiqueta de canvas.";
             this.ctx = this.canvas.getContext ("2d");
+            this.ctx.imageSmoothingEnabled = true;
+            this.ctx.imageSmoothingQuality = "high";
             document.getElementsByTagName ("article")[0].insertBefore (this.canvas, document.getElementsByTagName ("article")[0].childNodes [0]);
             this.canvas.setAttribute ("onmousemove", "javascript: mouseMove (event);");
             this.canvas.setAttribute ("onmousedown", "javascript: mouseDown (event);");
