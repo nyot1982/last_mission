@@ -329,7 +329,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                     x: gameShots [gameShot].x,
                     y: gameShots [gameShot].y
                 }
-                /*if (gameShips [idShip].name == players [0].name)
+                if (gameShips [idShip].name == players [0].name)
                 {
                     if (gameArea.centerPoint.x > gameWidth / 2 && gameArea.centerPoint.x < gameWidth * 3 + gameWidth / 2) shot.x -= gameArea.centerPoint.x - gameWidth / 2;
                     if (gameArea.centerPoint.y > gameHeight / 2 && gameArea.centerPoint.y < gameHeight * 3 + gameHeight / 2) shot.y -= gameArea.centerPoint.y - gameHeight / 2;
@@ -338,7 +338,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 {
                     if (gameArea.centerPoint.x > gameWidth / 2 && gameArea.centerPoint.x < gameWidth * 3 + gameWidth / 2) shot.x += gameArea.centerPoint.x - gameWidth / 2;
                     if (gameArea.centerPoint.y > gameHeight / 2 && gameArea.centerPoint.y < gameHeight * 3 + gameHeight / 2) shot.y += gameArea.centerPoint.y - gameHeight / 2;
-                }*/
+                }
                 if (ctx.isPointInStroke (this.paths [path], shot.x, shot.y) || ctx.isPointInPath (this.paths [path], shot.x, shot.y))
                 {
                     if (this.status [path] == true) this.status [path] = false;
