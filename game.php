@@ -41,7 +41,7 @@
                     echo '<script type="text/javascript">';
                         while ($skin = $resultado->fetch_assoc ())
                         {
-                            echo 'playerSkins.push ({name: "'.$skin ['name'].'", shipColor: "'.$skin ['ship_color'].'", gunColor: "'.$skin ['gun_color'].'", hook1Color: "'.$skin ['hook1_color'].'", hook2Color: "'.$skin ['hook2_color'].'", wing1Color: "'.$skin ['wing1_color'].'", wing2Color: "'.$skin ['wing2_color'].'", engine1Color: "'.$skin ['engine1_color'].'", engine2Color: "'.$skin ['engine2_color'].'", shipStroke: "'.$skin ['ship_stroke'].'", engine1Stroke: "'.$skin ['engine1_stroke'].'", engine2Stroke: "'.$skin ['engine2_stroke'].'", lightStroke: "'.$skin ['light_stroke'].'"}); ';
+                            echo 'playerSkins.push ({name: "'.$skin ['name'].'", shipFill: "'.$skin ['ship_color'].'", gunColor: "'.$skin ['gun_color'].'", hook1Color: "'.$skin ['hook1_color'].'", hook2Color: "'.$skin ['hook2_color'].'", wing1Color: "'.$skin ['wing1_color'].'", wing2Color: "'.$skin ['wing2_color'].'", engine1Color: "'.$skin ['engine1_color'].'", engine2Color: "'.$skin ['engine2_color'].'", shipStroke: "'.$skin ['ship_stroke'].'", engine1Stroke: "'.$skin ['engine1_stroke'].'", engine2Stroke: "'.$skin ['engine2_stroke'].'", lightStroke: "'.$skin ['light_stroke'].'"}); ';
                             if (file_exists ('skins/'.$skin ['id'].'.png')) echo 'playerSkins [playerSkins.length - 1].image = new Image (); playerSkins [playerSkins.length - 1].image.src = "skins/'.$skin ['id'].'.png"; ';
                             else echo 'playerSkins [playerSkins.length - 1].image = null; ';
                         }

@@ -242,11 +242,11 @@ function wssSend ()
                 ammo: gameShips [gameShip].ammo,
                 shield: gameShips [gameShip].shield,
                 score: gameShips [gameShip].score,
-                gunStatus: gameShips [gameShip].gunStatus,
-                wing1Status: gameShips [gameShip].wing1Status,
-                wing2Status: gameShips [gameShip].wing2Status,
-                engine1Status: gameShips [gameShip].engine1Status,
-                engine2Status: gameShips [gameShip].engine2Status,
+                gunStatus: gameShips [gameShip].status.gun,
+                wing1Status: gameShips [gameShip].status.wing1,
+                wing2Status: gameShips [gameShip].status.wing2,
+                engine1Status: gameShips [gameShip].status.engine1,
+                engine2Status: gameShips [gameShip].status.engine2,
                 time: gameShips [gameShip].time
             }
         ));

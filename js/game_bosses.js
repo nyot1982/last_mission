@@ -196,8 +196,8 @@ function boss (type, x, y)
                 ctx.translate (this.x, this.y);
                 ctx.translate (-(this.width / 2), -(this.height / 2));
                 ctx.lineWidth = 0;
-                this.engine1Path = new Path2D ();
-                this.engine1Path.rect (8, 21, 7, 28);
+                this.paths.engine1 = new Path2D ();
+                this.paths.engine1.rect (8, 21, 7, 28);
                 this.canvas = document.createElement ("canvas");
                 this.ctx = this.canvas.getContext ("2d");
                 this.canvas.width = 7;
@@ -215,9 +215,9 @@ function boss (type, x, y)
                 }
                 this.pattern = ctx.createPattern (this.canvas, "repeat");
                 ctx.fillStyle = this.pattern;
-                ctx.fill (this.engine1Path);
-                this.engine2Path = new Path2D ();
-                this.engine2Path.rect (21, 8, 28, 7);
+                ctx.fill (this.paths.engine1);
+                this.paths.engine2 = new Path2D ();
+                this.paths.engine2.rect (21, 8, 28, 7);
                 this.ctx = this.canvas.getContext ("2d");
                 this.canvas.width = 28;
                 this.canvas.height = 7;
@@ -230,14 +230,14 @@ function boss (type, x, y)
                 if (this.engine2Life == 0) this.ctx.clearRect (0, 4, 7, 3);
                 this.pattern = ctx.createPattern (this.canvas, "repeat");
                 ctx.fillStyle = this.pattern;
-                ctx.fill (this.engine2Path);
-                this.bossPath = new Path2D ();
-                this.bossPath.rect (15, 15, 40, 40);
+                ctx.fill (this.paths.engine2);
+                this.paths.boss = new Path2D ();
+                this.paths.boss.rect (15, 15, 40, 40);
                 ctx.shadowColor = "#00000066";
                 ctx.fillStyle = "#8C3C94";
-                ctx.fill (this.bossPath);
-                this.engine3Path = new Path2D ();
-                this.engine3Path.rect (55, 21, 7, 28);
+                ctx.fill (this.paths.boss);
+                this.paths.engine3 = new Path2D ();
+                this.paths.engine3.rect (55, 21, 7, 28);
                 this.ctx = this.canvas.getContext ("2d");
                 this.canvas.width = 7;
                 this.canvas.height = 28;
@@ -250,9 +250,9 @@ function boss (type, x, y)
                 if (this.engine3Life == 0) this.ctx.clearRect (0, 4, 7, 3);
                 this.pattern = ctx.createPattern (this.canvas, "repeat");
                 ctx.fillStyle = this.pattern;
-                ctx.fill (this.engine3Path);
-                this.engine4Path = new Path2D ();
-                this.engine4Path.rect (21, 55, 28, 7);
+                ctx.fill (this.paths.engine3);
+                this.paths.engine4 = new Path2D ();
+                this.paths.engine4.rect (21, 55, 28, 7);
                 this.ctx = this.canvas.getContext ("2d");
                 this.canvas.width = 28;
                 this.canvas.height = 7;
@@ -265,7 +265,7 @@ function boss (type, x, y)
                 if (this.engine4Life == 0) this.ctx.clearRect (7, 0, 7, 3);
                 this.pattern = ctx.createPattern (this.canvas, "repeat");
                 ctx.fillStyle = this.pattern;
-                ctx.fill (this.engine4Path);
+                ctx.fill (this.paths.engine4);
                 ctx.shadowColor = "transparent";
                 ctx.fillStyle = "#4A4A4A";
                 ctx.fillRect (22, 22, 26, 26);

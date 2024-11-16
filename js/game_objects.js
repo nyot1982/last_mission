@@ -531,8 +531,8 @@ function component (type, src, color, x, y, width, height, max, control)
         }
         if (this.rollover != "")
         {
-            if (ctx.isPointInPath (mouse.x, mouse.y)) mouse.rollover = new component ("rollover", this.rollover);
-            else if (!ctx.isPointInPath (mouse.x, mouse.y) && mouse.rollover != null && mouse.rollover.src == this.rollover) mouse.rollover = null;
+            if (ctx.isPointInStroke (mouse.x, mouse.y) || ctx.isPointInPath (mouse.x, mouse.y)) mouse.rollover = new component ("rollover", this.rollover);
+            else if (!ctx.isPointInStroke (mouse.x, mouse.y) && !ctx.isPointInPath (mouse.x, mouse.y) && mouse.rollover != null && mouse.rollover.src == this.rollover) mouse.rollover = null;
         }
         if (gameModal == "menu" || gameScreen == "menu")
         {
