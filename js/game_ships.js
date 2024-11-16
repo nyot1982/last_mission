@@ -97,9 +97,10 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
             engine1Stroke: null,
             engine2Stroke: null,
             lightStroke: null,
-            skin: null,
-            pattern: null,
-            shield:
+            negative: null,
+            near: null,
+            shield: 0,
+            shields:
             [
                 "#813338",
                 "#8E3C97",
@@ -112,9 +113,10 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 "#EFF373",
                 "#73CFCE",
                 "#A53C9A"
-            ]
+            ],
+            skin: null,
+            pattern: null
         }
-        this.shieldColor = 0;
         if (this.colors.shipFill.substring (0, 4) == "skin")
         {
             this.colors.skin = this.colors.shipFill.substring (4, this.colors.shipFill.length);
@@ -135,13 +137,13 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 this.colors.lightStroke = playerSkins [this.colors.skin].lightStroke;
             }
         }
-        if (tinycolor (this.colors.shipFill).isDark ()) this.varColor = tinycolor (this.colors.shipFill).lighten (15).toHexString ();
-        else this.varColor = tinycolor (this.colors.shipFill).darken (15).toHexString ();
-        this.invColor = tinycolor (this.colors.shipFill).toRgb ();
-        this.invColor.r = 255 - this.invColor.r;
-        this.invColor.g = 255 - this.invColor.g;
-        this.invColor.b = 255 - this.invColor.b;
-        this.invColor = tinycolor (this.invColor).toHexString ();
+        if (tinycolor (this.colors.shipFill).isDark ()) this.colors.near = tinycolor (this.colors.shipFill).lighten (15).toHexString ();
+        else this.colors.near = tinycolor (this.colors.shipFill).darken (15).toHexString ();
+        this.colors.negative = tinycolor (this.colors.shipFill).toRgb ();
+        this.colors.negative.r = 255 - this.colors.negative.r;
+        this.colors.negative.g = 255 - this.colors.negative.g;
+        this.colors.negative.b = 255 - this.colors.negative.b;
+        this.colors.negative = tinycolor (this.colors.negative).toHexString ();
     }
     this.changeColor (color);
 
@@ -497,7 +499,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 }
                 ctx.lineWidth = 2;
                 if (this.colors.shipStroke != null) ctx.strokeStyle = this.colors.shipStroke;
-                else ctx.strokeStyle = this.invColor + "CC";
+                else ctx.strokeStyle = this.colors.negative + "CC";
                 ctx.stroke (this.paths.ship);
                 if (this.status.engine1 && this.colors.engine1Fill == null && this.colors.skin == null)
                 {
@@ -582,7 +584,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 {
                     if (this.colors.pattern) ctx.fillStyle = this.colors.shipFill;
                     else if (this.colors.engine1Fill != null) ctx.fillStyle = this.colors.engine1Fill;
-                    else ctx.fillStyle = this.invColor;
+                    else ctx.fillStyle = this.colors.negative;
                     ctx.fill (this.paths.engine1);
                     this.shotsHit = ("engine1");
                     /*var gameShot = gameShots.findIndex (shot => ctx.isPointInStroke (this.paths.engine1, shot.x, shot.y) || ctx.isPointInPath (this.paths.engine1, shot.x, shot.y));
@@ -596,7 +598,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 {   
                     if (this.colors.pattern) ctx.fillStyle = this.colors.shipFill;
                     else if (this.colors.engine2Fill != null) ctx.fillStyle = this.colors.engine2Fill;
-                    else ctx.fillStyle = this.invColor;
+                    else ctx.fillStyle = this.colors.negative;
                     ctx.fill (this.paths.engine2);
                     this.shotsHit = ("engine2");
                     /*var gameShot = gameShots.findIndex (shot => ctx.isPointInStroke (this.paths.engine2, shot.x, shot.y) || ctx.isPointInPath (this.paths.engine2, shot.x, shot.y));
@@ -610,7 +612,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 {
                     if (this.colors.pattern) ctx.fillStyle = this.colors.pattern;
                     else if (this.colors.gunFill != null) ctx.fillStyle = this.colors.gunFill;
-                    else ctx.fillStyle = this.varColor;
+                    else ctx.fillStyle = this.colors.near;
                     ctx.fill (this.paths.gun);
                     this.shotsHit = ("gun");
                     /*var gameShot = gameShots.findIndex (shot => ctx.isPointInStroke (this.paths.gun, shot.x, shot.y) || ctx.isPointInPath (this.paths.gun, shot.x, shot.y));
@@ -640,8 +642,8 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 ctx.shadowColor = "transparent";
                 ctx.lineWidth = 1;
                 if (this.colors.lightStroke != null) ctx.strokeStyle = this.colors.lightStroke;
-                else if (this.colors.pattern) ctx.strokeStyle = this.invColor + "66";
-                else ctx.strokeStyle = this.varColor;
+                else if (this.colors.pattern) ctx.strokeStyle = this.colors.negative + "66";
+                else ctx.strokeStyle = this.colors.near;
                 ctx.fill (this.paths.light);
                 ctx.stroke (this.paths.light);
                 ctx.rotate (-45 * Math.PI / 180);
@@ -649,7 +651,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 {
                     if (this.colors.pattern) ctx.fillStyle = this.colors.pattern;
                     else if (this.colors.wing1Fill != null) ctx.fillStyle = this.colors.wing1Fill;
-                    else ctx.fillStyle = this.varColor;
+                    else ctx.fillStyle = this.colors.near;
                     ctx.fill (this.paths.wing1);
                     this.shotsHit = ("wing1");
                     /*var gameShot = gameShots.findIndex (shot => ctx.isPointInStroke (this.paths.wing1, shot.x, shot.y) || ctx.isPointInPath (this.paths.wing1, shot.x, shot.y));
@@ -663,7 +665,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 {
                     if (this.colors.pattern) ctx.fillStyle = this.colors.pattern;
                     else if (this.colors.wing2Fill != null) ctx.fillStyle = this.colors.wing2Fill;
-                    else ctx.fillStyle = this.varColor;
+                    else ctx.fillStyle = this.colors.near;
                     ctx.fill (this.paths.wing2);
                     this.shotsHit = ("wing2");
                     /*var gameShot = gameShots.findIndex (shot => ctx.isPointInStroke (this.paths.wing2, shot.x, shot.y) || ctx.isPointInPath (this.paths.wing2, shot.x, shot.y));
@@ -679,14 +681,14 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                     ctx.beginPath ();
                     ctx.lineWidth = 4;
                     ctx.arc (14, 19, 30, 0, 2 * Math.PI);
-                    ctx.strokeStyle = this.colors.shield [this.shieldColor] + "FF";
-                    ctx.fillStyle = this.colors.shield [this.shieldColor] + "66";
+                    ctx.strokeStyle = this.colors.shields [this.colors.shield] + "FF";
+                    ctx.fillStyle = this.colors.shields [this.colors.shield] + "66";
                     ctx.stroke ();
                     ctx.fill ();
                     if (gameArea.frame % 5 == 0)
                     {
-                        this.shieldColor++;
-                        if (this.shieldColor == this.colors.shield.length) this.shieldColor = 0;
+                        this.colors.shield++;
+                        if (this.colors.shield == this.colors.shields.length) this.colors.shield = 0;
                     }
                     var gameShot = gameShots.findIndex (shot => ctx.isPointInStroke (shot.x, shot.y) || ctx.isPointInPath (shot.x, shot.y));
                     if (gameShot > -1)
@@ -731,7 +733,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                     ctx.textBaseline = "middle";
                     var textMeasure = ctx.measureText (this.name);
                     ctx.rect (this.x - textMeasure.width / 2 - 2, this.y - this.height / 2 - this.nameOffset, textMeasure.width + 4, 10);
-                    ctx.fillStyle = this.invColor;
+                    ctx.fillStyle = this.colors.negative;
                     ctx.fill ();
                     ctx.fillStyle = this.colors.shipFill;
                     ctx.fillText (this.name, this.x, this.y - this.height / 2 - (this.nameOffset - 6));
@@ -1061,7 +1063,7 @@ function shipHit (gameShip, gameShot)
         {
             if (gameControl == "gamepad") vibrate (300, players [players.findIndex (player => player.name == gameShips [gameShip].name)].control);
             gameShips [gameShip].score += 100;
-            if (gameShips.length > 1) fetchLoad ("scoreHud", "player=" + gameShips [gameShip].name + "&shipFill=" + gameShips [gameShip].shipFill + "&invColor=" + invColor + (gameShips [gameShip].colors.skin ? "&skin=" + gameShips [gameShip].colors.skin : ""));
+            if (gameShips.length > 1) fetchLoad ("scoreHud", "player=" + gameShips [gameShip].name + "&shipFill=" + gameShips [gameShip].shipFill + "&colors.negative=" + colors.negative + (gameShips [gameShip].colors.skin ? "&skin=" + gameShips [gameShip].colors.skin : ""));
             //document.getElementById ("score" + gameShips [gameShip].name).innerHTML = gameShips [gameShip].score;
             else document.getElementById ("scoreHud").innerHTML = gameShips [gameShip].score;
         }

@@ -674,11 +674,11 @@ function gameLoadScreen (screen)
                 else
                 {
                     document.getElementById ("scoreHud").style.lineHeight = null;
-                    var invColor = tinycolor (players [i].color).toRgb ();
-                    invColor.r = 255 - invColor.r;
-                    invColor.g = 255 - invColor.g;
-                    invColor.b = 255 - invColor.b;
-                    invColor = tinycolor (invColor).toHexString ();
+                    var negative = tinycolor (players [i].color).toRgb ();
+                    negative.r = 255 - negative.r;
+                    negative.g = 255 - negative.g;
+                    negative.b = 255 - negative.b;
+                    negative = tinycolor (negative).toHexString ();
                     scoreHud (gameShips.length - 1);
                     lifesHud (gameShips.length - 1, 5);
                 }
