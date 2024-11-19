@@ -319,30 +319,33 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
 
     this.shotsHit = function (path)
     {
-        var idShip = gameShips.findIndex (ship => ship.name == this.name);
-        for (var gameShot in gameShots)
+        if (gameScreen == "game" && gameModal == null && this.shield == 0 && this.z == 50)
         {
-            if (this.name != gameShots [gameShot].name && this.z == 50)
+            var idShip = gameShips.findIndex (ship => ship.name == this.name);
+            for (var gameShot in gameShots)
             {
-                var shot = 
+                if (this.name != gameShots [gameShot].name && this.z == 50)
                 {
-                    x: gameShots [gameShot].x,
-                    y: gameShots [gameShot].y
-                }
-                if (gameShips [idShip].name == players [0].name)
-                {
-                    if (gameArea.centerPoint.x > gameWidth / 2 && gameArea.centerPoint.x < gameWidth * 3 + gameWidth / 2) shot.x -= gameArea.centerPoint.x - gameWidth / 2;
-                    if (gameArea.centerPoint.y > gameHeight / 2 && gameArea.centerPoint.y < gameHeight * 3 + gameHeight / 2) shot.y -= gameArea.centerPoint.y - gameHeight / 2;
-                }
-                else if (gameShots [gameShot].name == players [0].name)
-                {
-                    if (gameArea.centerPoint.x > gameWidth / 2 && gameArea.centerPoint.x < gameWidth * 3 + gameWidth / 2) shot.x += gameArea.centerPoint.x - gameWidth / 2;
-                    if (gameArea.centerPoint.y > gameHeight / 2 && gameArea.centerPoint.y < gameHeight * 3 + gameHeight / 2) shot.y += gameArea.centerPoint.y - gameHeight / 2;
-                }
-                if (ctx.isPointInStroke (this.paths [path], shot.x, shot.y) || ctx.isPointInPath (this.paths [path], shot.x, shot.y))
-                {
-                    if (this.status [path] == true) this.status [path] = false;
-                    shipHit (idShip, gameShot);
+                    var shot = 
+                    {
+                        x: gameShots [gameShot].x,
+                        y: gameShots [gameShot].y
+                    }
+                    if (gameShips [idShip].name == players [0].name)
+                    {
+                        if (gameArea.centerPoint.x > gameWidth / 2 && gameArea.centerPoint.x < gameWidth * 3 + gameWidth / 2) shot.x -= gameArea.centerPoint.x - gameWidth / 2;
+                        if (gameArea.centerPoint.y > gameHeight / 2 && gameArea.centerPoint.y < gameHeight * 3 + gameHeight / 2) shot.y -= gameArea.centerPoint.y - gameHeight / 2;
+                    }
+                    else if (gameShots [gameShot].name == players [0].name)
+                    {
+                        if (gameArea.centerPoint.x > gameWidth / 2 && gameArea.centerPoint.x < gameWidth * 3 + gameWidth / 2) shot.x += gameArea.centerPoint.x - gameWidth / 2;
+                        if (gameArea.centerPoint.y > gameHeight / 2 && gameArea.centerPoint.y < gameHeight * 3 + gameHeight / 2) shot.y += gameArea.centerPoint.y - gameHeight / 2;
+                    }
+                    if (ctx.isPointInStroke (this.paths [path], shot.x, shot.y) || ctx.isPointInPath (this.paths [path], shot.x, shot.y))
+                    {
+                        if (this.status [path] == true) this.status [path] = false;
+                        shipHit (idShip, gameShot);
+                    }
                 }
             }
         }
