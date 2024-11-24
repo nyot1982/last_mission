@@ -1036,7 +1036,7 @@ function shipHit (gameShip, gameShot)
         {
             if (gameControl == "gamepad") vibrate (300, players [players.findIndex (player => player.name == gameShips [gameShip].name)].control);
             gameShips [gameShip].score += 100;
-            if (gameShips.length > 1) fetchLoad ("scoreHud", "player=" + gameShips [gameShip].name + "&shipFill=" + gameShips [gameShip].shipFill + "&colors.negative=" + colors.negative + (gameShips [gameShip].colors.skin ? "&skin=" + gameShips [gameShip].colors.skin : ""));
+            if (gameShips.length > 1) fetchLoad ("scoreHud", "player=" + gameShips [gameShip].name + "&shipFill=" + gameShips [gameShip].colors.shipFill + "&colors.negative=" + colors.negative + (gameShips [gameShip].colors.skin ? "&skin=" + gameShips [gameShip].colors.skin : ""));
             //document.getElementById ("score" + gameShips [gameShip].name).innerHTML = gameShips [gameShip].score;
             else document.getElementById ("scoreHud").innerHTML = gameShips [gameShip].score;
         }
