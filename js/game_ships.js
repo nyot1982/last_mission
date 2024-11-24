@@ -1,11 +1,12 @@
-function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, time)
+function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, time)
 {
     this.name = name || null;
     this.x = x || gameWidth / 2;
     this.y = y || gameHeight / 2;
     this.z = z || 0;
     this.heading = heading || 0;
-    this.speed = speed || 0;
+    this.moveSpeed = moveSpeed || 0;
+    this.strafeSpeed = strafeSpeed || 0;
     this.fire = fire || false;
     this.weapon = weapon || 0;
     if (this.name == null)
@@ -72,8 +73,6 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
     this.height = 32;
     this.maxSpeed = 6;
     this.move = 0;
-    this.moveX = 0;
-    this.moveY = 0;
     this.moveZ = 0;
     this.strafe = 0;
     this.turn = 0;
@@ -220,48 +219,20 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
             if (!this.status.engine1 && !this.status.engine2) direction = 0;
             if (direction < 0)
             {
-                if (this.speed <= 0) this.move = -0.5;
-                else if (this.speed > 0) this.move = -1;
+                if (this.moveSpeed <= 0) this.move = -0.5;
+                else if (this.moveSpeed > 0) this.move = -1;
             }
             else if (direction > 0)
             {
-                if (this.speed < 0) this.move = 1;
-                else if (this.speed >= 0) this.move = 0.5;
+                if (this.moveSpeed < 0) this.move = 1;
+                else if (this.moveSpeed >= 0) this.move = 0.5;
             }
             else if (direction == 0)
             {
-                if (this.speed < 0) this.move = 0.5;
-                else if (this.speed > 0) this.move = -0.5;
-                else if (this.speed == 0) this.move = 0; 
+                if (this.moveSpeed < 0) this.move = 0.5;
+                else if (this.moveSpeed > 0) this.move = -0.5;
+                else if (this.moveSpeed == 0) this.move = 0; 
             }
-        }
-    }
-
-    this.movingX = function (move)
-    {
-        if (gameScreen == "game" && this.z > 0)
-        {
-            this.engine1 = 0;
-            this.engine2 = 0;
-            this.engine1inc = true;
-            this.engine2inc = true;
-            if (move == 0 || (!this.status.engine1 && !this.status.engine2)) this.moveX = 0;
-            else if (!this.status.engine1 || !this.status.engine2) this.moveX = (this.speed / 2) * move;
-            else this.moveX = this.speed * move;
-        }
-    }
-
-    this.movingY = function (move)
-    {
-        if (gameScreen == "game" && this.z > 0)
-        {
-            this.engine1 = 0;
-            this.engine2 = 0;
-            this.engine1inc = true;
-            this.engine2inc = true;
-            if (move == 0 || (!this.status.engine1 && !this.status.engine2)) this.moveY = 0;
-            else if (!this.status.engine1 || !this.status.engine2) this.moveY = -(this.speed / 2 * move);
-            else this.moveY = -(this.speed * move);
         }
     }
 
@@ -282,7 +253,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
     {
         if (this.z > 0)
         {
-            if (gameModal == "menu" || gameScreen == "menu")
+            if (gameScreen == "menu" || gameModal == "menu")
             {
                 if (gameScreen == "menu") this.menuItems = 8;
                 else if (gameModal == "menu" && gameModes.findIndex (mode => mode.active == true) < 3) this.menuItems = 5;
@@ -290,29 +261,43 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 if (direction == 0) this.strafe = 0;
                 else if (this.strafe == 0)
                 {
-                    this.speed = 2;
+                    this.strafeSpeed = 2;
                     if (this.menuItem === undefined) this.menuItem = 0;
                     if (direction < 0 && this.menuItem > 0 || direction > 0 && this.menuItem < this.menuItems - 1)
                     {
                         this.endStrafe = this.y + 25 * direction;
-                        this.strafe = this.speed * direction;
+                        this.strafe = this.strafeSpeed * direction;
                         this.menuItem += direction;
                     }
                     else
                     {
-                        this.speed = 6;
+                        this.strafeSpeed = 6;
                         this.endStrafe = this.y + (this.menuItems - 1) * 25 * direction * -1;
-                        this.strafe = this.speed * direction * -1;
+                        this.strafe = this.strafeSpeed * direction * -1;
                         if (this.menuItem == 0) this.menuItem = this.menuItems - 1;
                         else if (this.menuItem == this.menuItems - 1) this.menuItem = 0;
                     }
                 }
             }
-            else
+            else if (gameScreen == "game" && gameModal == null)
             {
-                if (direction == 0 || (!this.status.engine1 && !this.status.engine2)) this.strafe = 0;
-                else if (!this.status.engine1 || !this.status.engine2) this.strafe = (this.speed / 2) * direction;
-                else this.strafe = this.speed * direction;
+                if (!this.status.engine1 && !this.status.engine2) direction = 0;
+                if (direction < 0)
+                {
+                    if (this.strafeSpeed <= 0) this.strafe = -0.5;
+                    else if (this.strafeSpeed > 0) this.strafe = -1;
+                }
+                else if (direction > 0)
+                {
+                    if (this.strafeSpeed < 0) this.strafe = 1;
+                    else if (this.strafeSpeed >= 0) this.strafe = 0.5;
+                }
+                else if (direction == 0)
+                {
+                    if (this.strafeSpeed < 0) this.strafe = 0.5;
+                    else if (this.strafeSpeed > 0) this.strafe = -0.5;
+                    else if (this.strafeSpeed == 0) this.strafe = 0; 
+                }
             }
         }
     }
@@ -365,42 +350,12 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                     if (gameScreen == "game" && this.name == players [0].name) document.getElementById ("headingHud").style = "left: " + (-371.25 - this.heading) + "px;";
                 }
                 this.radians = this.heading * Math.PI / 180;
-                if (gameScreen == "game" && gameModal == null)
+                if (gameScreen == "menu" || gameModal == "menu")
                 {
-                    if (this.moveX != 0) this.x += this.moveX;
-                    if (this.moveY != 0) this.y -= this.moveY;
-                    if (this.speed != 0 || this.move != 0)
+                    if (this.strafe != 0)
                     {
-                        if (this.speed == 0 && this.move != 0 || this.speed != 0 && Math.abs (this.speed) <= this.maxSpeed)
-                        {
-                            this.speed = this.speed * 10 + this.move;
-                            this.speed /= 10;
-                            if (this.speed < 0 && this.move < 0 && this.speed <= -this.maxSpeed)
-                            {
-                                this.speed = -this.maxSpeed;
-                                this.move = 0;
-                            }
-                            else if (this.speed > 0 && this.move > 0 && this.speed >= this.maxSpeed)
-                            {
-                                this.speed = this.maxSpeed;
-                                this.move = 0;
-                            }
-                            else if (this.speed <= 0 && this.move == -1) this.move = -0.5;
-                            else if (this.speed >= 0 && this.move == 1) this.move = 0.5;
-                            else if (this.speed == 0) this.move = 0;
-                        }
-                        var moveX = (!this.status.engine1 || !this.status.engine2 ? this.speed / 2 : this.speed) * Math.sin (this.radians);
-                        var moveY = (!this.status.engine1 || !this.status.engine2 ? this.speed / 2 : this.speed) * Math.cos (this.radians);
-                        this.x += moveX;
-                        this.y -= moveY;
-                    }
-                }
-                if (this.strafe != 0)
-                {
-                    this.x += this.strafe * Math.sin ((this.heading + 90) * Math.PI / 180);
-                    this.y -= this.strafe * Math.cos ((this.heading + 90) * Math.PI / 180);
-                    if (gameModal == "menu" || gameScreen == "menu")
-                    {
+                        this.x += this.strafe * Math.sin ((this.heading + 90) * Math.PI / 180);
+                        this.y -= this.strafe * Math.cos ((this.heading + 90) * Math.PI / 180);    
                         if (this.y > this.endStrafe && this.strafe > 0 || this.y < this.endStrafe && this.strafe < 0)
                         {
                             this.y = this.endStrafe;
@@ -408,7 +363,7 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                             else if (this.y < this.endStrafe && this.menuItem >= this.menuItems) this.menuItem = this.menuItems - 1;
                             this.endStrafe = null;
                             this.strafe = 0;
-                            this.speed = 0;
+                            this.strafeSpeed = 0;
                             this.engine1max = 4;
                             this.engine2max = 4;
                             if (keysPressed.includes (38)) this.strafing (-1);
@@ -427,6 +382,53 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                                 }
                             }
                         }
+                    }
+                }
+                else if (gameScreen == "game" && gameModal == null)
+                {
+                    if (this.moveSpeed == 0 && this.move != 0 || this.moveSpeed != 0 && Math.abs (this.moveSpeed) <= this.maxSpeed)
+                    {
+                        this.moveSpeed = this.moveSpeed * 10 + this.move;
+                        this.moveSpeed /= 10;
+                        if (this.moveSpeed < 0 && this.move < 0 && this.moveSpeed <= -this.maxSpeed)
+                        {
+                            this.moveSpeed = -this.maxSpeed;
+                            this.move = 0;
+                        }
+                        else if (this.moveSpeed > 0 && this.move > 0 && this.moveSpeed >= this.maxSpeed)
+                        {
+                            this.moveSpeed = this.maxSpeed;
+                            this.move = 0;
+                        }
+                        else if (this.moveSpeed <= 0 && this.move == -1) this.move = -0.5;
+                        else if (this.moveSpeed >= 0 && this.move == 1) this.move = 0.5;
+                        else if (this.moveSpeed == 0) this.move = 0;
+                        var moveX = (!this.status.engine1 || !this.status.engine2 ? this.moveSpeed / 2 : this.moveSpeed) * Math.sin (this.radians);
+                        var moveY = (!this.status.engine1 || !this.status.engine2 ? this.moveSpeed / 2 : this.moveSpeed) * Math.cos (this.radians);
+                        this.x += moveX;
+                        this.y -= moveY;
+                    }
+                    if (this.strafeSpeed == 0 && this.strafe != 0 || this.strafeSpeed != 0 && Math.abs (this.strafeSpeed) <= this.maxSpeed)
+                    {
+                        this.strafeSpeed = this.strafeSpeed * 10 + this.strafe;
+                        this.strafeSpeed /= 10;
+                        if (this.strafeSpeed < 0 && this.strafe < 0 && this.strafeSpeed <= -this.maxSpeed)
+                        {
+                            this.strafeSpeed = -this.maxSpeed;
+                            this.strafe = 0;
+                        }
+                        else if (this.strafeSpeed > 0 && this.strafe > 0 && this.strafeSpeed >= this.maxSpeed)
+                        {
+                            this.strafeSpeed = this.maxSpeed;
+                            this.strafe = 0;
+                        }
+                        else if (this.strafeSpeed <= 0 && this.strafe == -1) this.strafe = -0.5;
+                        else if (this.strafeSpeed >= 0 && this.strafe == 1) this.strafe = 0.5;
+                        else if (this.strafeSpeed == 0) this.strafe = 0;
+                        var moveX = (!this.status.engine1 || !this.status.engine2 ? this.strafeSpeed / 2 : this.strafeSpeed) * Math.sin ((this.heading + 90) * Math.PI / 180);
+                        var moveY = (!this.status.engine1 || !this.status.engine2 ? this.strafeSpeed / 2 : this.strafeSpeed) * Math.cos ((this.heading + 90) * Math.PI / 180);
+                        this.x += moveX;
+                        this.y -= moveY;    
                     }
                 }
                 if (this.x < 0) this.x = 0;
@@ -570,10 +572,18 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                             }
                         }
                     }
-                    if (this.speed != 0)
+                    if (this.moveSpeed != 0 || this.strafeSpeed != 0)
                     {
-                        this.engine1max = Math.abs (this.speed) * 8;
-                        this.engine2max = Math.abs (this.speed) * 8;
+                        if (Math.abs (this.moveSpeed) >= Math.abs (this.strafeSpeed))
+                        {
+                            this.engine1max = Math.abs (this.moveSpeed) * 8;
+                            this.engine2max = Math.abs (this.moveSpeed) * 8;
+                        }
+                        else
+                        {
+                            this.engine1max = Math.abs (this.strafeSpeed) * 8;
+                            this.engine2max = Math.abs (this.strafeSpeed) * 8;
+                        }
                     }
                     else
                     {
@@ -736,12 +746,11 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
                 }
                 else if (this.z == 0)
                 {
-                    this.speed = 0;
+                    this.moveSpeed = 0;
+                    this.strafeSpeed = 0;
                     this.turn = 0;
                     this.turnZ = 0;
                     this.move = 0;
-                    this.moveX = 0;
-                    this.moveY = 0;
                     this.moveZ = 0;
                     this.strafe = 0;
                     if (this.ground == "base")
@@ -1093,7 +1102,8 @@ function playerDead (gameShip)
                 gameShips [gameShip].y = startPoints [startPoints.findIndex (startPoint => startPoint.ship == gameShips [gameShip].name)].y;
                 gameShips [gameShip].z = startPoints [startPoints.findIndex (startPoint => startPoint.ship == gameShips [gameShip].name)].z;
                 gameShips [gameShip].heading = 0;
-                gameShips [gameShip].speed = 0;
+                gameShips [gameShip].moveSpeed = 0;
+                gameShips [gameShip].strafeSpeed = 0;
                 gameShips [gameShip].fire = false;
                 gameShips [gameShip].weapon = 0;
                 gameShips [gameShip].engine1 = 0;

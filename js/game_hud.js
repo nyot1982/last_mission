@@ -96,16 +96,21 @@ function speedHud ()
         speedElements = speedHud.getElementsByClassName ("speed"),
         meterHud = speedHud.getElementById ("meterHud"),
         kphElement = speedHud.getElementById ("kph"),
-        speed = gameShip > -1 ? Math.abs (gameShips [gameShip].speed) * 300 : 0;
+        speed = ["moveSpeed", 0];
 
+    if (gameShip > -1)
+    {
+        if (Math.abs (gameShips [gameShip].strafeSpeed) > Math.abs (gameShips [gameShip].moveSpeed)) speed [0] = "strafeSpeed";
+        speed [1] = Math.abs (gameShips [gameShip][speed [0]]) * 300;
+    }
     for (var i = 0; i < speedElements.length; i++)
     {
-        if (gameShip > -1 && i <= Math.abs (gameShips [gameShip].speed)) speedElements [i].setAttribute ("class", "speed active");
+        if (gameShip > -1 && i <= Math.abs (gameShips [gameShip][speed [0]])) speedElements [i].setAttribute ("class", "speed active");
         else speedElements [i].setAttribute ("class", "speed");
     }
-    meterHud.setAttribute ("style", "transform: rotate(" + (gameShip > -1 ? Math.abs (gameShips [gameShip].speed) * 30 : 0) + "deg);");
-    kphElement.setAttribute ("class", "kph" + Math.floor (gameShip > -1 ? Math.abs (gameShips [gameShip].speed) : 0));
-    speed = speed.toString ();
+    meterHud.setAttribute ("style", "transform: rotate(" + (gameShip > -1 ? Math.abs (gameShips [gameShip][speed [0]]) * 30 : 0) + "deg);");
+    kphElement.setAttribute ("class", "kph" + Math.floor (gameShip > -1 ? Math.abs (gameShips [gameShip][speed [0]]) : 0));
+    speed = speed [1].toString ();
     if (speed.length == 4)
     {
         speedDigits (3, speed.at (0));

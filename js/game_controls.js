@@ -36,8 +36,6 @@ function stopUserInteractions (player)
     }
     gameShips [gameShip].firing (false);
     gameShips [gameShip].moving (0);
-    gameShips [gameShip].movingX (0);
-    gameShips [gameShip].movingY (0);
     gameShips [gameShip].movingZ (0);
     gameShips [gameShip].strafing (0);
     gameShips [gameShip].turning (0);
