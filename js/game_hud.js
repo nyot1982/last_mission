@@ -15,7 +15,7 @@ function resetHuds (enemies, vitals)
 
 function scoreHud (gameShip)
 {
-    if (gameShips [gameShip].colors.skin != null)
+    if (gameShips [gameShip].colors.skin)
     {
         if (skins [gameShips [gameShip].colors.skin].image != null)
         {
