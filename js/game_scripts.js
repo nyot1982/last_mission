@@ -47,7 +47,7 @@ var fpsMonitor = false,
     players = [],
     storedPlayers = [],
     playerColors = ["#A5FF9A", "skin0", "skin1", "skin2", "skin3", "skin4", "skin5", "skin6", "skin7"],
-    playerSkins = [],
+    skins = [],
     userActions =
     [
         {

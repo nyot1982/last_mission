@@ -41,9 +41,9 @@
                     echo '<script type="text/javascript">';
                         while ($skin = $resultado->fetch_assoc ())
                         {
-                            echo 'playerSkins.push ({name: "'.$skin ['name'].'", shipFill: "'.$skin ['ship_fill'].'", gunFill: "'.$skin ['gun_fill'].'", hook1Fill: "'.$skin ['hook1_fill'].'", hook2Fill: "'.$skin ['hook2_fill'].'", wing1Fill: "'.$skin ['wing1_fill'].'", wing2Fill: "'.$skin ['wing2_fill'].'", engine1Fill: "'.$skin ['engine1_fill'].'", engine2Fill: "'.$skin ['engine2_fill'].'", shipStroke: "'.$skin ['ship_stroke'].'", engine1Stroke: "'.$skin ['engine1_stroke'].'", engine2Stroke: "'.$skin ['engine2_stroke'].'", lightStroke: "'.$skin ['light_stroke'].'"}); ';
-                            if (file_exists ('skins/'.$skin ['id'].'.png')) echo 'playerSkins [playerSkins.length - 1].image = new Image (); playerSkins [playerSkins.length - 1].image.src = "skins/'.$skin ['id'].'.png"; ';
-                            else echo 'playerSkins [playerSkins.length - 1].image = null; ';
+                            echo 'skins.push ({name: "'.$skin ['name'].'", shipFill: "'.$skin ['ship_fill'].'", gunFill: "'.$skin ['gun_fill'].'", hook1Fill: "'.$skin ['hook1_fill'].'", hook2Fill: "'.$skin ['hook2_fill'].'", wing1Fill: "'.$skin ['wing1_fill'].'", wing2Fill: "'.$skin ['wing2_fill'].'", engine1Fill: "'.$skin ['engine1_fill'].'", engine2Fill: "'.$skin ['engine2_fill'].'", shipStroke: "'.$skin ['ship_stroke'].'", engine1Stroke: "'.$skin ['engine1_stroke'].'", engine2Stroke: "'.$skin ['engine2_stroke'].'", lightStroke: "'.$skin ['light_stroke'].'"}); ';
+                            if (file_exists ('skins/'.$skin ['id'].'.png')) echo 'skins [skins.length - 1].image = new Image (); skins [skins.length - 1].image.src = "skins/'.$skin ['id'].'.png"; ';
+                            else echo 'skins [skins.length - 1].image = null; ';
                         }
                         $resultado->free ();
                     echo '</script>';

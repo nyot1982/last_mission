@@ -444,7 +444,7 @@ function component (type, src, color, x, y, width, height, max, control)
             else if ((this.type == "input" || this.type == "skin") && idInputAct != idComponent)
             {
                 ctx.fillStyle = "white";
-                if (this.type == "skin" && this.src * 1 > -1) ctx.fillText (playerSkins [this.src * 1].name, this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 1);
+                if (this.type == "skin" && this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 1);
                 else if (this.type != "skin") ctx.fillText (this.src, this.x, this.y + 1);
             }
             else if (this.type != "type")
@@ -453,9 +453,9 @@ function component (type, src, color, x, y, width, height, max, control)
                 if (gameScreen == "menu" && idComponent == 12 && wss != null && wss.readyState === 1) ctx.fillText (usersPlaying, this.x, this.y + 1);
                 else if (this.type == "skin")
                 {
-                    if (this.src * 1 > -1) ctx.fillText (playerSkins [this.src * 1].name, this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 1);
+                    if (this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 1);
                     ctx.fillStyle = "white";
-                    ctx.fillText ("< " + (this.src * 1 + 1) + "/" + playerSkins.length + " >", this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 26);
+                    ctx.fillText ("< " + (this.src * 1 + 1) + "/" + skins.length + " >", this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 26);
                 }
                 else if (this.type != "skin") ctx.fillText (this.src + this.cursor, this.x, this.y + 1);
             }

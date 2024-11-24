@@ -399,7 +399,7 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                     if (gameInput [idInputAct].type == "skin")
                     {
                         gameInput [idInputAct].src = gameInput [idInputAct].src * 1 - 1;
-                        if (gameInput [idInputAct].src < -1) gameInput [idInputAct].src = playerSkins.length - 1;
+                        if (gameInput [idInputAct].src < -1) gameInput [idInputAct].src = skins.length - 1;
                         if (gameInput [idInputAct].src > -1) menuShip.changeColor ("skin" + gameInput [idInputAct].src);
                         else menuShip.changeColor (colorPickerInput.value);
                     }
@@ -408,7 +408,7 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                     if (gameInput [idInputAct].type == "skin")
                     {
                         gameInput [idInputAct].src = gameInput [idInputAct].src * 1 + 1;
-                        if (gameInput [idInputAct].src >= playerSkins.length) gameInput [idInputAct].src = -1;
+                        if (gameInput [idInputAct].src >= skins.length) gameInput [idInputAct].src = -1;
                         if (gameInput [idInputAct].src > -1) menuShip.changeColor ("skin" + gameInput [idInputAct].src);
                         else menuShip.changeColor (colorPickerInput.value);
                     }

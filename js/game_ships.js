@@ -120,21 +120,21 @@ function ship (name, color, x, y, z, heading, speed, fire, weapon, weapons, engi
         if (this.colors.shipFill.substring (0, 4) == "skin")
         {
             this.colors.skin = this.colors.shipFill.substring (4, this.colors.shipFill.length);
-            this.colors.shipFill = playerSkins [this.colors.skin].shipFill;
-            if (playerSkins [this.colors.skin].image != null) this.colors.pattern = ctx.createPattern (playerSkins [this.colors.skin].image, "repeat");
+            this.colors.shipFill = skins [this.colors.skin].shipFill;
+            if (skins [this.colors.skin].image != null) this.colors.pattern = ctx.createPattern (skins [this.colors.skin].image, "repeat");
             else
             {
-                this.colors.gunFill = playerSkins [this.colors.skin].gunFill;
-                this.colors.hook1Fill = playerSkins [this.colors.skin].hook1Fill;
-                this.colors.hook2Fill = playerSkins [this.colors.skin].hook2Fill;
-                this.colors.wing1Fill = playerSkins [this.colors.skin].wing1Fill;
-                this.colors.wing2Fill = playerSkins [this.colors.skin].wing2Fill;
-                this.colors.engine1Fill = playerSkins [this.colors.skin].engine1Fill;
-                this.colors.engine2Fill = playerSkins [this.colors.skin].engine2Fill;
-                this.colors.shipStroke = playerSkins [this.colors.skin].shipStroke;
-                this.colors.engine1Stroke = playerSkins [this.colors.skin].engine1Stroke;
-                this.colors.engine2Stroke = playerSkins [this.colors.skin].engine2Stroke;
-                this.colors.lightStroke = playerSkins [this.colors.skin].lightStroke;
+                this.colors.gunFill = skins [this.colors.skin].gunFill;
+                this.colors.hook1Fill = skins [this.colors.skin].hook1Fill;
+                this.colors.hook2Fill = skins [this.colors.skin].hook2Fill;
+                this.colors.wing1Fill = skins [this.colors.skin].wing1Fill;
+                this.colors.wing2Fill = skins [this.colors.skin].wing2Fill;
+                this.colors.engine1Fill = skins [this.colors.skin].engine1Fill;
+                this.colors.engine2Fill = skins [this.colors.skin].engine2Fill;
+                this.colors.shipStroke = skins [this.colors.skin].shipStroke;
+                this.colors.engine1Stroke = skins [this.colors.skin].engine1Stroke;
+                this.colors.engine2Stroke = skins [this.colors.skin].engine2Stroke;
+                this.colors.lightStroke = skins [this.colors.skin].lightStroke;
             }
         }
         if (tinycolor (this.colors.shipFill).isDark ()) this.colors.near = tinycolor (this.colors.shipFill).lighten (15).toHexString ();
