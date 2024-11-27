@@ -514,8 +514,8 @@ function userActionUp (control, bt_code, gameShip)
 function mouseMove (e)
 {
     e.preventDefault ();
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
+    mouse.x = e.clientX - 2;
+    mouse.y = e.clientY - 2;
 }
 
 function mouseDown (e)

@@ -352,7 +352,7 @@ function item (enemy, x, y)
     }
 }
 
-function component (type, src, color, x, y, width, height, max, control)
+function component (type, src, color, x, y, width, height, max, control, rollover)
 {
     this.type = type;
     if (this.type == "color")
@@ -366,25 +366,21 @@ function component (type, src, color, x, y, width, height, max, control)
         }
     }
     this.src = src;
+    this.color = color;
     if (this.type == "image")
     {
         this.image = new Image ();
         this.image.src = this.src;
-        this.color = "";
-        this.rollover = color;
     }
-    else
-    {
-        this.color = color;
-        this.rollover = "";
-        if (this.type == "type") this.typeFrame = 1;
-    }
+    else if (this.type == "type") this.typeFrame = 1;
+    else if (this.type == "traffic") this.traffic = [];
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.max = max;
     this.control = control;
+    this.rollover = rollover || "";
     this.cursor = "";
 
     this.update = function (idComponent)
@@ -394,17 +390,7 @@ function component (type, src, color, x, y, width, height, max, control)
         ctx.shadowBlur = 0;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
-        if (this.type == "image")
-        {
-            if (!(gameScreen == "menu" && idComponent == 11 && (wss == null || wss.readyState !== 1)))
-            {
-                ctx.save ();
-                ctx.translate (this.x, this.y);
-                ctx.rotate (this.radians);
-                ctx.drawImage (this.image, -(this.width / 2), -(this.height / 2), this.width, this.height);
-                ctx.restore ();
-            }
-        }
+        if (this.type == "image") ctx.drawImage (this.image, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
         else if (this.type == "text" || this.type == "input" || this.type == "type" || this.type == "skin")
         {
             if (this.type == "input" || this.type == "skin")
@@ -450,57 +436,84 @@ function component (type, src, color, x, y, width, height, max, control)
             else if (this.type != "type")
             {
                 ctx.fillStyle = this.color;
-                if (gameScreen == "menu" && idComponent == 12 && wss != null && wss.readyState === 1) ctx.fillText (usersPlaying, this.x, this.y + 1);
+                if (this.type == "text" && this.src == "usersPlaying")
+                {
+                    ctx.fillText (usersPlaying, this.x, this.y + 1);
+                    var textMeasure = ctx.measureText (usersPlaying);
+                }
                 else if (this.type == "skin")
                 {
                     if (this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 1);
                     ctx.fillStyle = "white";
                     ctx.fillText ("< " + (this.src * 1 + 1) + "/" + skins.length + " >", this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 26);
                 }
-                else if (this.type != "skin") ctx.fillText (this.src + this.cursor, this.x, this.y + 1);
+                else ctx.fillText (this.src + this.cursor, this.x, this.y + 1);
             }
         }
         else if (this.type == "circle")
         {
             ctx.beginPath ();
             ctx.arc (this.x, this.y, this.height, 0, 2 * Math.PI);
-            if (wss != null && wss.readyState == WebSocket.OPEN)
-            {
-                this.color = "#0C0";
-                this.rollover = "Connected!";
-            }
-            else if (wss >= 1000)
-            {
-                this.color = "red";
-                this.rollover = "Disconnected";
-            }
-            else
-            {
-                if (gameArea.frame % 20 == 0)
-                {
-                    if (this.color != "black") this.color = "black";
-                    else if (this.color != "yellow") this.color = "yellow";
-                }
-                this.rollover = "Connecting..."
-            }
             ctx.fillStyle = this.color;
             ctx.fill ();
         }
-        else if (this.type == "rollover")
+        else if (this.type == "traffic")
         {
-            ctx.font = "10px PressStart2P";
-            var textMeasure = ctx.measureText (this.src);
-            ctx.beginPath ();
-            ctx.roundRect (mouse.x, mouse.y - 18, textMeasure.width + 8, 18, 5);
-            ctx.fillStyle = "#FFFFFFBB";
-            ctx.fill ();
+            this.path = new Path2D ();
+            this.path.roundRect (this.x - this.width / 2, this.y - this.height / 2, this.width, this.height, 2 * Math.PI);
+            ctx.fillStyle = "#888";
+            ctx.fill (this.path);
+
+            if (wss != null && wss.readyState == WebSocket.OPEN)
+            {
+                this.traffic = ["#300", "#330", "#0C0"];
+                this.rollover = "Connected!";
+                if (gameText [gameText.length - 1].type == "traffic")
+                {
+                    gameText.push (new component ("image", "svgs/user.svg", "", 661, 295, 10, 10, null, null, "Players in game"));
+                    gameText.push (new component ("text", "usersPlaying", "orange", 670, 295, "left", 10, null, null, "Number of players"));
+                }
+            }
+            else
+            {
+                if (wss >= 1000)
+                {
+                    this.traffic = ["red", "#330", "#030"];
+                    this.rollover = "Disconnected";
+                }
+                else
+                {
+                    if (this.traffic.length == 0) this.traffic = ["#300", "yellow", "#030"];
+                    if (gameArea.frame % 20 == 0)
+                    {
+                        if (this.traffic [1] == "yellow") this.traffic = ["#300", "#330", "#030"];
+                        else if (this.traffic [1] == "#330") this.traffic = ["#300", "yellow", "#030"];
+                    }
+                    this.rollover = "Connecting...";
+                }
+                if (gameText [gameText.length - 1].type != "traffic")
+                {
+                    gameText.pop ();
+                    gameText.pop ();
+                }
+            }
             ctx.lineWidth = 1;
-            ctx.strokeStyle = "red";
+            ctx.strokeStyle = "#333";
+            ctx.beginPath ();
+            ctx.arc (this.x - this.width / 2 + 6, this.y - this.height / 2 + 6, 3, 0, 2 * Math.PI);
+            ctx.fillStyle = this.traffic [0];
+            ctx.fill ();
             ctx.stroke ();
-            ctx.fillStyle = "black";
-            ctx.textAlign = "left";
-            ctx.textBaseline = "bottom";
-            ctx.fillText (this.src, mouse.x + 4, mouse.y - 4);
+            ctx.beginPath ();
+            ctx.arc (this.x - this.width / 2 + 6, this.y - this.height / 2 + 14, 3, 0, 2 * Math.PI);
+            ctx.fillStyle = this.traffic [1];
+            ctx.fill ();
+            ctx.stroke ();
+            ctx.beginPath ();
+            ctx.arc (this.x - this.width / 2 + 6, this.y - this.height / 2 + 22, 3, 0, 2 * Math.PI);
+            ctx.fillStyle = this.traffic [2];
+            ctx.fill ();
+            ctx.stroke ();
         }
         else if (this.type == "color")
         {
@@ -529,10 +542,31 @@ function component (type, src, color, x, y, width, height, max, control)
                 }
             }
         }
+        else if (this.type == "rollover")
+        {
+            ctx.font = "10px PressStart2P";
+            var textMeasure = ctx.measureText (this.src);
+            ctx.beginPath ();
+            ctx.roundRect (mouse.x, mouse.y - 18, textMeasure.width + 8, 18, 5);
+            ctx.fillStyle = "#FFFFFFBB";
+            ctx.fill ();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "red";
+            ctx.stroke ();
+            ctx.fillStyle = "black";
+            ctx.textAlign = "left";
+            ctx.textBaseline = "bottom";
+            ctx.fillText (this.src, mouse.x + 4, mouse.y - 4);
+        }
         if (this.rollover != "")
         {
-            if (ctx.isPointInStroke (mouse.x, mouse.y) || ctx.isPointInPath (mouse.x, mouse.y)) mouse.rollover = new component ("rollover", this.rollover);
-            else if (!ctx.isPointInStroke (mouse.x, mouse.y) && !ctx.isPointInPath (mouse.x, mouse.y) && mouse.rollover != null && mouse.rollover.src == this.rollover) mouse.rollover = null;
+            var mouseOver = false;
+            if (this.type == "image" && mouse.x >= this.x - this.width / 2 && mouse.x <= this.x + this.width / 2 && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
+            else if (this.type == "text" && mouse.x >= this.x && mouse.x <= this.x + textMeasure.width && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
+            else if (this.type == "traffic" && (ctx.isPointInStroke (this.path, mouse.x, mouse.y) || ctx.isPointInPath (this.path, mouse.x, mouse.y))) mouseOver = true;
+            //else if (this.type != "traffic" && (ctx.isPointInStroke (mouse.x, mouse.y) || ctx.isPointInPath (mouse.x, mouse.y))) mouseOver = true;
+            if (mouseOver) mouse.rollover = new component ("rollover", this.rollover);
+            else if (mouse.rollover != null && mouse.rollover.src == this.rollover) mouse.rollover = null;
         }
         if (gameModal == "menu" || gameScreen == "menu")
         {
