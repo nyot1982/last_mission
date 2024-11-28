@@ -352,7 +352,7 @@ function item (enemy, x, y)
     }
 }
 
-function component (type, src, color, x, y, width, height, max, control, rollover)
+function component (type, src, color, x, y, width, height, max, control, rollover, rolloverColor)
 {
     this.type = type;
     if (this.type == "color")
@@ -381,6 +381,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
     this.max = max;
     this.control = control;
     this.rollover = rollover || "";
+    this.rolloverColor = rolloverColor || "";
     this.cursor = "";
 
     this.update = function (idComponent)
@@ -471,8 +472,8 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                 this.rolloverColor = "#00CC00";
                 if (gameText [gameText.length - 1].type == "traffic")
                 {
-                    gameText.push (new component ("image", "svgs/user.svg", "", 661, 295, 10, 10, null, null, "Players in game"));
-                    gameText.push (new component ("text", "usersPlaying", "orange", 670, 295, "left", 10, null, null, "Number of players"));
+                    gameText.push (new component ("image", "svgs/user.svg", "", 661, 295, 10, 10, null, null, "Players in game", "#FFA500"));
+                    gameText.push (new component ("text", "usersPlaying", "orange", 670, 295, "left", 10, null, null, "Number of players", "#FFA500"));
                 }
             }
             else
