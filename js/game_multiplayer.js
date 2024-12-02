@@ -29,8 +29,26 @@ function wssOpen ()
             }
             playersConnecting = data.players_connecting;
         }
-        if (data.action == "open") playerId = data.player_id;
-        else if (data.action == "players") usersPlaying = data.players;
+        if (data.action == "start")
+        {
+            if (gameScreen == "menu") gameLoadScreen ("menu");
+            else
+            {
+                usersPlaying = data.game_ships.length;
+                blackScreen = true;
+                $("#blackScreen").fadeIn (1000);
+                setTimeout
+                (
+                    function ()
+                    {
+                        gameLoadScreen ("menu");
+                    },
+                    1000
+                );
+            }
+        }
+        else if (data.action == "open") playerId = data.player_id;
+        else if (data.action == "players") usersPlaying = data.game_ships.length;
         else if (data.action == "connected")
         {
             gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));

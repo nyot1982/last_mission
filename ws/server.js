@@ -183,33 +183,36 @@ const wss = createServerFrom
                     else if (data.action == 'ship_ships')
                     {
                         var gameShip = gameShips.findIndex (ship => ship.name == data.name);
-                        gameShips [gameShip].x = data.x;
-                        gameShips [gameShip].y = data.y;
-                        gameShips [gameShip].z = data.z;
-                        gameShips [gameShip].heading = data.heading;
-                        gameShips [gameShip].moveSpeed = data.moveSpeed;
-                        gameShips [gameShip].strafeSpeed = data.strafeSpeed;
-                        gameShips [gameShip].fire = data.fire;
-                        gameShips [gameShip].weapon = data.weapon;
-                        gameShips [gameShip].weapons = data.weapons;
-                        gameShips [gameShip].engine1 = data.engine1;
-                        gameShips [gameShip].engine2 = data.engine2;
-                        gameShips [gameShip].engine1inc = data.engine1inc;
-                        gameShips [gameShip].engine2inc = data.engine2inc;
-                        gameShips [gameShip].shadowOffset = data.shadowOffset;
-                        gameShips [gameShip].nameOffset = data.nameOffset;
-                        gameShips [gameShip].lifes = data.lifes;
-                        gameShips [gameShip].life = data.life;
-                        gameShips [gameShip].fuel = data.fuel;
-                        gameShips [gameShip].ammo = data.ammo;
-                        gameShips [gameShip].shield = data.shield;
-                        gameShips [gameShip].score = data.score;
-                        gameShips [gameShip].gunStatus = data.gunStatus;
-                        gameShips [gameShip].wing1Status = data.wing1Status;
-                        gameShips [gameShip].wing2Status = data.wing2Status;
-                        gameShips [gameShip].engine1Status = data.engine1Status;
-                        gameShips [gameShip].engine2Status = data.engine2Status;
-                        gameShips [gameShip].time = Date.now ();
+                        if (gameShip > -1)
+                        {
+                            gameShips [gameShip].x = data.x;
+                            gameShips [gameShip].y = data.y;
+                            gameShips [gameShip].z = data.z;
+                            gameShips [gameShip].heading = data.heading;
+                            gameShips [gameShip].moveSpeed = data.moveSpeed;
+                            gameShips [gameShip].strafeSpeed = data.strafeSpeed;
+                            gameShips [gameShip].fire = data.fire;
+                            gameShips [gameShip].weapon = data.weapon;
+                            gameShips [gameShip].weapons = data.weapons;
+                            gameShips [gameShip].engine1 = data.engine1;
+                            gameShips [gameShip].engine2 = data.engine2;
+                            gameShips [gameShip].engine1inc = data.engine1inc;
+                            gameShips [gameShip].engine2inc = data.engine2inc;
+                            gameShips [gameShip].shadowOffset = data.shadowOffset;
+                            gameShips [gameShip].nameOffset = data.nameOffset;
+                            gameShips [gameShip].lifes = data.lifes;
+                            gameShips [gameShip].life = data.life;
+                            gameShips [gameShip].fuel = data.fuel;
+                            gameShips [gameShip].ammo = data.ammo;
+                            gameShips [gameShip].shield = data.shield;
+                            gameShips [gameShip].score = data.score;
+                            gameShips [gameShip].gunStatus = data.gunStatus;
+                            gameShips [gameShip].wing1Status = data.wing1Status;
+                            gameShips [gameShip].wing2Status = data.wing2Status;
+                            gameShips [gameShip].engine1Status = data.engine1Status;
+                            gameShips [gameShip].engine2Status = data.engine2Status;
+                            gameShips [gameShip].time = Date.now ();
+                        }
                     }
                     const json =
                     {
@@ -217,7 +220,6 @@ const wss = createServerFrom
                         error: error,
                         start_points: startPoints,
                         game_ships: gameShips,
-                        players: gameShips.length,
                         players_connecting: players.filter (player => player.status == 1).length
                     };
                     wss.send (JSON.stringify (json));
@@ -230,8 +232,10 @@ const wss = createServerFrom
             'error',
             (response) =>
             {
-                console.log (response);
-                console.log ();
+                players.splice (players.findIndex (player => player.id == playerId), 1);
+                gameShips.splice (gameShips.findIndex (ship => ship.name == startPoints [playerId].ship), 1);
+                startPoints [playerId].ship = null;
+                debugging (response);
             }
         );
 

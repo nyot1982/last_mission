@@ -268,25 +268,28 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                 case 'confirm_yes':
                     if (!blackScreen)
                     {
-                        blackScreen = true;
-                        $("#blackScreen").fadeIn (1000);
-                        setTimeout
-                        (
-                            function ()
-                            {
-                                gameLoadScreen ("menu");
-                            },
-                            1000
-                        );
-                    }
-                    if (gameModes.findIndex (mode => mode.active == true) == 3)
-                    {
-                        const data =
+                        if (gameModes.findIndex (mode => mode.active == true) == 3)
                         {
-                            action: "start",
-                            player_id: playerId,
-                        };
-                        wss.send (JSON.stringify (data));    
+                            const data =
+                            {
+                                action: "start",
+                                player_id: playerId,
+                            };
+                            wss.send (JSON.stringify (data));    
+                        }
+                        else
+                        {
+                            blackScreen = true;
+                            $("#blackScreen").fadeIn (1000);
+                            setTimeout
+                            (
+                                function ()
+                                {
+                                    gameLoadScreen ("menu");
+                                },
+                                1000
+                            );
+                        }
                     }
                 break;
                 case 'input_back':
@@ -384,7 +387,6 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                         colorPickerInput.blur ();
                         colorPicker.style.display = "none";
                     }
-                    gameLoadScreen ("menu");
                     if (gameModes.findIndex (mode => mode.active == true) == 3)
                     {
                         const data =
@@ -394,6 +396,7 @@ function userActionDown (control, bt_code, bt_value, gameShip)
                         };
                         wss.send (JSON.stringify (data));    
                     }
+                    else gameLoadScreen ("menu");
                 break;
                 case 'skin_prev':
                     if (gameInput [idInputAct].type == "skin")
