@@ -538,13 +538,13 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 if (this.colors.shipStroke != null) ctx.strokeStyle = this.colors.shipStroke;
                 else ctx.strokeStyle = this.colors.negative + "CC";
                 ctx.stroke (this.paths.ship);
-                if (this.status.engine1 && this.colors.engine1Fill == null && this.colors.skin == null)
+                if (this.status.engine1)
                 {
                     if (this.colors.engine1Stroke != null) ctx.strokeStyle = this.colors.engine1Stroke;
                     else ctx.strokeStyle = this.colors.shipFill + "CC";
                     ctx.stroke (this.paths.engine1);
                 }
-                if (this.status.engine2 && this.colors.engine2Fill == null && this.colors.skin == null)
+                if (this.status.engine2)
                 {
                     if (this.colors.engine2Stroke != null) ctx.strokeStyle = this.colors.engine2Stroke;
                     else ctx.strokeStyle = this.colors.shipFill + "CC";

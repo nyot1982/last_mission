@@ -41,7 +41,23 @@
                     echo '<script type="text/javascript">';
                         while ($skin = $resultado->fetch_assoc ())
                         {
-                            echo 'skins.push ({name: "'.$skin ['name'].'", shipFill: "'.$skin ['ship_fill'].'", gunFill: "'.$skin ['gun_fill'].'", hook1Fill: "'.$skin ['hook1_fill'].'", hook2Fill: "'.$skin ['hook2_fill'].'", wing1Fill: "'.$skin ['wing1_fill'].'", wing2Fill: "'.$skin ['wing2_fill'].'", engine1Fill: "'.$skin ['engine1_fill'].'", engine2Fill: "'.$skin ['engine2_fill'].'", shipStroke: "'.$skin ['ship_stroke'].'", engine1Stroke: "'.$skin ['engine1_stroke'].'", engine2Stroke: "'.$skin ['engine2_stroke'].'", lightStroke: "'.$skin ['light_stroke'].'"}); ';
+                            echo 'skins.push ({
+                                name: '.($skin ['name'] != null ? '"'.$skin ['name'].'"' : 'null').',
+                                shipFill: '.($skin ['ship_fill'] != null ? '"'.$skin ['ship_fill'].'"' : 'null').',
+                                gunFill: '.($skin ['gun_fill'] != null ? '"'.$skin ['gun_fill'].'"' : 'null').',
+                                hook1Fill: '.($skin ['hook1_fill'] != null ? '"'.$skin ['hook1_fill'].'"' : 'null').',
+                                hook2Fill: '.($skin ['hook2_fill'] != null ? '"'.$skin ['hook2_fill'].'"' : 'null').',
+                                wing1Fill: '.($skin ['wing1_fill'] != null ? '"'.$skin ['wing1_fill'].'"' : 'null').',
+                                wing2Fill: '.($skin ['wing2_fill'] != null ? '"'.$skin ['wing2_fill'].'"' : 'null').',
+                                engine1Fill: '.($skin ['engine1_fill'] != null ? '"'.$skin ['engine1_fill'].'"' : 'null').',
+                                engine2Fill: '.($skin ['engine2_fill'] != null ? '"'.$skin ['engine2_fill'].'"' : 'null').',
+                                lightFill: "#7B797B",
+                                shipStroke: '.($skin ['ship_stroke'] != null ? '"'.$skin ['ship_stroke'].'"' : 'null').',
+                                engine1Stroke: '.($skin ['engine1_stroke'] != null ? '"'.$skin ['engine1_stroke'].'"' : 'null').',
+                                engine2Stroke: '.($skin ['engine2_stroke'] != null ? '"'.$skin ['engine2_stroke'].'"' : 'null').',
+                                lightStroke: '.($skin ['light_stroke'] != null ? '"'.$skin ['light_stroke'].'"' : 'null').'
+                            });
+                            ';
                             if (file_exists ('skins/'.$skin ['id'].'.png')) echo 'skins [skins.length - 1].image = new Image (); skins [skins.length - 1].image.src = "skins/'.$skin ['id'].'.png"; ';
                             else echo 'skins [skins.length - 1].image = null; ';
                         }
