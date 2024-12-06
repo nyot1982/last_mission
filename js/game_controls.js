@@ -91,16 +91,19 @@ function axisControl (id_control, control, index, value)
             var player = players.findIndex (player => player.control == id_control);
             var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
         }
-        if (control == "gamepad")
+        if (gameShips [gameShip])
         {
-            if (index == 0) gameShips [gameShip].movingX (value);
-            if (index == 1) gameShips [gameShip].movingY (value);
-            if (index == 2) gameShips [gameShip].turningZ (value);
-        }
-        else if (control == "joystick")
-        {
-            if (index == 0) gameShips [gameShip].turning (value);
-            if (index == 1) gameShips [gameShip].moving (value);
+            if (control == "gamepad")
+            {
+                if (index == 0) gameShips [gameShip].movingX (value);
+                if (index == 1) gameShips [gameShip].movingY (value);
+                if (index == 2) gameShips [gameShip].turningZ (value);
+            }
+            else if (control == "joystick")
+            {
+                if (index == 0) gameShips [gameShip].turning (value);
+                if (index == 1) gameShips [gameShip].moving (value);
+            }
         }
     }
 }

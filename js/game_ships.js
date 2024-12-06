@@ -240,7 +240,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
 
     this.movingX = function (move)
     {
-        if (gameScreen == "game" && this.z > 0)
+        /*if (gameScreen == "game" && this.z > 0)
         {
             this.engine1 = 0;
             this.engine2 = 0;
@@ -249,12 +249,12 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             if (move == 0 || (!this.status.engine1 && !this.status.engine2)) this.moveX = 0;
             else if (!this.status.engine1 || !this.status.engine2) this.moveX = (this.speed / 2) * move;
             else this.moveX = this.speed * move;
-        }
+        }*/
     }
 
     this.movingY = function (move)
     {
-        if (gameScreen == "game" && this.z > 0)
+        /*if (gameScreen == "game" && this.z > 0)
         {
             this.engine1 = 0;
             this.engine2 = 0;
@@ -263,7 +263,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             if (move == 0 || (!this.status.engine1 && !this.status.engine2)) this.moveY = 0;
             else if (!this.status.engine1 || !this.status.engine2) this.moveY = -(this.speed / 2 * move);
             else this.moveY = -(this.speed * move);
-        }
+        }*/
     }
 
     this.movingZ = function ()
@@ -535,18 +535,18 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.paths.ship.addPath (this.paths.engine2);
                 }
                 ctx.lineWidth = 2;
-                if (this.colors.shipStroke != null) ctx.strokeStyle = this.colors.shipStroke;
+                if (this.colors.shipStroke != null) ctx.strokeStyle = this.colors.shipStroke + "CC";
                 else ctx.strokeStyle = this.colors.negative + "CC";
                 ctx.stroke (this.paths.ship);
                 if (this.status.engine1)
                 {
-                    if (this.colors.engine1Stroke != null) ctx.strokeStyle = this.colors.engine1Stroke;
+                    if (this.colors.engine1Stroke != null) ctx.strokeStyle = this.colors.engine1Stroke + "CC";
                     else ctx.strokeStyle = this.colors.shipFill + "CC";
                     ctx.stroke (this.paths.engine1);
                 }
                 if (this.status.engine2)
                 {
-                    if (this.colors.engine2Stroke != null) ctx.strokeStyle = this.colors.engine2Stroke;
+                    if (this.colors.engine2Stroke != null) ctx.strokeStyle = this.colors.engine2Stroke + "CC";
                     else ctx.strokeStyle = this.colors.shipFill + "CC";
                     ctx.stroke (this.paths.engine2);
                 }
