@@ -6,7 +6,14 @@ function ground (type, color, x, y, width, height)
     this.y = y;
     this.width = width;
     this.height = height;
-    this.move = 0;
+    if (this.type == "water") this.move = 0;
+    else if (this.type == "lava")
+    {
+        this.r1 = 0;
+        this.r2 = 0;
+        this.r3 = 0;
+        this.r4 = 0;
+    }
 
     this.update = function ()
     {
@@ -184,21 +191,33 @@ function ground (type, color, x, y, width, height)
                 }
                 else if (this.type == "lava")
                 {
+                    if (gameArea.frame % 5 == 0)
+                    {
+                        this.r1++;
+                        this.r2++;
+                        this.r3++;
+                        this.r4++;
+                        if (this.r1 > 10) this.r1 = 0;
+                        if (this.r2 > 20) this.r2 = 0;
+                        if (this.r3 > 30) this.r3 = 0;
+                        if (this.r4 > 40) this.r4 = 0;
+                    }
+                    patternContext.strokeStyle = "orange";
                     patternContext.fillStyle = "orange";
                     patternContext.beginPath ();
-                    patternContext.arc (5, 5, 3, 0, 2 * Math.PI);
+                    patternContext.arc (5, 5, this.r3 / 10, 0, 2 * Math.PI);
+                    patternContext.stroke ();
+                    patternContext.beginPath ();
+                    patternContext.arc (15, 15, this.r2 / 10, 0, 2 * Math.PI);
                     patternContext.fill ();
                     patternContext.beginPath ();
-                    patternContext.arc (15, 15, 2, 0, 2 * Math.PI);
+                    patternContext.arc (20, 10, this.r1 / 10, 0, 2 * Math.PI);
                     patternContext.fill ();
                     patternContext.beginPath ();
-                    patternContext.arc (20, 10, 1, 0, 2 * Math.PI);
+                    patternContext.arc (7, 25, this.r4 / 10, 0, 2 * Math.PI);
                     patternContext.fill ();
                     patternContext.beginPath ();
-                    patternContext.arc (7, 25, 4, 0, 2 * Math.PI);
-                    patternContext.fill ();
-                    patternContext.beginPath ();
-                    patternContext.arc (25, 27, 2, 0, 2 * Math.PI);
+                    patternContext.arc (25, 27, this.r2 / 10, 0, 2 * Math.PI);
                     patternContext.fill ();
                 }
                 this.pattern = ctx.createPattern (patternCanvas, "repeat");
