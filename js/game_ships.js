@@ -73,8 +73,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.height = 32;
     this.maxSpeed = 6;
     this.move = 0;
-    this.moveX = 0;
-    this.moveY = 0;
     this.moveZ = 0;
     this.strafe = 0;
     this.turn = 0;
@@ -238,34 +236,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         }
     }
 
-    this.movingX = function (move)
-    {
-        if (gameScreen == "game" && this.z > 0)
-        {
-            this.engine1 = 0;
-            this.engine2 = 0;
-            this.engine1inc = true;
-            this.engine2inc = true;
-            if (move == 0 || (!this.status.engine1 && !this.status.engine2)) this.moveX = 0;
-            else if (!this.status.engine1 || !this.status.engine2) this.moveX = (this.speed / 2) * move;
-            else this.moveX = this.speed * move;
-        }
-    }
-
-    this.movingY = function (move)
-    {
-        if (gameScreen == "game" && this.z > 0)
-        {
-            this.engine1 = 0;
-            this.engine2 = 0;
-            this.engine1inc = true;
-            this.engine2inc = true;
-            if (move == 0 || (!this.status.engine1 && !this.status.engine2)) this.moveY = 0;
-            else if (!this.status.engine1 || !this.status.engine2) this.moveY = -(this.speed / 2 * move);
-            else this.moveY = -(this.speed * move);
-        }
-    }
-
     this.movingZ = function ()
     {
         if (this.moveZ == 0 && this.life > 0)
@@ -416,8 +386,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 }
                 else if (gameScreen == "game" && gameModal == null)
                 {
-                    if (this.moveX != 0) this.x += this.moveX;
-                    if (this.moveY != 0) this.y -= this.moveY;
                     if (this.moveSpeed == 0 && this.move != 0 || this.moveSpeed != 0 && Math.abs (this.moveSpeed) <= this.maxSpeed)
                     {
                         this.moveSpeed = this.moveSpeed * 10 + this.move;

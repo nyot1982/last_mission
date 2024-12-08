@@ -117,7 +117,7 @@ var fpsMonitor = false,
             screen: ["menu", "modal_menu"],
             action: "fire_menu",
             keyboard: [13, 32], // Enter, Space
-            gamepad: [6, 7], // L2, R2
+            gamepad: [0], // A
             joystick: [0]
         },
         {
@@ -159,7 +159,7 @@ var fpsMonitor = false,
             screen: ["game"],
             action: "fire",
             keyboard: [32], // Space
-            gamepad: [6, 7], // L2, R2
+            gamepad: [0], // A
             joystick: [0]
         },
         {
@@ -173,7 +173,7 @@ var fpsMonitor = false,
             screen: ["game"],
             action: "moveZ",
             keyboard: [17], // Control
-            gamepad: [0, 1, 2], // A, B, X
+            gamepad: [1, 2], // B, X
             joystick: [6]
         },
         {
@@ -194,14 +194,14 @@ var fpsMonitor = false,
             screen: ["game"],
             action: "strafe_left",
             keyboard: [90], // Z
-            gamepad: [],
+            gamepad: [4], // L1
             joystick: [3]
         },
         {
             screen: ["game"],
             action: "strafe_right",
             keyboard: [88], // X
-            gamepad: [],
+            gamepad: [5], // R1
             joystick: [2]
         },
         {

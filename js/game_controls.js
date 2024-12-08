@@ -14,8 +14,13 @@ function controls ()
         for (const [index, axis] of gamepad.axes.entries ()) axisControl (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index, axis.toFixed (2) * 1);
         for (const [index, button] of gamepad.buttons.entries ())
         {
-            if (button.pressed || button.touched) buttonDown (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index);
-            else buttonUp (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index);
+            if (index == 6) gameShips [gameShip].moving (button.value.toFixed (2) * 1);
+            else if (index == 7) gameShips [gameShip].moving (button.value.toFixed (2) * -1);
+            else
+            {
+                if (button.pressed || button.touched) buttonDown (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index);
+                else buttonUp (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index);
+            }
         }
         player++;
     }
@@ -36,8 +41,6 @@ function stopUserInteractions (player)
     }
     gameShips [gameShip].firing (false);
     gameShips [gameShip].moving (0);
-    gameShips [gameShip].movingX (0);
-    gameShips [gameShip].movingY (0);
     gameShips [gameShip].movingZ (0);
     gameShips [gameShip].strafing (0);
     gameShips [gameShip].turning (0);
@@ -95,9 +98,12 @@ function axisControl (id_control, control, index, value)
         {
             if (control == "gamepad")
             {
-                if (index == 0) gameShips [gameShip].movingX (value);
-                if (index == 1) gameShips [gameShip].movingY (value);
-                if (index == 2) gameShips [gameShip].turningZ (value);
+                if (index == 0)
+                {
+                    gameShips [gameShip].turningZ (value);
+                    /*if (value == 0) userActionStop (control, index, value, gameShip);
+                    else userActionStart (control, index, value, gameShip);*/
+                }
             }
             else if (control == "joystick")
             {
@@ -119,7 +125,7 @@ function buttonDown (id_control, control, button)
             var player = players.findIndex (player => player.control == id_control);
             var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
         }
-        userActionDown (control, button, null, gameShip);
+        userActionStart (control, button, null, gameShip);
     }
 }
 
@@ -136,7 +142,7 @@ function buttonUp (id_control, control, button)
                 var player = players.findIndex (player => player.control == id_control);
                 var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
             }
-            userActionUp (control, button, gameShip);
+            userActionStop (control, button, gameShip);
         }
     }
 }
@@ -147,15 +153,15 @@ function keyDown (e)
     if (gameScreen == "menu" && gameInput.length > 0 && ((gameInput [idInputAct].type == "input" && e.keyCode != 9 && e.keyCode != 13 && e.keyCode != 27) || (gameInput [idInputAct].type == "skin" && e.keyCode > 36 && e.keyCode < 41)))
     {
         if (!keysPressed.includes (e.keyCode)) keysPressed.push (e.keyCode);
-        if (gameInput [idInputAct].type == "input") userActionDown ("keyboard", (e.keyCode == 8 ? 8 : -1), e.key, gameShip);
-        else if (gameInput [idInputAct].type == "skin") userActionDown ("keyboard", e.keyCode, null, gameShip);
+        if (gameInput [idInputAct].type == "input") userActionStart ("keyboard", (e.keyCode == 8 ? 8 : -1), e.key, gameShip);
+        else if (gameInput [idInputAct].type == "skin") userActionStart ("keyboard", e.keyCode, null, gameShip);
     }
     else if (!keysPressed.includes (e.keyCode))
     {
         keysPressed.push (e.keyCode);
         if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl != "keyboard" || gameScreen != "game") changeControl ("keyboard");
         if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
-        userActionDown ("keyboard", e.keyCode, null, gameShip);
+        userActionStart ("keyboard", e.keyCode, null, gameShip);
     }
 }
 
@@ -167,12 +173,12 @@ function keyUp (e)
         if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0)
         {
             var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
-            userActionUp ("keyboard", e.keyCode, gameShip);
+            userActionStop ("keyboard", e.keyCode, gameShip);
         }
     }
 }
 
-function userActionDown (control, bt_code, bt_value, gameShip)
+function userActionStart (control, bt_code, bt_value, gameShip)
 {
     if (gameScreen == "start")
     {
@@ -484,7 +490,7 @@ function userActionDown (control, bt_code, bt_value, gameShip)
     }
 }
 
-function userActionUp (control, bt_code, gameShip)
+function userActionStop (control, bt_code, gameShip)
 {
     if ((gameScreen == "menu" || gameModal == "menu") && menuShip != null && gameConfirm.length == 0 && gameInput.length == 0) var screen = "modal";
     else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0) var screen = "game";
