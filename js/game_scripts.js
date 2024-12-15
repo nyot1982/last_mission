@@ -656,7 +656,6 @@ function gameLoadScreen (screen)
         }
         fetchLoad ("highScoreHud");
         document.getElementById ("highScoreHud").style.height = "23px";
-        document.getElementById ("scoreHud").innerHTML = '';
         document.getElementById ("lifesHud").innerHTML = '';    
         if (gameModes.findIndex (mode => mode.active == true) < 3)
         {
@@ -664,23 +663,6 @@ function gameLoadScreen (screen)
             {
                 gameShips.push (new ship (players [i].name, players [i].color, startPoints [i].x, startPoints [i].y, startPoints [i].z));
                 startPoints [i].ship = players [i].name;
-                if (gameModes.findIndex (mode => mode.active == true) == 0)
-                {
-                    document.getElementById ("scoreHud").style.lineHeight = "23px";
-                    document.getElementById ("scoreHud").innerHTML += '0';
-                    document.getElementById ("lifesHud").innerHTML += '<img id="life0" title="Life 1" src="svgs/ship.svg"/> <img id="life1" title="Life 2" src="svgs/ship.svg"/> <img id="life2" title="Life 3" src="svgs/ship.svg"/> <img id="life3" title="Life 4" src="svgs/ship.svg"/> <img id="life4" title="Life 5" src="svgs/ship.svg"/>';
-                }
-                else
-                {
-                    document.getElementById ("scoreHud").style.lineHeight = null;
-                    var negative = tinycolor (players [i].color).toRgb ();
-                    negative.r = 255 - negative.r;
-                    negative.g = 255 - negative.g;
-                    negative.b = 255 - negative.b;
-                    negative = tinycolor (negative).toHexString ();
-                    scoreHud (gameShips.length - 1);
-                    lifesHud (gameShips.length - 1, 5);
-                }
             }
             document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
             if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
@@ -865,6 +847,7 @@ function updateGameArea ()
     }
     if (gameScreen == "game")
     {
+        document.getElementById ("scoreHud").innerHTML = '';
         gameItems = gameItems.filter (item => !item.taken || item.z > 0);
         gameShots = gameShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < gameWidth * 4 && shot.y > 0 && shot.y < gameHeight * 4);
         gameHits = gameHits.filter (hit => !hit.reverse || hit.r > 0);

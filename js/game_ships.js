@@ -366,9 +366,14 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
 
     this.update = function ()
     {
+        var idShip = gameShips.findIndex (ship => ship.name == this.name);
+        if (idShip > -1)
+        {
+            scoreHud (idShip);
+            lifesHud (idShip);
+        }
         if (this.life > 0)
         {
-            var idShip = gameShips.findIndex (ship => ship.name == this.name);
             if (this.z > 0 || this.ground != "snow")
             {
                 if (this.turn != 0 || this.turnZ != 0)
@@ -912,8 +917,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                             gameSound.sounds ["hit0"].play ();
                                         }
                                     }
-                                    if (gameShips.length > 1) document.getElementById ("score" + gameShips [idShip].name).innerHTML = gameShips [idShip].score;
-                                    else document.getElementById ("scoreHud").innerHTML = gameShips [idShip].score;
                                     if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
                                     playerDead (idShip);
                                     return;
@@ -969,8 +972,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             this.shield -= 5;
                             if (this.shield < 0) this.shield = 0;
                             this.score += 500;
-                            if (gameShips.length > 1) document.getElementById ("score" + this.name).innerHTML = this.score;
-                            else document.getElementById ("scoreHud").innerHTML = this.score;
                             if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
                             if (gameEnemies [gameEnemy].type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameWidth * 4), Math.floor (Math.random () * gameHeight * 4), Math.floor (Math.random () * 720) - 360));
                         }
@@ -990,8 +991,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             if (enemies > 0) enemies--;
                             document.getElementById ("enemyHud2").style.width = enemies + "px";
                             gameShips [idShip].score += 250;
-                            if (gameShips.length > 1) document.getElementById ("score" + this.name).innerHTML = this.score;
-                            else document.getElementById ("scoreHud").innerHTML = this.score;
                             if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
                             if (gameEnemies [gameEnemy].type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameWidth * 4), Math.floor (Math.random () * gameHeight * 4), Math.floor (Math.random () * 720) - 360));
                             playerDead (idShip);
@@ -1075,9 +1074,6 @@ function shipHit (gameShip, gameShot)
         {
             if (gameControl == "gamepad") vibrate (300, players [players.findIndex (player => player.name == gameShips [gameShip].name)].control);
             gameShips [gameShip].score += 100;
-            if (gameShips.length > 1) fetchLoad ("scoreHud", "player=" + gameShips [gameShip].name + "&shipFill=" + gameShips [gameShip].colors.shipFill + "&colors.negative=" + colors.negative + (gameShips [gameShip].colors.skin ? "&skin=" + gameShips [gameShip].colors.skin : ""));
-            //document.getElementById ("score" + gameShips [gameShip].name).innerHTML = gameShips [gameShip].score;
-            else document.getElementById ("scoreHud").innerHTML = gameShips [gameShip].score;
         }
     }
     else
@@ -1088,12 +1084,7 @@ function shipHit (gameShip, gameShot)
             gameSound.sounds ["hit0"].stop ();
             gameSound.sounds ["hit0"].play ();
         }
-        if (players [0].name == gameShots [gameShot].name)
-        {
-            gameShips [gameShip].score += 1000;
-            if (gameShips.length > 1) document.getElementById ("score" + gameShips [gameShip].name).innerHTML = gameShips [gameShip].score;
-            else document.getElementById ("scoreHud").innerHTML = gameShips [gameShip].score;
-        }
+        if (players [0].name == gameShots [gameShot].name) gameShips [gameShip].score += 1000;
         playerDead (gameShip);
     }
 }
@@ -1101,18 +1092,13 @@ function shipHit (gameShip, gameShot)
 function playerDead (gameShip)
 {
     vibrate (600, players [players.findIndex (player => player.name == gameShips [gameShip].name)].control);
-    if (gameShips [gameShip].lifes > 0)
-    {    
-        gameShips [gameShip].lifes--;
-        if (gameShips.length > 1) $("#life" + gameShips [gameShip].name + gameShips [gameShip].lifes).fadeOut (1000);
-        else $("#life" + gameShips [gameShip].lifes).fadeOut (1000);
-    }
+    if (gameShips [gameShip].lifes > 0) gameShips [gameShip].lifes--;
     if (gameShips [gameShip].lifes == 0 && gameModes.findIndex (mode => mode.active == true) < 2 && gameShips [gameShip].name == players [0].name) fetchLoad ("high_score_save", "name=" + gameShips [gameShip].name + "&score=" + gameShips [gameShip].score);
     setTimeout
     (
         function ()
         {
-            if ((gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length == 0) || (gameModes.findIndex (mode => mode.active == true) == 3 && gameShips [gameShip].name == players [0].name)) gameOpenModal ("exit", "Game over");
+            if ((gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length == 0) || (gameModes.findIndex (mode => mode.active == true) == 3 && gameShips [gameShip].name == players [0].name && gameShips [gameShip].lifes == 0)) gameOpenModal ("exit", "Game over");
             else if (gameShips.length == 0 && gameModes.findIndex (mode => mode.active == true) < 2)
             {
                 $("#blackScreen").fadeIn (1000);

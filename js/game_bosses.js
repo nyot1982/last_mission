@@ -497,6 +497,4 @@ function bossHit (gameShot, engine)
         }
         gameShips [gameShip].score += 100;
     }
-    if (gameShips.length > 1) document.getElementById ("score" + gameShots [gameShot].name).innerHTML = gameShips [gameShip].score;
-    else document.getElementById ("scoreHud").innerHTML = gameShips [gameShip].score;
 }

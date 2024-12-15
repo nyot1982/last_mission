@@ -115,11 +115,6 @@ function wssOpen ()
                             data.game_ships [game_ship].time
                         )
                     );
-                    document.getElementById ("scoreHud").style.lineHeight = null;
-                    //scoreHud (game_ship);
-                    //lifesHud (game_ship, 5);
-                    scoreHud (gameShips.length - 1);
-                    lifesHud (gameShips.length - 1, 5);
                 }
                 else
                 {

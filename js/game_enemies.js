@@ -765,8 +765,6 @@ function enemy (type, x, y, heading)
                                 gameShips [gameShip].score += 100;
                             }
                         }
-                        if (gameShips.length > 1) document.getElementById ("score" + gameShots [gameShot].name).innerHTML = gameShips [gameShip].score;
-                        else document.getElementById ("scoreHud").innerHTML = gameShips [gameShip].score;
                         document.getElementById ("enemyHud2").style.width = enemies + "px";
                     }
                 }
