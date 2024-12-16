@@ -228,7 +228,7 @@ function wssSend ()
             }
         ));
     }
-    else
+    else if (gameScreen == "game")
     {
         var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
         wss.send (JSON.stringify
