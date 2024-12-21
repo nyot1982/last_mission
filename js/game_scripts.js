@@ -178,6 +178,13 @@ var fpsMonitor = false,
         },
         {
             screen: ["game"],
+            action: "turn",
+            keyboard: [],
+            gamepad: [20], // L0
+            joystick: [20] // L0
+        },
+        {
+            screen: ["game"],
             action: "turn_left",
             keyboard: [37], // Left
             gamepad: [14], // Left
@@ -208,14 +215,14 @@ var fpsMonitor = false,
             screen: ["game"],
             action: "move_front",
             keyboard: [40], // Up
-            gamepad: [13], // Up
+            gamepad: [7, 13], // R2, Up
             joystick: []
         },
         {
             screen: ["game"],
             action: "move_back",
             keyboard: [38], // Down
-            gamepad: [12], // Down
+            gamepad: [6, 12], // L2, Down
             joystick: []
         },
         {

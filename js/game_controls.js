@@ -14,13 +14,8 @@ function controls ()
         for (const [index, axis] of gamepad.axes.entries ()) axisControl (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index, axis.toFixed (2) * 1);
         for (const [index, button] of gamepad.buttons.entries ())
         {
-            if (index == 6) gameShips [gameShip].moving (button.value.toFixed (2) * 1);
-            else if (index == 7) gameShips [gameShip].moving (button.value.toFixed (2) * -1);
-            else
-            {
-                if (button.pressed || button.touched) buttonDown (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index);
-                else buttonUp (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index);
-            }
+            if (button.pressed || button.touched) buttonDown (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index, button.value.toFixed (2) * 1);
+            else buttonUp (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index, 0);
         }
         player++;
     }
@@ -87,27 +82,22 @@ function axisControl (id_control, control, index, value)
     if (value > 0 && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl != control) changeControl (control);
     if (gameScreen == "game" && gameModal == null)
     {
-        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var gameShip = 0;
+        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
         else
         {
             var player = players.findIndex (player => player.control == id_control);
             var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
         }
-        if (gameShips [gameShip])
+        if (gameShip > -1)
         {
             if (control == "gamepad")
             {
-                if (index == 0)
-                {
-                    gameShips [gameShip].turning (value);
-                    /*if (value == 0) userActionStop (control, index, value, gameShip);
-                    else userActionStart (control, index, value, gameShip);*/
-                }
+                //if (index == 0 && (value != 0 || gameShips [gameShip].turn != 0)) gameShips [gameShip].turning (value);
             }
             else if (control == "joystick")
             {
                 if (index == 0) gameShips [gameShip].turning (value);
-                if (index == 1) gameShips [gameShip].moving (value);
+                else if (index == 1) gameShips [gameShip].moving (value);
             }
         }
     }
@@ -118,11 +108,15 @@ function buttonDown (id_control, control, button)
     if (!buttonsPressed [id_control].includes (button))
     {
         buttonsPressed [id_control].push (button);
-        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl != control || gameScreen != "game") changeControl (control);
+        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl != control) changeControl (control);
         if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0)
         {
-            var player = players.findIndex (player => player.control == id_control);
-            var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
+            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
+            else
+            {
+                var player = players.findIndex (player => player.control == id_control);
+                var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
+            }
         }
         userActionStart (control, button, null, gameShip);
     }
@@ -135,7 +129,7 @@ function buttonUp (id_control, control, button)
         buttonsPressed [id_control].splice (buttonsPressed [id_control].indexOf (button), 1);
         if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0)
         {
-            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var gameShip = 0;
+            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
             else
             {
                 var player = players.findIndex (player => player.control == id_control);
@@ -158,7 +152,7 @@ function keyDown (e)
     else if (!keysPressed.includes (e.keyCode))
     {
         keysPressed.push (e.keyCode);
-        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl != "keyboard" || gameScreen != "game") changeControl ("keyboard");
+        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl != "keyboard") changeControl ("keyboard");
         if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
         userActionStart ("keyboard", e.keyCode, null, gameShip);
     }
@@ -442,6 +436,9 @@ function userActionStart (control, bt_code, bt_value, gameShip)
                 case 'fire':
                     gameShips [gameShip].firing (true);
                 break;
+                case 'turn':
+                    gameShips [gameShip].turning (bt_value);
+                break;
                 case 'turn_left':
                     gameShips [gameShip].turning (-1);
                 break;
@@ -506,6 +503,7 @@ function userActionStop (control, bt_code, gameShip)
             case 'fire':
                 gameShips [gameShip].firing (false);
             break;
+            case 'turn':
             case 'turn_left':
             case 'turn_right':
                 gameShips [gameShip].turning (0);

@@ -61,7 +61,7 @@ function wssOpen ()
             menuShip.changeColor ((storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0]);
             idInputAct = 0;
             changeTab ("input");
-            menuShip.turning_menu (-1);
+            menuShip.turning (-1);
         }
         else if (data.error)
         {
