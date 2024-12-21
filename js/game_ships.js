@@ -76,7 +76,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.moveZ = 0;
     this.strafe = 0;
     this.turn = 0;
-    this.turnZ = 0;
     this.lastShotFrame = -this.weapons [this.weapon].fireRate / this.weapons [this.weapon].rate;
 
     this.changeColor = function (color)
@@ -164,7 +163,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         else if (gameScreen == "game" && this.z == 50) this.fire = active
     }
 
-    this.turning = function (turn)
+    this.turning_menu = function (turn)
     {
         if (gameScreen == "menu")
         {
@@ -173,7 +172,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         }
     }
 
-    this.turning_digital = function (turn)
+    this.turning = function (turn)
     {
         if (gameScreen == "game" && this.z > 0)
         {
@@ -193,51 +192,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         }
     }
 
-    this.turning_analogic = function (turn)
-    {
-        if (gameScreen == "game" && this.z > 0)
-        {
-            if (turn == 0 || turn < 0 && !this.status.wing1 || turn > 0 && !this.status.wing2) this.turnZ = 0;
-            else if (turn < 0 && this.turnZ > -10)
-            {
-                if (this.turnZ == 0) this.turnZ = -5;
-                this.turnZ += turn;
-                if (this.turnZ < -10) this.turnZ = -10;
-            }
-            else if (turn > 0 && this.turnZ < 10)
-            {
-                if (this.turnZ == 0) this.turnZ = 5;
-                this.turnZ += turn;
-                if (this.turnZ > 10) this.turnZ = 10;
-            }
-        }
-    }
-
-    this.moving_digital = function (direction)
-    {
-        if (gameScreen == "game" && this.z > 0)
-        {
-            if (!this.status.engine1 && !this.status.engine2) direction = 0;
-            if (direction < 0)
-            {
-                if (this.moveSpeed <= 0) this.move = -0.5;
-                else if (this.moveSpeed > 0) this.move = -1;
-            }
-            else if (direction > 0)
-            {
-                if (this.moveSpeed < 0) this.move = 1;
-                else if (this.moveSpeed >= 0) this.move = 0.5;
-            }
-            else if (direction == 0)
-            {
-                if (this.moveSpeed < 0) this.move = 0.5;
-                else if (this.moveSpeed > 0) this.move = -0.5;
-                else if (this.moveSpeed == 0) this.move = 0; 
-            }
-        }
-    }
-
-    this.moving_analogic = function (direction)
+    this.moving = function (direction)
     {
         if (gameScreen == "game" && this.z > 0)
         {
@@ -373,10 +328,9 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         {
             if (this.z > 0 || this.ground != "snow")
             {
-                if (this.turn != 0 || this.turnZ != 0)
+                if (this.turn != 0)
                 {
                     if (this.turn != 0) this.heading = (this.heading + this.turn) % 360;
-                    if (this.turnZ != 0) this.heading = (this.heading + this.turnZ) % 360;
                     if (gameScreen == "game" && this.name == players [0].name) document.getElementById ("headingHud").style = "left: " + (-371.25 - this.heading) + "px;";
                 }
                 this.radians = this.heading * Math.PI / 180;
@@ -779,7 +733,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.moveSpeed = 0;
                     this.strafeSpeed = 0;
                     this.turn = 0;
-                    this.turnZ = 0;
                     this.move = 0;
                     this.moveX = 0;
                     this.moveY = 0;

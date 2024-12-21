@@ -14,8 +14,8 @@ function controls ()
         for (const [index, axis] of gamepad.axes.entries ()) axisControl (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index, axis.toFixed (2) * 1);
         for (const [index, button] of gamepad.buttons.entries ())
         {
-            if (index == 6) gameShips [gameShip].moving_analogic (button.value.toFixed (2) * 1);
-            else if (index == 7) gameShips [gameShip].moving_analogic (button.value.toFixed (2) * -1);
+            if (index == 6) gameShips [gameShip].moving (button.value.toFixed (2) * 1);
+            else if (index == 7) gameShips [gameShip].moving (button.value.toFixed (2) * -1);
             else
             {
                 if (button.pressed || button.touched) buttonDown (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index);
@@ -40,12 +40,10 @@ function stopUserInteractions (player)
         buttonsPressed [players [player].control] = [];
     }
     gameShips [gameShip].firing (false);
-    gameShips [gameShip].moving_digital (0);
-    gameShips [gameShip].moving_analogic (0);
+    gameShips [gameShip].moving (0);
     gameShips [gameShip].movingZ (0);
     gameShips [gameShip].strafing (0);
-    gameShips [gameShip].turning_digital (0);
-    gameShips [gameShip].turning_analogic (0)    
+    gameShips [gameShip].turning (0);
 }
 
 function gamepadDisconnected (e)
@@ -101,15 +99,15 @@ function axisControl (id_control, control, index, value)
             {
                 if (index == 0)
                 {
-                    gameShips [gameShip].turning_analogic (value);
+                    gameShips [gameShip].turning (value);
                     /*if (value == 0) userActionStop (control, index, value, gameShip);
                     else userActionStart (control, index, value, gameShip);*/
                 }
             }
             else if (control == "joystick")
             {
-                if (index == 0) gameShips [gameShip].turning_digital (value);
-                if (index == 1) gameShips [gameShip].moving_digital (value);
+                if (index == 0) gameShips [gameShip].turning (value);
+                if (index == 1) gameShips [gameShip].moving (value);
             }
         }
     }
@@ -445,16 +443,16 @@ function userActionStart (control, bt_code, bt_value, gameShip)
                     gameShips [gameShip].firing (true);
                 break;
                 case 'turn_left':
-                    gameShips [gameShip].turning_digital (-1);
+                    gameShips [gameShip].turning (-1);
                 break;
                 case 'turn_right':
-                    gameShips [gameShip].turning_digital (1);
+                    gameShips [gameShip].turning (1);
                 break;
                 case 'move_back':
-                    gameShips [gameShip].moving_digital (1);
+                    gameShips [gameShip].moving (1);
                 break;
                 case 'move_front':
-                    gameShips [gameShip].moving_digital (-1);
+                    gameShips [gameShip].moving (-1);
                 break;
                 case 'strafe_right':
                     gameShips [gameShip].strafing (1);
@@ -510,11 +508,11 @@ function userActionStop (control, bt_code, gameShip)
             break;
             case 'turn_left':
             case 'turn_right':
-                gameShips [gameShip].turning_digital (0);
+                gameShips [gameShip].turning (0);
             break;
             case 'move_back':
             case 'move_front':
-                gameShips [gameShip].moving_digital (0);
+                gameShips [gameShip].moving (0);
             break;
             case 'strafe_right':
             case 'strafe_left':
