@@ -28,11 +28,13 @@ function stopUserInteractions (player)
     {
         keysPressed = [];
         buttonsPressed = [];
+        axesPressed = [];
     }
     else
     {
         if (player == 0 || gameModes.findIndex (mode => mode.active == true) == 3) keysPressed = [];
         buttonsPressed [players [player].control] = [];
+        axesPressed [players [player].control] = [];
     }
     gameShips [gameShip].firing (false);
     gameShips [gameShip].moving (0);
@@ -53,6 +55,7 @@ function gamepadDisconnected (e)
         if (gamepad.mapping == "standard" && oldControl == "gamepad" || gamepad.id.toLowerCase ().includes ("joystick") && oldControl == "joystick") controlFinded = gamepad.index * 1;
     }
     buttonsPressed.splice (buttonsPressed.indexOf (e.gamepad.index * 1), 1);
+    axesPressed.splice (axesPressed.indexOf (e.gamepad.index * 1), 1);
     if (controlFinded == null)
     {
         if (gameScreen == "game") players [0].control = -1;
@@ -68,6 +71,7 @@ function gamepadConnected (e)
     else if (e.gamepad.id.toLowerCase ().includes ("joystick")) var newControl = "joystick";
     if (newControl && document.getElementById (newControl).style.display == 'none') $('#' + newControl).fadeIn (1000);
     buttonsPressed [e.gamepad.index * 1] = [];
+    axesPressed [e.gamepad.index * 1] = [];
     if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl != newControl || gameScreen != "game") changeControl (newControl);
     if (gameAlert.length > 0)
     {
@@ -136,6 +140,43 @@ function buttonUp (id_control, control, button)
                 var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
             }
             userActionStop (control, button, gameShip);
+        }
+    }
+}
+
+function axisDown (id_control, control, axis)
+{
+    if (!axesPressed [id_control].includes (axis))
+    {
+        axesPressed [id_control].push (axis);
+        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl != control) changeControl (control);
+        if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0)
+        {
+            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
+            else
+            {
+                var player = players.findIndex (player => player.control == id_control);
+                var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
+            }
+        }
+        userActionStart (control, axis, null, gameShip);
+    }
+}
+
+function axisUp (id_control, control, axis)
+{
+    if (axesPressed [id_control].includes (axis))
+    {
+        axesPressed [id_control].splice (axesPressed [id_control].indexOf (axis), 1);
+        if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0)
+        {
+            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
+            else
+            {
+                var player = players.findIndex (player => player.control == id_control);
+                var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
+            }
+            userActionStop (control, axis, gameShip);
         }
     }
 }

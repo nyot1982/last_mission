@@ -1,5 +1,6 @@
 function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, time)
 {
+    this.idShip = 0;
     this.name = name || null;
     this.x = x || gameWidth / 2;
     this.y = y || gameHeight / 2;
@@ -282,7 +283,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     {
         if (gameScreen == "game" && gameModal == null && this.shield == 0 && this.z == 50)
         {
-            var idShip = gameShips.findIndex (ship => ship.name == this.name);
             for (var gameShot in gameShots)
             {
                 if (this.name != gameShots [gameShot].name && this.z == 50)
@@ -292,7 +292,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         x: gameShots [gameShot].x,
                         y: gameShots [gameShot].y
                     }
-                    if (gameShips [idShip].name == players [0].name)
+                    if (gameShips [this.idShip].name == players [0].name)
                     {
                         if (gameArea.centerPoint.x > gameWidth / 2 && gameArea.centerPoint.x < gameWidth * 3 + gameWidth / 2) shot.x -= gameArea.centerPoint.x - gameWidth / 2;
                         if (gameArea.centerPoint.y > gameHeight / 2 && gameArea.centerPoint.y < gameHeight * 3 + gameHeight / 2) shot.y -= gameArea.centerPoint.y - gameHeight / 2;
@@ -305,20 +305,134 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     if (ctx.isPointInStroke (this.paths [path], shot.x, shot.y) || ctx.isPointInPath (this.paths [path], shot.x, shot.y))
                     {
                         if (this.status [path] == true) this.status [path] = false;
-                        shipHit (idShip, gameShot);
+                        this.shipHit (gameShot);
                     }
                 }
             }
         }
     }
 
+    this.shipHit = function (gameShot)
+    {
+        gameShots [gameShot].hit = true;
+        this.life -= 10;
+        if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
+        if (this.life > 0)
+        {
+            gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
+            if (gameSound.active)
+            {
+                gameSound.sounds ["hit1"].stop ();
+                gameSound.sounds ["hit1"].play ();
+            }
+            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && players [0].name == this.name)
+            {
+                if (gameControl == "gamepad") vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
+                this.score += 100;
+            }
+        }
+        else
+        {
+            gameHits.push (new hit ("hit0", this.x, this.y, 40, 2));
+            if (gameSound.active)
+            {
+                gameSound.sounds ["hit0"].stop ();
+                gameSound.sounds ["hit0"].play ();
+            }
+            if (players [0].name == gameShots [gameShot].name) this.score += 1000;
+            this.playerDead ();
+        }
+    }
+
+    this.playerDead = function ()
+    {
+        vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
+        if (this.lifes > 0) this.lifes--;
+        if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) < 2 && this.name == players [0].name) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
+        setTimeout
+        (
+            function ()
+            {
+                if ((gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length == 0) || (gameModes.findIndex (mode => mode.active == true) == 3 && this.name == players [0].name && this.lifes == 0)) gameOpenModal ("exit", "Game over");
+                else if (gameShips.length == 0 && gameModes.findIndex (mode => mode.active == true) < 2)
+                {
+                    $("#blackScreen").fadeIn (1000);
+                    setTimeout
+                    (
+                        function ()
+                        {
+                            gameLoadScreen ("game_over");
+                        },
+                        1000
+                    );
+                }
+                else if (this.lifes > 0)
+                {
+                    if (gameModal != null) gameCloseModal ();
+                    this.x = startPoints [startPoints.findIndex (startPoint => startPoint.ship == this.name)].x;
+                    this.y = startPoints [startPoints.findIndex (startPoint => startPoint.ship == this.name)].y;
+                    this.z = startPoints [startPoints.findIndex (startPoint => startPoint.ship == this.name)].z;
+                    this.heading = 0;
+                    this.moveSpeed = 0;
+                    this.strafeSpeed = 0;
+                    this.fire = false;
+                    this.weapon = 0;
+                    this.engine1 = 0;
+                    this.engine2 = 0;
+                    this.engine1inc = true;
+                    this.engine2inc = true;
+                    this.shadowOffset = 1;
+                    this.nameOffset = 5;  
+                    this.life = 100;
+                    this.fuel = 100;
+                    this.ammo = 100;
+                    this.shield = 0;
+                    this.status.gun = true;
+                    this.status.wing1 = true;
+                    this.status.wing2 = true;
+                    this.status.engine1 = true;
+                    this.status.engine2 = true;
+                    if (this.name == players [0].name)
+                    {
+                        var newPoint = this.x;
+                        if (newPoint < gameWidth / 2) newPoint = gameWidth / 2;
+                        else if (newPoint > gameWidth * 3 + gameWidth / 2) newPoint = gameWidth * 3 + gameWidth / 2;
+                        if (newPoint < gameArea.centerPoint.x) ctx.translate (gameArea.centerPoint.x - newPoint, 0);
+                        else if (newPoint > gameArea.centerPoint.x) ctx.translate (-(newPoint - gameArea.centerPoint.x), 0);
+                        gameArea.centerPoint.x = newPoint;
+                        newPoint = this.y;
+                        if (newPoint < gameHeight / 2) newPoint = gameHeight / 2;
+                        else if (newPoint > gameHeight * 3 + gameHeight / 2) newPoint = gameHeight * 3 + gameHeight / 2;
+                        if (newPoint < gameArea.centerPoint.y) ctx.translate (0, gameArea.centerPoint.y - newPoint);
+                        else if (newPoint > gameArea.centerPoint.y) ctx.translate (0, -(newPoint - gameArea.centerPoint.y));
+                        gameArea.centerPoint.y = newPoint;
+                        resetHuds (false, 100);
+                    }
+                    if (gameMusic.active)
+                    {
+                        if (enemies == 0)
+                        {
+                            gameMusic.musics.boss.stop ();
+                            gameMusic.musics.boss.play ();
+                        }
+                        else if (enemies > 0)
+                        {
+                            gameMusic.musics.game.stop ();
+                            gameMusic.musics.game.play ();
+                        }
+                    }
+                }
+            },
+            1000
+        );
+    }
     this.update = function ()
     {
-        var idShip = gameShips.findIndex (ship => ship.name == this.name);
-        if (idShip > -1)
+        this.idShip = gameShips.findIndex (ship => ship.name == this.name);
+        if (this.idShip > -1)
         {
-            scoreHud (idShip);
-            lifesHud (idShip);
+            scoreHud (this.idShip);
+            lifesHud (this.idShip);
         }
         if (this.life > 0)
         {
@@ -721,7 +835,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.moveZ = 0;
                     if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
                     this.life = 0;
-                    playerDead (idShip);
+                    this.playerDead ();
                     return;
                 }
                 else if (this.z == 0)
@@ -791,7 +905,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     }
                     if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
                     this.life = 0;
-                    playerDead (idShip);
+                    this.playerDead ();
                     return;
                 }
                 else
@@ -818,7 +932,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                             gameSound.sounds ["hit0"].stop ();
                                             gameSound.sounds ["hit0"].play ();
                                         }
-                                        playerDead (gameShip);
+                                        gameShips [gameShip].playerDead ();
                                         document.getElementById ("score" + this.name).innerHTML = this.score;
                                         if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
                                     }
@@ -838,7 +952,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                             gameShips [gameShip].score += 1000;
                                         }
                                         if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
-                                        playerDead (idShip);
+                                        this.playerDead ();
                                         return;
                                     }
                                 }
@@ -864,7 +978,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                         }
                                     }
                                     if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
-                                    playerDead (idShip);
+                                    this.playerDead ();
                                     return;
                                 }
                             }
@@ -895,7 +1009,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 gameSound.sounds ["hit0"].play ();
                             }
                             if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
-                            playerDead (idShip);
+                            this.playerDead ();
                         }
                     }
                     else for (var gameEnemy in gameEnemies)
@@ -936,10 +1050,10 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
                             if (enemies > 0) enemies--;
                             document.getElementById ("enemyHud2").style.width = enemies + "px";
-                            gameShips [idShip].score += 250;
+                            gameShips [this.idShip].score += 250;
                             if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
                             if (gameEnemies [gameEnemy].type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameWidth * 4), Math.floor (Math.random () * gameHeight * 4), Math.floor (Math.random () * 720) - 360));
-                            playerDead (idShip);
+                            this.playerDead ();
                         }
                     }
                 }
@@ -1001,119 +1115,4 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             }
         }
     }
-}
-
-function shipHit (gameShip, gameShot)
-{
-    gameShots [gameShot].hit = true;
-    gameShips [gameShip].life -= 10;
-    if (gameShips [gameShip].name == players [0].name) vitalsHud ("life", gameShips [gameShip].life, "red");
-    if (gameShips [gameShip].life > 0)
-    {
-        gameHits.push (new hit (gameShips [gameShip].name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
-        if (gameSound.active)
-        {
-            gameSound.sounds ["hit1"].stop ();
-            gameSound.sounds ["hit1"].play ();
-        }
-        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && players [0].name == gameShips [gameShip].name)
-        {
-            if (gameControl == "gamepad") vibrate (300, players [players.findIndex (player => player.name == gameShips [gameShip].name)].control);
-            gameShips [gameShip].score += 100;
-        }
-    }
-    else
-    {
-        gameHits.push (new hit ("hit0", gameShips [gameShip].x, gameShips [gameShip].y, 40, 2));
-        if (gameSound.active)
-        {
-            gameSound.sounds ["hit0"].stop ();
-            gameSound.sounds ["hit0"].play ();
-        }
-        if (players [0].name == gameShots [gameShot].name) gameShips [gameShip].score += 1000;
-        playerDead (gameShip);
-    }
-}
-
-function playerDead (gameShip)
-{
-    vibrate (600, players [players.findIndex (player => player.name == gameShips [gameShip].name)].control);
-    if (gameShips [gameShip].lifes > 0) gameShips [gameShip].lifes--;
-    if (gameShips [gameShip].lifes == 0 && gameModes.findIndex (mode => mode.active == true) < 2 && gameShips [gameShip].name == players [0].name) fetchLoad ("high_score_save", "name=" + gameShips [gameShip].name + "&score=" + gameShips [gameShip].score);
-    setTimeout
-    (
-        function ()
-        {
-            if ((gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length == 0) || (gameModes.findIndex (mode => mode.active == true) == 3 && gameShips [gameShip].name == players [0].name && gameShips [gameShip].lifes == 0)) gameOpenModal ("exit", "Game over");
-            else if (gameShips.length == 0 && gameModes.findIndex (mode => mode.active == true) < 2)
-            {
-                $("#blackScreen").fadeIn (1000);
-                setTimeout
-                (
-                    function ()
-                    {
-                        gameLoadScreen ("game_over");
-                    },
-                    1000
-                );
-            }
-            else if (gameShips [gameShip].lifes > 0)
-            {
-                if (gameModal != null) gameCloseModal ();
-                gameShips [gameShip].x = startPoints [startPoints.findIndex (startPoint => startPoint.ship == gameShips [gameShip].name)].x;
-                gameShips [gameShip].y = startPoints [startPoints.findIndex (startPoint => startPoint.ship == gameShips [gameShip].name)].y;
-                gameShips [gameShip].z = startPoints [startPoints.findIndex (startPoint => startPoint.ship == gameShips [gameShip].name)].z;
-                gameShips [gameShip].heading = 0;
-                gameShips [gameShip].moveSpeed = 0;
-                gameShips [gameShip].strafeSpeed = 0;
-                gameShips [gameShip].fire = false;
-                gameShips [gameShip].weapon = 0;
-                gameShips [gameShip].engine1 = 0;
-                gameShips [gameShip].engine2 = 0;
-                gameShips [gameShip].engine1inc = true;
-                gameShips [gameShip].engine2inc = true;
-                gameShips [gameShip].shadowOffset = 1;
-                gameShips [gameShip].nameOffset = 5;  
-                gameShips [gameShip].life = 100;
-                gameShips [gameShip].fuel = 100;
-                gameShips [gameShip].ammo = 100;
-                gameShips [gameShip].shield = 0;
-                gameShips [gameShip].status.gun = true;
-                gameShips [gameShip].status.wing1 = true;
-                gameShips [gameShip].status.wing2 = true;
-                gameShips [gameShip].status.engine1 = true;
-                gameShips [gameShip].status.engine2 = true;
-                if (gameShips [gameShip].name == players [0].name)
-                {
-                    var newPoint = gameShips [gameShip].x;
-                    if (newPoint < gameWidth / 2) newPoint = gameWidth / 2;
-                    else if (newPoint > gameWidth * 3 + gameWidth / 2) newPoint = gameWidth * 3 + gameWidth / 2;
-                    if (newPoint < gameArea.centerPoint.x) ctx.translate (gameArea.centerPoint.x - newPoint, 0);
-                    else if (newPoint > gameArea.centerPoint.x) ctx.translate (-(newPoint - gameArea.centerPoint.x), 0);
-                    gameArea.centerPoint.x = newPoint;
-                    newPoint = gameShips [gameShip].y;
-                    if (newPoint < gameHeight / 2) newPoint = gameHeight / 2;
-                    else if (newPoint > gameHeight * 3 + gameHeight / 2) newPoint = gameHeight * 3 + gameHeight / 2;
-                    if (newPoint < gameArea.centerPoint.y) ctx.translate (0, gameArea.centerPoint.y - newPoint);
-                    else if (newPoint > gameArea.centerPoint.y) ctx.translate (0, -(newPoint - gameArea.centerPoint.y));
-                    gameArea.centerPoint.y = newPoint;
-                    resetHuds (false, 100);
-                }
-                if (gameMusic.active)
-                {
-                    if (enemies == 0)
-                    {
-                        gameMusic.musics.boss.stop ();
-                        gameMusic.musics.boss.play ();
-                    }
-                    else if (enemies > 0)
-                    {
-                        gameMusic.musics.game.stop ();
-                        gameMusic.musics.game.play ();
-                    }
-                }
-            }
-        },
-        1000
-    );
 }
