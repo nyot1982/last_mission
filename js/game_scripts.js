@@ -60,7 +60,11 @@ var fpsMonitor = false,
                 buttons: [],
                 axis: []
             },
-            joystick: []
+            joystick:
+            {
+                buttons: [],
+                axis: []
+            }
         },
         {
             screen: ["input"],
@@ -71,7 +75,11 @@ var fpsMonitor = false,
                 buttons: [],
                 axis: []
             },
-            joystick: []
+            joystick:
+            {
+                buttons: [],
+                axis: []
+            }
         },
         {
             screen: ["input", "color", "skin"],
@@ -82,7 +90,11 @@ var fpsMonitor = false,
                 buttons: [0], // A
                 axis: []
             },
-            joystick: [0]
+            joystick:
+            {
+                buttons: [0],
+                axis: []
+            }
         },
         {
             screen: ["input"],
@@ -93,7 +105,11 @@ var fpsMonitor = false,
                 buttons: [1, 9], // B, Start
                 axis: []
             },
-            joystick: [1]
+            joystick:
+            {
+                buttons: [1],
+                axis: []
+            }
         },
         {
             screen: ["input", "color", "skin"],
@@ -104,7 +120,11 @@ var fpsMonitor = false,
                 buttons: [2, 8], // X, Select
                 axis: []
             },
-            joystick: [2]
+            joystick:
+            {
+                buttons: [2],
+                axis: []
+            }
         },
         {
             screen: ["skin"],
@@ -115,7 +135,11 @@ var fpsMonitor = false,
                 buttons: [12, 14], // Down, Left
                 axis: []
             },
-            joystick: []
+            joystick:
+            {
+                buttons: [],
+                axis: []
+            }
         },
         {
             screen: ["skin"],
@@ -126,7 +150,11 @@ var fpsMonitor = false,
                 buttons: [13, 15], // Up, Right
                 axis: []
             },
-            joystick: []
+            joystick:
+            {
+                buttons: [],
+                axis: []
+            }
         },
         {
             screen: ["menu", "modal_menu"],
@@ -137,7 +165,11 @@ var fpsMonitor = false,
                 buttons: [13], // Up
                 axis: []
             },
-            joystick: []
+            joystick:
+            {
+                buttons: [],
+                axis: []
+            }
         },
         {
             screen: ["menu", "modal_menu"],
@@ -148,7 +180,11 @@ var fpsMonitor = false,
                 buttons: [12], // Down
                 axis: []
             },
-            joystick: []
+            joystick:
+            {
+                buttons: [],
+                axis: []
+            }
         },
         {
             screen: ["menu", "modal_menu"],
@@ -159,7 +195,11 @@ var fpsMonitor = false,
                 buttons: [0], // A
                 axis: []
             },
-            joystick: [0]
+            joystick:
+            {
+                buttons: [0],
+                axis: []
+            }
         },
         {
             screen: ["modal_continue"],
@@ -170,7 +210,11 @@ var fpsMonitor = false,
                 buttons: [9, 16], // Start, Home
                 axis: []
             },
-            joystick: [7]
+            joystick:
+            {
+                buttons: [7],
+                axis: []
+            }
         },
         {
             screen: ["modal_exit"],
@@ -181,7 +225,11 @@ var fpsMonitor = false,
                 buttons: [9, 16], // Start, Home
                 axis: []
             },
-            joystick: [7]
+            joystick:
+            {
+                buttons: [7],
+                axis: []
+            }
         },
         {
             screen: ["modal_menu"],
@@ -192,7 +240,11 @@ var fpsMonitor = false,
                 buttons: [9, 16], // Start, Home
                 axis: []
             },
-            joystick: [7]
+            joystick:
+            {
+                buttons: [7],
+                axis: []
+            }
         },
         {
             screen: ["confirm"],
@@ -203,7 +255,11 @@ var fpsMonitor = false,
                 buttons: [8], // Select
                 axis: []
             },
-            joystick: [0]
+            joystick:
+            {
+                buttons: [0],
+                axis: []
+            }
         },
         {
             screen: ["confirm"],
@@ -214,7 +270,11 @@ var fpsMonitor = false,
                 buttons: [9], // Start
                 axis: []
             },
-            joystick: [1]
+            joystick:
+            {
+                buttons: [1],
+                axis: []
+            }
         },
         {
             screen: ["game"],
@@ -225,7 +285,11 @@ var fpsMonitor = false,
                 buttons: [0], // A
                 axis: []
             },
-            joystick: [0]
+            joystick:
+            {
+                buttons: [0],
+                axis: []
+            }
         },
         {
             screen: ["game"],
@@ -236,7 +300,11 @@ var fpsMonitor = false,
                 buttons: [3, 8], // Y, Select
                 axis: []
             },
-            joystick: [1]
+            joystick:
+            {
+                buttons: [1],
+                axis: []
+            }
         },
         {
             screen: ["game"],
@@ -247,7 +315,11 @@ var fpsMonitor = false,
                 buttons: [1, 2], // B, X
                 axis: []
             },
-            joystick: [6]
+            joystick:
+            {
+                buttons: [6],
+                axis: []
+            }
         },
         {
             screen: ["game"],
@@ -258,7 +330,11 @@ var fpsMonitor = false,
                 buttons: [14], // Left
                 axis: [0] // L0 Left
             },
-            joystick: []
+            joystick:
+            {
+                buttons: [],
+                axis: [0]
+            }
         },
         {
             screen: ["game"],
@@ -269,7 +345,11 @@ var fpsMonitor = false,
                 buttons: [15], // Right
                 axis: [1] // L0 Right
             },
-            joystick: []
+            joystick:
+            {
+                buttons: [],
+                axis: [1]
+            }
         },
         {
             screen: ["game"],
@@ -280,7 +360,11 @@ var fpsMonitor = false,
                 buttons: [4], // L1
                 axis: []
             },
-            joystick: [3]
+            joystick:
+            {
+                buttons: [3],
+                axis: []
+            }
         },
         {
             screen: ["game"],
@@ -291,7 +375,11 @@ var fpsMonitor = false,
                 buttons: [5], // R1
                 axis: []
             },
-            joystick: [2]
+            joystick:
+            {
+                buttons: [2],
+                axis: []
+            }
         },
         {
             screen: ["game"],
@@ -302,7 +390,11 @@ var fpsMonitor = false,
                 buttons: [7, 13], // R2, Up
                 axis: []
             },
-            joystick: []
+            joystick:
+            {
+                buttons: [],
+                axis: []
+            }
         },
         {
             screen: ["game"],
@@ -313,7 +405,11 @@ var fpsMonitor = false,
                 buttons: [6, 12], // L2, Down
                 axis: []
             },
-            joystick: []
+            joystick:
+            {
+                buttons: [],
+                axis: []
+            }
         },
         {
             screen: ["game"],
@@ -324,7 +420,11 @@ var fpsMonitor = false,
                 buttons: [9, 16], // Start, Home
                 axis: []
             },
-            joystick: [7]
+            joystick:
+            {
+                buttons: [7],
+                axis: []
+            }
         }
     ],
     startPoints =
