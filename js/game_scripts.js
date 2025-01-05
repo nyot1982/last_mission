@@ -58,12 +58,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [],
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [],
-                axis: []
+                axes: []
             }
         },
         {
@@ -73,12 +73,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [],
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [],
-                axis: []
+                axes: []
             }
         },
         {
@@ -88,12 +88,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [0], // A
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [0],
-                axis: []
+                axes: []
             }
         },
         {
@@ -103,12 +103,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [1, 9], // B, Start
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [1],
-                axis: []
+                axes: []
             }
         },
         {
@@ -118,12 +118,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [2, 8], // X, Select
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [2],
-                axis: []
+                axes: []
             }
         },
         {
@@ -133,12 +133,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [12, 14], // Down, Left
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [],
-                axis: []
+                axes: []
             }
         },
         {
@@ -148,12 +148,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [13, 15], // Up, Right
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [],
-                axis: []
+                axes: []
             }
         },
         {
@@ -163,12 +163,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [13], // Up
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [],
-                axis: []
+                axes: []
             }
         },
         {
@@ -178,12 +178,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [12], // Down
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [],
-                axis: []
+                axes: []
             }
         },
         {
@@ -193,12 +193,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [0], // A
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [0],
-                axis: []
+                axes: []
             }
         },
         {
@@ -208,12 +208,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [9, 16], // Start, Home
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [7],
-                axis: []
+                axes: []
             }
         },
         {
@@ -223,12 +223,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [9, 16], // Start, Home
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [7],
-                axis: []
+                axes: []
             }
         },
         {
@@ -238,12 +238,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [9, 16], // Start, Home
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [7],
-                axis: []
+                axes: []
             }
         },
         {
@@ -253,12 +253,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [8], // Select
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [0],
-                axis: []
+                axes: []
             }
         },
         {
@@ -268,12 +268,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [9], // Start
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [1],
-                axis: []
+                axes: []
             }
         },
         {
@@ -283,12 +283,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [0], // A
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [0],
-                axis: []
+                axes: []
             }
         },
         {
@@ -298,12 +298,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [3, 8], // Y, Select
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [1],
-                axis: []
+                axes: []
             }
         },
         {
@@ -313,12 +313,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [1, 2], // B, X
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [6],
-                axis: []
+                axes: []
             }
         },
         {
@@ -328,12 +328,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [14], // Left
-                axis: [0] // L0 Left
+                axes: [0] // L0 Left
             },
             joystick:
             {
                 buttons: [],
-                axis: [0]
+                axes: [0]
             }
         },
         {
@@ -343,12 +343,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [15], // Right
-                axis: [1] // L0 Right
+                axes: [1] // L0 Right
             },
             joystick:
             {
                 buttons: [],
-                axis: [1]
+                axes: [1]
             }
         },
         {
@@ -358,12 +358,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [4], // L1
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [3],
-                axis: []
+                axes: []
             }
         },
         {
@@ -373,12 +373,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [5], // R1
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [2],
-                axis: []
+                axes: []
             }
         },
         {
@@ -388,12 +388,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [7, 13], // R2, Up
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [],
-                axis: []
+                axes: []
             }
         },
         {
@@ -403,12 +403,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [6, 12], // L2, Down
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [],
-                axis: []
+                axes: []
             }
         },
         {
@@ -418,12 +418,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [9, 16], // Start, Home
-                axis: []
+                axes: []
             },
             joystick:
             {
                 buttons: [7],
-                axis: []
+                axes: []
             }
         }
     ],
