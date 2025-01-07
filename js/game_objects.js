@@ -495,7 +495,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                     this.rollover = "Connecting...";
                     this.rolloverColor = "#FFFF00";
                 }
-                if (gameText [gameText.length - 1].type != "traffic")
+                if (gameText [gameText.length - 1].src == "usersPlaying")
                 {
                     gameText.pop ();
                     gameText.pop ();
