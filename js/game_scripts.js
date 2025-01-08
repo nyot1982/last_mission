@@ -54,7 +54,7 @@ var fpsMonitor = false,
         {
             screen: ["input"],
             action: "input_key",
-            keyboard: [-1],
+            keyboard: [-1], // Alpha numeric
             gamepad:
             {
                 buttons: [],
@@ -327,7 +327,7 @@ var fpsMonitor = false,
             keyboard: [37], // Left
             gamepad:
             {
-                buttons: [14], // Left
+                buttons: [],
                 axes: [0] // L0 Left
             },
             joystick:
@@ -342,7 +342,7 @@ var fpsMonitor = false,
             keyboard: [39], // Right
             gamepad:
             {
-                buttons: [15], // Right
+                buttons: [],
                 axes: [1] // L0 Right
             },
             joystick:
@@ -387,7 +387,7 @@ var fpsMonitor = false,
             keyboard: [40], // Up
             gamepad:
             {
-                buttons: [7, 13], // R2, Up
+                buttons: [7], // R2
                 axes: []
             },
             joystick:
@@ -402,7 +402,7 @@ var fpsMonitor = false,
             keyboard: [38], // Down
             gamepad:
             {
-                buttons: [6, 12], // L2, Down
+                buttons: [6], // L2
                 axes: []
             },
             joystick:
