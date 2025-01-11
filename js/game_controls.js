@@ -100,7 +100,7 @@ function buttonDown (id_control, control, button)
                 var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
             }
         }
-        userActionStart (control, "buttons", button, ull, gameShip);
+        userActionStart (control, "buttons", button, 1, gameShip);
     }
 }
 
@@ -170,7 +170,7 @@ function keyDown (e)
         keysPressed.push (e.keyCode);
         if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl != "keyboard") changeControl ("keyboard");
         if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
-        userActionStart ("keyboard", null, e.keyCode, null, gameShip);
+        userActionStart ("keyboard", null, e.keyCode, 1, gameShip);
     }
 }
 
