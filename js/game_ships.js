@@ -351,7 +351,11 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.playerDead = function ()
     {
         vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
-        if (this.lifes > 0) this.lifes--;
+        if (this.lifes > 0)
+        {
+            this.lifes--;
+            lifesHud (this.idShip);
+        }
         if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) < 2 && this.name == players [0].name) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
         setTimeout
         (
@@ -1055,7 +1059,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
                             if (enemies > 0) enemies--;
                             document.getElementById ("enemyHud2").style.width = enemies + "px";
-                            gameShips [this.idShip].score += 250;
+                            this.score += 250;
                             if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
                             if (gameEnemies [gameEnemy].type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameWidth * 4), Math.floor (Math.random () * gameHeight * 4), Math.floor (Math.random () * 720) - 360));
                             this.playerDead ();

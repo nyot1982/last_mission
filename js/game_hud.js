@@ -17,8 +17,12 @@ function scoreHud (gameShip)
 {
     if (gameModes.findIndex (mode => mode.active == true) == 0)
     {
-        document.getElementById ("scoreHud").style.lineHeight = "23px";
-        document.getElementById ("scoreHud").innerHTML = gameShips [gameShip].score;
+        if (document.getElementById ("scoreHud").innerHTML == '')
+        {
+            document.getElementById ("scoreHud").style.lineHeight = "23px";
+            document.getElementById ("scoreHud").innerHTML = "0";
+        }
+        else document.getElementById ("scoreHud").innerHTML = gameShips [0].score;
     }
     else
     {
