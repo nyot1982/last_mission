@@ -302,7 +302,7 @@ article p
     position: absolute;
     top: 2px;
     height: 0px;
-    padding: 0 1em;
+    padding: 0 2em;
     border-radius: 0 0 1em 1em;
     background-color: var(--colorHuds);
     overflow: hidden;
@@ -320,12 +320,23 @@ article p
 }
 #scoreHud
 {
-    color: var(--color4);
     left: 20px;
 }
 #scoreHud svg
 {
     vertical-align: middle;
+}
+#scoreHud span
+{
+    display: inline-block;
+    transition: all 0.5s linear 0s;
+    color: var(--color4);
+}
+#scoreHud span.change
+{
+    color: var(--color1);
+    transition-duration: 0s;
+    transform: scale(2);
 }
 #highScoreHud
 {
@@ -346,6 +357,7 @@ article p
     max-width: 294.5px;
     right: 20px;
     color: var(--color2);
+    padding: 0 1em;
 }
 #lifesHud img
 {
@@ -744,7 +756,9 @@ article p
 {
     transition: opacity 0.3s linear 0s, color 0.15s linear 0s, transform 0.3s linear 0s;
 }
-.change
+.optionsIcon.change,
+#sound.change,
+#music.change
 {
     opacity: 0;
     color: var(--color6);

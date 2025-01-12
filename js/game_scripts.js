@@ -860,7 +860,8 @@ function gameLoadScreen (screen)
         }
         fetchLoad ("highScoreHud");
         document.getElementById ("highScoreHud").style.height = "23px";
-        document.getElementById ("lifesHud").innerHTML = '';    
+        document.getElementById ("scoreHud").innerHTML = '';
+        document.getElementById ("lifesHud").innerHTML = '';
         if (gameModes.findIndex (mode => mode.active == true) < 3)
         {
             for (var i = players.length - 1; i >= 0; i--)

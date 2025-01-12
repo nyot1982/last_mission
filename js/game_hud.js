@@ -15,7 +15,7 @@ function resetHuds (enemies, vitals)
 
 function scoreHud (gameShip)
 {
-    if (document.getElementById ("scoreHud").innerHTML == '') 
+    if (!document.getElementById ("score" + gameShips [gameShip].name)) 
     {
         if (gameModes.findIndex (mode => mode.active == true) == 0) document.getElementById ("scoreHud").style.lineHeight = "23px";
         else
@@ -55,14 +55,33 @@ function scoreHud (gameShip)
         }
         document.getElementById ("scoreHud").innerHTML += '<span id="score' + gameShips [gameShip].name + '">0</span><br>';
     }
-    else if (document.getElementById ("score" + gameShips [gameShip].name).innerHTML != gameShips [gameShip].score) document.getElementById ("score" + gameShips [gameShip].name).innerHTML = gameShips [gameShip].score;
+    else if (document.getElementById ("score" + gameShips [gameShip].name).innerHTML != gameShips [gameShip].score)
+    {
+        document.getElementById ("score" + gameShips [gameShip].name).className = "change";
+        document.getElementById ("score" + gameShips [gameShip].name).innerHTML = gameShips [gameShip].score;
+        setTimeout
+        (
+            () =>
+            {
+                document.getElementById ("score" + gameShips [gameShip].name).className = "";
+            },
+            250
+        );
+    }
 } 
 
 function lifesHud (gameShip)
 {
-    if (document.getElementById ("lifesHud").innerHTML == '') 
+    if (!document.getElementById ("life" + gameShips [gameShip].name + "0")) 
     {
-        if (gameModes.findIndex (mode => mode.active == true) == 0) document.getElementById ("lifesHud").innerHTML += '<img id="life0" title="Life 1" src="svgs/ship.svg"/><img id="life1" title="Life 2" src="svgs/ship.svg"/><img id="life2" title="Life 3" src="svgs/ship.svg"/><img id="life3" title="Life 4" src="svgs/ship.svg"/><img id="life4" title="Life 5" src="svgs/ship.svg"/>';
+        if (gameModes.findIndex (mode => mode.active == true) == 0)
+        {
+            document.getElementById ("lifesHud").innerHTML = '<img id="life' + gameShips [gameShip].name + '0" title="' + gameShips [gameShip].name + ' Life 1" src="svgs/ship.svg"/>' +
+                                                             '<img id="life' + gameShips [gameShip].name + '1" title="' + gameShips [gameShip].name + ' Life 2" src="svgs/ship.svg"/>' +
+                                                             '<img id="life' + gameShips [gameShip].name + '2" title="' + gameShips [gameShip].name + ' Life 3" src="svgs/ship.svg"/>' +
+                                                             '<img id="life' + gameShips [gameShip].name + '3" title="' + gameShips [gameShip].name + ' Life 4" src="svgs/ship.svg"/>' +
+                                                             '<img id="life' + gameShips [gameShip].name + '4" title="' + gameShips [gameShip].name + ' Life 5" src="svgs/ship.svg"/>';
+        }
         else
         {
             if (gameShips [gameShip].colors.skin)
@@ -102,11 +121,7 @@ function lifesHud (gameShip)
             document.getElementById ("lifesHud").innerHTML += ' ';
         }
     }
-    else if (gameShips [gameShip].lifes < 5)
-    {
-        if (gameModes.findIndex (mode => mode.active == true) == 0 && document.getElementById ("life" + gameShips [gameShip].lifes).style != "display: none;") $("#life" + gameShips [gameShip].lifes).fadeOut (1000);
-        else if (document.getElementById ("life" + gameShips [gameShip].name + gameShips [gameShip].lifes).style != "display: none;") $("#life" + gameShips [gameShip].name + gameShips [gameShip].lifes).fadeOut (1000);
-    }
+    else if (gameShips [gameShip].lifes < 5 && document.getElementById ("life" + gameShips [gameShip].name + gameShips [gameShip].lifes).style != "display: none;") $("#life" + gameShips [gameShip].name + gameShips [gameShip].lifes).fadeOut (1000);
 }
 
 function speedHud ()

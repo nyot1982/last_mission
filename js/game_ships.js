@@ -1122,7 +1122,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     gameSound.sounds ["shot" + this.weapon].stop ();
                     gameSound.sounds ["shot" + this.weapon].play ();
                 }
-                if (gameControl == "gamepad" && (gameModal == "menu" || gameScreen == "menu" || this.name == players [0].name)) vibrate (150);
+                if (gameControl == "gamepad" && (gameModal == "menu" || gameScreen == "menu" || this.name == players [0].name)) vibrate (150, players [players.findIndex (player => player.name == this.name)].control);
             }
         }
     }
