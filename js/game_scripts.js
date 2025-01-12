@@ -1051,7 +1051,6 @@ function updateGameArea ()
     }
     if (gameScreen == "game")
     {
-        document.getElementById ("scoreHud").innerHTML = '';
         gameItems = gameItems.filter (item => !item.taken || item.z > 0);
         gameShots = gameShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < gameWidth * 4 && shot.y > 0 && shot.y < gameHeight * 4);
         gameHits = gameHits.filter (hit => !hit.reverse || hit.r > 0);
