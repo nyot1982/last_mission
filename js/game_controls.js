@@ -217,7 +217,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
             $("#blackScreen").fadeIn (1000);
             setTimeout
             (
-                function ()
+                () =>
                 {
                     gameSound.sounds ["type"].stop ();
                     gameLoadScreen ("game");
@@ -234,7 +234,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
             $("#blackScreen").fadeIn (1000);
             setTimeout
             (
-                function ()
+                () =>
                 {
                     gameLoadScreen ("menu");
                 },
@@ -250,7 +250,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
             $("#blackScreen").fadeIn (1000);
             setTimeout
             (
-                function ()
+                () =>
                 {
                     gameSound.sounds ["type"].stop ();
                     gameLoadScreen ("high_scores");
@@ -302,7 +302,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                             $("#blackScreen").fadeIn (1000);
                             setTimeout
                             (
-                                function ()
+                                () =>
                                 {
                                     gameLoadScreen ("menu");
                                 },
@@ -389,7 +389,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                             $("#blackScreen").fadeIn (1000);
                             setTimeout
                             (
-                                function ()
+                                () =>
                                 {
                                     if (wss != null && wss.readyState === 1) wss.close (3000);
                                     if (gameModes.findIndex (mode => mode.active == true) == 2) gameLoadScreen ("game");
@@ -478,7 +478,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     $("#blackScreen").fadeIn (1000);
                     setTimeout
                     (
-                        function ()
+                        () =>
                         {
                             gameLoadScreen ("menu");
                         },

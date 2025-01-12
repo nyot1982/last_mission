@@ -647,7 +647,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             $("#sound").addClass ("change");
                             setTimeout
                             (
-                                function ()
+                                () =>
                                 {
                                     document.getElementById ("sound").innerHTML = gameSound.active ? "On" : "Off";
                                     $("#sound").removeClass ("change");
@@ -681,7 +681,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             $("#music").addClass ("change");
                             setTimeout
                             (
-                                function ()
+                                () =>
                                 {
                                     document.getElementById ("music").innerHTML = gameMusic.active ? "On" : "Off";
                                     $("#music").removeClass ("change");
@@ -706,12 +706,12 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                         case "High Scores":
                             setTimeout
                             (
-                                function ()
+                                () =>
                                 {
                                     $("#blackScreen").fadeIn (1000);
                                     setTimeout
                                     (
-                                        function ()
+                                        () =>
                                         {
                                             gameLoadScreen ("high_scores");
                                         },
@@ -724,7 +724,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                         case "Pause":
                             setTimeout
                             (
-                                function ()
+                                () =>
                                 {
                                     gameOpenModal ("continue", "Game paused");
                                 },
@@ -732,7 +732,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             );
                             setTimeout
                             (
-                                function ()
+                                () =>
                                 {
                                     gameArea.pause ();
                                 },

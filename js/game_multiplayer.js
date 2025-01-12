@@ -39,7 +39,7 @@ function wssOpen ()
                 $("#blackScreen").fadeIn (1000);
                 setTimeout
                 (
-                    function ()
+                    () =>
                     {
                         gameLoadScreen ("menu");
                     },
@@ -171,7 +171,7 @@ function wssOpen ()
                 $("#blackScreen").fadeIn (1000);
                 setTimeout
                 (
-                    function ()
+                    () =>
                     {
                         gameLoadScreen ("game");
                     },
@@ -197,7 +197,7 @@ function wssOpen ()
                 if (gameModes.findIndex (mode => mode.active == true) == 3 && gameInput.length > 0) gameLoadScreen ("menu");
                 setTimeout
                 (
-                    function ()
+                    () =>
                     {
                         wssOpen ();
                     },

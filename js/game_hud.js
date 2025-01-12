@@ -243,7 +243,7 @@ function vitalsHud (hud, width, color)
     document.getElementById (hud + "Hud").style.backgroundColor = color;
     setTimeout
     (
-        function ()
+        () =>
         {
             document.getElementById (hud + "Hud").style.backgroundColor = "#52AE4A";
         },
@@ -282,7 +282,7 @@ function gameModeHud (gameMode)
     var activeMode = gameModes.findIndex (mode => mode.active == true);
     setTimeout
     (
-        function ()
+        () =>
         {
             if (gameMode == -1)
             {

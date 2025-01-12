@@ -932,7 +932,7 @@ function gameLoadScreen (screen)
         $("#blackScreen").fadeOut (1000);
         setTimeout
         (
-            function ()
+            () =>
             {
                 blackScreen = false;
             },
@@ -1037,7 +1037,7 @@ function updateGameArea ()
                 $("#blackScreen").fadeIn (1000);
                 setTimeout
                 (
-                    function ()
+                    () =>
                     {
                         gameLoadScreen ("menu");
                     },

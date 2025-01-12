@@ -451,13 +451,13 @@ function bossHit (gameShot, engine)
         if (gameMusic.active) gameMusic.musics.boss.stop ();
         setTimeout
         (
-            function ()
+            () =>
             {
                 blackScreen = true
                 $("#blackScreen").fadeIn (1000);
                 setTimeout
                 (
-                    function ()
+                    () =>
                     {
                         gameLoadScreen ("game_completed");
                     },

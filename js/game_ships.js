@@ -355,7 +355,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) < 2 && this.name == players [0].name) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
         setTimeout
         (
-            function ()
+            () =>
             {
                 if ((gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length == 0) || (gameModes.findIndex (mode => mode.active == true) == 3 && this.name == players [0].name && this.lifes == 0)) gameOpenModal ("exit", "Game over");
                 else if (gameShips.length == 0 && gameModes.findIndex (mode => mode.active == true) < 2)
@@ -363,7 +363,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     $("#blackScreen").fadeIn (1000);
                     setTimeout
                     (
-                        function ()
+                        () =>
                         {
                             gameLoadScreen ("game_over");
                         },
@@ -430,6 +430,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             1000
         );
     }
+    
     this.update = function ()
     {
         this.idShip = gameShips.findIndex (ship => ship.name == this.name);
