@@ -353,10 +353,10 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
         if (this.lifes > 0)
         {
+            if (this.lifes == 1 && gameModes.findIndex (mode => mode.active == true) < 2 && this.name == players [0].name) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
             this.lifes--;
             lifesHud (this.idShip);
         }
-        if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) < 2 && this.name == players [0].name) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
         setTimeout
         (
             () =>

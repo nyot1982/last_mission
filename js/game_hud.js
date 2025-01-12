@@ -17,12 +17,8 @@ function scoreHud (gameShip)
 {
     if (gameModes.findIndex (mode => mode.active == true) == 0)
     {
-        if (document.getElementById ("scoreHud").innerHTML == '')
-        {
-            document.getElementById ("scoreHud").style.lineHeight = "23px";
-            document.getElementById ("scoreHud").innerHTML = "0";
-        }
-        else document.getElementById ("scoreHud").innerHTML = gameShips [0].score;
+        document.getElementById ("scoreHud").style.lineHeight = "23px";
+        document.getElementById ("scoreHud").innerHTML = gameShips [0].score;
     }
     else
     {
@@ -67,7 +63,7 @@ function lifesHud (gameShip)
 {
     if (document.getElementById ("lifesHud").innerHTML == '') 
     {
-        if (gameModes.findIndex (mode => mode.active == true) == 0) document.getElementById ("lifesHud").innerHTML += '<img id="life0" title="Life 1" src="svgs/ship.svg"/> <img id="life1" title="Life 2" src="svgs/ship.svg"/> <img id="life2" title="Life 3" src="svgs/ship.svg"/> <img id="life3" title="Life 4" src="svgs/ship.svg"/> <img id="life4" title="Life 5" src="svgs/ship.svg"/>';
+        if (gameModes.findIndex (mode => mode.active == true) == 0) document.getElementById ("lifesHud").innerHTML += '<img id="life0" title="Life 1" src="svgs/ship.svg"/><img id="life1" title="Life 2" src="svgs/ship.svg"/><img id="life2" title="Life 3" src="svgs/ship.svg"/><img id="life3" title="Life 4" src="svgs/ship.svg"/><img id="life4" title="Life 5" src="svgs/ship.svg"/>';
         else
         {
             if (gameShips [gameShip].colors.skin)
