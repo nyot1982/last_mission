@@ -135,7 +135,7 @@ function axisStart (id_control, control, axis, value)
             var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
         }
     }
-    userActionStart (control, "axes", axis, value, gameShip);
+    userActionStart (control, "axes", axis, -value, gameShip);
 }
 
 function axisStop (id_control, control, axis)
@@ -273,7 +273,8 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
         else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null) var screen = "game";
         else var screen = "modal_" + gameModal;
 
-        var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control].includes (bt_code));
+        if (bt_type == null) var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control].includes (bt_code));
+        else var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control][bt_type].includes (bt_code));
 
         if (userAction > -1)
         {
@@ -504,7 +505,8 @@ function userActionStop (control, bt_type, bt_code, gameShip)
     if ((gameScreen == "menu" || gameModal == "menu") && menuShip != null && gameConfirm.length == 0 && gameInput.length == 0) var screen = "modal";
     else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0) var screen = "game";
     
-    var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control].includes (bt_code));
+    if (bt_type == null) var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control].includes (bt_code));
+    else var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control][bt_type].includes (bt_code));
 
     if (userAction > -1)
     {

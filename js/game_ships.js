@@ -174,17 +174,21 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         else if (gameScreen == "game" && this.z > 0)
         {
             if (turn == 0 || turn < 0 && !this.status.wing1 || turn > 0 && !this.status.wing2) this.turn = 0;
-            else if (turn < 0 && this.turn > -10)
+            else if (gameControl == "gamepad") this.turn = turn * 10;
+            else
             {
-                if (this.turn == 0) this.turn = -5;
-                this.turn += turn;
-                if (this.turn < -10) this.turn = -10;
-            }
-            else if (turn > 0 && this.turn < 10)
-            {
-                if (this.turn == 0) this.turn = 5;
-                this.turn += turn;
-                if (this.turn > 10) this.turn = 10;
+                if (turn < 0 && this.turn > -10)
+                {
+                    if (this.turn == 0) this.turn = -5;
+                    this.turn += turn;
+                    if (this.turn < -10) this.turn = -10;
+                }
+                else if (turn > 0 && this.turn < 10)
+                {
+                    if (this.turn == 0) this.turn = 5;
+                    this.turn += turn;
+                    if (this.turn > 10) this.turn = 10;
+                }
             }
         }
     }

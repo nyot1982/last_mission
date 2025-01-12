@@ -343,12 +343,12 @@ var fpsMonitor = false,
             gamepad:
             {
                 buttons: [],
-                axes: [1] // L0 Right
+                axes: [0] // L0 Right
             },
             joystick:
             {
                 buttons: [],
-                axes: [1]
+                axes: [0]
             }
         },
         {
@@ -387,7 +387,7 @@ var fpsMonitor = false,
             keyboard: [40], // Up
             gamepad:
             {
-                buttons: [7], // R2
+                buttons: [6], // L2
                 axes: []
             },
             joystick:
@@ -402,7 +402,7 @@ var fpsMonitor = false,
             keyboard: [38], // Down
             gamepad:
             {
-                buttons: [6], // L2
+                buttons: [7], // R2
                 axes: []
             },
             joystick:
