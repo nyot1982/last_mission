@@ -666,7 +666,10 @@ function fetchLoad (cont, param)
                 if (gameModes.findIndex (mode => mode.active == true) == 3) document.getElementById (cont).innerHTML += '<div id="playersConnecting"></div>';
             }
             else if (cont == "high_scores") gameHighScores (responseJSON ["max_high_scores"], responseJSON ["high_scores"]);
-            else if (cont == "high_score_save" && responseJSON ["high_score_save"]) highScoreSave = responseJSON ["high_score_save"];
+            else if (cont == "high_score_save")
+            {
+                if (responseJSON ["high_score_save"] > 0) highScoreSave = responseJSON ["high_score_save"];
+            }
             else document.getElementById (cont).innerHTML += responseJSON [cont];
         }
     )
