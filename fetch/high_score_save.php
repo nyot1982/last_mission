@@ -23,7 +23,7 @@
             {
                 $high_score = $resultado->fetch_assoc ();
                 $resultado->free ();
-                if ($high_scores < 10 || $_POST ['score'] > $high_score ['score'])
+                if ($high_scores < 10 || intval ($_POST ['score']) > intval ($high_score ['score']))
                 {
                     $return ["error"] = '';
                     if ($high_scores == 10)

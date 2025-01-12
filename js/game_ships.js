@@ -332,7 +332,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && players [0].name == this.name)
             {
                 if (gameControl == "gamepad") vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
-                this.score += 100;
+                var gameShip = gameShips.findIndex (ship => ship.name == gameShots [gameShot].name);
+                if (gameShip > -1) gameShips [gameShip].score += 100;
             }
         }
         else
@@ -343,7 +344,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 gameSound.sounds ["hit0"].stop ();
                 gameSound.sounds ["hit0"].play ();
             }
-            if (players [0].name == gameShots [gameShot].name) this.score += 1000;
+            var gameShip = gameShips.findIndex (ship => ship.name == gameShots [gameShot].name);
+            if (gameShip > -1) gameShips [gameShip].score += 1000;
             this.playerDead ();
         }
     }
