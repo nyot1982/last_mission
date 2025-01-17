@@ -1118,7 +1118,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     gameSound.sounds ["shot" + this.weapon].play ();
                 }
                 if ((gameScreen == "menu" || gameModal == "menu") && gameControl.type == "gamepad") vibrate (150, gameControl.id);
-                else if (gameScreen == "game" && gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (150, players [players.findIndex (player => player.name == this.name)].control);
+                else if (gameScreen == "game" && gameModal == null && gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (150, players [players.findIndex (player => player.name == this.name)].control);
             }
         }
     }
