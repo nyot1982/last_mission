@@ -309,50 +309,45 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     if (ctx.isPointInStroke (this.paths [path], shot.x, shot.y) || ctx.isPointInPath (this.paths [path], shot.x, shot.y))
                     {
                         if (this.status [path] == true) this.status [path] = false;
-                        this.shipHit (gameShot);
+                        gameShots [gameShot].hit = true;
+                        this.life -= 10;
+                        if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
+                        if (this.life > 0)
+                        {
+                            gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
+                            if (gameSound.active)
+                            {
+                                gameSound.sounds ["hit1"].stop ();
+                                gameSound.sounds ["hit1"].play ();
+                            }
+                            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && players [0].name == this.name)
+                            {
+                                var gameShip = gameShips.findIndex (ship => ship.name == gameShots [gameShot].name);
+                                if (gameShip > -1) gameShips [gameShip].score += 100;
+                            }
+                            if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
+                        }
+                        else
+                        {
+                            gameHits.push (new hit ("hit0", this.x, this.y, 40, 2));
+                            if (gameSound.active)
+                            {
+                                gameSound.sounds ["hit0"].stop ();
+                                gameSound.sounds ["hit0"].play ();
+                            }
+                            var gameShip = gameShips.findIndex (ship => ship.name == gameShots [gameShot].name);
+                            if (gameShip > -1) gameShips [gameShip].score += 1000;
+                            this.playerDead ();
+                        }
                     }
                 }
             }
         }
     }
 
-    this.shipHit = function (gameShot)
-    {
-        gameShots [gameShot].hit = true;
-        this.life -= 10;
-        if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
-        if (this.life > 0)
-        {
-            gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
-            if (gameSound.active)
-            {
-                gameSound.sounds ["hit1"].stop ();
-                gameSound.sounds ["hit1"].play ();
-            }
-            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && players [0].name == this.name)
-            {
-                if (gameControls [gameControls.findIndex (control => control.index * 1 == players [players.findIndex (player => player.name == this.name)].control)].mapping == "standard") vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
-                var gameShip = gameShips.findIndex (ship => ship.name == gameShots [gameShot].name);
-                if (gameShip > -1) gameShips [gameShip].score += 100;
-            }
-        }
-        else
-        {
-            gameHits.push (new hit ("hit0", this.x, this.y, 40, 2));
-            if (gameSound.active)
-            {
-                gameSound.sounds ["hit0"].stop ();
-                gameSound.sounds ["hit0"].play ();
-            }
-            var gameShip = gameShips.findIndex (ship => ship.name == gameShots [gameShot].name);
-            if (gameShip > -1) gameShips [gameShip].score += 1000;
-            this.playerDead ();
-        }
-    }
-
     this.playerDead = function ()
     {
-        if (gameControls [gameControls.findIndex (control => control.index * 1 == players [players.findIndex (player => player.name == this.name)].control)].mapping == "standard") vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
+        if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
         if (this.lifes > 0)
         {
             if (this.lifes == 1 && gameModes.findIndex (mode => mode.active == true) < 2 && this.name == players [0].name) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
@@ -364,7 +359,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             () =>
             {
                 if ((gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length == 0) || (gameModes.findIndex (mode => mode.active == true) == 3 && this.name == players [0].name && this.lifes == 0)) gameOpenModal ("exit", "Game over");
-                else if (gameShips.length == 0 && gameModes.findIndex (mode => mode.active == true) < 2)
+                else if (gameModes.findIndex (mode => mode.active == true) < 2 && gameShips.length == 0)
                 {
                     $("#blackScreen").fadeIn (1000);
                     setTimeout
@@ -788,7 +783,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             gameSound.sounds ["hit1"].stop ();
                             gameSound.sounds ["hit1"].play ();
                         }
-                        if (gameControls [gameControls.findIndex (control => control.index * 1 == players [players.findIndex (player => player.name == this.name)].control)].mapping == "standard") vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
+                        if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
                         this.shield--;
                         if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
                     }
@@ -1037,7 +1032,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 gameSound.sounds ["hit0"].stop ();
                                 gameSound.sounds ["hit0"].play ();
                             }
-                            if (gameControls [gameControls.findIndex (control => control.index * 1 == players [players.findIndex (player => player.name == this.name)].control)].mapping == "standard") vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
+                            if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
                             if (enemies > 0) enemies--;
                             document.getElementById ("enemyHud2").style.width = enemies + "px";
                             this.shield -= 5;
@@ -1058,7 +1053,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 gameSound.sounds ["hit0"].stop ();
                                 gameSound.sounds ["hit0"].play ();
                             }
-                            if (gameControls [gameControls.findIndex (control => control.index * 1 == players [players.findIndex (player => player.name == this.name)].control)].mapping == "standard") vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
+                            if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
                             if (enemies > 0) enemies--;
                             document.getElementById ("enemyHud2").style.width = enemies + "px";
                             this.score += 250;
@@ -1122,12 +1117,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     gameSound.sounds ["shot" + this.weapon].stop ();
                     gameSound.sounds ["shot" + this.weapon].play ();
                 }
-                if (gameScreen == "menu" || gameModal == "menu") if (gameControl.type == "gamepad") vibrate (150, gameControl.id);
-                else
-                {
-                    var idPlayer = players.findIndex (player => player.name == this.name);
-                    if (idPlayer > -1 && gameControls [gameControls.findIndex (control => control.index * 1 == players [idPlayer].control)].mapping == "standard") vibrate (150, players [players.findIndex (player => player.name == this.name)].control);
-                }
+                if ((gameScreen == "menu" || gameModal == "menu") && gameControl.type == "gamepad") vibrate (150, gameControl.id);
+                else if (gameScreen == "game" && gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (150, players [players.findIndex (player => player.name == this.name)].control);
             }
         }
     }

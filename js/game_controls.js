@@ -5,7 +5,6 @@ window.addEventListener ('gamepadconnected', gamepadConnected);
 
 function controls ()
 {
-    gameControls = navigator.getGamepads ().filter (control => control != null);
     var player = 2;
     for (const gamepad of navigator.getGamepads ())
     {
@@ -49,9 +48,9 @@ function stopUserInteractions (player)
 
 function gamepadDisconnected (e)
 {
-    if (e.gamepad.mapping == "standard") var oldControl = "gamepad";
-    else if (e.gamepad.id.toLowerCase ().includes ("joystick")) var oldControl = "joystick";
-    if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.length > 1) gameInput = gameInput.slice (e.gamepad.index * 1, 1);
+    var oldControl = gameControls [e.gamepad.index * 1];
+    gameControls.splice (e.gamepad.index * 1, 1);
+    if (gameScreen == "menu" && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3 && gameInput.length > 1) gameInput = gameInput.slice (e.gamepad.index * 1, 1);
     var controlFinded = null;
     for (const gamepad of navigator.getGamepads ())
     {
@@ -73,6 +72,7 @@ function gamepadConnected (e)
 {
     if (e.gamepad.mapping == "standard") var newControl = "gamepad";
     else if (e.gamepad.id.toLowerCase ().includes ("joystick")) var newControl = "joystick";
+    gameControls [e.gamepad.index * 1] = newControl;
     if (newControl && document.getElementById (newControl).style.display == 'none') $('#' + newControl).fadeIn (1000);
     buttonsPressed [e.gamepad.index * 1] = [];
     axesPressed [e.gamepad.index * 1] = [];
