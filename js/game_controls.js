@@ -599,5 +599,9 @@ function changeControl (newControl, idControl)
         $('#' + gameTab + 'Tab-' + newControl).addClass ("active");
         gameControl.type = newControl;
     }
-    if (idControl != null) gameControl.id = idControl;
+    if (idControl != null)
+    {
+        if (gameScreen == "menu" || gameModal == "menu") gameControl.id = idControl;
+        else if (gameScreen == "game" && gameModal == null) players [0].control = idControl;
+    }
 }
