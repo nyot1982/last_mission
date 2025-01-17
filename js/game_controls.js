@@ -9,7 +9,7 @@ function controls ()
     for (const gamepad of navigator.getGamepads ())
     {
         if (!gamepad) continue;
-        if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.findIndex (input => input.control == gamepad.index) == -1 && gameInput.length > 0) gameInput.push (new component ("input", (storedPlayers [gameInput.length] && storedPlayers [gameInput.length].name) ? storedPlayers [gameInput.length].name : "Player " + player, "black", 750, 270 + 25 * (player - 2), "left", 10, 16, gamepad.index * 1));
+        if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.findIndex (input => input.control == gamepad.index * 1) == -1 && gameInput.length > 0) gameInput.push (new component ("input", (storedPlayers [gameInput.length] && storedPlayers [gameInput.length].name) ? storedPlayers [gameInput.length].name : "Player " + player, "black", 750, 270 + 25 * (player - 2), "left", 10, 16, gamepad.index * 1));
         for (const [index, axis] of gamepad.axes.entries ())
         {
             if (axis.toFixed (2) * 1 != 0) axisStart (gamepad.index * 1, (gamepad.mapping == "standard") ? "gamepad" : (gamepad.id.toLowerCase ().includes ("joystick")) ? "joystick" : "", index, axis.toFixed (2) * 1);
@@ -327,7 +327,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     }
                 break;
                 case 'input_check':
-                    if ((gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.length < 2)
+                    if (gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3 && gameInput.length < 2)
                     {
                         gameAlert.push (new component ("text", "Connect other controllers", "red", 745, 270, "left", 10));
                         gameAlert.push (new component ("text", "to add more players.", "red", 745, 295, "left", 10));
@@ -346,7 +346,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                                     name: gameInput [input].src || "Player" + (input > 0 ? (" " + (input * 1 + 1)) : ""),
                                     color: playerColors [input],
                                     skin: input - 1,
-                                    control: gameInput [input].control
+                                    control: (gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3 ? gameControl.id : gameInput [input].control)
                                 };
                             }
                             else if (gameInput [input].type == "color")
@@ -473,6 +473,8 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                 break;
                 case 'open_modal':
                     gameOpenModal ("menu");
+                    gameControl.id = players [players.findIndex (player => player.name == gameShips [gameShip].name)].control;
+                    gameControl.type = gameControls [gameControl.id];
                 break;
                 case 'close_exit':
                     $("#blackScreen").fadeIn (1000);
