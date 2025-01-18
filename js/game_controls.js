@@ -59,12 +59,7 @@ function gamepadDisconnected (e)
     }
     buttonsPressed.splice (buttonsPressed.indexOf (e.gamepad.index * 1), 1);
     axesPressed.splice (axesPressed.indexOf (e.gamepad.index * 1), 1);
-    if (controlFinded == null)
-    {
-        if (gameScreen == "game") players [0].control = -1;
-        changeControl ("keyboard", -1);
-        $('#' + oldControl).fadeOut (1000);
-    }
+    if (controlFinded == null) changeControl ("keyboard", -1);
     else if (gameScreen == "game") players [0].control = controlFinded;
 }
 
@@ -76,7 +71,7 @@ function gamepadConnected (e)
     if (newControl && document.getElementById (newControl).style.display == 'none') $('#' + newControl).fadeIn (1000);
     buttonsPressed [e.gamepad.index * 1] = [];
     axesPressed [e.gamepad.index * 1] = [];
-    if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl.type != newControl || gameScreen != "game") changeControl (newControl, e.gamepad.index * 1);
+    if ((gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3 || gameScreen == "menu" || gameModal == "menu") && gameControl.type != newControl) changeControl (newControl, e.gamepad.index * 1);
     if (gameAlert.length > 0)
     {
         gameAlert = [];
@@ -90,7 +85,7 @@ function buttonDown (id_control, control, button)
     if (!buttonsPressed [id_control].includes (button))
     {
         buttonsPressed [id_control].push (button);
-        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl.type != control) changeControl (control, id_control);
+        if ((gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3 || gameScreen == "menu" || gameModal == "menu") && gameControl.type != control) changeControl (control, id_control);
         if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0)
         {
             if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
@@ -125,7 +120,7 @@ function buttonUp (id_control, control, button)
 function axisStart (id_control, control, axis, value)
 {
     if (!axesPressed [id_control].includes (axis)) axesPressed [id_control].push (axis);
-    if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl.type != control) changeControl (control, id_control);
+    if ((gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3 || gameScreen == "menu" || gameModal == "menu") && gameControl.type != control) changeControl (control, id_control);
     if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0)
     {
         if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
@@ -168,7 +163,7 @@ function keyDown (e)
     else if (!keysPressed.includes (e.keyCode))
     {
         keysPressed.push (e.keyCode);
-        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && gameControl.type != "keyboard") changeControl ("keyboard", -1);
+        if ((gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3 || gameScreen == "menu" || gameModal == "menu") && gameControl.type != "keyboard") changeControl ("keyboard", -1);
         if (gameScreen == "game" && gameShips.length > 0 && gameModal == null && gameConfirm.length == 0 && gameInput.length == 0) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
         userActionStart ("keyboard", null, e.keyCode, 1, gameShip);
     }
@@ -327,7 +322,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     }
                 break;
                 case 'input_check':
-                    if (gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3 && gameInput.length < 2)
+                    if ((gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.length < 2)
                     {
                         gameAlert.push (new component ("text", "Connect other controllers", "red", 745, 270, "left", 10));
                         gameAlert.push (new component ("text", "to add more players.", "red", 745, 295, "left", 10));
@@ -473,8 +468,6 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                 break;
                 case 'open_modal':
                     gameOpenModal ("menu");
-                    gameControl.id = players [players.findIndex (player => player.name == gameShips [gameShip].name)].control;
-                    gameControl.type = gameControls [gameControl.id];
                 break;
                 case 'close_exit':
                     $("#blackScreen").fadeIn (1000);
