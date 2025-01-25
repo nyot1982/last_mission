@@ -272,6 +272,64 @@
                                 <p><span class="button2">Start</span> Menu</p>
                             </div>
                         </div>
+                        <div id="menuTab-joystick" class="tabContent cont-cols margin-1 toggle">
+                            <div class="col">
+                                <p><span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block; color: red;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block;"></span></span> Move up</p>
+                                <p><span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block; color: red;"></span></span> Move down</p>
+                            </div>
+                            <div class="col">
+                                <p><span class="button5">L2</span> / <span class="button6">R2</span> Select</p>
+                                <p><span class="button2">Start</span> Back</p>
+                            </div>
+                        </div>
+                        <div id="inputTab-joystick" class="tabContent cont-cols margin-1 toggle">
+                            <div class="col">
+                                <p><span class="key2">A-Z</span> Type</p>
+                                <p><span class="fa fa-left-long key" style="width: 4em;"></span> Delete</p>
+                            </div>
+                            <div class="col">
+                                <p><span class="fa fa-turn-down-left key"></span> Accept</p>
+                                <p><span class="key2">Esc</span> Cancel</p>
+                            </div>
+                            <div class="col">
+                                <p><span class="fa fa-arrow-right-arrow-left key" style="width: 4em;"></span> Change input</p>
+                                <p><span class="fa fa-left key"></span> / <span class="fa fa-right key"></span> / <span class="fa fa-down key"></span> / <span class="fa fa-up key"></span> Select</p>
+                            </div>
+                        </div>
+                        <div id="confirmTab-joystick" class="tabContent cont-cols margin-1 toggle">
+                            <div class="col">
+                                <p><span class="button green">A</span> Yes</p>
+                                <p><span class="button red">B</span> No</p>
+                            </div>
+                        </div>
+                        <div id="alertTab-joystick" class="tabContent cont-cols margin-1 toggle">
+                            <div class="col">
+                                <p>&nbsp;</p>
+                                <p><span class="button2 silver">Any button</span> Continue</p>
+                            </div>
+                        </div>
+                        <div id="gameTab-joystick" class="tabContent cont-cols margin-1 toggle">
+                            <div class="col">
+                                <p><span class="fa fa-caret-up e1"></span><span class="button silver">LS</span> Move forward</p>
+                                <p><span class="button silver">LS</span> Move backward<span class="fa fa-caret-down e1"></span></p>
+                            </div>
+                            <div class="col">
+                                <p><span class="fa fa-caret-left e1"></span><span class="button silver">RS</span> Turn left</p>
+                                <p><span class="button silver">RS</span><span class="fa fa-caret-right e1"></span> Turn right</p>
+                            </div>
+                            <div class="col">
+                                <p><span class="fa fa-caret-left e1"></span><span class="button silver">LS</span> Strafe left</p>
+                                <p><span class="button silver">LS</span><span class="fa fa-caret-right e1"></span> Strafe right</p>
+                            </div>
+                            <div class="col">
+                                <p><span class="button yellow">Y</span> Fire mode</p>
+                                <p><span class="button5">L2</span> / <span class="button6">R2</span> Fire</p>
+                            </div>
+                            <div class="col">
+                                <p><span class="button green">A</span> Take off / Land</p>
+                                <p><span class="button2">Start</span> Menu</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div id="colorPicker"><input id="colorPickerInput" type="color" onchange="javascript: menuShip.changeColor (this.value);"><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: white; font-size: 1.7em; text-shadow: none; margin: 5px;"></a></div>
