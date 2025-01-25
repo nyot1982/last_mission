@@ -347,7 +347,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
 
     this.playerDead = function ()
     {
-        if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
+        if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad" && this.z >= 0) vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
         if (this.lifes > 0)
         {
             if (this.lifes == 1 && gameModes.findIndex (mode => mode.active == true) < 2 && this.name == players [0].name) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
@@ -899,6 +899,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         gameSound.sounds ["hit2"].stop ();
                         gameSound.sounds ["hit2"].play ();
                     }
+                    if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
                     this.moveZ = -0.25;
                 }
                 else if (this.z == 0 && (this.ground == "lava" || this.fuel == 0 || !this.status.engine1 && !this.status.engine2))
