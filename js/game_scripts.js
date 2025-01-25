@@ -142,7 +142,7 @@ var fpsMonitor = false,
             joystick:
             {
                 buttons: [],
-                axes: []
+                axes: [0, 1]
             }
         },
         {
@@ -157,7 +157,7 @@ var fpsMonitor = false,
             joystick:
             {
                 buttons: [],
-                axes: []
+                axes: [0, 1]
             }
         },
         {
@@ -172,7 +172,7 @@ var fpsMonitor = false,
             joystick:
             {
                 buttons: [],
-                axes: []
+                axes: [1]
             }
         },
         {
@@ -187,7 +187,7 @@ var fpsMonitor = false,
             joystick:
             {
                 buttons: [],
-                axes: []
+                axes: [1]
             }
         },
         {
@@ -366,7 +366,7 @@ var fpsMonitor = false,
             },
             joystick:
             {
-                buttons: [3],
+                buttons: [2],
                 axes: []
             }
         },
@@ -381,7 +381,7 @@ var fpsMonitor = false,
             },
             joystick:
             {
-                buttons: [2],
+                buttons: [3],
                 axes: []
             }
         },
@@ -397,7 +397,7 @@ var fpsMonitor = false,
             joystick:
             {
                 buttons: [],
-                axes: []
+                axes: [1]
             }
         },
         {
@@ -412,7 +412,7 @@ var fpsMonitor = false,
             joystick:
             {
                 buttons: [],
-                axes: []
+                axes: [1]
             }
         },
         {
