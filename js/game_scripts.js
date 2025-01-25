@@ -136,7 +136,7 @@ var fpsMonitor = false,
             keyboard: [37, 40], // Left, Dowmn
             gamepad:
             {
-                buttons: [12, 14], // Down, Left
+                buttons: [13, 14], // Down, Left
                 axes: []
             },
             joystick:
@@ -151,7 +151,7 @@ var fpsMonitor = false,
             keyboard: [38, 39], // Right, Up
             gamepad:
             {
-                buttons: [13, 15], // Up, Right
+                buttons: [12, 15], // Up, Right
                 axes: []
             },
             joystick:
