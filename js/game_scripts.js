@@ -12,11 +12,7 @@ var fpsMonitor = false,
     menuShip = null,
     gameBoss = null,
     gameTab = "menu",
-    gameControl =
-    {
-        id: -1,
-        type: "keyboard"
-    },
+    gameControl = "keyboard",
     gameControls = [],
     colorPicker = null,
     colorPickerInput = null,

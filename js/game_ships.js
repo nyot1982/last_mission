@@ -174,7 +174,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         else if (gameScreen == "game" && this.z > 0)
         {
             if (turn == 0 || turn < 0 && !this.status.wing1 || turn > 0 && !this.status.wing2) this.turn = 0;
-            else if (gameControl.type == "gamepad") this.turn = turn * 10;
+            else if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") this.turn = turn * 10;
             else
             {
                 if (turn < 0 && this.turn > -10)
@@ -1118,8 +1118,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     gameSound.sounds ["shot" + this.weapon].stop ();
                     gameSound.sounds ["shot" + this.weapon].play ();
                 }
-                if ((gameScreen == "menu" || gameModal == "menu") && gameControl.type == "gamepad") vibrate (150, gameControl.id);
-                else if (gameScreen == "game" && gameModal == null && gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (150, players [players.findIndex (player => player.name == this.name)].control);
+                if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (150, players [players.findIndex (player => player.name == this.name)].control);
             }
         }
     }
