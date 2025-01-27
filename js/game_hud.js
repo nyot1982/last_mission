@@ -322,11 +322,11 @@ function changeTab (newTab)
     {
         $('#' + gameTab).removeClass ("active");
         $('#' + newTab).addClass ("active");
-        $('#' + gameTab + 'Tab-' + gameControl).removeClass ("active");
-        $('#' + gameTab + 'Tab-' + gameControl).addClass ("unactive");
-        if ($('#' + newTab + 'Tab-' + gameControl).hasClass ("toggle")) $('#' + newTab + 'Tab-' + gameControl).removeClass ("toggle");
-        else if ($('#' + newTab + 'Tab-' + gameControl).hasClass ("unactive")) $('#' + newTab + 'Tab-' + gameControl).removeClass ("unactive");
-        $('#' + newTab + 'Tab-' + gameControl).addClass ("active");
+        $('#' + gameTab + 'Tab-' + controlTab).removeClass ("active");
+        $('#' + gameTab + 'Tab-' + controlTab).addClass ("unactive");
+        if ($('#' + newTab + 'Tab-' + controlTab).hasClass ("toggle")) $('#' + newTab + 'Tab-' + controlTab).removeClass ("toggle");
+        else if ($('#' + newTab + 'Tab-' + controlTab).hasClass ("unactive")) $('#' + newTab + 'Tab-' + controlTab).removeClass ("unactive");
+        $('#' + newTab + 'Tab-' + controlTab).addClass ("active");
         gameTab = newTab;
     }
 }
