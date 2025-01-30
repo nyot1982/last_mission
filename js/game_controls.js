@@ -163,16 +163,18 @@ function keyDown (e)
     {
         keysPressed.push (e.keyCode);
         if ((gameScreen == "menu" || gameScreen == "game" && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) && controlTab != "keyboard") changeControl ("keyboard", -1);
-        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
+        if (gameScreen != "game") var gameShip = null;
         else
         {
-            var player = players.findIndex (player => player.control == -1);
+            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var player = 0;
+            else var player = players.findIndex (player => player.control == -1);
             var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
         }
         if (gameScreen == "menu" && gameInput.length > 0 && (gameInput [idInputAct].type == "input" || gameInput [idInputAct].type == "skin"))
         {
-            if (gameInput [idInputAct].type == "input" && e.keyCode != 9 && e.keyCode != 13 && e.keyCode != 27) userActionStart ("keyboard", null, (e.keyCode == 8 ? 8 : -1), e.key, gameShip);
-            else if (gameInput [idInputAct].type == "skin" && e.keyCode > 36 && e.keyCode < 41) userActionStart ("keyboard", null, e.keyCode, null, gameShip);
+            if (gameInput [idInputAct].type == "input" && e.keyCode != 9 && e.keyCode != 13 && e.keyCode != 27) userActionStart ("keyboard", null, (e.keyCode == 8 ? 8 : -1), e.key, null);
+            else if (gameInput [idInputAct].type == "skin" && e.keyCode > 36 && e.keyCode < 41) userActionStart ("keyboard", null, e.keyCode, null, null);
+            else userActionStart ("keyboard", null, e.keyCode, 1, null);
         }
         else userActionStart ("keyboard", null, e.keyCode, 1, gameShip);
     }
