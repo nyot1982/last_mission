@@ -17,9 +17,12 @@ var fpsMonitor = false,
     menuControl = -1,
     colorPicker = null,
     colorPickerInput = null,
-    keysPressed = [],
-    buttonsPressed = [],
-    axesPressed = [],
+    pressed =
+    {
+        keys: [],
+        buttons: [],
+        axes: []
+    },
     mouse =
     {
         x: 0,
@@ -55,7 +58,10 @@ var fpsMonitor = false,
         {
             screen: ["input"],
             action: "input_key",
-            keyboard: [-1], // Alpha numeric
+            keyboard:
+            {
+                keys: [-1] // Alpha numeric
+            },
             gamepad:
             {
                 buttons: [],
@@ -70,7 +76,10 @@ var fpsMonitor = false,
         {
             screen: ["input"],
             action: "input_back",
-            keyboard: [8], // Backspace
+            keyboard:
+            {
+                keys: [8] // Backspace
+            },
             gamepad:
             {
                 buttons: [],
@@ -85,7 +94,10 @@ var fpsMonitor = false,
         {
             screen: ["input", "color", "skin"],
             action: "input_change",
-            keyboard: [9], // Tab
+            keyboard:
+            {
+                keys: [9] // Tabulator
+            },
             gamepad:
             {
                 buttons: [0], // A
@@ -100,7 +112,10 @@ var fpsMonitor = false,
         {
             screen: ["input"],
             action: "input_check",
-            keyboard: [13], // Enter
+            keyboard:
+            {
+                keys: [13] // Enter
+            },
             gamepad:
             {
                 buttons: [1, 9], // B, Start
@@ -115,7 +130,10 @@ var fpsMonitor = false,
         {
             screen: ["input", "color", "skin"],
             action: "input_exit",
-            keyboard: [27], // Scape
+            keyboard:
+            {
+                keys: [27] // Scape
+            },
             gamepad:
             {
                 buttons: [2, 8], // X, Select
@@ -130,7 +148,10 @@ var fpsMonitor = false,
         {
             screen: ["skin"],
             action: "skin_prev",
-            keyboard: [37, 40], // Left, Dowmn
+            keyboard:
+            {
+                keys: [37, 40] // Left, Dowmn
+            },
             gamepad:
             {
                 buttons: [13, 14], // Down, Left
@@ -145,7 +166,10 @@ var fpsMonitor = false,
         {
             screen: ["skin"],
             action: "skin_next",
-            keyboard: [38, 39], // Right, Up
+            keyboard:
+            {
+                keys: [38, 39] // Right, Up
+            },
             gamepad:
             {
                 buttons: [12, 15], // Up, Right
@@ -160,7 +184,10 @@ var fpsMonitor = false,
         {
             screen: ["menu", "modal_menu"],
             action: "strafe_up",
-            keyboard: [40], // Up
+            keyboard:
+            {
+                keys: [40] // Up
+            },
             gamepad:
             {
                 buttons: [13], // Up
@@ -175,7 +202,10 @@ var fpsMonitor = false,
         {
             screen: ["menu", "modal_menu"],
             action: "strafe_down",
-            keyboard: [38], // Down
+            keyboard:
+            {
+                keys: [38] // Down
+            },
             gamepad:
             {
                 buttons: [12], // Down
@@ -190,7 +220,10 @@ var fpsMonitor = false,
         {
             screen: ["menu", "modal_menu"],
             action: "fire_menu",
-            keyboard: [13, 32], // Enter, Space
+            keyboard:
+            {
+                keys: [13, 32] // Enter, Space
+            },
             gamepad:
             {
                 buttons: [0], // A
@@ -205,7 +238,10 @@ var fpsMonitor = false,
         {
             screen: ["modal_continue"],
             action: "close_continue",
-            keyboard: [27], // Scape
+            keyboard:
+            {
+                keys: [27] // Scape
+            },
             gamepad:
             {
                 buttons: [9, 16], // Start, Home
@@ -220,7 +256,10 @@ var fpsMonitor = false,
         {
             screen: ["modal_exit"],
             action: "close_exit",
-            keyboard: [27], // Scape
+            keyboard:
+            {
+                keys: [27] // Scape
+            },
             gamepad:
             {
                 buttons: [9, 16], // Start, Home
@@ -235,7 +274,10 @@ var fpsMonitor = false,
         {
             screen: ["modal_menu"],
             action: "close_modal",
-            keyboard: [27], // Scape
+            keyboard:
+            {
+                keys: [27] // Scape
+            },
             gamepad:
             {
                 buttons: [9, 16], // Start, Home
@@ -250,7 +292,10 @@ var fpsMonitor = false,
         {
             screen: ["confirm"],
             action: "confirm_no",
-            keyboard: [78], // N
+            keyboard:
+            {
+                keys: [78] // N
+            },
             gamepad:
             {
                 buttons: [8], // Select
@@ -265,7 +310,10 @@ var fpsMonitor = false,
         {
             screen: ["confirm"],
             action: "confirm_yes",
-            keyboard: [89], // Y
+            keyboard:
+            {
+                keys: [89] // Y
+            },
             gamepad:
             {
                 buttons: [9], // Start
@@ -280,7 +328,10 @@ var fpsMonitor = false,
         {
             screen: ["game"],
             action: "fire",
-            keyboard: [32], // Space
+            keyboard:
+            {
+                keys: [32] // Space
+            },
             gamepad:
             {
                 buttons: [0], // A
@@ -295,7 +346,10 @@ var fpsMonitor = false,
         {
             screen: ["game"],
             action: "change_weapon",
-            keyboard: [9], // Tab
+            keyboard:
+            {
+                keys: [9] // Tabulator
+            },
             gamepad:
             {
                 buttons: [3, 8], // Y, Select
@@ -310,7 +364,10 @@ var fpsMonitor = false,
         {
             screen: ["game"],
             action: "moveZ",
-            keyboard: [17], // Control
+            keyboard:
+            {
+                keys: [17] // Control
+            },
             gamepad:
             {
                 buttons: [1, 2], // B, X
@@ -325,7 +382,10 @@ var fpsMonitor = false,
         {
             screen: ["game"],
             action: "turn_left",
-            keyboard: [37], // Left
+            keyboard:
+            {
+                keys: [37] // Left
+            },
             gamepad:
             {
                 buttons: [],
@@ -340,7 +400,10 @@ var fpsMonitor = false,
         {
             screen: ["game"],
             action: "turn_right",
-            keyboard: [39], // Right
+            keyboard:
+            {
+                keys: [39] // Right
+            },
             gamepad:
             {
                 buttons: [],
@@ -355,7 +418,10 @@ var fpsMonitor = false,
         {
             screen: ["game"],
             action: "strafe_left",
-            keyboard: [90], // Z
+            keyboard:
+            {
+                keys: [90] // Z
+            },
             gamepad:
             {
                 buttons: [4], // L1
@@ -370,7 +436,10 @@ var fpsMonitor = false,
         {
             screen: ["game"],
             action: "strafe_right",
-            keyboard: [88], // X
+            keyboard:
+            {
+                keys: [88] // X
+            },
             gamepad:
             {
                 buttons: [5], // R1
@@ -385,7 +454,10 @@ var fpsMonitor = false,
         {
             screen: ["game"],
             action: "move_front",
-            keyboard: [40], // Up
+            keyboard:
+            {
+                keys: [40] // Up
+            },
             gamepad:
             {
                 buttons: [6], // L2
@@ -400,7 +472,10 @@ var fpsMonitor = false,
         {
             screen: ["game"],
             action: "move_back",
-            keyboard: [38], // Down
+            keyboard:
+            {
+                keys: [38] // Down
+            },
             gamepad:
             {
                 buttons: [7], // R2
@@ -415,7 +490,10 @@ var fpsMonitor = false,
         {
             screen: ["game"],
             action: "open_modal",
-            keyboard: [27], // Scape
+            keyboard:
+            {
+                keys: [27] // Scape
+            },
             gamepad:
             {
                 buttons: [9, 16], // Start, Home

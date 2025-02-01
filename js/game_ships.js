@@ -466,8 +466,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             this.strafeSpeed = 0;
                             this.engine1max = 4;
                             this.engine2max = 4;
-                            if (keysPressed.includes (38)) this.strafing (-1);
-                            else if (keysPressed.includes (40)) this.strafing (1);
+                            if (pressed.keys [-1].includes (38)) this.strafing (-1);
+                            else if (pressed.keys [-1].includes (40)) this.strafing (1);
                             else
                             {
                                 if (this.engine1 > this.engine1max)
