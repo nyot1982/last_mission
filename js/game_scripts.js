@@ -14,12 +14,15 @@ var fpsMonitor = false,
     gameTab = "menu",
     controlTab = "keyboard",
     gameControls = [],
-    menuControl = -1,
+    menuControl = 99,
     colorPicker = null,
     colorPickerInput = null,
     pressed =
     {
-        keys: [],
+        keys:
+        {
+            99: []
+        },
         buttons: [],
         axes: []
     },

@@ -1,5 +1,5 @@
-window.addEventListener ("keydown", (e) => { e.preventDefault (); startControl (-1, "keyboard", "keys", e.code, e.key); });
-window.addEventListener ("keyup", (e) => { stopControl (-1, "keyboard", "keys", e.code); });
+window.addEventListener ("keydown", (e) => { e.preventDefault (); startControl (99, "keyboard", "keys", e.keyCode, e.key); });
+window.addEventListener ("keyup", (e) => { stopControl (99, "keyboard", "keys", e.keyCode); });
 window.addEventListener ('gamepaddisconnected', gamepadDisconnected);
 window.addEventListener ('gamepadconnected', gamepadConnected);
 
@@ -40,7 +40,7 @@ function gamepadDisconnected (e)
     if (controlFinded == null)
     {
         $('#' + oldControl).fadeOut (1000);
-        changeControl ("keyboard", -1);
+        changeControl ("keyboard", 99);
     }
     else if (gameScreen == "game" && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) players [0].control = controlFinded;
 }
@@ -68,8 +68,8 @@ function startControl (id_control, control, bt_type, bt_code, bt_value)
     {
         pressed [bt_type][id_control].push (bt_code);
         changeControl (control, id_control);
+        var gameShip = null;
         if (gameScreen == "game" && gameShips.length > 0 && gameConfirm.length == 0 && gameInput.length == 0)
-        //if (gameScreen == "game")
         {
             if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var player = 0;
             else var player = players.findIndex (player => player.control == id_control);
