@@ -75,14 +75,18 @@ function startControl (id_control, control, bt_type, bt_code, bt_value)
             else var player = players.findIndex (player => player.control == id_control);
             gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
         }
-        else if (control == "keyboard" && gameScreen == "menu" && gameInput.length > 0)
+        else if (control == "keyboard")
         {
-            if (gameInput [idInputAct].type == "input" && bt_code != 9 && bt_code != 13 && bt_code != 27)
+            if (gameScreen == "menu" && gameInput.length > 0)
             {
-                bt_value = bt_code;
-                if (bt_code != 8) bt_code = -1;
+                if (gameInput [idInputAct].type == "input" && bt_code != 9 && bt_code != 13 && bt_code != 27)
+                {
+                    if (bt_code != 8) bt_code = -1;
+                    else bt_value = bt_code;
+                }
+                else if (gameInput [idInputAct].type == "skin" && bt_code > 36 && bt_code < 41) bt_value = null;
             }
-            else if (gameInput [idInputAct].type == "skin" && bt_code > 36 && bt_code < 41) bt_value = null;
+            else bt_value = 1;
         }
         else if (bt_type == "axis" && bt_code == 0) bt_value *= -1; 
         userActionStart (control, bt_type, bt_code, bt_value, gameShip);
@@ -105,31 +109,6 @@ function stopControl (id_control, control, bt_type, bt_code)
             userActionStop (control, bt_type, bt_code, gameShip);
         }
     }
-}
-
-function stopUserInteractions (player)
-{
-    var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
-    if (gameModes.findIndex (mode => mode.active == true) == 0 || player == null)
-    {
-        pressed =
-        {
-            keys: [],
-            buttons: [],
-            axes: []
-        }
-    }
-    else
-    {
-        if (player == 0 || gameModes.findIndex (mode => mode.active == true) == 3) pressed.keys [players [player].control] = [];
-        pressed.buttons [players [player].control] = [];
-        pressed.axes [players [player].control] = [];
-    }
-    gameShips [gameShip].firing (false);
-    gameShips [gameShip].moving (0);
-    gameShips [gameShip].movingZ (0);
-    gameShips [gameShip].strafing (0);
-    gameShips [gameShip].turning (0);
 }
 
 function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
@@ -477,6 +456,31 @@ function userActionStop (control, bt_type, bt_code, gameShip)
             break;
         }
     }
+}
+
+function stopUserInteractions (player)
+{
+    var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
+    if (gameModes.findIndex (mode => mode.active == true) == 0 || player == null)
+    {
+        pressed =
+        {
+            keys: [],
+            buttons: [],
+            axes: []
+        }
+    }
+    else
+    {
+        if (player == 0 || gameModes.findIndex (mode => mode.active == true) == 3) pressed.keys [players [player].control] = [];
+        pressed.buttons [players [player].control] = [];
+        pressed.axes [players [player].control] = [];
+    }
+    gameShips [gameShip].firing (false);
+    gameShips [gameShip].moving (0);
+    gameShips [gameShip].movingZ (0);
+    gameShips [gameShip].strafing (0);
+    gameShips [gameShip].turning (0);
 }
 
 function mouseMove (e)
