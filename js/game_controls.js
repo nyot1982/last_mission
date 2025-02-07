@@ -24,27 +24,6 @@ function controls ()
     }
 }
 
-function gamepadDisconnected (e)
-{
-    var oldControl = gameControls [e.gamepad.index * 1];
-    gameControls.splice (e.gamepad.index * 1, 1);
-    if (gameScreen == "menu" && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3 && gameInput.length > 1) gameInput = gameInput.slice (e.gamepad.index * 1, 1);
-    var controlFinded = null;
-    for (const gamepad of navigator.getGamepads ())
-    {
-        if (!gamepad) continue;
-        if (gamepad.mapping == "standard" && oldControl == "gamepad" || gamepad.id.toLowerCase ().includes ("joystick") && oldControl == "joystick") controlFinded = gamepad.index * 1;
-    }
-    pressed.buttons.splice (pressed.buttons.indexOf (e.gamepad.index * 1), 1);
-    pressed.axes.splice (pressed.axes.indexOf (e.gamepad.index * 1), 1);
-    if (controlFinded == null)
-    {
-        $('#' + oldControl).fadeOut (1000);
-        changeControl ("keyboard", 99);
-    }
-    else if (gameScreen == "game" && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) players [0].control = controlFinded;
-}
-
 function gamepadConnected (e)
 {
     if (e.gamepad.mapping == "standard") var newControl = "gamepad";
@@ -60,6 +39,27 @@ function gamepadConnected (e)
         if (gameInput.length > 0) changeTab ("input");
         else changeTab ("menu");
     }
+}
+
+function gamepadDisconnected (e)
+{
+    var oldControl = gameControls [e.gamepad.index * 1];
+    gameControls.splice (e.gamepad.index * 1, 1);
+    if (gameScreen == "menu" && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3 && gameInput.length > 1) gameInput = gameInput.slice (e.gamepad.index * 1, 1);
+    var controlFinded = null;
+    for (const gamepad of navigator.getGamepads ())
+    {
+        if (!gamepad) continue;
+        if (gamepad.mapping == "standard" && oldControl == "gamepad" || gamepad.id.toLowerCase ().includes ("joystick") && oldControl == "joystick") controlFinded = gamepad.index * 1;
+    }
+    pressed.buttons.splice (pressed.buttons.indexOf (e.gamepad.index * 1), 1);
+    pressed.axes.splice (pressed.axes.indexOf (e.gamepad.index * 1), 1);
+    if (controlFinded == null)
+    {
+        changeControl ("keyboard", 99);
+        $('#' + oldControl).fadeOut (1000);
+    }
+    else if (gameScreen == "game" && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) players [0].control = controlFinded;
 }
 
 function startControl (id_control, control, bt_type, bt_code, bt_value)

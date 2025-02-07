@@ -13,10 +13,7 @@ var fpsMonitor = false,
     gameBoss = null,
     gameTab = "menu",
     controlTab = "keyboard",
-    gameControls =
-    {
-        99: "keyboard" 
-    },
+    gameControls = [],
     menuControl = 99,
     colorPicker = null,
     colorPickerInput = null,
