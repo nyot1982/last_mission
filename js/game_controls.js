@@ -64,9 +64,9 @@ function gamepadConnected (e)
 
 function startControl (id_control, control, bt_type, bt_code, bt_value)
 {
-    if (!pressed [bt_type][id_control].includes (bt_code))
+    if (!pressed [bt_type][id_control].includes (bt_code) || bt_type == "axes" && Math.abs (bt_value) > 0.25)
     {
-        pressed [bt_type][id_control].push (bt_code);
+        if (!pressed [bt_type][id_control].includes (bt_code)) pressed [bt_type][id_control].push (bt_code);
         changeControl (control, id_control);
         var gameShip = null;
         if (gameScreen == "game" && gameShips.length > 0 && gameConfirm.length == 0 && gameInput.length == 0)
@@ -74,6 +74,11 @@ function startControl (id_control, control, bt_type, bt_code, bt_value)
             if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var player = 0;
             else var player = players.findIndex (player => player.control == id_control);
             gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
+            if (control == "keyboard")
+            {
+                if (bt_code == 37) bt_value = -1;
+                else bt_value = 1;
+            }
         }
         else if (control == "keyboard")
         {
@@ -88,7 +93,6 @@ function startControl (id_control, control, bt_type, bt_code, bt_value)
             }
             else bt_value = 1;
         }
-        else if (bt_type == "axis" && bt_code == 0) bt_value *= -1; 
         userActionStart (control, bt_type, bt_code, bt_value, gameShip);
     }
 }
@@ -377,10 +381,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                 case 'fire':
                     gameShips [gameShip].firing (true);
                 break;
-                case 'turn_left':
-                    gameShips [gameShip].turning (-bt_value);
-                break;
-                case 'turn_right':
+                case 'turn':
                     gameShips [gameShip].turning (bt_value);
                 break;
                 case 'move_back':
@@ -442,8 +443,6 @@ function userActionStop (control, bt_type, bt_code, gameShip)
                 gameShips [gameShip].firing (false);
             break;
             case 'turn':
-            case 'turn_left':
-            case 'turn_right':
                 gameShips [gameShip].turning (0);
             break;
             case 'move_back':
@@ -538,8 +537,12 @@ function changeControl (newControl, idControl)
 {
     if (gameScreen != "start")
     {
-        menuControl = idControl;
-        if ((gameScreen != "game" || gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) && controlTab != newControl)
+        if (idControl != null)
+        {
+            menuControl = idControl;
+            if (gameScreen == "game" && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) players [0].control = idControl;
+        }
+        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && controlTab != newControl)
         {
             $('#' + controlTab).removeClass ("active");
             $('#' + newControl).addClass ("active");
@@ -550,6 +553,5 @@ function changeControl (newControl, idControl)
             $('#' + gameTab + 'Tab-' + newControl).addClass ("active");
             controlTab = newControl;
         }
-        if (gameScreen == "game" && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) players [0].control = idControl;
     }
 }

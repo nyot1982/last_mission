@@ -595,25 +595,25 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             gameModeHud (0);
                             if (typeof (localStorage.players0) !== "undefined" && localStorage.players0.length > 0) storedPlayers = JSON.parse (localStorage.players0);
                             gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-                            gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 16, -1));
+                            gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 16, 99));
                             idInputAct = 0;
                             changeTab ("input");
                         break;
                         case "Cooperative":
                             gameModeHud (1);
                             if (typeof (localStorage.players1) !== "undefined" && localStorage.players1.length > 0) storedPlayers = JSON.parse (localStorage.players1);
-                            if (controlTab != "keyboard") changeControl ("keyboard", -1);
+                            if (controlTab != "keyboard") changeControl ("keyboard", 99);
                             gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-                            gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 16, -1));
+                            gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 16, 99));
                             idInputAct = 0;
                             changeTab ("input");
                         break;
                         case "Versus":
                             gameModeHud (2);
                             if (typeof (localStorage.players2) !== "undefined" && localStorage.players2.length > 0) storedPlayers = JSON.parse (localStorage.players2);
-                            if (controlTab != "keyboard") changeControl ("keyboard", -1);
+                            if (controlTab != "keyboard") changeControl ("keyboard", 99);
                             gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-                            gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 16, -1));
+                            gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 16, 99));
                             idInputAct = 0;
                             changeTab ("input");
                         break;

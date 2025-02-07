@@ -13,7 +13,10 @@ var fpsMonitor = false,
     gameBoss = null,
     gameTab = "menu",
     controlTab = "keyboard",
-    gameControls = [],
+    gameControls =
+    {
+        99: "keyboard" 
+    },
     menuControl = 99,
     colorPicker = null,
     colorPickerInput = null,
@@ -384,33 +387,15 @@ var fpsMonitor = false,
         },
         {
             screen: ["game"],
-            action: "turn_left",
+            action: "turn",
             keyboard:
             {
-                keys: [37] // Left
+                keys: [37, 39] // Left, Right
             },
             gamepad:
             {
                 buttons: [],
-                axes: [0] // L0 Left
-            },
-            joystick:
-            {
-                buttons: [],
-                axes: [0]
-            }
-        },
-        {
-            screen: ["game"],
-            action: "turn_right",
-            keyboard:
-            {
-                keys: [39] // Right
-            },
-            gamepad:
-            {
-                buttons: [],
-                axes: [0] // L0 Right
+                axes: [0] // L0
             },
             joystick:
             {

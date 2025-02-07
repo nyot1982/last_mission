@@ -52,7 +52,7 @@ function wssOpen ()
         else if (data.action == "connected")
         {
             gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-            gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 16, -1));
+            gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 16, 99));
             gameText.push (new component ("text", "Enter your ship color:", "orange", 745, 270, "left", 10));
             gameInput.push (new component ("color", null, null, 750, 295, null, 10, 16));
             gameText.push (new component ("text", "Select your ship skin:", "orange", 745, 320, "left", 10));
