@@ -570,7 +570,6 @@ function component (type, src, color, x, y, width, height, max, control, rollove
             if (this.type == "image" && mouse.x >= this.x - this.width / 2 && mouse.x <= this.x + this.width / 2 && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
             else if (this.type == "text" && mouse.x >= this.x && mouse.x <= this.x + textMeasure.width && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
             else if (this.type == "traffic" && (ctx.isPointInStroke (this.path, mouse.x, mouse.y) || ctx.isPointInPath (this.path, mouse.x, mouse.y))) mouseOver = true;
-            //else if (this.type != "traffic" && (ctx.isPointInStroke (mouse.x, mouse.y) || ctx.isPointInPath (mouse.x, mouse.y))) mouseOver = true;
             if (mouseOver) mouse.rollover = new component ("rollover", this.rollover, this.rolloverColor);
             else if (mouse.rollover != null && mouse.rollover.src == this.rollover) mouse.rollover = null;
         }
