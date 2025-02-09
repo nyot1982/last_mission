@@ -427,8 +427,8 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
 
 function userActionStop (control, bt_type, bt_code, gameShip)
 {
-    if ((gameScreen == "menu" || gameScreen == "modal_menu") && menuShip != null && gameConfirm.length == 0 && gameInput.length == 0) var screen = "modal";
-    else if (gameScreen == "game" && gameShips.length > 0 && gameConfirm.length == 0 && gameInput.length == 0) var screen = "game";
+    if ((gameScreen == "menu" || gameModal == "menu") && menuShip != null && gameConfirm.length == 0 && gameInput.length == 0) var screen = "modal";
+    else if (gameScreen == "game" && gameModal == null && gameShips.length > 0 && gameConfirm.length == 0 && gameInput.length == 0) var screen = "game";
     
     var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control][bt_type].includes (bt_code));
 
