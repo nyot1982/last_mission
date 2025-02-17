@@ -32,12 +32,22 @@ function gamepadConnected (e)
     if (newControl && document.getElementById (newControl).style.display == 'none') $('#' + newControl).fadeIn (1000);
     pressed.buttons [e.gamepad.index * 1] = [];
     pressed.axes [e.gamepad.index * 1] = [];
-    changeControl (newControl, e.gamepad.index * 1);
-    if (gameAlert.length > 0)
+    if (gameScreen == "game" && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3)
     {
-        gameAlert = [];
-        if (gameInput.length > 0) changeTab ("input");
-        else changeTab ("menu");
+        for (var player in players)
+        {
+            if (players [player].control == null) players [player].control = e.gamepad.index * 1;
+        }
+    }
+    else
+    {
+        changeControl (newControl, e.gamepad.index * 1);
+        if (gameAlert.length > 0)
+        {
+            gameAlert = [];
+            if (gameInput.length > 0) changeTab ("input");
+            else changeTab ("menu");
+        }
     }
 }
 
@@ -45,6 +55,9 @@ function gamepadDisconnected (e)
 {
     var oldControl = gameControls [e.gamepad.index * 1];
     gameControls.splice (e.gamepad.index * 1, 1);
+    pressed.buttons.splice (pressed.buttons.indexOf (e.gamepad.index * 1), 1);
+    pressed.axes.splice (pressed.axes.indexOf (e.gamepad.index * 1), 1);
+
     if (gameScreen == "menu" && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3 && gameInput.length > 1) gameInput = gameInput.slice (e.gamepad.index * 1, 1);
     var controlFinded = null;
     for (const gamepad of navigator.getGamepads ())
@@ -52,8 +65,6 @@ function gamepadDisconnected (e)
         if (!gamepad) continue;
         if (gamepad.mapping == "standard" && oldControl == "gamepad" || gamepad.id.toLowerCase ().includes ("joystick") && oldControl == "joystick") controlFinded = gamepad.index * 1;
     }
-    pressed.buttons.splice (pressed.buttons.indexOf (e.gamepad.index * 1), 1);
-    pressed.axes.splice (pressed.axes.indexOf (e.gamepad.index * 1), 1);
     if (controlFinded == null)
     {
         changeControl ("keyboard", 99);
