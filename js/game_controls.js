@@ -518,7 +518,7 @@ function mouseWheel (e)
     mouse.wheelZ = e.deltaZ;
 }
 
-function vibrate (duration, id_control)
+function vibrate (id_control, duration)
 {
     for (i = navigator.getGamepads ().length; i > 0; i--)
     {

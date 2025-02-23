@@ -325,7 +325,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 var gameShip = gameShips.findIndex (ship => ship.name == gameShots [gameShot].name);
                                 if (gameShip > -1) gameShips [gameShip].score += 100;
                             }
-                            if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
+                            if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (players [players.findIndex (player => player.name == this.name)].control, 300);
                         }
                         else
                         {
@@ -347,7 +347,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
 
     this.playerDead = function ()
     {
-        if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad" && this.z >= 0) vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
+        if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad" && this.z >= 0) vibrate (players [players.findIndex (player => player.name == this.name)].control, 600);
         if (this.lifes > 0)
         {
             if (this.lifes == 1 && gameModes.findIndex (mode => mode.active == true) < 2 && this.name == players [0].name) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
@@ -783,7 +783,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             gameSound.sounds ["hit1"].stop ();
                             gameSound.sounds ["hit1"].play ();
                         }
-                        if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
+                        if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (players [players.findIndex (player => player.name == this.name)].control, 300);
                         this.shield--;
                         if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
                     }
@@ -899,7 +899,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         gameSound.sounds ["hit2"].stop ();
                         gameSound.sounds ["hit2"].play ();
                     }
-                    if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
+                    if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (players [players.findIndex (player => player.name == this.name)].control, 600);
                     this.moveZ = -0.25;
                 }
                 else if (this.z == 0 && (this.ground == "lava" || this.fuel == 0 || !this.status.engine1 && !this.status.engine2))
@@ -1033,7 +1033,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 gameSound.sounds ["hit0"].stop ();
                                 gameSound.sounds ["hit0"].play ();
                             }
-                            if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (300, players [players.findIndex (player => player.name == this.name)].control);
+                            if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (players [players.findIndex (player => player.name == this.name)].control, 300);
                             if (enemies > 0) enemies--;
                             document.getElementById ("enemyHud2").style.width = enemies + "px";
                             this.shield -= 5;
@@ -1054,7 +1054,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 gameSound.sounds ["hit0"].stop ();
                                 gameSound.sounds ["hit0"].play ();
                             }
-                            if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (600, players [players.findIndex (player => player.name == this.name)].control);
+                            if (gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (players [players.findIndex (player => player.name == this.name)].control, 600);
                             if (enemies > 0) enemies--;
                             document.getElementById ("enemyHud2").style.width = enemies + "px";
                             this.score += 250;
@@ -1118,8 +1118,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     gameSound.sounds ["shot" + this.weapon].stop ();
                     gameSound.sounds ["shot" + this.weapon].play ();
                 }
-                if ((gameScreen == "menu" || gameModal == "menu") && controlTab == "gamepad") vibrate (150, menuControl);
-                else if (gameScreen == "game" && gameModal == null && gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (150, players [players.findIndex (player => player.name == this.name)].control);
+                if (gameScreen == "menu" || gameModal == "menu") vibrate (menuControl, 150);
+                else if (gameScreen == "game" && gameModal == null && gameControls [players [players.findIndex (player => player.name == this.name)].control] == "gamepad") vibrate (players [players.findIndex (player => player.name == this.name)].control, 150);
             }
         }
     }
