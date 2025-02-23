@@ -72,7 +72,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.time = time || null;
     this.width = 28;
     this.height = 32;
-    this.maxSpeed = 6;
     this.move = 0;
     this.moveZ = 0;
     this.strafe = 0;
@@ -486,6 +485,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 }
                 else if (gameScreen == "game" && gameModal == null)
                 {
+                    this.maxSpeed = !this.status.engine1 || !this.status.engine2 ? 3 : 6;
                     if (this.moveSpeed == 0 && this.move != 0 || this.moveSpeed != 0 && Math.abs (this.moveSpeed) <= this.maxSpeed)
                     {
                         this.moveSpeed = this.moveSpeed * 10 + this.move;
@@ -503,8 +503,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         else if (this.moveSpeed <= 0 && this.move == -1) this.move = -0.5;
                         else if (this.moveSpeed >= 0 && this.move == 1) this.move = 0.5;
                         else if (this.moveSpeed == 0) this.move = 0;
-                        var moveX = (!this.status.engine1 || !this.status.engine2 ? this.moveSpeed / 2 : this.moveSpeed) * Math.sin (this.radians);
-                        var moveY = (!this.status.engine1 || !this.status.engine2 ? this.moveSpeed / 2 : this.moveSpeed) * Math.cos (this.radians);
+                        var moveX = this.moveSpeed * Math.sin (this.radians);
+                        var moveY = this.moveSpeed * Math.cos (this.radians);
                         this.x += moveX;
                         this.y -= moveY;
                     }
@@ -525,8 +525,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         else if (this.strafeSpeed <= 0 && this.strafe == -1) this.strafe = -0.5;
                         else if (this.strafeSpeed >= 0 && this.strafe == 1) this.strafe = 0.5;
                         else if (this.strafeSpeed == 0) this.strafe = 0;
-                        var moveX = (!this.status.engine1 || !this.status.engine2 ? this.strafeSpeed / 2 : this.strafeSpeed) * Math.sin ((this.heading + 90) * Math.PI / 180);
-                        var moveY = (!this.status.engine1 || !this.status.engine2 ? this.strafeSpeed / 2 : this.strafeSpeed) * Math.cos ((this.heading + 90) * Math.PI / 180);
+                        var moveX = this.strafeSpeed * Math.sin ((this.heading + 90) * Math.PI / 180);
+                        var moveY = this.strafeSpeed * Math.cos ((this.heading + 90) * Math.PI / 180);
                         this.x += moveX;
                         this.y -= moveY;    
                     }
