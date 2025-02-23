@@ -196,7 +196,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     {
         if (gameScreen == "game" && this.z > 0)
         {
-            if (!this.status.engine1 && !this.status.engine2) direction = 0;
+            if (!this.status.engine1 && !this.status.engine2 || Math.abs (this.moveSpeed) > this.maxSpeed) direction = 0;
             if (direction < 0)
             {
                 if (this.moveSpeed <= 0) this.move = -0.5;
