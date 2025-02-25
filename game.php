@@ -176,7 +176,7 @@
                                 <p><span class="key2">Esc</span> Cancel</p>
                             </div>
                             <div class="col">
-                                <p><span class="fa fa-arrow-right-arrow-left key" style="width: 5em;"></span> Change input</p>
+                                <p><span class="key" style="width: 5em; padding: 0;"><span class="fa fa-left-long-to-line" style="display: block;"></span><span class="fa fa-right-long-to-line" style="display: block;"></span></span> Change input</p>
                                 <p><span class="fa fa-left key"></span> / <span class="fa fa-right key"></span> / <span class="fa fa-down key"></span> / <span class="fa fa-up key"></span> Select</p>
                             </div>
                         </div>
@@ -206,7 +206,7 @@
                                 <p><span class="key">X</span> Strafe right</p>
                             </div>
                             <div class="col">
-                                <p><span class="fa fa-arrow-right-arrow-left key" style="width: 4em;"></span> Fire mode</p>
+                                <p><span class="key" style="width: 5em; padding: 0;"><span class="fa fa-left-long-to-line" style="display: block;"></span><span class="fa fa-right-long-to-line" style="display: block;"></span></span> Fire mode</p>
                                 <p><span class="fa fa-horizontal-rule key" style="width: 8em;"></span> Fire</p>
                             </div>
                             <div class="col">
@@ -268,7 +268,7 @@
                                 <p><span class="button green">A</span> Fire</p>
                             </div>
                             <div class="col">
-                                <p><span class="button blue">X</span> Take off / Land</p>
+                                <p><span class="button blue">X</span> / <span class="button red">B</span> Take off / Land</p>
                                 <p><span class="button2">Start</span> Menu</p>
                             </div>
                         </div>
