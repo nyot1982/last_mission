@@ -28,6 +28,7 @@
     --color11: silver;
     --color12: gray;
     --color13: yellow;
+    --color14: #555;
     --colorFluor1: #F03;
     --colorFluor2: #FC3;
     --colorFluor3: #CF0;
@@ -962,12 +963,13 @@ a.interaction
 }
 .button2
 {
+    color: var(--color10);
     letter-spacing: -0.5px;
     font-size: 0.75em;
     width: 60px;
-    border-radius: 50%;
-    padding: 5px;
-    background-color: var(--color12);
+    border-radius: 12px;
+    padding: 5px 2px;
+    background-color: var(--color14);
 }
 .button3,
 .button4,
