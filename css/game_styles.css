@@ -1016,6 +1016,7 @@ a.interaction
 .button2.silver
 {
     padding: 2px 10px;
+    color: var(--color5);
 }
 .button.yellow
 {

@@ -227,15 +227,15 @@
                         <div id="inputTab-gamepad" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
                                 <p><span class="key2">A-Z</span> Type</p>
-                                <p><span class="fa fa-left-long key" style="width: 4em;"></span> Delete</p>
+                                <p><span class="fa fa-left-long key" style="width: 6em;"></span> Delete</p>
                             </div>
                             <div class="col">
-                                <p><span class="fa fa-turn-down-left key"></span> Accept</p>
-                                <p><span class="key2">Esc</span> Cancel</p>
+                                <p><span class="button2">Start</span> Accept</p>
+                                <p><span class="button green">A</span> Cancel</p>
                             </div>
                             <div class="col">
-                                <p><span class="fa fa-arrow-right-arrow-left key" style="width: 4em;"></span> Change input</p>
-                                <p><span class="fa fa-left key"></span> / <span class="fa fa-right key"></span> / <span class="fa fa-down key"></span> / <span class="fa fa-up key"></span> Select</p>
+                                <p><span class="key" style="width: 5em; padding: 0;"><span class="fa fa-left-long-to-line" style="display: block;"></span><span class="fa fa-right-long-to-line" style="display: block;"></span></span> Change input</p>
+                                <p><span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block;"></span><span class="fa fa-square" style="color: red;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block;"></span></span> / <span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="color: red;"></span><span class="fa fa-square" style="display: block;"></span></span> / <span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block; color: red;"></span></span> / <span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block; color: red;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block;"></span></span> Select</p>
                             </div>
                         </div>
                         <div id="confirmTab-gamepad" class="tabContent cont-cols margin-1 toggle">
@@ -252,16 +252,16 @@
                         </div>
                         <div id="gameTab-gamepad" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
-                                <p><span class="button6">R2</span> Move forward</p>
-                                <p><span class="button5">L2</span> Move backward</p>
+                                <p><span class="button6">RT</span> Move forward</p>
+                                <p><span class="button5">LT</span> Move backward</p>
                             </div>
                             <div class="col">
                                 <p><span class="fa fa-caret-left e1"></span><span class="button silver">LS</span> Turn left</p>
-                                <p><span class="button3">L1</span> Strafe left</p>
+                                <p><span class="button3">LB</span> Strafe left</p>
                             </div>
                             <div class="col">
                                 <p><span class="button silver">LS</span><span class="fa fa-caret-right e1"></span> Turn right</p>
-                                <p><span class="button4">R1</span> Strafe right</p>
+                                <p><span class="button4">RB</span> Strafe right</p>
                             </div>
                             <div class="col">
                                 <p><span class="button yellow">Y</span> Fire mode</p>
@@ -278,7 +278,7 @@
                                 <p><span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block; color: red;"></span></span> Move down</p>
                             </div>
                             <div class="col">
-                                <p><span class="button5">L2</span> / <span class="button6">R2</span> Select</p>
+                                <p><span class="button5">LT</span> / <span class="button6">RT</span> Select</p>
                                 <p><span class="button2">Start</span> Back</p>
                             </div>
                         </div>
@@ -323,7 +323,7 @@
                             </div>
                             <div class="col">
                                 <p><span class="button yellow">Y</span> Fire mode</p>
-                                <p><span class="button5">L2</span> / <span class="button6">R2</span> Fire</p>
+                                <p><span class="button5">LT</span> / <span class="button6">RT</span> Fire</p>
                             </div>
                             <div class="col">
                                 <p><span class="button green">A</span> Take off / Land</p>
