@@ -1068,12 +1068,11 @@ input[type="color"]
 }
 #fps_monitor
 {
-    height: 30px;
     margin-top: 1em;
     border: solid 1px var(--color5);
     border-radius: 1em;
     padding: 0.75em;
-    word-spacing: -0.5em;
+    word-spacing: -0.75em;
     transition: all 1s ease 0s;
     transform: scale(0);
 }

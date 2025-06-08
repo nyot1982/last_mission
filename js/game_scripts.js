@@ -1081,7 +1081,9 @@ function updateGameArea ()
         if (timer >= 1000)
         {
             document.getElementById ("frame_rate").innerHTML = (gameArea.frame - gameArea.fps) + " fps";
-            document.getElementById ("frame_time").innerHTML = (Math.round (1000 / (gameArea.frame - gameArea.fps))) + " ms";
+            var ms = Math.round (1000 / (gameArea.frame - gameArea.fps));
+            //if (ms == Infinity || isNaN (ms)) ms = 0;
+            document.getElementById ("frame_time").innerHTML = (ms == Infinity || isNaN (ms) ? 0 : ms) + " ms";
             gameArea.fps = gameArea.frame;
             gameArea.timer = Date.now ();
         }
