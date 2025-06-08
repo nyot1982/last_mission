@@ -4,7 +4,7 @@ const {createServer} = require ('https');
 const {createServerFrom} = require ('wss');
 const port = 4000;
 var app = express ();
-var debug = true;
+var debug = process.argv [2] == 'debug' ? true : false;
 var players = [];
 var gameShips = [];
 var startPoints =

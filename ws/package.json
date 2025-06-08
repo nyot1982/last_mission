@@ -5,8 +5,8 @@
     "license": "MIT",
     "scripts": {
         "start": "node ./server.js",
-        "start-dev": "nodemon ./server.js",
-        "start-debug": "node ./server.js?debug=true"
+        "start-debug": "node ./server.js debug",
+        "start-dev": "nodemon ./server.js"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
