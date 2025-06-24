@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="css/regular.css" type="text/css">
         <link rel="stylesheet" href="css/solid.css" type="text/css">
         <link rel="stylesheet" href="css/game_styles.css" type="text/css">
+        <script type="text/javascript">wssServer = "<?=(isset ($_SERVER ['HTTPS']) ? 'wss://' : 'ws://').$_SERVER ['HTTP_HOST'].':4000'?>";</script>
         <script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
         <script type="text/javascript" src="js/tinycolor.min.js"></script>
         <script type="text/javascript" src="js/game_scripts.js"></script>

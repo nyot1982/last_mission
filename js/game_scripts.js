@@ -637,7 +637,6 @@ var fpsMonitor = false,
     },
     usersPlaying = 0,
     playersConnecting = 0,
-    wssServer = "wss://nyot.ddns.net:4000",
     wss = null;
 
 /*$(window)

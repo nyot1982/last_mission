@@ -19,27 +19,103 @@
         <main>
             <article>
                 <?php
-                    // Varios destinatarios
-                    $para  = 'marcpinyot@gmail.com'.', '; // atención a la coma
-                    $para .= 'marcpinyot@hotmail.com';
+                    // Import PHPMailer classes into the global namespace
+                    require 'vendor/autoload.php';
 
-                    // título
-                    $título = 'Creación de cuenta online multiplayer';
+                    use PHPMailer\PHPMailer\PHPMailer;
+                    use PHPMailer\PHPMailer\Exception;
+                    use League\OAuth2\Client\Provider\Google;
+                    use League\OAuth2\Client\Token\AccessToken;
 
-                    // mensaje
-                    $mensaje = '<html><head><title>Creación de cuenta</title></head><body><p>¡Datos del registro!</p><table><tr><th>Quien</th><th>Día</th><th>Mes</th><th>Año</th></tr><tr><td>Marc</td><td>3</td><td>Agosto</td><td>1970</td></tr><tr><td>Marc</td><td>17</td><td>Agosto</td><td>1973</td></tr></table></body></html>';
+                    // Google OAuth configuration
+                    $googleClientId = 'YOUR_GOOGLE_CLIENT_ID';
+                    $googleClientSecret = 'YOUR_GOOGLE_CLIENT_SECRET';
+                    $googleRedirectUri = 'YOUR_REDIRECT_URI';
+                    $googleRefreshToken = 'YOUR_GOOGLE_REFRESH_TOKEN';
 
-                    // Para enviar un correo HTML, debe establecerse la cabecera Content-type
-                    $cabeceras  = 'MIME-Version: 1.0'."\r\n";
-                    $cabeceras .= 'Content-type: text/html; charset=utf-8'."\r\n";
+                    // Create a Google OAuth2 provider instance
+                    $provider = new Google
+                    ([
+                        'clientId' => $googleClientId,
+                        'clientSecret' => $googleClientSecret,
+                        'redirectUri' => $googleRedirectUri
+                    ]);
 
-                    // Cabeceras adicionales
-                    $cabeceras .= 'To: Marc Pinyot Gascón <marcpinyot@gmail.com>, Marc Pinyot Gascón <marcpinyot@hotmail.com>'."\r\n";
-                    $cabeceras .= 'From: Marc Pinyot Gascón <marcpinyot@gmail.com>'."\r\n";
+                    // Create an AccessToken instance
+                    $token = new AccessToken
+                    ([
+                        'refresh_token' => $googleRefreshToken
+                    ]);
 
-                    // Enviarlo
-                    mail ($para, $título, $mensaje, $cabeceras);
-                    //mb_send_mail ($para, $titulo, $mensaje, $cabeceras);
+                    // Create a PHPMailer instance
+                    $mail = new PHPMailer (true);
+
+                    //Tell PHPMailer to use SMTP
+                    $mail->isSMTP ();
+
+                    //Enable SMTP debugging
+                    //SMTP::DEBUG_OFF = off (for production use)
+                    //SMTP::DEBUG_CLIENT = client messages
+                    //SMTP::DEBUG_SERVER = client and server messages
+                    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+
+                    //Set the hostname of the mail server
+                    $mail->Host = 'smtp.gmail.com';
+                    //Use `$mail->Host = gethostbyname('smtp.gmail.com');`
+                    //if your network does not support SMTP over IPv6,
+                    //though this may cause issues with TLS
+
+                    //Set the SMTP port number:
+                    // - 465 for SMTP with implicit TLS, a.k.a. RFC8314 SMTPS or
+                    // - 587 for SMTP+STARTTLS
+                    $mail->Port = 465;
+
+                    //Set the encryption mechanism to use:
+                    // - SMTPS (implicit TLS on port 465) or
+                    // - STARTTLS (explicit TLS on port 587)
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+
+                    //Whether to use SMTP authentication
+                    $mail->SMTPAuth = true;
+
+                    //Username to use for SMTP authentication - use full email address for gmail
+                    $mail->Username = 'marcpinyot@gmail.com';
+
+                    //Password to use for SMTP authentication
+                    $mail->Password = '$P33dM4n1982+3,14nYoT';
+
+                    //Set who the message is to be sent from
+                    //Note that with gmail you can only use your account address (same as `Username`)
+                    //or predefined aliases that you have configured within your account.
+                    //Do not use user-submitted addresses in here
+                    $mail->setFrom('marcpinyot@gmail.com', 'Marc Pinyot Gascón');
+
+                    //Set an alternative reply-to address
+                    //This is a good place to put user-submitted addresses
+                    $mail->addReplyTo('marcpinyot@hotmail.com', '3,14 nYoT');
+
+                    //Set who the message is to be sent to
+                    $mail->addAddress('marcpinyot@hotmail.com', 'Joan Dau');
+
+                    //Set the subject line
+                    $mail->Subject = 'PHPMailer GMail SMTP test';
+
+                    //Read an HTML message body from an external file, convert referenced images to embedded,
+                    //convert HTML into a basic plain-text alternative body
+                    $mail->msgHTML(file_get_contents('contentsutf8.html'), __DIR__);
+
+                    //Replace the plain text body with one created manually
+                    $mail->AltBody = 'This is a plain-text message body';
+
+                    //Attach an image file
+                    $mail->addAttachment('favicon.png');
+
+                    //send the message, check for errors
+                    if (!$mail->send()) {
+                        echo 'Mailer Error: ' . $mail->ErrorInfo;
+                    } else {
+                        echo 'Message sent!';
+                    }
                 ?>
             </article>
         </main>
