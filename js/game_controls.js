@@ -496,8 +496,8 @@ function stopUserInteractions (player)
 function mouseMove (e)
 {
     e.preventDefault ();
-    mouse.x = e.clientX - 2;
-    mouse.y = e.clientY - 2;
+    mouse.x = e.offsetX;
+    mouse.y = e.offsetY;
 }
 
 function mouseDown (e)

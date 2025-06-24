@@ -639,32 +639,6 @@ var fpsMonitor = false,
     playersConnecting = 0,
     wss = null;
 
-/*$(window)
-.on
-(
-    "mousedown",
-    function (event)
-    {
-        console.log ("mousedown",event);
-    }
-)
-.on
-(
-    "mouseup",
-    function (event)
-    {
-        console.log ("mouseup", event);
-    }
-)
-.on
-(
-    "beforeunload",
-    function (event)
-    {
-        console.log ("beforeunload", event);
-    }
-);*/
-
 $(document).ready (function ()
 {
     $("preloader").fadeOut (1000);
