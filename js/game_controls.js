@@ -8,7 +8,7 @@ function controls ()
     var player = 2;
     for (const gamepad of navigator.getGamepads ())
     {
-        if (!gamepad) continue;
+        if (!gamepad || gamepad.mapping == "" && !gamepad.id.toLowerCase ().includes ("joystick")) continue;
         if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.findIndex (input => input.control == gamepad.index * 1) == -1 && gameInput.length > 0) gameInput.push (new component ("input", (storedPlayers [gameInput.length] && storedPlayers [gameInput.length].name) ? storedPlayers [gameInput.length].name : "Player " + player, "black", 750, 270 + 25 * (player - 2), "left", 10, 16, gamepad.index * 1));
         for (const [index, axis] of gamepad.axes.entries ())
         {
@@ -28,6 +28,7 @@ function gamepadConnected (e)
 {
     if (e.gamepad.mapping == "standard") var newControl = "gamepad";
     else if (e.gamepad.id.toLowerCase ().includes ("joystick")) var newControl = "joystick";
+    else return;
     gameControls [e.gamepad.index * 1] = newControl;
     if (newControl && document.getElementById (newControl).style.display == 'none') $('#' + newControl).fadeIn (1000);
     pressed.buttons [e.gamepad.index * 1] = [];
@@ -53,6 +54,7 @@ function gamepadConnected (e)
 
 function gamepadDisconnected (e)
 {
+    if (e.gamepad.mapping == "" && !e.gamepad.id.toLowerCase ().includes ("joystick")) return;
     var oldControl = gameControls [e.gamepad.index * 1];
     gameControls.splice (e.gamepad.index * 1, 1);
     pressed.buttons.splice (pressed.buttons.indexOf (e.gamepad.index * 1), 1);

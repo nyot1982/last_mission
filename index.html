@@ -7,6 +7,30 @@
         <link rel="shortcut icon" href="favicon.ico">
         <link rel="apple-touch-icon" href="favicon.png">
     </head>
-    <!--<body onload="javascript: window.open ('game.php', 'Last Mission', 'titlebar=yes,location=no,menubar=no,toolbar=no,scrollbars=no,status=no,resizable=no,fullscreen=no,top=100,left=100,innerWidth=1011,innerHeight=705');"></body>-->
-    <body onload="javascript: window.open ('game.php', 'Last Mission', 'titlebar=yes,location=no,menubar=no,toolbar=no,scrollbars=no,status=no,resizable=no,fullscreen=no,top=100,left=100,width=1024,height=741');"></body>
+    <body>
+        <script type="text/javascript">
+            var nav = navigator.userAgent;
+            if (nav.includes ('OPR/'))
+            {
+                width = 1045;
+                height = 840;
+            }
+            else if (nav.includes ('Edg/'))
+            {
+                width = 1024;
+                height = 739;
+            }
+            else if (nav.includes ('Firefox/'))
+            {
+                width = 1024;
+                height = 740
+            }
+            else
+            {
+                width = 1011;
+                height = 705;
+            }
+            window.open ('game.php', 'Last Mission', 'titlebar=yes,location=no,menubar=no,toolbar=no,scrollbars=no,status=no,resizable=no,fullscreen=no,top=100,left=100,width=' + width + ',height=' + height);
+        </script>
+    </body>
 </html>
