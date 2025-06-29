@@ -23,14 +23,15 @@
                     require 'vendor/autoload.php';
 
                     use PHPMailer\PHPMailer\PHPMailer;
+                    use PHPMailer\PHPMailer\SMTP;
                     use PHPMailer\PHPMailer\Exception;
                     use League\OAuth2\Client\Provider\Google;
                     use League\OAuth2\Client\Token\AccessToken;
 
                     // Google OAuth configuration
-                    $googleClientId = 'YOUR_GOOGLE_CLIENT_ID';
-                    $googleClientSecret = 'YOUR_GOOGLE_CLIENT_SECRET';
-                    $googleRedirectUri = 'YOUR_REDIRECT_URI';
+                    $googleClientId = '1023851977928-6oevi32erk1hj8pv0886j9ti17i72irk.apps.googleusercontent.com';
+                    $googleClientSecret = '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';
+                    $googleRedirectUri = 'https://pinyot.ddns.net';
                     $googleRefreshToken = 'YOUR_GOOGLE_REFRESH_TOKEN';
 
                     // Create a Google OAuth2 provider instance
