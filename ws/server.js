@@ -99,7 +99,7 @@ const wss = createServerFrom
                 if (wss.readyState === 1)
                 {
                     var playersId = players.findIndex (player => player.id == data.player_id);
-                    if (data.action == 'start')
+                    if (data.action == 'menu')
                     {
                         if (players [playersId].status == 2)
                         {

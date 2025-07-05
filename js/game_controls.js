@@ -232,7 +232,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         {
                             const data =
                             {
-                                action: "start",
+                                action: "menu",
                                 player_id: playerId,
                             };
                             wss.send (JSON.stringify (data));    
@@ -351,7 +351,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     {
                         const data =
                         {
-                            action: "start",
+                            action: "menu",
                             player_id: playerId,
                         };
                         wss.send (JSON.stringify (data));    

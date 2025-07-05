@@ -29,7 +29,7 @@ function wssOpen ()
             }
             playersConnecting = data.players_connecting;
         }
-        if (data.action == "start")
+        if (data.action == "menu")
         {
             if (gameScreen == "menu") gameLoadScreen ("menu");
             else
