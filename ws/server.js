@@ -317,7 +317,11 @@ function clearUnactive ()
 
 function debugging (text)
 {
-    if (text !== undefined) console.log (text);
+    if (text !== undefined)
+    {
+        const date = new Date ();
+        console.log (date.toISOString () + ': ' + text);
+    }
     else
     {
         console.clear ();
