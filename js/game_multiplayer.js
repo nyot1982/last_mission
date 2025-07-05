@@ -15,7 +15,7 @@ function wssOpen ()
     wss.onmessage = function (event)
     {
         const data = JSON.parse (event.data);
-        if (gameScreen == "game" && playersConnecting != data.players_connecting && document.getElementById ("playersConnecting"))
+        if (gameScreen == "game" && document.getElementById ("playersConnecting"))
         {
             if (data.players_connecting > 0)
             {
@@ -31,7 +31,6 @@ function wssOpen ()
         }
         if (data.action == "start")
         {
-            usersPlaying = data.game_ships.length;
             if (gameScreen == "menu") gameLoadScreen ("menu");
             else
             {
@@ -41,6 +40,7 @@ function wssOpen ()
                 (
                     () =>
                     {
+                        usersPlaying = gameShips.length;
                         gameLoadScreen ("menu");
                     },
                     1000
