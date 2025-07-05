@@ -298,8 +298,8 @@ function debugging (text)
         if (text !== undefined) console.log (text);
         else console.log ();
         console.log ();
-        console.log ('players (' + players.length + ') =', players);
         console.log ('startPoints (' + startPoints.length + ') =', startPoints);
+        console.log ('players (' + players.length + ') =', players);
         console.log ('gameShips (' + gameShips.length + ') =', '[' + (gameShips.length > 0 ? 'Object' : '') + ']');
         //console.log ('gameShips (' + gameShips.length + ') =', gameShips);
         console.log ();
