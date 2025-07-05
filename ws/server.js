@@ -78,6 +78,7 @@ const wss = createServerFrom
         (
             {
                 id: playerId,
+                name: null,
                 status: 0
             }
         );
@@ -87,26 +88,40 @@ const wss = createServerFrom
             player_id: playerId
         };
         wss.send (JSON.stringify (json));
-        debugging ('WebSocket connection opened with client (Id: ' + playerId + ')');
+        if (!debug) debugging ('WebSocket connection opened with client (Id: ' + playerId + ')');
         wss.on
         (
             'message',
             (response) =>
             {
                 var data = JSON.parse (response), error = null;
+
                 if (wss.readyState === 1)
                 {
+                    var playersId = players.findIndex (player => player.id == data.player_id);
                     if (data.action == 'start')
                     {
-                        players [players.findIndex (player => player.id == data.player_id)].status = 0;
-                        gameShips.splice (gameShips.findIndex (ship => ship.name == startPoints [data.player_id].ship), 1);
-                        startPoints [data.player_id].ship = null;
-                        debugging ('Client exit game (Id: ' + data.player_id + ')');
+                        if (players [playersId].status == 2)
+                        {
+                            setTimeout
+                            (
+                                () =>
+                                {
+                                    gameShips.splice (gameShips.findIndex (ship => ship.name == players [playersId].name), 1);
+                                    startPoints [startPoints.findIndex (startPoint => startPoint.ship == players [playersId].name)].ship = null;
+                                    players [playersId].name = null;
+                                    players [playersId].status = 0;
+                                },
+                                1000
+                            );
+                        }
+                        else players [playersId].status = 0;
+                        if (!debug) debugging ('Client exit game (Id: ' + playersId + ')');
                     }
                     else if (data.action == 'connect')
                     {
-                        players [players.findIndex (player => player.id == data.player_id)].status = 1;
-                        debugging ('Client starting game (Id: ' + data.player_id + ')');
+                        players [playersId].status = 1;
+                        if (!debug) debugging ('Client starting game (Id: ' + playersId + ')');
                         data.action = 'connected';
                     }
                     else if (data.action == 'ship')
@@ -119,16 +134,17 @@ const wss = createServerFrom
                         }
                         else
                         {
-                            players [players.findIndex (player => player.id == data.player_id)].status = 2;
-                            startPoints [data.player_id].ship = data.name;
+                            players [playersId].name = data.name;
+                            players [playersId].status = 2;
+                            startPoints [startPoints.findIndex (startPoint => startPoint.ship == null)].ship = data.name;
                             gameShips.push
                             (
                                 {
                                     name: data.name,
                                     color: data.color,
-                                    x: startPoints [data.player_id].x,
-                                    y: startPoints [data.player_id].y,
-                                    z: startPoints [data.player_id].z,
+                                    x: startPoints [startPoints.findIndex (startPoint => startPoint.ship == data.name)].x,
+                                    y: startPoints [startPoints.findIndex (startPoint => startPoint.ship == data.name)].y,
+                                    z: startPoints [startPoints.findIndex (startPoint => startPoint.ship == data.name)].z,
                                     heading: 0,
                                     moveSpeed: 0,
                                     strafeSpeed: 0,
@@ -177,7 +193,7 @@ const wss = createServerFrom
                                     time: Date.now ()
                                 }
                             );
-                            debugging ('Client playing game (Id: ' + data.player_id + ')');
+                            if (!debug) debugging ('Client playing game (Id: ' + playersId + ')');
                         }
                     }
                     else if (data.action == 'ship_ships')
@@ -232,10 +248,14 @@ const wss = createServerFrom
             'error',
             (response) =>
             {
-                players.splice (players.findIndex (player => player.id == playerId), 1);
-                gameShips.splice (gameShips.findIndex (ship => ship.name == startPoints [playerId].ship), 1);
-                startPoints [playerId].ship = null;
-                debugging (response);
+                var playersId = players.findIndex (player => player.id == playerId);
+                if (players [playersId].status == 2)
+                {
+                    gameShips.splice (gameShips.findIndex (ship => ship.name == players [playersId].name), 1);
+                    startPoints [startPoints.findIndex (startPoint => startPoint.ship == players [playersId].name)].ship = null;
+                }
+                players.splice (playersId, 1);
+                if (!debug) debugging (response);
             }
         );
 
@@ -244,10 +264,14 @@ const wss = createServerFrom
             'close',
             (response) =>
             {
-                players.splice (players.findIndex (player => player.id == playerId), 1);
-                gameShips.splice (gameShips.findIndex (ship => ship.name == startPoints [playerId].ship), 1);
-                startPoints [playerId].ship = null;
-                debugging ('WebSocket connection closed with client (Id: ' + playerId + ')');
+                var playersId = players.findIndex (player => player.id == playerId);
+                if (players [playersId].status == 2)
+                {
+                    gameShips.splice (gameShips.findIndex (ship => ship.name == players [playersId].name), 1);
+                    startPoints [startPoints.findIndex (startPoint => startPoint.ship == players [playersId].name)].ship = null;
+                }
+                players.splice (playersId, 1);
+                if (!debug) debugging ('WebSocket connection closed with client (Id: ' + playerId + ')');
             }
         );
     }
@@ -258,7 +282,8 @@ https.listen
     port,
     function ()
     {
-        debugging ('Secure WebSocket server listening on port ' + port + '...');
+        if (!debug) debugging ('Secure WebSocket server listening on port ' + port + '...');
+        else setInterval (debugging, 100);
     }
 );
 
@@ -292,31 +317,25 @@ function clearUnactive ()
 
 function debugging (text)
 {
-    if (debug)
+    if (text !== undefined) console.log (text);
+    else
     {
         console.clear ();
-        if (text !== undefined) console.log (text);
-        else console.log ();
-        console.log ();
         console.log ('startPoints (' + startPoints.length + ') =', startPoints);
         console.log ('players (' + players.length + ') =', players);
-        if (gameShips.length == 0) console.log ('gameShips (0) = []');
-        else
+        gameShipObj = [];
+        for (var gameShip in gameShips)
         {
-            console.log ('gameShips (' + gameShips.length + ') = [');
-            for (var gameShip in gameShips)
-            {
-                gameShipObj =
+            gameShipObj.push
+            (
                 {
                     name: gameShips [gameShip].name,
                     color: gameShips [gameShip].color,
                     lifes: gameShips [gameShip].lifes,
-                    time: gameShips [gameShip].time
-                };
-                console.log ('  ', gameShipObj);
-            }
-            console.log (']');
+                    time: Date.now () - gameShips [gameShip].time
+                }
+            );
         }
-        console.log ();
+        console.log ('gameShips (' + gameShips.length + ') =', gameShipObj);
     }
 }

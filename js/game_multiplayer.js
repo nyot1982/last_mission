@@ -31,10 +31,10 @@ function wssOpen ()
         }
         if (data.action == "start")
         {
+            usersPlaying = data.game_ships.length;
             if (gameScreen == "menu") gameLoadScreen ("menu");
             else
             {
-                usersPlaying = data.game_ships.length;
                 blackScreen = true;
                 $("#blackScreen").fadeIn (1000);
                 setTimeout
