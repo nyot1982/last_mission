@@ -29,8 +29,8 @@ function scoreHud (gameShip)
             {
                 if (skins [gameShips [gameShip].colors.skin].image != null)
                 {
-                    var skin = '<defs><pattern id="skin" patternUnits="userSpaceOnUse" width="27" height="30"><image href="skins/' + gameShips [gameShip].colors.skin + '.png" x="0" y="0" width="27" height="30" /></pattern></defs>';
-                    var shipFill = 'url(#skin)';
+                    var skin = '<defs><pattern id="skin' + gameShips [gameShip].colors.skin + '-score" patternUnits="userSpaceOnUse" width="27" height="30"><image href="skins/' + gameShips [gameShip].colors.skin + '.png" x="0" y="0" width="27" height="30" /></pattern></defs>';
+                    var shipFill = 'url(#skin' + gameShips [gameShip].colors.skin + '-score)';
                 }
                 else
                 {
@@ -43,19 +43,17 @@ function scoreHud (gameShip)
                 var skin = "";
                 var shipFill = gameShips [gameShip].colors.shipFill;
             }
-            if (shipFill != null) document.getElementById ("scoreHud").innerHTML += '<div id="score-' + gameShips [gameShip].name + '-div"><svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + gameShips [gameShip].colors.negative + '; border: solid 2px ' + gameShips [gameShip].colors.negative + ';"><title>' + gameShips [gameShip].name + ' Score</title>' +
-                                                                                    skin + '<g><path fill="' + shipFill + '" d="m12 3c0 1.7-0.5 3-1 3-0.6 0-1 1.2-1 2.8 0 1.6-0.8 3.3-2 4.2-1.1 0.8-2 2.3-2 3.3 0 0.9-0.4 1.7-1 1.7-0.6 0-1-2.3-1-5 0-2.8-0.4-5-1-5-0.6 0-1 0.9-1 2 0 1.1-0.4 2-1 2-0.6 0-1 3.7-1 9 0 5 0.3 9 0.8 9 0.4 0 1.4-0.9 2.2-2 0.8-1.1 1.8-2 2.3-2 0.4 0 0.7 0.9 0.7 2q0 2 2 2c1.1 0 2-0.5 2-1 0-0.5 1.6-1 3.5-1 1.9 0 3.5 0.5 3.5 1 0 0.5 0.9 1 2 1q2 0 2-2c0-1.1 0.3-2 0.8-2 0.4 0 1.4 0.9 2.2 2 0.8 1.1 1.8 2 2.3 2 0.4 0 0.7-4 0.7-9 0-5.3-0.4-9-1-9-0.5 0-1-0.9-1-2 0-1.1-0.5-2-1-2-0.5 0-1 2.3-1 5 0 2.8-0.5 5-1 5-0.5 0-1-0.8-1-1.7 0-1-0.9-2.5-2-3.3-1.2-0.9-2-2.6-2-4.3 0-1.5-0.5-2.7-1-2.7-0.5 0-1-1.3-1-3q0-3-1.5-3-1.5 0-1.5 3 z"/>' +
-                                                                                    '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg> <span id="score-' + gameShips [gameShip].name + '">0</span></div>';
-            else document.getElementById ("scoreHud").innerHTML += '<div id="score-' + gameShips [gameShip].name + '-div"><svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + gameShips [gameShip].colors.negative + '; border: solid 2px ' + gameShips [gameShip].colors.negative + ';"><title>' + gameShips [gameShip].name + ' Score</title>' +
-                                                                '<g><path fill="' + skins [gameShips [gameShip].colors.skin].engine1Fill + '" d="m 6 28 q 0 2 2 2 c 1.1 0 2 -0.5 2 -2 z"/>' +
-                                                                '<path fill="' + skins [gameShips [gameShip].colors.skin].engine2Fill + '" d="m 17 28 c 0 1.5 1 2 2 2 q 2 0 2 -2 z"/>' +
-                                                                '<path fill="' + skins [gameShips [gameShip].colors.skin].hook1Fill + '" d="m 6 16.3 c 0 0.9 -0.4 1.7 -1 1.7 c -0.6 0 -1 -2.3 -1 -5 l 0 13.8 c 0 0 0.8 -0.8 1.3 -0.8 c 0.4 0 0.7 0.9 0.7 2 z"/>' +
-                                                                '<path fill="' + skins [gameShips [gameShip].colors.skin].hook2Fill + '" d="m 21 28 c 0 -1.1 0.3 -2 0.8 -2 c 0.4 0 1.2 0.7 1.2 0.7 l 0 -13.7 c 0 2.8 -0.5 5 -1 5 c -0.5 0 -1 -0.8 -1 -1.7 z"/>' +
-                                                                '<path fill="' + skins [gameShips [gameShip].colors.skin].gunFill + '" d="m 12 3 c 0 1.7 -0.5 3 -1 3 c -0.6 0 -1 1.2 -1 2.8 c 0 1.6 -0.8 3.3 -2 4.2 L 19 13 c -1.2 -0.9 -2 -2.6 -2 -4.3 c 0 -1.5 -0.5 -2.7 -1 -2.7 c -0.5 0 -1 -1.3 -1 -3 q 0 -3 -1.5 -3 q -1.5 0 -1.5 3 z"/>' +
-                                                                '<path fill="' + skins [gameShips [gameShip].colors.skin].shipFill + '" d="m 8 13 c -1.1 0.8 -2 2.3 -2 3.3 l 0 11.7 l 15 0 l 0 -11.7 c 0 -1 -0.9 -2.5 -2 -3.3 l -11 0 z"/>' +
-                                                                '<path fill="' + skins [gameShips [gameShip].colors.skin].wing1Fill + '" d="m 4 13 c 0 -2.8 -0.4 -5 -1 -5 c -0.6 0 -1 0.9 -1 2 c 0 1.1 -0.4 2 -1 2 c -0.6 0 -1 3.7 -1 9 c 0 5 0.3 9 0.8 9 c 0.4 0 1.4 -0.9 2.2 -2 l 1 -1.2 z"/>' +
-                                                                '<path fill="' + skins [gameShips [gameShip].colors.skin].wing2Fill + '" d="m 23 26.8 l 1 1.3 c 0.8 1.1 1.8 2 2.3 2 c 0.4 0 0.7 -4 0.7 -9 c 0 -5.3 -0.4 -9 -1 -9 c -0.5 0 -1 -0.9 -1 -2 c 0 -1.1 -0.5 -2 -1 -2 c -0.5 0 -1 2.3 -1 5 z"/>' +
-                                                                '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg> <span id="score-' + gameShips [gameShip].name + '">0</span></div>';
+            if (shipFill != null) skin += '<g><path fill="' + shipFill + '" d="m12 3c0 1.7-0.5 3-1 3-0.6 0-1 1.2-1 2.8 0 1.6-0.8 3.3-2 4.2-1.1 0.8-2 2.3-2 3.3 0 0.9-0.4 1.7-1 1.7-0.6 0-1-2.3-1-5 0-2.8-0.4-5-1-5-0.6 0-1 0.9-1 2 0 1.1-0.4 2-1 2-0.6 0-1 3.7-1 9 0 5 0.3 9 0.8 9 0.4 0 1.4-0.9 2.2-2 0.8-1.1 1.8-2 2.3-2 0.4 0 0.7 0.9 0.7 2q0 2 2 2c1.1 0 2-0.5 2-1 0-0.5 1.6-1 3.5-1 1.9 0 3.5 0.5 3.5 1 0 0.5 0.9 1 2 1q2 0 2-2c0-1.1 0.3-2 0.8-2 0.4 0 1.4 0.9 2.2 2 0.8 1.1 1.8 2 2.3 2 0.4 0 0.7-4 0.7-9 0-5.3-0.4-9-1-9-0.5 0-1-0.9-1-2 0-1.1-0.5-2-1-2-0.5 0-1 2.3-1 5 0 2.8-0.5 5-1 5-0.5 0-1-0.8-1-1.7 0-1-0.9-2.5-2-3.3-1.2-0.9-2-2.6-2-4.3 0-1.5-0.5-2.7-1-2.7-0.5 0-1-1.3-1-3q0-3-1.5-3-1.5 0-1.5 3 z"/>';
+            else skin = '<g><path fill="' + skins [gameShips [gameShip].colors.skin].engine1Fill + '" d="m 6 28 q 0 2 2 2 c 1.1 0 2 -0.5 2 -2 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].engine2Fill + '" d="m 17 28 c 0 1.5 1 2 2 2 q 2 0 2 -2 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].hook1Fill + '" d="m 6 16.3 c 0 0.9 -0.4 1.7 -1 1.7 c -0.6 0 -1 -2.3 -1 -5 l 0 13.8 c 0 0 0.8 -0.8 1.3 -0.8 c 0.4 0 0.7 0.9 0.7 2 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].hook2Fill + '" d="m 21 28 c 0 -1.1 0.3 -2 0.8 -2 c 0.4 0 1.2 0.7 1.2 0.7 l 0 -13.7 c 0 2.8 -0.5 5 -1 5 c -0.5 0 -1 -0.8 -1 -1.7 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].gunFill + '" d="m 12 3 c 0 1.7 -0.5 3 -1 3 c -0.6 0 -1 1.2 -1 2.8 c 0 1.6 -0.8 3.3 -2 4.2 L 19 13 c -1.2 -0.9 -2 -2.6 -2 -4.3 c 0 -1.5 -0.5 -2.7 -1 -2.7 c -0.5 0 -1 -1.3 -1 -3 q 0 -3 -1.5 -3 q -1.5 0 -1.5 3 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].shipFill + '" d="m 8 13 c -1.1 0.8 -2 2.3 -2 3.3 l 0 11.7 l 15 0 l 0 -11.7 c 0 -1 -0.9 -2.5 -2 -3.3 l -11 0 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].wing1Fill + '" d="m 4 13 c 0 -2.8 -0.4 -5 -1 -5 c -0.6 0 -1 0.9 -1 2 c 0 1.1 -0.4 2 -1 2 c -0.6 0 -1 3.7 -1 9 c 0 5 0.3 9 0.8 9 c 0.4 0 1.4 -0.9 2.2 -2 l 1 -1.2 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].wing2Fill + '" d="m 23 26.8 l 1 1.3 c 0.8 1.1 1.8 2 2.3 2 c 0.4 0 0.7 -4 0.7 -9 c 0 -5.3 -0.4 -9 -1 -9 c -0.5 0 -1 -0.9 -1 -2 c 0 -1.1 -0.5 -2 -1 -2 c -0.5 0 -1 2.3 -1 5 z"/>';
+            document.getElementById ("scoreHud").innerHTML += '<div id="score-' + gameShips [gameShip].name + '-div"><svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + gameShips [gameShip].colors.negative + '; border: solid 2px ' + gameShips [gameShip].colors.negative + ';"><title>' + gameShips [gameShip].name + ' Score</title>' +
+                                                              skin + '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg> <span id="score-' + gameShips [gameShip].name + '">0</span></div>';
         }
     }
     else if (document.getElementById ("score-" + gameShips [gameShip].name).innerHTML != gameShips [gameShip].score)
@@ -87,39 +85,37 @@ function lifesHud (gameShip)
         }
         else
         {
-            if (gameShips [gameShip].colors.skin)
+            for (var i = 0; i < 5; i++)
             {
-                if (skins [gameShips [gameShip].colors.skin].image != null)
+                if (gameShips [gameShip].colors.skin)
                 {
-                    var skin = '<defs><pattern id="skin" patternUnits="userSpaceOnUse" width="27" height="30"><image href="skins/' + gameShips [gameShip].colors.skin + '.png" x="0" y="0" width="27" height="30" /></pattern></defs>';
-                    var shipFill = 'url(#skin)';
+                    if (skins [gameShips [gameShip].colors.skin].image != null)
+                    {
+                        var skin = '<defs><pattern id="skin' + gameShips [gameShip].colors.skin + '-life' + i + '" patternUnits="userSpaceOnUse" width="27" height="30"><image href="skins/' + gameShips [gameShip].colors.skin + '.png" x="0" y="0" width="27" height="30" /></pattern></defs>';
+                        var shipFill = 'url(#skin' + gameShips [gameShip].colors.skin + '-life' + i + ')';
+                    }
+                    else
+                    {
+                        var skin = "";
+                        var shipFill = null;
+                    }
                 }
                 else
                 {
                     var skin = "";
-                    var shipFill = null;
+                    var shipFill = gameShips [gameShip].colors.shipFill;
                 }
-            }
-            else
-            {
-                var skin = "";
-                var shipFill = gameShips [gameShip].colors.shipFill;
-            }
-            for (var i = 0; i < 5; i++)
-            {
-                if (shipFill != null) document.getElementById ("lifesHud").innerHTML += '<svg id="life' + i + '-' + gameShips [gameShip].name + '" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + gameShips [gameShip].colors.negative + '; border: solid 2px ' + gameShips [gameShip].colors.negative + ';"><title>' + gameShips [gameShip].name + ' Life ' + (i + 1) + '</title>' +
-                                                                                    skin + '<g><path fill="' + shipFill + '" d="m12 3c0 1.7-0.5 3-1 3-0.6 0-1 1.2-1 2.8 0 1.6-0.8 3.3-2 4.2-1.1 0.8-2 2.3-2 3.3 0 0.9-0.4 1.7-1 1.7-0.6 0-1-2.3-1-5 0-2.8-0.4-5-1-5-0.6 0-1 0.9-1 2 0 1.1-0.4 2-1 2-0.6 0-1 3.7-1 9 0 5 0.3 9 0.8 9 0.4 0 1.4-0.9 2.2-2 0.8-1.1 1.8-2 2.3-2 0.4 0 0.7 0.9 0.7 2q0 2 2 2c1.1 0 2-0.5 2-1 0-0.5 1.6-1 3.5-1 1.9 0 3.5 0.5 3.5 1 0 0.5 0.9 1 2 1q2 0 2-2c0-1.1 0.3-2 0.8-2 0.4 0 1.4 0.9 2.2 2 0.8 1.1 1.8 2 2.3 2 0.4 0 0.7-4 0.7-9 0-5.3-0.4-9-1-9-0.5 0-1-0.9-1-2 0-1.1-0.5-2-1-2-0.5 0-1 2.3-1 5 0 2.8-0.5 5-1 5-0.5 0-1-0.8-1-1.7 0-1-0.9-2.5-2-3.3-1.2-0.9-2-2.6-2-4.3 0-1.5-0.5-2.7-1-2.7-0.5 0-1-1.3-1-3q0-3-1.5-3-1.5 0-1.5 3 z"/>' +
-                                                                                    '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg>';
-                else document.getElementById ("lifesHud").innerHTML += '<svg id="life' + i + '-' + gameShips [gameShip].name + '" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + gameShips [gameShip].colors.negative + '; border: solid 2px ' + gameShips [gameShip].colors.negative + ';"><title>' + gameShips [gameShip].name + ' Life ' + (i + 1) + '</title>' +
-                                                                    '<g><path fill="' + skins [gameShips [gameShip].colors.skin].engine1Fill + '" d="m 6 28 q 0 2 2 2 c 1.1 0 2 -0.5 2 -2 z"/>' +
-                                                                    '<path fill="' + skins [gameShips [gameShip].colors.skin].engine2Fill + '" d="m 17 28 c 0 1.5 1 2 2 2 q 2 0 2 -2 z"/>' +
-                                                                    '<path fill="' + skins [gameShips [gameShip].colors.skin].hook1Fill + '" d="m 6 16.3 c 0 0.9 -0.4 1.7 -1 1.7 c -0.6 0 -1 -2.3 -1 -5 l 0 13.8 c 0 0 0.8 -0.8 1.3 -0.8 c 0.4 0 0.7 0.9 0.7 2 z"/>' +
-                                                                    '<path fill="' + skins [gameShips [gameShip].colors.skin].hook2Fill + '" d="m 21 28 c 0 -1.1 0.3 -2 0.8 -2 c 0.4 0 1.2 0.7 1.2 0.7 l 0 -13.7 c 0 2.8 -0.5 5 -1 5 c -0.5 0 -1 -0.8 -1 -1.7 z"/>' +
-                                                                    '<path fill="' + skins [gameShips [gameShip].colors.skin].gunFill + '" d="m 12 3 c 0 1.7 -0.5 3 -1 3 c -0.6 0 -1 1.2 -1 2.8 c 0 1.6 -0.8 3.3 -2 4.2 L 19 13 c -1.2 -0.9 -2 -2.6 -2 -4.3 c 0 -1.5 -0.5 -2.7 -1 -2.7 c -0.5 0 -1 -1.3 -1 -3 q 0 -3 -1.5 -3 q -1.5 0 -1.5 3 z"/>' +
-                                                                    '<path fill="' + skins [gameShips [gameShip].colors.skin].shipFill + '" d="m 8 13 c -1.1 0.8 -2 2.3 -2 3.3 l 0 11.7 l 15 0 l 0 -11.7 c 0 -1 -0.9 -2.5 -2 -3.3 l -11 0 z"/>' +
-                                                                    '<path fill="' + skins [gameShips [gameShip].colors.skin].wing1Fill + '" d="m 4 13 c 0 -2.8 -0.4 -5 -1 -5 c -0.6 0 -1 0.9 -1 2 c 0 1.1 -0.4 2 -1 2 c -0.6 0 -1 3.7 -1 9 c 0 5 0.3 9 0.8 9 c 0.4 0 1.4 -0.9 2.2 -2 l 1 -1.2 z"/>' +
-                                                                    '<path fill="' + skins [gameShips [gameShip].colors.skin].wing2Fill + '" d="m 23 26.8 l 1 1.3 c 0.8 1.1 1.8 2 2.3 2 c 0.4 0 0.7 -4 0.7 -9 c 0 -5.3 -0.4 -9 -1 -9 c -0.5 0 -1 -0.9 -1 -2 c 0 -1.1 -0.5 -2 -1 -2 c -0.5 0 -1 2.3 -1 5 z"/>' +
-                                                                    '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg>';
+                if (shipFill != null) skin += '<g><path fill="' + shipFill + '" d="m12 3c0 1.7-0.5 3-1 3-0.6 0-1 1.2-1 2.8 0 1.6-0.8 3.3-2 4.2-1.1 0.8-2 2.3-2 3.3 0 0.9-0.4 1.7-1 1.7-0.6 0-1-2.3-1-5 0-2.8-0.4-5-1-5-0.6 0-1 0.9-1 2 0 1.1-0.4 2-1 2-0.6 0-1 3.7-1 9 0 5 0.3 9 0.8 9 0.4 0 1.4-0.9 2.2-2 0.8-1.1 1.8-2 2.3-2 0.4 0 0.7 0.9 0.7 2q0 2 2 2c1.1 0 2-0.5 2-1 0-0.5 1.6-1 3.5-1 1.9 0 3.5 0.5 3.5 1 0 0.5 0.9 1 2 1q2 0 2-2c0-1.1 0.3-2 0.8-2 0.4 0 1.4 0.9 2.2 2 0.8 1.1 1.8 2 2.3 2 0.4 0 0.7-4 0.7-9 0-5.3-0.4-9-1-9-0.5 0-1-0.9-1-2 0-1.1-0.5-2-1-2-0.5 0-1 2.3-1 5 0 2.8-0.5 5-1 5-0.5 0-1-0.8-1-1.7 0-1-0.9-2.5-2-3.3-1.2-0.9-2-2.6-2-4.3 0-1.5-0.5-2.7-1-2.7-0.5 0-1-1.3-1-3q0-3-1.5-3-1.5 0-1.5 3 z"/>';
+                else skin = '<g><path fill="' + skins [gameShips [gameShip].colors.skin].engine1Fill + '" d="m 6 28 q 0 2 2 2 c 1.1 0 2 -0.5 2 -2 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].engine2Fill + '" d="m 17 28 c 0 1.5 1 2 2 2 q 2 0 2 -2 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].hook1Fill + '" d="m 6 16.3 c 0 0.9 -0.4 1.7 -1 1.7 c -0.6 0 -1 -2.3 -1 -5 l 0 13.8 c 0 0 0.8 -0.8 1.3 -0.8 c 0.4 0 0.7 0.9 0.7 2 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].hook2Fill + '" d="m 21 28 c 0 -1.1 0.3 -2 0.8 -2 c 0.4 0 1.2 0.7 1.2 0.7 l 0 -13.7 c 0 2.8 -0.5 5 -1 5 c -0.5 0 -1 -0.8 -1 -1.7 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].gunFill + '" d="m 12 3 c 0 1.7 -0.5 3 -1 3 c -0.6 0 -1 1.2 -1 2.8 c 0 1.6 -0.8 3.3 -2 4.2 L 19 13 c -1.2 -0.9 -2 -2.6 -2 -4.3 c 0 -1.5 -0.5 -2.7 -1 -2.7 c -0.5 0 -1 -1.3 -1 -3 q 0 -3 -1.5 -3 q -1.5 0 -1.5 3 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].shipFill + '" d="m 8 13 c -1.1 0.8 -2 2.3 -2 3.3 l 0 11.7 l 15 0 l 0 -11.7 c 0 -1 -0.9 -2.5 -2 -3.3 l -11 0 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].wing1Fill + '" d="m 4 13 c 0 -2.8 -0.4 -5 -1 -5 c -0.6 0 -1 0.9 -1 2 c 0 1.1 -0.4 2 -1 2 c -0.6 0 -1 3.7 -1 9 c 0 5 0.3 9 0.8 9 c 0.4 0 1.4 -0.9 2.2 -2 l 1 -1.2 z"/>' +
+                        '<path fill="' + skins [gameShips [gameShip].colors.skin].wing2Fill + '" d="m 23 26.8 l 1 1.3 c 0.8 1.1 1.8 2 2.3 2 c 0.4 0 0.7 -4 0.7 -9 c 0 -5.3 -0.4 -9 -1 -9 c -0.5 0 -1 -0.9 -1 -2 c 0 -1.1 -0.5 -2 -1 -2 c -0.5 0 -1 2.3 -1 5 z"/>';
+                document.getElementById ("lifesHud").innerHTML += '<svg id="life' + i + '-' + gameShips [gameShip].name + '" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + gameShips [gameShip].colors.negative + '; border: solid 2px ' + gameShips [gameShip].colors.negative + ';"><title>' + gameShips [gameShip].name + ' Life ' + (i + 1) + '</title>' +
+                                                    skin + '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg>';
             }
             document.getElementById ("lifesHud").innerHTML += ' ';
         }
