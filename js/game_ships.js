@@ -603,7 +603,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.paths.ship.addPath (this.paths.engine2);
                 }
                 ctx.lineWidth = 2;
-                if (this.colors.shipStroke != null) ctx.strokeStyle = this.colors.shipStroke + "CC";
+                if (this.colors.shipStroke != null) ctx.strokeStyle = this.colors.shipStroke;
                 else ctx.strokeStyle = this.colors.negative + "CC";
                 ctx.stroke (this.paths.ship);
                 if (this.status.engine1)
@@ -940,7 +940,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                             gameSound.sounds ["hit0"].play ();
                                         }
                                         gameShips [gameShip].playerDead ();
-                                        document.getElementById ("score" + this.name).innerHTML = this.score;
+                                        document.getElementById ("score-" + this.name).innerHTML = this.score;
                                         if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
                                     }
                                     else if (gameShips [gameShip].shield > 0 && this.shield == 0)
