@@ -300,8 +300,23 @@ function debugging (text)
         console.log ();
         console.log ('startPoints (' + startPoints.length + ') =', startPoints);
         console.log ('players (' + players.length + ') =', players);
-        console.log ('gameShips (' + gameShips.length + ') =', '[' + (gameShips.length > 0 ? 'Object' : '') + ']');
-        //console.log ('gameShips (' + gameShips.length + ') =', gameShips);
+        if (gameShips.length == 0) console.log ('gameShips (0) = []');
+        else
+        {
+            console.log ('gameShips (' + gameShips.length + ') = [');
+            for (var gameShip in gameShips)
+            {
+                gameShipObj =
+                {
+                    name: gameShips [gameShip].name,
+                    color: gameShips [gameShip].color,
+                    lifes: gameShips [gameShip].lifes,
+                    time: gameShips [gameShip].time
+                };
+                console.log ('  ', gameShipObj);
+            }
+            console.log (']');
+        }
         console.log ();
     }
 }
