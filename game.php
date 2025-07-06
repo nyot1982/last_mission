@@ -30,12 +30,6 @@
         <script type="text/javascript" src="js/game_objects.js"></script>
         <script type="text/javascript" src="js/game_hud.js"></script>
         <?php
-            if (locale_get_default () != 'es-ES') locale_set_default ('es-ES');
-            if (ini_get ('date.timezone') != 'Europe/Madrid')
-            {
-                ini_set ('date.timezone', 'Europe/Madrid');
-                date_default_timezone_set ('Europe/Madrid');
-            }
             $mysqli = new mysqli ('localhost', 'nyot', '$P33dM4n1982', 'last_mission');
             $mysqli->query ("SET NAMES 'utf8'");
             if ($mysqli->connect_errno) $return ["error"] = 'Error! Conexion has failed: ('.$mysqli->connect_errno.') '.$mysqli->connect_error;
