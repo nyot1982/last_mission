@@ -320,7 +320,7 @@ function debugging (text)
     if (text !== undefined)
     {
         const date = new Date ();
-        console.log (date.toLocaleString () + ': ' + text);
+        console.log (date.toLocaleString ('es-ES') + ': ' + text);
     }
     else
     {
