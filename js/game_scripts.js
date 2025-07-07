@@ -13,7 +13,10 @@ var fpsMonitor = false,
     gameBoss = null,
     gameTab = "menu",
     controlTab = "keyboard",
-    gameControls = [],
+    gameControls =
+    {
+        99: "keyboard"
+    },
     menuControl = 99,
     colorPicker = null,
     colorPickerInput = null,
@@ -1048,6 +1051,14 @@ function gameCloseModal ()
 
 function updateGameArea ()
 {
+    if (gameArea.frame % 250 == 0)
+    {
+        console.clear ();
+        console.log ('startPoints (' + startPoints.length + ') =', startPoints);
+        console.log ('players (' + players.length + ') =', players);
+        console.log ('gameControls (' + Object.keys (gameControls).length + ') =', gameControls);
+        console.log ('menuControl =', menuControl);
+    }
     if (fpsMonitor)
     {
         var timer = Date.now () - gameArea.timer;
@@ -1135,19 +1146,4 @@ function updateGameArea ()
     if (mouse.rollover != null) mouse.rollover.update ();
     gameArea.frame++;
     gameArea.animation = window.requestAnimationFrame (updateGameArea);
-}
-
-function openFullscreen ()
-{
-    var elem = document.documentElement;
-    if (elem.requestFullscreen) elem.requestFullscreen ();
-    else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen ();
-    else if (elem.msRequestFullscreen) elem.msRequestFullscreen ();
-}
-
-function closeFullscreen ()
-{
-    if (document.exitFullscreen) document.exitFullscreen ();
-    else if (document.webkitExitFullscreen) document.webkitExitFullscreen ();
-    else if (document.msExitFullscreen) document.msExitFullscreen ();
 }
