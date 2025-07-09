@@ -436,13 +436,13 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     {
         if (this.name)
         {
-            if (players.findIndex (player => player.name == this.name) > -1) this.idControl = players [players.findIndex (player => player.name == this.name)].control;
             this.idShip = gameShips.findIndex (ship => ship.name == this.name);
             if (this.idShip > -1)
             {
                 scoreHud (this.idShip);
                 lifesHud (this.idShip);
             }
+            if (players.findIndex (player => player.name == this.name) > -1) this.idControl = players [players.findIndex (player => player.name == this.name)].control;
         }
         else this.idControl = menuControl;
         if (this.life > 0)
