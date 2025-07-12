@@ -1,7 +1,7 @@
 function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, time)
 {
-    this.idControl = null;
     this.idShip = null;
+    this.idControl = null;
     this.name = name || null;
     this.x = x || gameWidth / 2;
     this.y = y || gameHeight / 2;
