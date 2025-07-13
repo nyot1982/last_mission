@@ -120,7 +120,26 @@ function lifesHud (gameShip)
             }
         }
     }
-    else if (gameShips [gameShip].lifes < 5 && !document.getElementById ("life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name).style.display && !document.getElementById ("life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name).style.opacity) $("[id='life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name + "']").fadeOut (1000);
+    else if (gameShips [gameShip].lifes < 5 && !document.getElementById ("life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name).style.display && !document.getElementById ("life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name).style.opacity)
+    {
+        $(document.getElementById ("life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name)).fadeOut (1000);
+        if (gameShips [gameShip].lifes == 0 && gameModes.findIndex (mode => mode.active == true) > 0)
+        {
+            var name = gameShips [gameShip].name;
+            setTimeout
+            (
+                () =>
+                {
+                    document.getElementById ("score-" + name + "-div").remove ();
+                    document.getElementById ("lifes-" + name).remove ();
+                    document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
+                    if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
+                    else if (gameScreen == "game") document.getElementById ("lifesHud").style.height = "23px";
+                },
+                1000
+            );
+        }
+    }
 }
 
 function speedHud ()
