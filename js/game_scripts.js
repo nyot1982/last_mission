@@ -1051,14 +1051,15 @@ function gameCloseModal ()
 
 function updateGameArea ()
 {
-    if (gameArea.frame % 250 == 0)
+    /*if (gameArea.frame % 1000 == 0)
     {
-        console.clear ();
+        //console.clear ();
         console.log ('startPoints (' + startPoints.length + ') =', startPoints);
-        console.log ('players (' + players.length + ') =', players);
         console.log ('gameControls (' + Object.keys (gameControls).length + ') =', gameControls);
         console.log ('menuControl =', menuControl);
-    }
+        console.log ('players (' + players.length + ') =', players);
+        console.log ('gameShips (' + gameShips.length + ') =', gameShips);
+    }*/
     if (fpsMonitor)
     {
         var timer = Date.now () - gameArea.timer;
