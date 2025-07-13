@@ -120,7 +120,7 @@ function lifesHud (gameShip)
             }
         }
     }
-    else if (gameShips [gameShip].lifes < 5 && !document.getElementById ("life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name).style.display) $("#life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name).fadeOut (1000);
+    else if (gameShips [gameShip].lifes < 5 && !document.getElementById ("life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name).style.display && !document.getElementById ("life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name).style.opacity) $("[id='life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name + "']").fadeOut (1000);
 }
 
 function speedHud ()
