@@ -44,8 +44,8 @@ use League\OAuth2\Client\Provider\Google;
 use Hayageek\OAuth2\Client\Provider\Yahoo;
 //@see https://github.com/stevenmaguire/oauth2-microsoft
 use Stevenmaguire\OAuth2\Client\Provider\Microsoft;
-//@see https://github.com/greew/oauth2-azure-provider
-use Greew\OAuth2\Client\Provider\Azure;
+//@see https://github.com/stevenmaguire/oauth2-azure-provider
+use Stevenmaguire\OAuth2\Client\Provider\Azure;
 
 if (!isset($_GET['code']) && !isset($_POST['provider'])) {
     ?>
@@ -127,9 +127,9 @@ switch ($providerName) {
             ]
         ];
         break;
-    case 'Yahoo':
-        $provider = new Yahoo($params);
-        break;
+    // case 'Yahoo':
+    //     $provider = new Yahoo($params);
+    //     break;
     case 'Microsoft':
         $provider = new Microsoft($params);
         $options = [
