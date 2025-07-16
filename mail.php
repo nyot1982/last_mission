@@ -22,7 +22,7 @@
     require 'vendor/autoload.php';
 ?>
 <!DOCTYPE html>
-<html lang="en" style="padding: 1em; overflow: auto; font-size: 9px;">
+<html lang="en">
     <head>
         <base href="/last_mission/">
         <meta charset="utf-8">
@@ -33,7 +33,7 @@
         <link rel="shortcut icon" href="favicon.ico">
         <link rel="apple-touch-icon" href="favicon.png">
     </head>
-    <body style="overflow: hidden;">
+    <body style="margin: 0; padding: 1em; overflow: auto; font-size: 12px; white-space: nowrap;">
         <?php
             //Create a new PHPMailer instance
             $mail = new PHPMailer();
