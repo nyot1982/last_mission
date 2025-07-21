@@ -33,8 +33,9 @@
         <link rel="shortcut icon" href="favicon.ico">
         <link rel="apple-touch-icon" href="favicon.png">
     </head>
-    <body style="margin: 0; padding: 1em; overflow: auto; font-size: 12px; white-space: nowrap;">
+    <body style="margin: 0; padding: 1em; overflow: auto; font-size: 14px; white-space: nowrap;">
         <?php
+        echo (extension_loaded('openssl')?'SSL loaded':'SSL not loaded')."<br>"; 
             //Create a new PHPMailer instance
             $mail = new PHPMailer();
 
@@ -47,7 +48,7 @@
             //SMTP::DEBUG_SERVER (2): show client -> server and server -> client messages - this is usually the setting you want
             //SMTP::DEBUG_CONNECTION (3): As 2, but also show details about the initial connection; only use this if you're having trouble connecting (e.g. connection timing out)
             //SMTP::DEBUG_LOWLEVEL (4): As 3, but also shows detailed low-level traffic. Only really useful for analyzing protocol-level bugs, very verbose, probably not what you need.
-            $mail->SMTPDebug = SMTP::DEBUG_CONNECTION;
+            $mail->SMTPDebug = SMTP::DEBUG_LOWLEVEL;
 
             //Set the hostname of the mail server
             $mail->Host = 'smtp.gmail.com';
@@ -56,12 +57,6 @@
             // - 465 for SMTP with implicit TLS, a.k.a. RFC8314 SMTPS or
             // - 587 for SMTP+STARTTLS
             $mail->Port = 465;
-
-            //Username to use for SMTP authentication - use full email address for gmail
-            $mail->Username = 'marcpinyot@gmail.com';
-
-            //Password to use for SMTP authentication
-            $mail->Password = 'olwyajxdmewbjtzv';
 
             //Set the encryption mechanism to use:
             // - SMTPS (implicit TLS on port 465) or
@@ -78,12 +73,18 @@
             //Fill in authentication details here
             //Either the gmail account owner, or the user that gave consent
             $email = 'marcpinyot@gmail.com';
-            $clientId = '686557513597-bolvmatohv8b1ntjbkvkhfmf2km6hc6g.apps.googleusercontent.com';
-            $clientSecret = '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';
+            $clientId = '686557513597-ekg78s28rmsistjf7i8a8o9g8qc5gi02.apps.googleusercontent.com';
+            $clientSecret = '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';
 
             //Obtained by configuring and running get_oauth_token.php
             //after setting up an app in Google Developer Console.
-            $refreshToken = '1//033jTrdraTD6zCgYIARAAGAMSNwF-L9IrsCctmsWw69j3TeHgIjZfD5oqTYRgD0fQwV6AR3JQykC8r0wRd_2VZe1qM7iXEuYGD54';
+            $refreshToken = '1//03ZJ78h6zt7HaCgYIARAAGAMSNwF-L9Ir74pVHi5UzIC-lUOAWSH2YuvznFgxpTiNtZUAy_DCri8zYj6VWR_0jWHakHtUEAO7QXw';
+
+            //Username to use for SMTP authentication - use full email address for gmail
+            //$mail->Username = 'marcpinyot@gmail.com';
+
+            //Password to use for SMTP authentication
+            //$mail->Password = '$P33dM4n1982+3,14nYoT';
 
             //Create a new OAuth2 provider instance
             $provider = new Google(
