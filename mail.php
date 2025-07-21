@@ -20,6 +20,10 @@
     //Load dependencies from composer
     //If this causes an error, run 'composer install'
     require 'vendor/autoload.php';
+
+    if (isset ($_SERVER ['HTTPS'])) $path = 'https://';
+    else $path = 'http://';
+    $path .= $_SERVER ['HTTP_HOST'].dirname ($_SERVER ['PHP_SELF']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -111,9 +115,7 @@
             $mail->addAddress ('marcpinyot@hotmail.com', 'Marc Pinyot Gascón');
 
             //Set the subject 
-            if (isset ($_SERVER ['HTTPS'])) $mail->Subject = 'https://';
-            else $mail->Subject = 'http://';
-            $mail->Subject .= $_SERVER ['HTTP_HOST'].$_SERVER ['PHP_SELF'];
+            $mail->Subject = 'Validate user e.mail';
 
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
@@ -123,21 +125,18 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Last Mission - Validate mail</title>
+  <title>Last Mission - Validate user e.mail</title>
 </head>
 <body>
-<div style="width: 640px; font-family: Arial, Helvetica, sans-serif; font-size: 11px;">
+<div style="width: 640px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
   <h1>User created.</h1>
   <div align="center">
-    <a href="https://github.com/PHPMailer/PHPMailer/">Validate</a>
+    <a href="'.$path.'/validate_email.php">Validate user e.mail</a>
   </div>
-  <p>This example uses <strong>HTML</strong> with the UTF-8 Unicode charset.</p>
-  <p>Emoji: <span style="font-size: 48px">😂 🦄 💥 📤 📧</span></p>
-  <p>Image inlay<img src="favicon.png" height="16" width="16" alt="Last Mission"></p>
+  <p>Last Mission <img src="'.$path.'/favicon.png" height="16" width="16" alt="Last Mission"></p>
 </div>
 </body>
 </html>
-
             ');
 
             //Replace the plain text body with one created manually
