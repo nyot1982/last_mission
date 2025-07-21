@@ -118,7 +118,27 @@
             //Read an HTML message body from an external file, convert referenced images to embedded,
             //convert HTML into a basic plain-text alternative body
             $mail->CharSet = PHPMailer::CHARSET_UTF8;
-            $mail->msgHTML (file_get_contents ('contentsutf8.html'), __DIR__);
+            $mail->msgHTML ('
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Last Mission - Validate mail</title>
+</head>
+<body>
+<div style="width: 640px; font-family: Arial, Helvetica, sans-serif; font-size: 11px;">
+  <h1>User created.</h1>
+  <div align="center">
+    <a href="https://github.com/PHPMailer/PHPMailer/">Validate</a>
+  </div>
+  <p>This example uses <strong>HTML</strong> with the UTF-8 Unicode charset.</p>
+  <p>Emoji: <span style="font-size: 48px">😂 🦄 💥 📤 📧</span></p>
+  <p>Image inlay<img src="favicon.png" height="16" width="16" alt="Last Mission"></p>
+</div>
+</body>
+</html>
+
+            ');
 
             //Replace the plain text body with one created manually
             $mail->AltBody = 'This is a plain-text message body';
