@@ -616,6 +616,28 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             idInputAct = 0;
                             changeTab ("input");
                         break;
+                        /*case "Online":
+                            if (wss != null && wss.readyState == WebSocket.OPEN)
+                            {
+                                gameModeHud (3);
+                                if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
+                                if (controlTab != "keyboard") changeControl ("keyboard", 99);
+                                gameText.push (new component ("text", ">>> Enter your e.mail:", "orange", 705, 220, "left", 10));
+                                gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, "left", 10, 16, 99));
+                                gameText.push (new component ("text", "Enter your password:", "orange", 745, 270, "left", 10));
+                                gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, "left", 10, 16, 99));
+                                gameText.push (new component ("text", "Sign in", "orange", 745, 320, "left", 10));
+                                gameText.push (new component ("text", "Sign up", "orange", 775, 320, "left", 10));
+                                gameText.push (new component ("text", "Resend", "orange", 805, 320, "left", 10));
+                                idInputAct = 0;
+                                changeTab ("input");
+                            }
+                            else
+                            {
+                                gameAlert.push (new component ("text", ">>> Server disconnected.", "red", 705, 295, "left", 10));
+                                changeTab ("alert");
+                            }
+                        break;*/
                         case "Online":
                             if (wss != null && wss.readyState == WebSocket.OPEN)
                             {
