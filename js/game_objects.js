@@ -392,7 +392,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         if (this.type == "image") ctx.drawImage (this.image, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
-        else if (this.type == "text" || this.type == "input" || this.type == "type" || this.type == "skin")
+        else if (this.type == "text" || this.type == "input" || this.type == "button" || this.type == "skin" || this.type == "type")
         {
             if (this.type == "input" || this.type == "skin")
             {
@@ -413,7 +413,8 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                     ctx.stroke ();
                 }
             }
-            ctx.textAlign = this.width;
+            if (this.type == "button") ctx.textAlign = "left";
+            else ctx.textAlign = this.width;
             ctx.textBaseline = "middle";
             ctx.font = this.height + "px PressStart2P";
             if (this.type == "type" && idComponent <= idTypeAct)
@@ -436,7 +437,9 @@ function component (type, src, color, x, y, width, height, max, control, rollove
             }
             else if (this.type != "type")
             {
-                ctx.fillStyle = this.color;
+                if (this.type == "button" && idInputAct == idComponent) ctx.fillStyle = "white";
+                else if (this.type == "button" && idInputAct != idComponent) ctx.fillStyle = "gray";
+                else ctx.fillStyle = this.color;
                 if (this.type == "text" && this.src == "usersPlaying")
                 {
                     ctx.fillText (usersPlaying, this.x, this.y + 1);
@@ -468,7 +471,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
             if (wss != null && wss.readyState == WebSocket.OPEN)
             {
                 this.traffic = ["#300", "#330", "#0C0"];
-                this.rollover = "Connected!";
+                this.rollover = "Server is up";
                 this.rolloverColor = "#00CC00";
                 if (gameText [gameText.length - 1].type == "traffic")
                 {
@@ -481,7 +484,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                 if (wss >= 1000)
                 {
                     this.traffic = ["red", "#330", "#030"];
-                    this.rollover = "Disconnected";
+                    this.rollover = "Server is down";
                     this.rolloverColor = "#FF0000";
                 }
                 else
@@ -492,7 +495,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                         if (this.traffic [1] == "yellow") this.traffic = ["#300", "#330", "#030"];
                         else if (this.traffic [1] == "#330") this.traffic = ["#300", "yellow", "#030"];
                     }
-                    this.rollover = "Connecting...";
+                    this.rollover = "Starting server...";
                     this.rolloverColor = "#FFFF00";
                 }
                 if (gameText [gameText.length - 1].src == "usersPlaying")
@@ -616,7 +619,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             idInputAct = 0;
                             changeTab ("input");
                         break;
-                        /*case "Online":
+                        case "Online":
                             if (wss != null && wss.readyState == WebSocket.OPEN)
                             {
                                 gameModeHud (3);
@@ -626,9 +629,9 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                                 gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, "left", 10, 16, 99));
                                 gameText.push (new component ("text", "Enter your password:", "orange", 745, 270, "left", 10));
                                 gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, "left", 10, 16, 99));
-                                gameText.push (new component ("text", "Sign in", "orange", 745, 320, "left", 10));
-                                gameText.push (new component ("text", "Sign up", "orange", 775, 320, "left", 10));
-                                gameText.push (new component ("text", "Resend", "orange", 805, 320, "left", 10));
+                                gameInput.push (new component ("button", "Sign in", null, 745, 320, "left", 10));
+                                gameInput.push (new component ("button", "Sign up", null, 850, 320, "left", 10));
+                                //gameText.push (new component ("text", "Resend", "white", 855, 320, "left", 10));
                                 idInputAct = 0;
                                 changeTab ("input");
                             }
@@ -637,8 +640,8 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                                 gameAlert.push (new component ("text", ">>> Server disconnected.", "red", 705, 295, "left", 10));
                                 changeTab ("alert");
                             }
-                        break;*/
-                        case "Online":
+                        break;
+                        /*case "Online":
                             if (wss != null && wss.readyState == WebSocket.OPEN)
                             {
                                 gameModeHud (3);
@@ -655,7 +658,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                                 gameAlert.push (new component ("text", ">>> Server disconnected.", "red", 705, 295, "left", 10));
                                 changeTab ("alert");
                             }
-                        break;
+                        break;*/
                         case "Sound":
                             if (gameSound.active)
                             {

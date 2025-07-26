@@ -260,7 +260,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     if (idInputAct == gameInput.length) idInputAct = 0;
                     for (var i = idInputAct; i < gameInput.length; i++)
                     {
-                        if (gameInput [i].type == "input" || gameInput [i].type == "color" || gameInput [i].type == "skin")
+                        if (gameInput [i].type == "input" || gameInput [i].type == "color" || gameInput [i].type == "skin" || gameInput [i].type == "button")
                         {
                             idInputAct = i;
                             break;
@@ -273,8 +273,9 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         gameAlert.push (new component ("text", "Connect other controllers", "red", 745, 270, "left", 10));
                         gameAlert.push (new component ("text", "to add more players.", "red", 745, 295, "left", 10));
                         changeTab ("alert");
-                    }           
-                    else
+                    }
+                    else if (gameInput [idInputAct].type == "button") fetchLoad ("sign_" + (gameInput [idInputAct].src == "Sign in" ? "in" : gameInput [idInputAct].src == "Sign up" ? "up" : ""), "email=" + gameInput [0].src + "&password=" + gameInput [1].src);
+                    else if (gameInput [gameInput.length - 1].type != "button")
                     {
                         players = [];
                         gameAlert = [];

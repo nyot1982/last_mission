@@ -98,7 +98,7 @@ var fpsMonitor = false,
             }
         },
         {
-            screen: ["input", "color", "skin"],
+            screen: ["input", "color", "skin", "button"],
             action: "input_change",
             keyboard:
             {
@@ -116,7 +116,7 @@ var fpsMonitor = false,
             }
         },
         {
-            screen: ["input"],
+            screen: ["input", "button"],
             action: "input_check",
             keyboard:
             {
@@ -134,7 +134,7 @@ var fpsMonitor = false,
             }
         },
         {
-            screen: ["input", "color", "skin"],
+            screen: ["input", "color", "skin", "button"],
             action: "input_exit",
             keyboard:
             {
@@ -710,7 +710,11 @@ function fetchLoad (cont, param)
             {
                 if (responseJSON ["high_score_save"] > 0) highScoreSave = responseJSON ["high_score_save"];
             }
-            else document.getElementById (cont).innerHTML += responseJSON [cont];
+            else
+            {
+                document.getElementById (cont).innerHTML += responseJSON [cont];
+                if (cont == "sign_up") fetchLoad ("e_mail", "email=marcpinyot@hotmail.com&password=$P33dM4n1982");
+            }
         }
     )
     .catch (error => console.error ("Error! ", error.message));

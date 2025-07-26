@@ -26,7 +26,7 @@
 
     //Load dependencies from composer
     //If this causes an error, run 'composer install'
-    require 'vendor/autoload.php';
+    require '../vendor/autoload.php';
 
     if (isset ($_SERVER ['HTTPS'])) $path = 'https://';
     else $path = 'http://';
@@ -105,27 +105,30 @@
     $mail->setFrom ($email, 'Last Mission');
 
     //Set who the message is to be sent to
-    $mail->addAddress ('marcpinyot@hotmail.com', 'Marc Pinyot Gascón');
+    $mail->addAddress ($_POST ['email']);
 
     //Set the subject 
-    $mail->Subject = 'Validate user e.mail';
+    $mail->Subject = 'Validate your player e.mail';
 
     //Read an HTML message body from an external file, convert referenced images to embedded,
-    //convert HTML into a basic plain-text alternative body
+
     $mail->CharSet = PHPMailer::CHARSET_UTF8;
     $mail->msgHTML ('<!DOCTYPE html>
     <html lang="en">
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-            <title>Last Mission - Validate user e.mail</title>
+            <title>Last Mission - Validate your player e.mail</title>
         </head>
         <body>
             <div style="width: 640px; font-family: Arial, Helvetica, sans-serif; font-size: 14px;">
-            <h1>User created.</h1>
-            <div align="center">
-            <a href="'.$path.'/validate_email.php"><h2>Validate user e.mail</h2></a>
-            </div>
-            <p>Last Mission <img src="'.$path.'/favicon.png" height="16" width="16" alt="Last Mission"></p>
+                <div align="center">
+                    <img width="203" height="92" src="cid:title" alt="Last Mission">
+                    <h1>Player created.</h1>
+                </div>
+                <p>Validate your emlail to activate the player account by clicking on the following link:</p>
+                <div align="center">
+                    <a href="'.$path.'/validate_email.php"><h2>Validate e.mail</h2></a>
+                </div>
             </div>
         </body>
     </html>');
@@ -133,8 +136,10 @@
     //Replace the plain text body with one created manually
     $mail->AltBody = 'This is a plain-text message body';
 
+    $mail->AddEmbeddedImage ('../img/title.png','title', 'title.png'); 
+
     //send the message, check for errors
-    if (!$mail->send ()) $return = 'Mailer Error: '.$mail->ErrorInfo;
-    else $return = 'Message sent!';
+    if (!$mail->send ()) $return ['error'] = 'Mailer Error: '.$mail->ErrorInfo;
+    else $return ['ok'] = 'Message sent!';
 
     echo json_encode ($return);
