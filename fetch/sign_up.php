@@ -11,15 +11,15 @@
     if ($mysqli->connect_errno) $return ["error"] = 'Error! Conexion has failed: ('.$mysqli->connect_errno.') '.$mysqli->connect_error;
     else
     {
-        $resultado = $mysqli->query ('SELECT * FROM players WHERE email = "'.$_POST ['email'].'" AND password = "'.$_POST ['password'].'"');
+        $resultado = $mysqli->query ('SELECT * FROM players WHERE email = "'.$_POST ['email'].'"');
         if ($mysqli->errno) $return ["error"] = 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
         else
         {
-            if ($resultado->num_rows == 0) $return ["error"] = 'Wrong credentials';
+            if ($resultado->num_rows > 0) $return ["error"] = 'E.mail already exists';
             else
             {
                 $player = $resultado->fetch_assoc ();
-                if ($player ['validated'] == 0) $return ["error"] = 'Account not validated';
+                if ($player ['validated'] == 0) $return ["error"] = 'E.mail not validated';
                 else $return ["player"] = [ 'id' => intval ($player ['id']), 'validated' => intval ($player ['validated']), 'email' => $player ['email'], 'user' => $player ['user'], 'password' => $player ['password'], 'skins' => $player ['skins'] ];
             }
             $resultado->free ();

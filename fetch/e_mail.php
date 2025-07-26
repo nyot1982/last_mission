@@ -114,6 +114,30 @@
 
     $mail->CharSet = PHPMailer::CHARSET_UTF8;
     $mail->msgHTML ('<!DOCTYPE html>
+    <css type="text/css">
+        @font-face
+        {
+            font-family: "PressStart2P";
+            font-style: normal;
+            font-weight: 400;
+            font-display: block;
+            src: url(../webfonts/PressStart2P-Regular.ttf) format("truetype");
+        }
+        html
+        {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        body
+        {
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            font-family: "PressStart2P";
+            text-align: left;
+        }
+    </css>
     <html lang="en">
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
