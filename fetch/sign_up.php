@@ -18,9 +18,10 @@
             if ($resultado->num_rows > 0) $return ["error"] = 'E.mail already exists';
             else
             {
-                $player = $resultado->fetch_assoc ();
-                if ($player ['validated'] == 0) $return ["error"] = 'E.mail not validated';
-                else $return ["player"] = [ 'id' => intval ($player ['id']), 'validated' => intval ($player ['validated']), 'email' => $player ['email'], 'user' => $player ['user'], 'password' => $player ['password'], 'skins' => $player ['skins'] ];
+                $resultado->free ();
+                $resultado = $mysqli->query ('INSERT INTO players VALUES (NULL, 0, "'. $_POST ['email'].'", "", "'.$_POST ['password'].'", "")');
+                if ($mysqli->errno) $return ["error"] = 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                else $return ["player"] = ['validated' => 0, 'email' => $_POST ['email'], 'name' => '', 'password' => $_POST ['password'], 'skins' => ''];
             }
             $resultado->free ();
         }
