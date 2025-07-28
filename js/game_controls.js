@@ -274,7 +274,11 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         gameAlert.push (new component ("text", "to add more players.", "red", 745, 295, "left", 10));
                         changeTab ("alert");
                     }
-                    else if (gameInput [idInputAct].type == "button") fetchLoad ("sign_" + (gameInput [idInputAct].src == "Sign in" ? "in" : gameInput [idInputAct].src == "Sign up" ? "up" : ""), "email=" + gameInput [0].src + "&password=" + gameInput [1].src);
+                    else if (gameInput [idInputAct].type == "button")
+                    {
+                        if (gameInput [idInputAct].src == "Sign in") fetchLoad ("sign_in", "email=" + gameInput [0].src + "&password=" + gameInput [1].src);
+                        else if (gameInput [idInputAct].src == "Sign up") fetchLoad ("e_mail", "email=" + gameInput [0].src + "&password=" + gameInput [1].src);
+                    }
                     else if (gameInput [gameInput.length - 1].type != "button")
                     {
                         players = [];

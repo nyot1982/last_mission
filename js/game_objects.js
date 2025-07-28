@@ -626,9 +626,9 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                                 if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
                                 if (controlTab != "keyboard") changeControl ("keyboard", 99);
                                 gameText.push (new component ("text", ">>> Enter your e.mail:", "orange", 705, 220, "left", 10));
-                                gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, "left", 10, 16, 99));
+                                gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, "left", 10, 24, 99));
                                 gameText.push (new component ("text", "Enter your password:", "orange", 745, 270, "left", 10));
-                                gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, "left", 10, 16, 99));
+                                gameInput.push (new component ("input", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, "left", 10, 12, 12));
                                 gameInput.push (new component ("button", "Sign in", null, 745, 320, "left", 10));
                                 gameInput.push (new component ("button", "Sign up", null, 850, 320, "left", 10));
                                 //gameText.push (new component ("text", "Resend", "white", 855, 320, "left", 10));
@@ -641,24 +641,6 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                                 changeTab ("alert");
                             }
                         break;
-                        /*case "Online":
-                            if (wss != null && wss.readyState == WebSocket.OPEN)
-                            {
-                                gameModeHud (3);
-                                if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
-                                const json =
-                                {
-                                    action: "connect",
-                                    player_id: playerId
-                                };
-                                wss.send (JSON.stringify (json));
-                            }
-                            else
-                            {
-                                gameAlert.push (new component ("text", ">>> Server disconnected.", "red", 705, 295, "left", 10));
-                                changeTab ("alert");
-                            }
-                        break;*/
                         case "Sound":
                             if (gameSound.active)
                             {
