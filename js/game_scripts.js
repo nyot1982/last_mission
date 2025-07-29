@@ -673,6 +673,7 @@ function fetchLoad (cont, param)
 {
     if (cont == "highScoreHud") document.getElementById (cont).innerHTML = '<preloader><div class="spinner"></div></preloader>';
     else if (cont == "high_scores") gameText.push (new component ("text", "Loading...", "yellow", 400, 255, "left", 10));
+    else if (cont == "sign_in" || cont == "e_mail") gameText.push (new component ("text", "Loading...", "yellow", 745, 345, "left", 10));
   
     var cadParam = "fetch_call=fetch_origin";
     if (param) cadParam += "&" + param;
@@ -703,7 +704,8 @@ function fetchLoad (cont, param)
             {
                 if (cont == "sign_in" || cont == "sign_up" || cont == "e_mail")
                 {
-                    gameAlert.push (new component ("text", ">>> " + responseJSON ["error"] + ".", "red", 705, 295, "left", 10));
+                    gameText.pop ();
+                    gameAlert.push (new component ("text", ">>> " + responseJSON ["error"] + ".", "red", 705, 345, "left", 10));
                     changeTab ("alert");
                 }
                 else console.error ("Error! ", responseJSON ["error"]);
@@ -739,14 +741,16 @@ function fetchLoad (cont, param)
                 }
                 else
                 {
-                    gameAlert.push (new component ("text", ">>> Server disconnected.", "red", 705, 295, "left", 10));
+                    gameText.pop ();
+                    gameAlert.push (new component ("text", ">>> Server disconnected.", "red", 705, 345, "left", 10));
                     changeTab ("alert");
                 }
             }
-            else if (cont == "e_mail") fetchLoad ("sign_up", param);
+            else if (cont == "e_mail") fetchLoad ("sign_up", param + "&color=" + playerColors [0]);
             else if (cont == "sign_up")
             {
-                gameAlert.push (new component ("text", ">>> Validate e.mail.", "#0C0", 705, 295, "left", 10));
+                gameText.pop ();
+                gameAlert.push (new component ("text", ">>> Validate e.mail.", "#0C0", 705, 345, "left", 10));
                 changeTab ("alert");
             }
             else document.getElementById (cont).innerHTML += responseJSON [cont];

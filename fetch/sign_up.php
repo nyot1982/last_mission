@@ -18,10 +18,9 @@
             if ($resultado->num_rows > 0) $return ["error"] = 'E.mail already exists';
             else
             {
-                $resultado->free ();
-                $resultado = $mysqli->query ('INSERT INTO players VALUES (NULL, 0, "'. $_POST ['email'].'", "", "'.$_POST ['password'].'", "")');
+                $mysqli->query ('INSERT INTO players VALUES (NULL, 0, "'. $_POST ['email'].'", "", "'.$_POST ['password'].'", "'.$_POST ['color'].'", "")');
                 if ($mysqli->errno) $return ["error"] = 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
-                else $return ["player"] = ['validated' => 0, 'email' => $_POST ['email'], 'name' => '', 'password' => $_POST ['password'], 'skins' => ''];
+                else $return ["player"] = ['validated' => 0, 'email' => $_POST ['email'], 'name' => '', 'password' => $_POST ['password'], 'color' => $_POST ['color'], 'skins' => ''];
             }
             $resultado->free ();
         }

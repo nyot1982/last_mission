@@ -74,7 +74,7 @@
 
     //Obtained by configuring and running get_oauth_token.php
     //after setting up an app in Google Developer Console.
-    $refreshToken = '1//03ZJ78h6zt7HaCgYIARAAGAMSNwF-L9Ir74pVHi5UzIC-lUOAWSH2YuvznFgxpTiNtZUAy_DCri8zYj6VWR_0jWHakHtUEAO7QXw';
+    $refreshToken = '1//03jqCrJOXf6zGCgYIARAAGAMSNwF-L9Ir4EDsxmJzE1j_Pe5cC-apNWULpjQiRcOD67iVqHwx0knh6h_zPO8sJ-vPUIYzDVh9s_Y';
 
     //Create a new OAuth2 provider instance
     $provider = new Google
@@ -114,36 +114,12 @@
 
     $mail->CharSet = PHPMailer::CHARSET_UTF8;
     $mail->msgHTML ('<!DOCTYPE html>
-    <css type="text/css">
-        @font-face
-        {
-            font-family: "PressStart2P";
-            font-style: normal;
-            font-weight: 400;
-            font-display: block;
-            src: url(../webfonts/PressStart2P-Regular.ttf) format("truetype");
-        }
-        html
-        {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-        body
-        {
-            margin: 0;
-            padding: 0;
-            font-size: 14px;
-            font-family: "PressStart2P";
-            text-align: left;
-        }
-    </css>
-    <html lang="en">
+    <html lang="en" style="margin: 0; padding: 0; overflow: hidden;">
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
             <title>Last Mission - Validate your player e.mail</title>
         </head>
-        <body>
+        <body style="margin: 0; padding: 0; font-size: 14px; font-family: "PressStart2P"; text-align: left;">
             <div style="width: 640px; font-family: Arial, Helvetica, sans-serif; font-size: 14px;">
                 <div align="center">
                     <img width="203" height="92" src="cid:title" alt="Last Mission">
@@ -155,7 +131,8 @@
                 </div>
             </div>
         </body>
-    </html>');
+    </html>
+    ');
 
     //Replace the plain text body with one created manually
     $mail->AltBody = 'This is a plain-text message body';
