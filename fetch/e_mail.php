@@ -119,16 +119,14 @@
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
             <title>Last Mission - Validate your player e.mail</title>
         </head>
-        <body style="margin: 0; padding: 0; font-size: 14px; font-family: "PressStart2P"; text-align: left;">
-            <div style="width: 640px; font-family: Arial, Helvetica, sans-serif; font-size: 14px;">
-                <div align="center">
-                    <img width="203" height="92" src="cid:title" alt="Last Mission">
-                    <h1>Player created.</h1>
-                </div>
-                <p>Validate your emlail to activate the player account by clicking on the following link:</p>
-                <div align="center">
-                    <a href="'.$path.'/validate_email.php"><h2>Validate e.mail</h2></a>
-                </div>
+        <body style="margin: 0; padding: 0; font-size: 14pt; font-family: Arial, Helvetica, sans-serif; text-align: left; overflow: auto;">
+            <div align="center">
+                <img width="203" height="92" src="cid:title" alt="Last Mission">
+                <h1>Player created.</h1>
+            </div>
+            <p>Validate your emlail to activate the player account by clicking on the following link:</p>
+            <div align="center">
+                <a href="'.$path.'/validate_email.php"><h2>Validate e.mail</h2></a>
             </div>
         </body>
     </html>
