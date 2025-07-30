@@ -381,9 +381,9 @@ function component (type, src, color, x, y, width, height, max, control, rollove
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         if (this.type == "image") ctx.drawImage (this.image, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
-        else if (this.type == "string" || this.type == "text" || this.type == "button" || this.type == "skin" || this.type == "type")
+        else if (this.type == "string" || this.type == "text" || this.type == "password" || this.type == "button" || this.type == "skin" || this.type == "type")
         {
-            if (this.type == "text" || this.type == "skin")
+            if (this.type == "text" || this.type == "password" || this.type == "skin")
             {
                 if (idInputAct >= gameInput.length) idInputAct = gameInput.length - 1;
                 if (idInputAct == idComponent)
@@ -419,7 +419,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                 else ctx.fillText (this.src.substr (0, this.typeFrame), this.x, this.y);
                 if (idTypeAct == gameText.length) gameSound.sounds ["type"].stop ();
             }
-            else if ((this.type == "text" || this.type == "skin") && idInputAct != idComponent)
+            else if ((this.type == "text" || this.type == "password" || this.type == "skin") && idInputAct != idComponent)
             {
                 ctx.fillStyle = "white";
                 if (this.type == "skin" && this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 1);
@@ -519,7 +519,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
             ctx.lineWidth = 2;
             ctx.strokeStyle = "gray";
             ctx.stroke ();
-            if (gameInput [2].type == "skin" && gameInput [2].src * 1 == -1)
+            if (gameInput [idComponent + 1].type == "skin" && gameInput [idComponent + 1].src * 1 == -1)
             {
                 ctx.fillStyle = this.src;
                 ctx.fill ();
@@ -554,26 +554,23 @@ function component (type, src, color, x, y, width, height, max, control, rollove
         }
         if (this.type == "text" || this.type == "password" || this.type == "color")
         {
-            if (idInputAct == idComponent)
+            var inputDiv = document.getElementById ("input-div" + idComponent);
+            if (idInputAct == idComponent && !inputDiv)
             {
-                var inputDiv = document.createElement ("div");
+                inputDiv = document.createElement ("div");
                 inputDiv.id = "input-div" + idComponent;
-                inputDiv.class = "input-div";
+                inputDiv.style.position = "absolute";
                 inputDiv.style.top = (this.y - 8) + "px";
                 inputDiv.style.left = (this.x - 3) + "px";
                 document.getElementsByTagName ("article")[0].insertBefore (inputDiv, document.getElementsByTagName ("article")[0].childNodes [1]);
-                inputDiv.innerHTML = '<input id="input ' + idComponent + '" type="' + this.type + '"' + (this.type == "color" ? ' onchange="javascript: menuShip.changeColor (this.value);"' : '') + '><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: white; font-size: 1.7em; text-shadow: none; margin: 5px;"></a>';
+                inputDiv.innerHTML = '<input id="input' + idComponent + '" type="' + this.type + '"' + (this.type == "color" ? ' onchange="javascript: menuShip.changeColor (this.value);"' : this.max > 0 ? ' maxlength="' + this.max + '"' : '') + '><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: white; font-size: 1.7em; text-shadow: none; margin: 5px;"></a>';
                 inputDiv.childNodes [0].focus ();
-                if (gameInput [idInputAct + 1].type == "skin" && gameInput [idInputAct + 1].src * 1 > -1) inputDiv.childNodes [0].value = playerColors [0];
+                if (this.type == "color" && gameInput [idInputAct + 1].type == "skin" && gameInput [idInputAct + 1].src * 1 > -1) inputDiv.childNodes [0].value = playerColors [0];
             }
-            else
+            else if (idInputAct != idComponent && inputDiv)
             {
-                var inputDiv = document.getElementById ("input-div" + idComponent);
-                if (inputDiv)
-                {
-                    inputDiv.childNodes [0].blur ();
-                    inputDiv.remove ();
-                }
+                inputDiv.childNodes [0].blur ();
+                inputDiv.remove ();
             }
         }
         if (gameModal == "menu" || gameScreen == "menu")
@@ -626,12 +623,11 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                                 if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
                                 if (controlTab != "keyboard") changeControl ("keyboard", 99);
                                 gameText.push (new component ("string", ">>> Enter your e.mail:", "orange", 705, 220, "left", 10));
-                                gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, "left", 10, 24, 99));
+                                gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, "left", 10, 16, 99));
                                 gameText.push (new component ("string", "Enter your password:", "orange", 745, 270, "left", 10));
-                                gameInput.push (new component ("password", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, "left", 10, 12, 12));
+                                gameInput.push (new component ("password", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, "left", 10, 16, 12));
                                 gameInput.push (new component ("button", "Sign in", null, 745, 320, "left", 10));
                                 gameInput.push (new component ("button", "Sign up", null, 850, 320, "left", 10));
-                                //gameText.push (new component ("string", "Resend", "white", 855, 320, "left", 10));
                                 idInputAct = 0;
                                 changeTab ("input");
                             }

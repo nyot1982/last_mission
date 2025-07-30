@@ -60,43 +60,7 @@ var fpsMonitor = false,
     userActions =
     [
         {
-            screen: ["input"],
-            action: "input_key",
-            keyboard:
-            {
-                keys: [-1] // Alpha numeric
-            },
-            gamepad:
-            {
-                buttons: [],
-                axes: []
-            },
-            joystick:
-            {
-                buttons: [],
-                axes: []
-            }
-        },
-        {
-            screen: ["input"],
-            action: "input_back",
-            keyboard:
-            {
-                keys: [8] // Backspace
-            },
-            gamepad:
-            {
-                buttons: [],
-                axes: []
-            },
-            joystick:
-            {
-                buttons: [],
-                axes: []
-            }
-        },
-        {
-            screen: ["input", "color", "skin", "button"],
+            screen: ["text", "password", "color", "skin", "button"],
             action: "input_change",
             keyboard:
             {
@@ -114,7 +78,7 @@ var fpsMonitor = false,
             }
         },
         {
-            screen: ["input", "button"],
+            screen: ["text", "password", "button"],
             action: "input_check",
             keyboard:
             {
@@ -132,7 +96,7 @@ var fpsMonitor = false,
             }
         },
         {
-            screen: ["input", "color", "skin", "button"],
+            screen: ["text", "password", "color", "skin", "button"],
             action: "input_exit",
             keyboard:
             {

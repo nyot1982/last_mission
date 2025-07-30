@@ -1,5 +1,5 @@
-window.addEventListener ("keydown", (e) => { e.preventDefault (); startControl (99, "keyboard", "keys", e.keyCode, e.key); });
-window.addEventListener ("keyup", (e) => { stopControl (99, "keyboard", "keys", e.keyCode); });
+window.addEventListener ("keydown", (e) => { if (document.activeElement.tagName != "INPUT" || e.keyCode == 9 || e.keyCode == 13 || e.keyCode == 27) { e.preventDefault (); startControl (99, "keyboard", "keys", e.keyCode, e.key); }});
+window.addEventListener ("keyup", (e) => { if (document.activeElement.tagName != "INPUT" || e.keyCode == 9 || e.keyCode == 13 || e.keyCode == 27) { stopControl (99, "keyboard", "keys", e.keyCode); }});
 window.addEventListener ('gamepaddisconnected', gamepadDisconnected);
 window.addEventListener ('gamepadconnected', gamepadConnected);
 
@@ -95,15 +95,7 @@ function startControl (id_control, control, bt_type, bt_code, bt_value)
         }
         else if (control == "keyboard")
         {
-            if (gameScreen == "menu" && gameInput.length > 0)
-            {
-                if (gameInput [idInputAct].type == "text" && bt_code != 9 && bt_code != 13 && bt_code != 27)
-                {
-                    if (bt_code != 8) bt_code = -1;
-                    else bt_value = bt_code;
-                }
-                else if (gameInput [idInputAct].type == "skin" && bt_code > 36 && bt_code < 41) bt_value = null;
-            }
+            if (gameScreen == "menu" && gameInput.length > 0 && gameInput [idInputAct].type == "skin" && bt_code > 36 && bt_code < 41) bt_value = null;
             else bt_value = 1;
         }
         userActionStart (control, bt_type, bt_code, bt_value, gameShip);
@@ -252,15 +244,12 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         }
                     }
                 break;
-                case 'input_back':
-                    gameInput [idInputAct].src = gameInput [idInputAct].src.slice (0, -1);
-                break;
                 case 'input_change':
                     idInputAct++;
                     if (idInputAct == gameInput.length) idInputAct = 0;
                     for (var i = idInputAct; i < gameInput.length; i++)
                     {
-                        if (gameInput [i].type == "text" || gameInput [i].type == "color" || gameInput [i].type == "skin" || gameInput [i].type == "button")
+                        if (gameInput [i].type == "text" || gameInput [i].type == "password" || gameInput [i].type == "color" || gameInput [i].type == "skin" || gameInput [i].type == "button")
                         {
                             idInputAct = i;
                             break;
@@ -434,9 +423,6 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                 break;
                 case 'close_modal':
                     gameCloseModal ();
-                break;
-                default:
-                    if (gameInput [idInputAct].type == "text" && bt_value.length == 1 && gameInput [idInputAct].src.length < gameInput [idInputAct].max) gameInput [idInputAct].src += bt_value;
                 break;
             }
         }

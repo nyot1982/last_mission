@@ -1053,13 +1053,10 @@ a.interaction
     padding: 0;
     font-size: 6px;
 }
-.input-div
-{
-    display: none;
-    position: absolute;
-}
 input
 {
+    font-family: "PressStart2P";
+    font-size: 10px;
     display: inline-block;
     width: 175px;
     height: 20px;
