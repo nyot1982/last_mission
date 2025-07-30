@@ -18,8 +18,6 @@ var fpsMonitor = false,
         99: "keyboard"
     },
     menuControl = 99,
-    colorPicker = null,
-    colorPickerInput = null,
     pressed =
     {
         keys:
@@ -672,8 +670,8 @@ $(document).ready (function ()
 function fetchLoad (cont, param)
 {
     if (cont == "highScoreHud") document.getElementById (cont).innerHTML = '<preloader><div class="spinner"></div></preloader>';
-    else if (cont == "high_scores") gameText.push (new component ("text", "Loading...", "yellow", 400, 255, "left", 10));
-    else if (cont == "sign_in" || cont == "e_mail") gameText.push (new component ("text", "Loading...", "yellow", 745, 345, "left", 10));
+    else if (cont == "high_scores") gameText.push (new component ("string", "Loading...", "yellow", 400, 255, "left", 10));
+    else if (cont == "sign_in" || cont == "e_mail") gameText.push (new component ("string", "Loading...", "yellow", 745, 345, "left", 10));
   
     var cadParam = "fetch_call=fetch_origin";
     if (param) cadParam += "&" + param;
@@ -705,7 +703,7 @@ function fetchLoad (cont, param)
                 if (cont == "sign_in" || cont == "sign_up" || cont == "e_mail")
                 {
                     gameText.pop ();
-                    gameAlert.push (new component ("text", ">>> " + responseJSON ["error"] + ".", "red", 705, 345, "left", 10));
+                    gameAlert.push (new component ("string", ">>> " + responseJSON ["error"] + ".", "red", 705, 345, "left", 10));
                     changeTab ("alert");
                 }
                 else console.error ("Error! ", responseJSON ["error"]);
@@ -742,7 +740,7 @@ function fetchLoad (cont, param)
                 else
                 {
                     gameText.pop ();
-                    gameAlert.push (new component ("text", ">>> Server disconnected.", "red", 705, 345, "left", 10));
+                    gameAlert.push (new component ("string", ">>> Server disconnected.", "red", 705, 345, "left", 10));
                     changeTab ("alert");
                 }
             }
@@ -750,7 +748,7 @@ function fetchLoad (cont, param)
             else if (cont == "sign_up")
             {
                 gameText.pop ();
-                gameAlert.push (new component ("text", ">>> Validate e.mail.", "#0C0", 705, 345, "left", 10));
+                gameAlert.push (new component ("string", ">>> Validate e.mail.", "#0C0", 705, 345, "left", 10));
                 changeTab ("alert");
             }
             else document.getElementById (cont).innerHTML += responseJSON [cont];
@@ -762,7 +760,7 @@ function fetchLoad (cont, param)
 function gameHighScores (max_high_scores, high_scores)
 {
     gameText.pop ();
-    if (!high_scores) gameText.push (new component ("text", "No results.", "red", 400, 255, "left", 10));
+    if (!high_scores) gameText.push (new component ("string", "No results.", "red", 400, 255, "left", 10));
     else for (var i = 0; i < high_scores.length; i++)
     {
         if (i == 9) var pos = "10   ";
@@ -773,11 +771,11 @@ function gameHighScores (max_high_scores, high_scores)
         else if (high_scores [i].score < 10000) var pre = "00";
         else if (high_scores [i].score < 100000) var pre = "0";
         else var pre = "";
-        gameText.push (new component ("text", pos + high_scores [i].name, "white", 400, 255 + i * 20, "left", 10));
-        gameText.push (new component ("text", pre + high_scores [i].score, "white", 400 + ((max_high_scores + 8) * 10), 255 + i * 20, "left", 10));
+        gameText.push (new component ("string", pos + high_scores [i].name, "white", 400, 255 + i * 20, "left", 10));
+        gameText.push (new component ("string", pre + high_scores [i].score, "white", 400 + ((max_high_scores + 8) * 10), 255 + i * 20, "left", 10));
         if (highScoreSave == high_scores [i].id)
         {
-            gameText.push (new component ("text", ">>> New high score!", "#0C0", 400 + ((max_high_scores + 17) * 10), 255 + i * 20, "left", 10));
+            gameText.push (new component ("string", ">>> New high score!", "#0C0", 400 + ((max_high_scores + 17) * 10), 255 + i * 20, "left", 10));
             highScoreSave = 0;
         }
     }
@@ -826,25 +824,25 @@ function gameLoadScreen (screen)
     {
         gameGround.push (new ground ("menu", "black", 0, 0, gameWidth, gameHeight));
         gameTitle = new component ("image", "svgs/title.svg", "", gameWidth / 2, 100, 203, 92);
-        gameText.push (new component ("text", "Welcome to Last Mission.", "white", gameWidth / 2, 275, "center", 10));
-        gameText.push (new component ("text", "Press any key to start...", "white", gameWidth / 2, gameText [0].y + 30, "center", 10));
-        gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", gameWidth / 2, 445, "center", 10));
+        gameText.push (new component ("string", "Welcome to Last Mission.", "white", gameWidth / 2, 275, "center", 10));
+        gameText.push (new component ("string", "Press any key to start...", "white", gameWidth / 2, gameText [0].y + 30, "center", 10));
+        gameText.push (new component ("string", "Remake by Marc Pinyot Gascón  1986-2024", "white", gameWidth / 2, 445, "center", 10));
     }
     else if (gameScreen == "menu")
     {
         if (gameMusic.active && !gameMusic.musics.menu.source) gameMusic.musics.menu.play ();
         gameGround.push (new ground ("menu", "black", 0, 0, gameWidth, gameHeight));
         gameTitle = new component ("image", "svgs/title.svg", "", gameWidth / 2, 100, 203, 92);
-        gameText.push (new component ("text", "Options:", "white", 310, gameTitle.y + 105, "left", 10));
-        gameText.push (new component ("text", "One Player", "white", 575, gameText [0].y + 15, "left", 10));
-        gameText.push (new component ("text", "Cooperative", "white", 575, gameText [1].y + 25, "left", 10));
-        gameText.push (new component ("text", "Versus", "white", 575, gameText [2].y + 25, "left", 10));
-        gameText.push (new component ("text", "Online", "white", 575, gameText [3].y + 25, "left", 10));
-        gameText.push (new component ("text", "Sound", "white", 575, gameText [4].y + 25, "left", 10));
-        gameText.push (new component ("text", "Music", "white", 575, gameText [5].y + 25, "left", 10));
-        gameText.push (new component ("text", "FPS Monitor", "white", 575, gameText [6].y + 25, "left", 10));
-        gameText.push (new component ("text", "High Scores", "white", 575, gameText [7].y + 25, "left", 10));
-        gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", gameWidth / 2, 445, "center", 10));
+        gameText.push (new component ("string", "Options:", "white", 310, gameTitle.y + 105, "left", 10));
+        gameText.push (new component ("string", "One Player", "white", 575, gameText [0].y + 15, "left", 10));
+        gameText.push (new component ("string", "Cooperative", "white", 575, gameText [1].y + 25, "left", 10));
+        gameText.push (new component ("string", "Versus", "white", 575, gameText [2].y + 25, "left", 10));
+        gameText.push (new component ("string", "Online", "white", 575, gameText [3].y + 25, "left", 10));
+        gameText.push (new component ("string", "Sound", "white", 575, gameText [4].y + 25, "left", 10));
+        gameText.push (new component ("string", "Music", "white", 575, gameText [5].y + 25, "left", 10));
+        gameText.push (new component ("string", "FPS Monitor", "white", 575, gameText [6].y + 25, "left", 10));
+        gameText.push (new component ("string", "High Scores", "white", 575, gameText [7].y + 25, "left", 10));
+        gameText.push (new component ("string", "Remake by Marc Pinyot Gascón  1986-2024", "white", gameWidth / 2, 445, "center", 10));
         gameText.push (new component ("traffic", "", "", 645, 295, 12, 28));
         menuShip = new ship (null, playerColors [0], 450, gameText [0].y + 15, 50, 90);
         changeTab ("menu");
@@ -855,7 +853,7 @@ function gameLoadScreen (screen)
     {
         gameGround.push (new ground ("menu", "black", 0, 0, gameWidth, gameHeight));
         gameTitle = new component ("image", "svgs/title.svg", "", gameWidth / 2, 100, 203, 92);
-        gameText.push (new component ("text", "High Scores:", "white", 310, gameTitle.y + 105, "left", 10));
+        gameText.push (new component ("string", "High Scores:", "white", 310, gameTitle.y + 105, "left", 10));
         fetchLoad ("high_scores");
         changeTab ("alert");
     }
@@ -1057,24 +1055,24 @@ function gameOpenModal (modal, text)
     if (gameModal == "menu")
     {
         gameTitle = new component ("image", "svgs/title.svg", "", gameArea.centerPoint.x, startPoint.y + 100, 203, 92);
-        gameText.push (new component ("text", "Options:", "white", startPoint.x + 310, gameTitle.y + 105, "left", 10));
+        gameText.push (new component ("string", "Options:", "white", startPoint.x + 310, gameTitle.y + 105, "left", 10));
         var startMenu = startPoint.y + 255;
         if (gameModes.findIndex (mode => mode.active == true) < 3)
         {
-            gameText.push (new component ("text", "Pause", "white", startPoint.x + 575, startMenu, "left", 10));
+            gameText.push (new component ("string", "Pause", "white", startPoint.x + 575, startMenu, "left", 10));
             startMenu += 25;
         }
-        gameText.push (new component ("text", "Sound", "white", startPoint.x + 575, startMenu, "left", 10));
-        gameText.push (new component ("text", "Music", "white", startPoint.x + 575, gameText [gameText.length - 1].y + 25, "left", 10));
-        gameText.push (new component ("text", "FPS Monitor", "white", startPoint.x + 575, gameText [gameText.length - 1].y + 25, "left", 10));
-        gameText.push (new component ("text", "Exit", "white", startPoint.x + 575, gameText [gameText.length - 1].y + 25, "left", 10));
-        gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", gameArea.centerPoint.x, startPoint.y + 445, "center", 10));
+        gameText.push (new component ("string", "Sound", "white", startPoint.x + 575, startMenu, "left", 10));
+        gameText.push (new component ("string", "Music", "white", startPoint.x + 575, gameText [gameText.length - 1].y + 25, "left", 10));
+        gameText.push (new component ("string", "FPS Monitor", "white", startPoint.x + 575, gameText [gameText.length - 1].y + 25, "left", 10));
+        gameText.push (new component ("string", "Exit", "white", startPoint.x + 575, gameText [gameText.length - 1].y + 25, "left", 10));
+        gameText.push (new component ("string", "Remake by Marc Pinyot Gascón  1986-2024", "white", gameArea.centerPoint.x, startPoint.y + 445, "center", 10));
         menuShip = new ship (null, playerColors [0], startPoint.x + 450, startPoint.y + 255, 50, 90);
     }
     else
     {
-        gameText.push (new component ("text", text, "white", gameArea.centerPoint.x, gameArea.centerPoint.y, "center", 32));
-        gameText.push (new component ("text", "Press 'Esc' to " + gameModal + "...", "white", gameArea.centerPoint.x, gameText [0].y + 30, "center", 10));
+        gameText.push (new component ("string", text, "white", gameArea.centerPoint.x, gameArea.centerPoint.y, "center", 32));
+        gameText.push (new component ("string", "Press 'Esc' to " + gameModal + "...", "white", gameArea.centerPoint.x, gameText [0].y + 30, "center", 10));
     }
 }
 

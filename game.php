@@ -333,7 +333,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="colorPicker"><input id="colorPickerInput" type="color" onchange="javascript: menuShip.changeColor (this.value);"><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: white; font-size: 1.7em; text-shadow: none; margin: 5px;"></a></div>
                 <div id="blackScreen"></div>
             </article>
         </main>

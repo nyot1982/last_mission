@@ -9,7 +9,7 @@ function controls ()
     for (const gamepad of navigator.getGamepads ())
     {
         if (!gamepad || gamepad.mapping == "" && !gamepad.id.toLowerCase ().includes ("joystick")) continue;
-        if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.findIndex (input => input.control == gamepad.index * 1) == -1 && gameInput.length > 0) gameInput.push (new component ("input", (storedPlayers [gameInput.length] && storedPlayers [gameInput.length].name) ? storedPlayers [gameInput.length].name : "Player " + player, "black", 750, 270 + 25 * (player - 2), "left", 10, 16, gamepad.index * 1));
+        if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.findIndex (input => input.control == gamepad.index * 1) == -1 && gameInput.length > 0) gameInput.push (new component ("text", (storedPlayers [gameInput.length] && storedPlayers [gameInput.length].name) ? storedPlayers [gameInput.length].name : "Player " + player, "black", 750, 270 + 25 * (player - 2), "left", 10, 16, gamepad.index * 1));
         for (const [index, axis] of gamepad.axes.entries ())
         {
             if (axis.toFixed (2) * 1 != 0) startControl (gamepad.index * 1, (gamepad.mapping == "standard" ? "gamepad" : gamepad.id.toLowerCase ().includes ("joystick") ? "joystick" : ""), "axes", index, axis.toFixed (2) * 1);
@@ -97,7 +97,7 @@ function startControl (id_control, control, bt_type, bt_code, bt_value)
         {
             if (gameScreen == "menu" && gameInput.length > 0)
             {
-                if (gameInput [idInputAct].type == "input" && bt_code != 9 && bt_code != 13 && bt_code != 27)
+                if (gameInput [idInputAct].type == "text" && bt_code != 9 && bt_code != 13 && bt_code != 27)
                 {
                     if (bt_code != 8) bt_code = -1;
                     else bt_value = bt_code;
@@ -260,7 +260,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     if (idInputAct == gameInput.length) idInputAct = 0;
                     for (var i = idInputAct; i < gameInput.length; i++)
                     {
-                        if (gameInput [i].type == "input" || gameInput [i].type == "color" || gameInput [i].type == "skin" || gameInput [i].type == "button")
+                        if (gameInput [i].type == "text" || gameInput [i].type == "color" || gameInput [i].type == "skin" || gameInput [i].type == "button")
                         {
                             idInputAct = i;
                             break;
@@ -270,8 +270,8 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                 case 'input_check':
                     if ((gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.length < 2)
                     {
-                        gameAlert.push (new component ("text", "Connect other controllers", "red", 745, 270, "left", 10));
-                        gameAlert.push (new component ("text", "to add more players.", "red", 745, 295, "left", 10));
+                        gameAlert.push (new component ("string", "Connect other controllers", "red", 745, 270, "left", 10));
+                        gameAlert.push (new component ("string", "to add more players.", "red", 745, 295, "left", 10));
                         changeTab ("alert");
                     }
                     else if (gameInput [idInputAct].type == "button")
@@ -285,7 +285,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         gameAlert = [];
                         for (var input in gameInput)
                         {
-                            if (gameInput [input].type == "input")
+                            if (gameInput [input].type == "text")
                             {
                                 players [input] =
                                 {
@@ -297,7 +297,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                             }
                             else if (gameInput [input].type == "color")
                             {
-                                players [0].color = colorPickerInput.value || playerColors [0];
+                                players [0].color = document.getElementById ("input-div" + input).childNodes [0].value || playerColors [0];
                                 if (players [0].color.trim () == "") players [0].color = playerColors [0];
                             }
                             else if (gameInput [input].type == "skin")
@@ -313,12 +313,11 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         }
                         if (gameModes.findIndex (mode => mode.active == true) == 3)
                         {
-                            if (colorPickerInput && colorPicker && colorPicker.style && colorPicker.style.display == "block")
+                            var inputDiv = document.getElementById ("input-div" + idInputAct);
+                            if (inputDiv)
                             {
-                                colorPickerInput.blur ();
-                                colorPicker.style.display = "none";
-                                colorPicker = null;
-                                colorPickerInput = null;
+                                inputDiv.childNodes [0].blur ();
+                                inputDiv.remove ();
                             }
                             const data =
                             {
@@ -347,10 +346,11 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     }
                 break;
                 case 'input_exit':
-                    if (colorPickerInput && colorPicker && colorPicker.style && colorPicker.style.display == "block")
+                    var inputDiv = document.getElementById ("input-div" + idInputAct);
+                    if (inputDiv)
                     {
-                        colorPickerInput.blur ();
-                        colorPicker.style.display = "none";
+                        inputDiv.childNodes [0].blur ();
+                        inputDiv.remove ();
                     }
                     if (gameModes.findIndex (mode => mode.active == true) == 3)
                     {
@@ -369,7 +369,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         gameInput [idInputAct].src = gameInput [idInputAct].src * 1 - 1;
                         if (gameInput [idInputAct].src < -1) gameInput [idInputAct].src = skins.length - 1;
                         if (gameInput [idInputAct].src > -1) menuShip.changeColor ("skin" + gameInput [idInputAct].src);
-                        else menuShip.changeColor (colorPickerInput.value);
+                        else menuShip.changeColor (document.getElementById ("input-div" + (idInputAct - 1)).childNodes [0].value);
                     }
                 break;
                 case 'skin_next':
@@ -378,7 +378,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         gameInput [idInputAct].src = gameInput [idInputAct].src * 1 + 1;
                         if (gameInput [idInputAct].src >= skins.length) gameInput [idInputAct].src = -1;
                         if (gameInput [idInputAct].src > -1) menuShip.changeColor ("skin" + gameInput [idInputAct].src);
-                        else menuShip.changeColor (colorPickerInput.value);
+                        else menuShip.changeColor (document.getElementById ("input-div" + (idInputAct - 1)).childNodes [0].value);
                     }
                 break;
                 case 'fire_menu':
@@ -436,7 +436,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     gameCloseModal ();
                 break;
                 default:
-                    if (gameInput [idInputAct].type == "input" && bt_value.length == 1 && gameInput [idInputAct].src.length < gameInput [idInputAct].max) gameInput [idInputAct].src += bt_value;
+                    if (gameInput [idInputAct].type == "text" && bt_value.length == 1 && gameInput [idInputAct].src.length < gameInput [idInputAct].max) gameInput [idInputAct].src += bt_value;
                 break;
             }
         }
