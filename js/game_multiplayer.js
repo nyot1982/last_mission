@@ -31,7 +31,7 @@ function wssOpen ()
         }
         if (data.action == "menu")
         {
-            if (gameScreen == "menu") gameLoadScreen ("menu");
+            if (gameScreen != "game" && gameModal == null) gameLoadScreen ("menu");
             else
             {
                 blackScreen = true;
@@ -51,12 +51,15 @@ function wssOpen ()
         else if (data.action == "players") usersPlaying = data.game_ships.length;
         else if (data.action == "connected")
         {
+            gameText.pop ();
+            gameText.pop ();
+            gameInput = [];
             gameText.push (new component ("string", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-            gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 16, 99));
+            gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
             gameText.push (new component ("string", "Enter your ship color:", "orange", 745, 270, "left", 10));
-            gameInput.push (new component ("color", (storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0], null, 750, 295, null, 10, 16));
+            gameInput.push (new component ("color", (storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0], null, 750, 295, 16, 10, 11));
             gameText.push (new component ("string", "Select your ship skin:", "orange", 745, 320, "left", 10));
-            gameInput.push (new component ("skin", (storedPlayers [0] && storedPlayers [0].skin > -1) ? storedPlayers [0].skin : -1, "black", 750, 345, "center", 10, 16, -1));
+            gameInput.push (new component ("skin", (storedPlayers [0] && storedPlayers [0].skin > -1) ? storedPlayers [0].skin : -1, "black", 750, 345, 16, 10, 16, -1));
             menuShip.changeColor ((storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0]);
             idInputAct = 0;
             changeTab ("input");

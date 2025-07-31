@@ -20,7 +20,7 @@
             {
                 $player = $resultado->fetch_assoc ();
                 if ($player ['validated'] == 0) $return ["error"] = 'Account not validated';
-                else $return ["player"] = [ 'id' => intval ($player ['id']), 'validated' => intval ($player ['validated']), 'email' => $player ['email'], 'user' => $player ['user'], 'password' => $player ['password'], 'skins' => $player ['skins'] ];
+                else $return ["player"] = [ 'id' => intval ($player ['id']), 'validated' => intval ($player ['validated']), 'email' => $player ['email'], 'name' => $player ['name'], 'password' => $player ['password'], 'color' => $player ['color'], 'skin' => null, 'skins' => $player ['skins'] ];
             }
             $resultado->free ();
         }

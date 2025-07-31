@@ -391,20 +391,21 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                     if (this.type == "skin")
                     {
                         ctx.fillStyle = "white";
-                        ctx.fillRect (this.x - 5, this.y - 10, this.height * this.max + 15, this.height + 10);
+                        ctx.fillRect (this.x - 5, this.y - 10, this.height * this.width + 15, this.height + 10);
                     }
                 }
                 else
                 {
                     ctx.beginPath ();
-                    ctx.rect (this.x - 4, this.y - 9, this.height * this.max + 13, this.height + 8);
+                    ctx.rect (this.x - 4, this.y - 9, this.height * this.width + 13, this.height + 8);
                     ctx.lineWidth = 2;
                     ctx.strokeStyle = "gray";
                     ctx.stroke ();
                 }
             }
             if (this.type == "button") ctx.textAlign = "left";
-            else ctx.textAlign = this.width;
+            else if (this.type == "skin") ctx.textAlign = "center";
+            else if (this.type != "text" && this.type != "password" && this.type != "color") ctx.textAlign = this.width;
             ctx.textBaseline = "middle";
             ctx.font = this.height + "px PressStart2P";
             if (this.type == "type" && idComponent <= idTypeAct)
@@ -422,7 +423,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
             else if ((this.type == "text" || this.type == "password" || this.type == "skin") && idInputAct != idComponent)
             {
                 ctx.fillStyle = "white";
-                if (this.type == "skin" && this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 1);
+                if (this.type == "skin" && this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.width + 13) / 2), this.y + 1);
                 else if (this.type != "skin") ctx.fillText (this.src, this.x, this.y + 1);
             }
             else if (this.type != "type")
@@ -437,9 +438,9 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                 }
                 else if (this.type == "skin")
                 {
-                    if (this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 1);
+                    if (this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.width + 13) / 2), this.y + 1);
                     ctx.fillStyle = "white";
-                    ctx.fillText ("< " + (this.src * 1 + 1) + "/" + skins.length + " >", this.x - 4 + ((this.height * this.max + 13) / 2), this.y + 26);
+                    ctx.fillText ("< " + (this.src * 1 + 1) + "/" + skins.length + " >", this.x - 4 + ((this.height * this.width + 13) / 2), this.y + 26);
                 }
                 else ctx.fillText (this.src, this.x, this.y + 1);
             }
@@ -515,11 +516,11 @@ function component (type, src, color, x, y, width, height, max, control, rollove
         else if (this.type == "color" && idInputAct != idComponent)
         {
             ctx.beginPath ();
-            ctx.rect (this.x - 4, this.y - 9, this.height * this.max + 13, this.height + 8);
+            ctx.rect (this.x - 4, this.y - 9, this.height * this.width + 13, this.height + 8);
             ctx.lineWidth = 2;
             ctx.strokeStyle = "gray";
             ctx.stroke ();
-            if (gameInput [idComponent + 1].type == "skin" && gameInput [idComponent + 1].src * 1 == -1)
+            if (this.src.substring (0, 4) != "skin")
             {
                 ctx.fillStyle = this.src;
                 ctx.fill ();
@@ -563,8 +564,9 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                 inputDiv.style.top = (this.y - 8) + "px";
                 inputDiv.style.left = (this.x - 3) + "px";
                 document.getElementsByTagName ("article")[0].insertBefore (inputDiv, document.getElementsByTagName ("article")[0].childNodes [1]);
-                inputDiv.innerHTML = '<input id="input' + idComponent + '" type="' + this.type + '"' + (this.type == "color" ? ' onchange="javascript: menuShip.changeColor (this.value);"' : this.max > 0 ? ' maxlength="' + this.max + '"' : '') + '><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: white; font-size: 1.7em; text-shadow: none; margin: 5px;"></a>';
+                inputDiv.innerHTML = '<input id="input' + idComponent + '" type="' + this.type + '"' + (this.type == "color" ? ' onchange="javascript: menuShip.changeColor (this.value);"' : this.max > 0 ? ' maxlength="' + this.max + '"' : '') + ' style="width: ' + (this.width * this.height) + 'px; height: ' + (this.height * 2) + 'px; line-height: ' + (this.height * 2) + 'px; font-size: ' + this.height + 'px;"><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: white; font-size: 1.7em; text-shadow: none; margin: 5px;"></a>';
                 inputDiv.childNodes [0].focus ();
+                inputDiv.childNodes [0].value = gameInput [idInputAct].src;
                 if (this.type == "color" && gameInput [idInputAct + 1].type == "skin" && gameInput [idInputAct + 1].src * 1 > -1) inputDiv.childNodes [0].value = playerColors [0];
             }
             else if (idInputAct != idComponent && inputDiv)
@@ -594,7 +596,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             gameModeHud (0);
                             if (typeof (localStorage.players0) !== "undefined" && localStorage.players0.length > 0) storedPlayers = JSON.parse (localStorage.players0);
                             gameText.push (new component ("string", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-                            gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 16, 99));
+                            gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
                             idInputAct = 0;
                             changeTab ("input");
                         break;
@@ -603,7 +605,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             if (typeof (localStorage.players1) !== "undefined" && localStorage.players1.length > 0) storedPlayers = JSON.parse (localStorage.players1);
                             if (controlTab != "keyboard") changeControl ("keyboard", 99);
                             gameText.push (new component ("string", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-                            gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 16, 99));
+                            gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
                             idInputAct = 0;
                             changeTab ("input");
                         break;
@@ -612,7 +614,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             if (typeof (localStorage.players2) !== "undefined" && localStorage.players2.length > 0) storedPlayers = JSON.parse (localStorage.players2);
                             if (controlTab != "keyboard") changeControl ("keyboard", 99);
                             gameText.push (new component ("string", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-                            gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 16, 99));
+                            gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
                             idInputAct = 0;
                             changeTab ("input");
                         break;
@@ -623,9 +625,9 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                                 if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
                                 if (controlTab != "keyboard") changeControl ("keyboard", 99);
                                 gameText.push (new component ("string", ">>> Enter your e.mail:", "orange", 705, 220, "left", 10));
-                                gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, "left", 10, 16, 99));
+                                gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, 16, 10, 999, 99));
                                 gameText.push (new component ("string", "Enter your password:", "orange", 745, 270, "left", 10));
-                                gameInput.push (new component ("password", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, "left", 10, 16, 12));
+                                gameInput.push (new component ("password", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, 16, 10, 12, 99));
                                 gameInput.push (new component ("button", "Sign in", null, 745, 320, "left", 10));
                                 gameInput.push (new component ("button", "Sign up", null, 850, 320, "left", 10));
                                 idInputAct = 0;

@@ -684,15 +684,12 @@ function fetchLoad (cont, param)
             }
             else if (cont == "sign_in")
             {
+                gameText.pop ();
                 if (wss != null && wss.readyState == WebSocket.OPEN)
                 {
-                    players [0].email = responseJSON ["player"].email;
-                    players [0].password = responseJSON ["player"].password;
-                    players [0].name = responseJSON ["player"].name;
-                    players [0].color = responseJSON ["player"].color;
+                    players [0] = responseJSON ["player"];
                     if (players [0].color.substring (0, 4) == "skin") players [0].skin = players [0].color.substring (4, players [0].color.length);
                     else players [0].skin = -1;
-                    players [0].skins = responseJSON ["player"].skins;
                     if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
                     const json =
                     {
@@ -703,7 +700,6 @@ function fetchLoad (cont, param)
                 }
                 else
                 {
-                    gameText.pop ();
                     gameAlert.push (new component ("string", ">>> Server disconnected.", "red", 705, 345, "left", 10));
                     changeTab ("alert");
                 }

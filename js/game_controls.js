@@ -9,7 +9,7 @@ function controls ()
     for (const gamepad of navigator.getGamepads ())
     {
         if (!gamepad || gamepad.mapping == "" && !gamepad.id.toLowerCase ().includes ("joystick")) continue;
-        if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.findIndex (input => input.control == gamepad.index * 1) == -1 && gameInput.length > 0) gameInput.push (new component ("text", (storedPlayers [gameInput.length] && storedPlayers [gameInput.length].name) ? storedPlayers [gameInput.length].name : "Player " + player, "black", 750, 270 + 25 * (player - 2), "left", 10, 16, gamepad.index * 1));
+        if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.findIndex (input => input.control == gamepad.index * 1) == -1 && gameInput.length > 0) gameInput.push (new component ("text", (storedPlayers [gameInput.length] && storedPlayers [gameInput.length].name) ? storedPlayers [gameInput.length].name : "Player " + player, "black", 750, 270 + 25 * (player - 2), 11, 10, 11, gamepad.index * 1));
         for (const [index, axis] of gamepad.axes.entries ())
         {
             if (axis.toFixed (2) * 1 != 0) startControl (gamepad.index * 1, (gamepad.mapping == "standard" ? "gamepad" : gamepad.id.toLowerCase ().includes ("joystick") ? "joystick" : ""), "axes", index, axis.toFixed (2) * 1);
@@ -245,16 +245,9 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     }
                 break;
                 case 'input_change':
+                    if (gameInput [idInputAct].type == "text" || gameInput [idInputAct].type == "password" || gameInput [idInputAct].type == "color") gameInput [idInputAct].src = document.getElementById ("input-div" + idInputAct).childNodes [0].value;
                     idInputAct++;
                     if (idInputAct == gameInput.length) idInputAct = 0;
-                    for (var i = idInputAct; i < gameInput.length; i++)
-                    {
-                        if (gameInput [i].type == "text" || gameInput [i].type == "password" || gameInput [i].type == "color" || gameInput [i].type == "skin" || gameInput [i].type == "button")
-                        {
-                            idInputAct = i;
-                            break;
-                        }
-                    }
                 break;
                 case 'input_check':
                     if ((gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.length < 2)
@@ -341,12 +334,13 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         inputDiv.childNodes [0].blur ();
                         inputDiv.remove ();
                     }
+                    idInputAct = null;
                     if (gameModes.findIndex (mode => mode.active == true) == 3)
                     {
                         const data =
                         {
                             action: "menu",
-                            player_id: playerId,
+                            player_id: playerId
                         };
                         wss.send (JSON.stringify (data));    
                     }
