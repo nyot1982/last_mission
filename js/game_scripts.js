@@ -700,6 +700,8 @@ function fetchLoad (cont, param)
             {
                 gameText.pop ();
                 gameAlert.push (new component ("string", ">>> " + responseJSON ["ok"], "#0C0", 705, 345, "left", 10));
+                if (responseJSON ["email"]["error"]) gameAlert.push (new component ("string", responseJSON ["email"]["error"], "red", 745, 375, "left", 10));
+                else if (responseJSON ["email"]["ok"]) gameAlert.push (new component ("string", responseJSON ["email"]["ok"], "#0C0", 745, 375, "left", 10));
                 changeTab ("alert");
             }
             else document.getElementById (cont).innerHTML += responseJSON [cont];

@@ -260,8 +260,8 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     {
                         if (wss != null && wss.readyState == WebSocket.OPEN)
                         {
-                            var cont = "sign_" + gameInput [idInputAct].src == "Sign in" ? "in" : gameInput [idInputAct].src == "Sign up" ? "up" : "";
-                            var param = "email=" + gameInput [0].src + "&password=" + gameInput [1].src + gameInput [idInputAct].src == "Sign up" ? "&color=" + playerColors [0] : "";
+                            var cont = "sign_" + (gameInput [idInputAct].src == "Sign in" ? "in" : gameInput [idInputAct].src == "Sign up" ? "up" : ""),
+                                param = "email=" + gameInput [0].src + "&password=" + gameInput [1].src + (gameInput [idInputAct].src == "Sign up" ? "&color=" + playerColors [0] : "");
                             fetchLoad (cont, param);
                         }
                         else

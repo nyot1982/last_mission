@@ -149,8 +149,8 @@
                     $mail->AddEmbeddedImage ('../img/title.png','title', 'title.png'); 
 
                     //send the message, check for errors
-                    if (!$mail->send ()) $return ['ok'] .= ' Mailer Error: '.$mail->ErrorInfo;
-                    else $return ['ok'] .= ' E.mail sent.';
+                    if (!$mail->send ()) $return ['email']['error'] = 'Error: '.$mail->ErrorInfo;
+                    else $return ['email']['ok'] = 'E.mail sent.';
                 }
             }
             $resultado->free ();
