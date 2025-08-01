@@ -381,76 +381,43 @@ function component (type, src, color, x, y, width, height, max, control, rollove
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         if (this.type == "image") ctx.drawImage (this.image, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
-        else if (this.type == "string" || this.type == "text" || this.type == "password" || this.type == "button" || this.type == "skin" || this.type == "type")
-        {
-            if (this.type == "text" || this.type == "password" || this.type == "skin")
-            {
-                if (idInputAct >= gameInput.length) idInputAct = gameInput.length - 1;
-                if (idInputAct == idComponent)
-                {
-                    if (this.type == "skin")
-                    {
-                        ctx.fillStyle = "white";
-                        ctx.fillRect (this.x - 5, this.y - 10, this.height * this.width + 15, this.height + 10);
-                    }
-                }
-                else
-                {
-                    ctx.beginPath ();
-                    ctx.rect (this.x - 4, this.y - 9, this.height * this.width + 13, this.height + 8);
-                    ctx.lineWidth = 2;
-                    ctx.strokeStyle = "gray";
-                    ctx.stroke ();
-                }
-            }
-            if (this.type == "button") ctx.textAlign = "left";
-            else if (this.type == "skin") ctx.textAlign = "center";
-            else if (this.type != "text" && this.type != "password" && this.type != "color") ctx.textAlign = this.width;
-            ctx.textBaseline = "middle";
-            ctx.font = this.height + "px PressStart2P";
-            if (this.type == "type" && idComponent <= idTypeAct)
-            {
-                ctx.fillStyle = this.color;
-                if (idTypeAct == idComponent && gameArea.frame % 5 == 0) this.typeFrame++;
-                if (this.typeFrame == this.src.length && idTypeAct == idComponent) 
-                {
-                    ctx.fillText (this.src, this.x, this.y);
-                    idTypeAct++;
-                }
-                else ctx.fillText (this.src.substr (0, this.typeFrame), this.x, this.y);
-                if (idTypeAct == gameText.length) gameSound.sounds ["type"].stop ();
-            }
-            else if ((this.type == "text" || this.type == "password" || this.type == "skin") && idInputAct != idComponent)
-            {
-                ctx.fillStyle = "white";
-                if (this.type == "skin" && this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.width + 13) / 2), this.y + 1);
-                else if (this.type != "skin") ctx.fillText (this.src, this.x, this.y + 1);
-            }
-            else if (this.type != "type")
-            {
-                if (this.type == "button" && idInputAct == idComponent) ctx.fillStyle = "white";
-                else if (this.type == "button" && idInputAct != idComponent) ctx.fillStyle = "gray";
-                else ctx.fillStyle = this.color;
-                if (this.type == "string" && this.src == "usersPlaying")
-                {
-                    ctx.fillText (usersPlaying, this.x, this.y + 1);
-                    var textMeasure = ctx.measureText (usersPlaying);
-                }
-                else if (this.type == "skin")
-                {
-                    if (this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.width + 13) / 2), this.y + 1);
-                    ctx.fillStyle = "white";
-                    ctx.fillText ("< " + (this.src * 1 + 1) + "/" + skins.length + " >", this.x - 4 + ((this.height * this.width + 13) / 2), this.y + 26);
-                }
-                else ctx.fillText (this.src, this.x, this.y + 1);
-            }
-        }
         else if (this.type == "circle")
         {
             ctx.beginPath ();
             ctx.arc (this.x, this.y, this.height, 0, 2 * Math.PI);
             ctx.fillStyle = this.color;
             ctx.fill ();
+        }
+        else if (this.type == "color" && idInputAct != idComponent)
+        {
+            ctx.beginPath ();
+            ctx.rect (this.x - 4, this.y - 9, this.height * this.width + 13, this.height + 8);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "gray";
+            ctx.stroke ();
+            if (this.src.substring (0, 4) != "skin")
+            {
+                ctx.fillStyle = this.src;
+                ctx.fill ();
+            }
+        }
+        else if (this.type == "rollover")
+        {
+            ctx.font = "10px PressStart2P";
+            var textMeasure = ctx.measureText (this.src);
+            ctx.beginPath ();
+            ctx.roundRect (mouse.x, mouse.y - 20, textMeasure.width + 12, 22, 5);
+            if (this.color != null) ctx.fillStyle = this.color + "BB";
+            else ctx.fillStyle = "#FFFFFFBB";
+            ctx.fill ();
+            ctx.lineWidth = 1;
+            if (this.color != null) ctx.strokeStyle = this.color;
+            else ctx.strokeStyle = "white";
+            ctx.stroke ();
+            ctx.fillStyle = "black";
+            ctx.textAlign = "left";
+            ctx.textBaseline = "bottom";
+            ctx.fillText (this.src, mouse.x + 7, mouse.y - 4);
         }
         else if (this.type == "traffic")
         {
@@ -513,45 +480,68 @@ function component (type, src, color, x, y, width, height, max, control, rollove
             ctx.fill ();
             ctx.stroke ();
         }
-        else if (this.type == "color" && idInputAct != idComponent)
+        else
         {
-            ctx.beginPath ();
-            ctx.rect (this.x - 4, this.y - 9, this.height * this.width + 13, this.height + 8);
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "gray";
-            ctx.stroke ();
-            if (this.src.substring (0, 4) != "skin")
+            if (this.type == "text" || this.type == "password" || this.type == "skin")
             {
-                ctx.fillStyle = this.src;
-                ctx.fill ();
+                if (idInputAct == idComponent)
+                {
+                    if (this.type == "skin")
+                    {
+                        ctx.fillStyle = "white";
+                        ctx.fillRect (this.x - 5, this.y - 10, this.height * this.width + 15, this.height + 10);
+                    }
+                }
+                else
+                {
+                    ctx.beginPath ();
+                    ctx.rect (this.x - 4, this.y - 9, this.height * this.width + 13, this.height + 8);
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = "gray";
+                    ctx.stroke ();
+                }
             }
-        }
-        else if (this.type == "rollover")
-        {
-            ctx.font = "10px PressStart2P";
-            var textMeasure = ctx.measureText (this.src);
-            ctx.beginPath ();
-            ctx.roundRect (mouse.x, mouse.y - 20, textMeasure.width + 12, 22, 5);
-            if (this.color != null) ctx.fillStyle = this.color + "BB";
-            else ctx.fillStyle = "#FFFFFFBB";
-            ctx.fill ();
-            ctx.lineWidth = 1;
-            if (this.color != null) ctx.strokeStyle = this.color;
-            else ctx.strokeStyle = "white";
-            ctx.stroke ();
-            ctx.fillStyle = "black";
-            ctx.textAlign = "left";
-            ctx.textBaseline = "bottom";
-            ctx.fillText (this.src, mouse.x + 7, mouse.y - 4);
-        }
-        if (this.rollover != "")
-        {
-            var mouseOver = false;
-            if (this.type == "image" && mouse.x >= this.x - this.width / 2 && mouse.x <= this.x + this.width / 2 && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
-            else if (this.type == "string" && mouse.x >= this.x && mouse.x <= this.x + textMeasure.width && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
-            else if (this.type == "traffic" && (ctx.isPointInStroke (this.path, mouse.x, mouse.y) || ctx.isPointInPath (this.path, mouse.x, mouse.y))) mouseOver = true;
-            if (mouseOver) mouse.rollover = new component ("rollover", this.rollover, this.rolloverColor);
-            else if (mouse.rollover != null && mouse.rollover.src == this.rollover) mouse.rollover = null;
+            if (this.type == "button") ctx.textAlign = "left";
+            else if (this.type == "skin") ctx.textAlign = "center";
+            else if (this.type != "text" && this.type != "password" && this.type != "color") ctx.textAlign = this.width;
+            ctx.textBaseline = "middle";
+            ctx.font = this.height + "px PressStart2P";
+            if (this.type == "type" && idComponent <= idTypeAct)
+            {
+                ctx.fillStyle = this.color;
+                if (idTypeAct == idComponent && gameArea.frame % 5 == 0) this.typeFrame++;
+                if (this.typeFrame == this.src.length && idTypeAct == idComponent) 
+                {
+                    ctx.fillText (this.src, this.x, this.y);
+                    idTypeAct++;
+                }
+                else ctx.fillText (this.src.substr (0, this.typeFrame), this.x, this.y);
+                if (idTypeAct == gameText.length) gameSound.sounds ["type"].stop ();
+            }
+            else if ((this.type == "text" || this.type == "password" || this.type == "skin") && idInputAct != idComponent)
+            {
+                ctx.fillStyle = "white";
+                if (this.type == "skin" && this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.width + 13) / 2), this.y + 1);
+                else if (this.type != "skin") ctx.fillText (this.src, this.x, this.y + 1);
+            }
+            else if (this.type != "type")
+            {
+                if (this.type == "button" && idInputAct == idComponent) ctx.fillStyle = "white";
+                else if (this.type == "button" && idInputAct != idComponent) ctx.fillStyle = "gray";
+                else ctx.fillStyle = this.color;
+                if (this.type == "string" && this.src == "usersPlaying")
+                {
+                    ctx.fillText (usersPlaying, this.x, this.y + 1);
+                    var textMeasure = ctx.measureText (usersPlaying);
+                }
+                else if (this.type == "skin")
+                {
+                    if (this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.width + 13) / 2), this.y + 1);
+                    ctx.fillStyle = "white";
+                    ctx.fillText ("< " + (this.src * 1 + 1) + "/" + skins.length + " >", this.x - 4 + ((this.height * this.width + 13) / 2), this.y + 26);
+                }
+                else ctx.fillText (this.src, this.x, this.y + 1);
+            }
         }
         if (this.type == "text" || this.type == "password" || this.type == "color")
         {
@@ -574,6 +564,15 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                 inputDiv.childNodes [0].blur ();
                 inputDiv.remove ();
             }
+        }
+        if (this.rollover != "")
+        {
+            var mouseOver = false;
+            if (this.type == "image" && mouse.x >= this.x - this.width / 2 && mouse.x <= this.x + this.width / 2 && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
+            else if (this.type == "string" && mouse.x >= this.x && mouse.x <= this.x + textMeasure.width && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
+            else if (this.type == "traffic" && (ctx.isPointInStroke (this.path, mouse.x, mouse.y) || ctx.isPointInPath (this.path, mouse.x, mouse.y))) mouseOver = true;
+            if (mouseOver) mouse.rollover = new component ("rollover", this.rollover, this.rolloverColor);
+            else if (mouse.rollover != null && mouse.rollover.src == this.rollover) mouse.rollover = null;
         }
         if (gameModal == "menu" || gameScreen == "menu")
         {

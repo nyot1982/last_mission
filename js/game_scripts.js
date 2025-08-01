@@ -635,7 +635,7 @@ function fetchLoad (cont, param)
 {
     if (cont == "highScoreHud") document.getElementById (cont).innerHTML = '<preloader><div class="spinner"></div></preloader>';
     else if (cont == "high_scores") gameText.push (new component ("string", "Loading...", "yellow", 400, 255, "left", 10));
-    else if (cont == "sign_in" || cont == "e_mail") gameText.push (new component ("string", "Loading...", "yellow", 745, 345, "left", 10));
+    else if (cont == "sign_in" || cont == "sign_up") gameText.push (new component ("string", "Loading...", "yellow", 745, 345, "left", 10));
   
     var cadParam = "fetch_call=fetch_origin";
     if (param) cadParam += "&" + param;
@@ -664,7 +664,7 @@ function fetchLoad (cont, param)
         {
             if (responseJSON ["error"])
             {
-                if (cont == "sign_in" || cont == "sign_up" || cont == "e_mail")
+                if (cont == "sign_in" || cont == "sign_up")
                 {
                     gameText.pop ();
                     gameAlert.push (new component ("string", ">>> " + responseJSON ["error"] + ".", "red", 705, 345, "left", 10));
@@ -685,30 +685,21 @@ function fetchLoad (cont, param)
             else if (cont == "sign_in")
             {
                 gameText.pop ();
-                if (wss != null && wss.readyState == WebSocket.OPEN)
+                players [0] = responseJSON ["player"];
+                if (players [0].color.substring (0, 4) == "skin") players [0].skin = players [0].color.substring (4, players [0].color.length);
+                else players [0].skin = -1;
+                if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
+                const json =
                 {
-                    players [0] = responseJSON ["player"];
-                    if (players [0].color.substring (0, 4) == "skin") players [0].skin = players [0].color.substring (4, players [0].color.length);
-                    else players [0].skin = -1;
-                    if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
-                    const json =
-                    {
-                        action: "connect",
-                        player_id: playerId
-                    };
-                    wss.send (JSON.stringify (json));
-                }
-                else
-                {
-                    gameAlert.push (new component ("string", ">>> Server disconnected.", "red", 705, 345, "left", 10));
-                    changeTab ("alert");
-                }
+                    action: "connect",
+                    player_id: playerId
+                };
+                wss.send (JSON.stringify (json));       
             }
-            else if (cont == "e_mail") fetchLoad ("sign_up", param + "&color=" + playerColors [0]);
             else if (cont == "sign_up")
             {
                 gameText.pop ();
-                gameAlert.push (new component ("string", ">>> Validate e.mail.", "#0C0", 705, 345, "left", 10));
+                gameAlert.push (new component ("string", ">>> " + responseJSON ["ok"], "#0C0", 705, 345, "left", 10));
                 changeTab ("alert");
             }
             else document.getElementById (cont).innerHTML += responseJSON [cont];
@@ -993,6 +984,7 @@ function gameOpenModal (modal, text)
 {
     menuShip = null;
     gameTitle = null;
+    idInputAct = null;
     gameText = [];
     gameInput = [];
     gameAlert = [];

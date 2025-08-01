@@ -258,8 +258,17 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     }
                     else if (gameInput [idInputAct].type == "button")
                     {
-                        if (gameInput [idInputAct].src == "Sign in") fetchLoad ("sign_in", "email=" + gameInput [0].src + "&password=" + gameInput [1].src);
-                        else if (gameInput [idInputAct].src == "Sign up") fetchLoad ("e_mail", "email=" + gameInput [0].src + "&password=" + gameInput [1].src);
+                        if (wss != null && wss.readyState == WebSocket.OPEN)
+                        {
+                            var cont = "sign_" + gameInput [idInputAct].src == "Sign in" ? "in" : gameInput [idInputAct].src == "Sign up" ? "up" : "";
+                            var param = "email=" + gameInput [0].src + "&password=" + gameInput [1].src + gameInput [idInputAct].src == "Sign up" ? "&color=" + playerColors [0] : "";
+                            fetchLoad (cont, param);
+                        }
+                        else
+                        {
+                            gameAlert.push (new component ("string", ">>> Server disconnected.", "red", 705, 345, "left", 10));
+                            changeTab ("alert");
+                        }
                     }
                     else if (gameInput [gameInput.length - 1].type != "button")
                     {
