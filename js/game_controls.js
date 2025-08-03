@@ -10,12 +10,13 @@ function controls ()
     {
         if (!gamepad || gamepad.mapping == "" && !gamepad.id.toLowerCase ().includes ("joystick")) continue;
         var form = document.getElementById ("players");
-        if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && form.style.display == "block")
+        if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && form.style.display == "block" && !document.getElementById (gamepad.index))
         {
             var input = document.createElement ("input");
+            input.type = "text";
             input.id = gamepad.index * 1;
             input.value = (storedPlayers [form.length - 1] && storedPlayers [form.length - 1].name ? storedPlayers [form.length - 1].name : "Player " + player);
-            form [0].insertBefore (input, form [0].childNodes [form.length - 1]);
+            form.insertBefore (input, form.elements [form.length - 1]);
         }
         for (const [index, axis] of gamepad.axes.entries ())
         {

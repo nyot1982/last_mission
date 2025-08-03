@@ -34,7 +34,7 @@
             if ($resultado->num_rows > 0) $return ["error"] = 'email_exists';
             else
             {
-                $mysqli->query ('INSERT INTO players VALUES (NULL, 0, "'. $_POST ['email'].'", "", "'.$_POST ['password'].'", "'.$_POST ['color'].'", "")');
+                $mysqli->query ('INSERT INTO players VALUES (NULL, 0, "'. $_POST ['email'].'", NULL, "'.$_POST ['password'].'", "'.$_POST ['color'].'", "")');
                 if ($mysqli->errno) $return ["error"] = 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
                 else
                 {

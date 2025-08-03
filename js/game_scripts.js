@@ -615,6 +615,11 @@ function fetchLoad (cont, param)
                         form.email.setCustomValidity ("E.mail already exists.");
                         form.email.reportValidity ();
                     }
+                    else if (responseJSON ["error"] == "email_not_validated")
+                    {
+                        form.email.setCustomValidity ("E.mail not validated.");
+                        form.email.reportValidity ();
+                    }
                 }
                 else console.error ("Error! ", responseJSON ["error"]);
             }

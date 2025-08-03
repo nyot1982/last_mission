@@ -1065,7 +1065,6 @@ form
 input,
 select
 {
-    display: inline-block;
     border: 0;
     padding: 0;
     box-sizing: border-box;
@@ -1080,6 +1079,7 @@ input[type="password"],
 input[type="color"],
 select
 {
+    display: block;
     margin: 10px 0;
     width: 160px;
     height: 20px;

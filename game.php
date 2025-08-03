@@ -75,7 +75,7 @@
             <article>
                 <form id="players" name="players" action="javascript: void (0);" onsubmit="javascript: submitForm (this);" method="POST">
                     <div style="margin-left: -40px;">>>> Enter your ship name:</div>
-                    <input id="99" name="name" type="text" autocomplete="current-name" placeholder="" maxlength="11" required oninput="javascript: this.setCustomValidity ('');"><br>
+                    <input id="99" name="name" type="text" autocomplete="current-name" placeholder="" maxlength="11" required oninput="javascript: this.setCustomValidity ('');">
                     <input type="submit" value="Start game">
                 </form>
                 <form id="player" namwe="player" action="javascript: void (0);" onsubmit="javascript: submitForm (this);" method="POST">
@@ -93,7 +93,7 @@
                     <div style="margin-left: -40px;">>>> Enter your e.mail:</div>
                     <input id="email" name="email" type="email" autocomplete="current-email" placeholder="" maxlength="999" required oninput="javascript: this.setCustomValidity ('');">
                     <div>Enter your password:</div>
-                    <input id="password" name="password" type="password" autocomplete="current-password" placeholder="" maxlength="12" required oninput="javascript: this.setCustomValidity ('');"><br>
+                    <input id="password" name="password" type="password" autocomplete="current-password" placeholder="" maxlength="12" required oninput="javascript: this.setCustomValidity ('');">
                     <input id="action" name="action" type="hidden" value="">
                     <input type="submit" value="Sign in" onclick="javascript: parent.action.value='sign_in';"> <input type="submit" value="Sign up" onclick="javascript: parent.action.value='sign_up';">
                 </form>
