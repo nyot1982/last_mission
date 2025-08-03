@@ -524,24 +524,30 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                         case "One Player":
                             gameModeHud (0);
                             if (typeof (localStorage.players0) !== "undefined" && localStorage.players0.length > 0) storedPlayers = JSON.parse (localStorage.players0);
-                            gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-                            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
+                            var form = document.getElementById ("players");
+                            form.style.display = "block";
+                            form.elements [0].focus ();
+                            form.elements [0].value = (storedPlayers [0] && storedPlayers [0].name ? storedPlayers [0].name : "Player");
                             changeTab ("input");
                         break;
                         case "Cooperative":
                             gameModeHud (1);
                             if (typeof (localStorage.players1) !== "undefined" && localStorage.players1.length > 0) storedPlayers = JSON.parse (localStorage.players1);
                             if (controlTab != "keyboard") changeControl ("keyboard", 99);
-                            gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-                            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
+                            var form = document.getElementById ("players");
+                            form.style.display = "block";
+                            form.elements [0].focus ();
+                            form.elements [0].value = (storedPlayers [0] && storedPlayers [0].name ? storedPlayers [0].name : "Player");
                             changeTab ("input");
                         break;
                         case "Versus":
                             gameModeHud (2);
                             if (typeof (localStorage.players2) !== "undefined" && localStorage.players2.length > 0) storedPlayers = JSON.parse (localStorage.players2);
                             if (controlTab != "keyboard") changeControl ("keyboard", 99);
-                            gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-                            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
+                            var form = document.getElementById ("players");
+                            form.style.display = "block";
+                            form.elements [0].focus ();
+                            form.elements [0].value = (storedPlayers [0] && storedPlayers [0].name ? storedPlayers [0].name : "Player");
                             changeTab ("input");
                         break;
                         case "Online":
@@ -550,12 +556,13 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                                 gameModeHud (3);
                                 if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
                                 if (controlTab != "keyboard") changeControl ("keyboard", 99);
-                                gameText.push (new component ("text", ">>> Enter your e.mail:", "orange", 705, 220, "left", 10));
-                                gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, 16, 10, 999, 99));
-                                gameText.push (new component ("text", "Enter your password:", "orange", 745, 270, "left", 10));
-                                gameText.push (new component ("password", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, 16, 10, 12, 99));
-                                gameText.push (new component ("button", "Sign in", null, 745, 320, "left", 10));
-                                gameText.push (new component ("button", "Sign up", null, 850, 320, "left", 10));
+                                var form = document.getElementById ("sign");
+                                form.style.display = "block";
+                                form.elements [0].focus ();
+                                form.elements [0].value = (storedPlayers [0] && storedPlayers [0].email ? storedPlayers [0].email : "");
+                                form.elements [1].value = (storedPlayers [0] && storedPlayers [0].password ? storedPlayers [0].password : "");
+                                gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, "left", 10, 999, 99));
+                                gameText.push (new component ("password", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, "left", 10, 12, 99));
                                 changeTab ("input");
                             }
                             else

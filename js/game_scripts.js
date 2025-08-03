@@ -58,7 +58,7 @@ var fpsMonitor = false,
     userActions =
     [
         {
-            screen: ["text", "password", "color", "skin", "button"],
+            screen: ["input"],
             action: "input_exit",
             keyboard:
             {
@@ -658,7 +658,7 @@ function fetchLoad (cont, param)
 
 function submitForm (form)
 {
-    if ((gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && players.length < 2)
+    if ((gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && form.length < 3)
     {
         gameAlert.push (new component ("text", "Connect other controllers", "red", 745, 270, "left", 10));
         gameAlert.push (new component ("text", "to add more players.", "red", 745, 295, "left", 10));
@@ -770,6 +770,9 @@ function gameLoadScreen (screen)
     idTypeAct = 0;
     gameModal = null;
     mouse.rollover = null;
+    document.getElementById ("players").style.display = "none";
+    document.getElementById ("player").style.display = "none";
+    document.getElementById ("sign").style.display = "none";
 
     if (gameScreen == "game" && (screen == "menu" || screen == "game_over" || screen == "game_completed"))
     {

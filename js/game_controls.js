@@ -10,7 +10,7 @@ function controls ()
     {
         if (!gamepad || gamepad.mapping == "" && !gamepad.id.toLowerCase ().includes ("joystick")) continue;
         var form = document.getElementById ("players");
-        if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && form.elements.findIndex (input => input.id == gamepad.index * 1) == -1 && form.style.display == "block")
+        if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && form.style.display == "block")
         {
             var input = document.createElement ("input");
             input.id = gamepad.index * 1;
@@ -205,7 +205,11 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
     else
     {
         if (gameConfirm.length > 0) var screen = "confirm";
-        else if (gameScreen == "menu" && menuShip != null && gameModal == null) var screen = "menu";
+        else if (gameScreen == "menu")
+        {
+            if (document.getElementById ("players").style.display == "block" || document.getElementById ("player").style.display == "block" || document.getElementById ("sign").style.display == "block") var screen = "input";
+            else if (menuShip != null && gameModal == null) var screen = "menu";
+        }
         else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null) var screen = "game";
         else if (gameModal != null) var screen = "modal_" + gameModal;
 

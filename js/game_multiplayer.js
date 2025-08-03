@@ -54,11 +54,11 @@ function wssOpen ()
             gameText.pop ();
             gameText.pop ();
             gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
+            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, "left", 10, 11, 99));
             gameText.push (new component ("text", "Enter your ship color:", "orange", 745, 270, "left", 10));
-            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0], null, 750, 295, 16, 10, 11));
+            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0], null, 750, 295, "left", 10, 11));
             gameText.push (new component ("text", "Select your ship skin:", "orange", 745, 320, "left", 10));
-            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].skin > -1) ? storedPlayers [0].skin : -1, "black", 750, 345, 16, 10, 16, -1));
+            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].skin > -1) ? storedPlayers [0].skin : -1, "black", 750, 345, "left", 10, 16, -1));
             menuShip.changeColor ((storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0]);
             changeTab ("input");
             menuShip.turning (-1);
