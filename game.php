@@ -73,6 +73,24 @@
         <preloader><div class="spinner"></div></preloader>
         <main>
             <article>
+                <form id="players" name="players" action="javascript: void (0);" onsubmit="javascript: submitForm (this);" method="POST">
+                    <input id="99" name="name" type="text" autocomplete="current-name" placeholder="Select your name" maxlength="11" required oninput="javascript: this.setCustomValidity ('');"><br>
+                    <input type="submit" value="Start game">
+                </form>
+                <form id="sign" name="sign" action="javascript: void (0);" onsubmit="javascript: fetchLoad (this.action.value, 'email=' + this.email.value + '&password=' + this.password.value + (this.action.value == 'sign_up' ? '&color=' + playerColors [0] : ''));" method="POST">
+                    <input id="email" name="email" type="email" autocomplete="current-email" placeholder="E. mail" maxlength="999" required oninput="javascript: this.setCustomValidity ('');"><br>
+                    <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Password" maxlength="12" required oninput="javascript: this.setCustomValidity ('');"><br>
+                    <input id="action" name="action" type="hidden" value="">
+                    <input type="submit" value="Sign in" onclick="javascript: parent.action.value='sign_in';"> <input type="submit" value="Sign up" onclick="javascript: parent.action.value='sign_up';"><br>
+                </form>
+                <form id="player" namwe="player" action="javascript: void (0);" onsubmit="javascript: submitForm (this);" method="POST">
+                    <input id="name" name="name" type="text" autocomplete="current-name" placeholder="Select your name" maxlength="11" required oninput="javascript: this.setCustomValidity ('');"><br>
+                    <input id="color" name="color" type="color" autocomplete="current-color" placeholder="Select your color" maxlength="11" required oninput="javascript: this.setCustomValidity ('');"><br>
+                    <select id="skin" name="skin" placeholder="Select your skin">
+                        <option value="-1"></option>
+                    </select><br>
+                    <input type="submit" value="Start game">
+                </form>
                 <div id="scoreHud" class="floatHuds"></div>
                 <div id="highScoreHud" class="floatHuds"></div>
                 <div id="lifesHud" class="floatHuds"></div>

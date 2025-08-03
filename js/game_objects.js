@@ -388,19 +388,6 @@ function component (type, src, color, x, y, width, height, max, control, rollove
             ctx.fillStyle = this.color;
             ctx.fill ();
         }
-        else if (this.type == "color" && idInputAct != idComponent)
-        {
-            ctx.beginPath ();
-            ctx.rect (this.x - 4, this.y - 9, this.height * this.width + 13, this.height + 8);
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "gray";
-            ctx.stroke ();
-            if (this.src.substring (0, 4) != "skin")
-            {
-                ctx.fillStyle = this.src;
-                ctx.fill ();
-            }
-        }
         else if (this.type == "rollover")
         {
             ctx.font = "10px PressStart2P";
@@ -434,7 +421,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                 if (gameText [gameText.length - 1].type == "traffic")
                 {
                     gameText.push (new component ("image", "svgs/user.svg", "", 661, 295, 10, 10, null, null, "Players in game", "#FFA500"));
-                    gameText.push (new component ("string", "usersPlaying", "orange", 670, 295, "left", 10, null, null, "Number of players", "#FFA500"));
+                    gameText.push (new component ("text", "usersPlaying", "orange", 670, 295, "left", 10, null, null, "Number of players", "#FFA500"));
                 }
             }
             else
@@ -482,28 +469,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
         }
         else
         {
-            if (this.type == "text" || this.type == "password" || this.type == "skin")
-            {
-                if (idInputAct == idComponent)
-                {
-                    if (this.type == "skin")
-                    {
-                        ctx.fillStyle = "white";
-                        ctx.fillRect (this.x - 5, this.y - 10, this.height * this.width + 15, this.height + 10);
-                    }
-                }
-                else
-                {
-                    ctx.beginPath ();
-                    ctx.rect (this.x - 4, this.y - 9, this.height * this.width + 13, this.height + 8);
-                    ctx.lineWidth = 2;
-                    ctx.strokeStyle = "gray";
-                    ctx.stroke ();
-                }
-            }
-            if (this.type == "button") ctx.textAlign = "left";
-            else if (this.type == "skin") ctx.textAlign = "center";
-            else if (this.type != "text" && this.type != "password" && this.type != "color") ctx.textAlign = this.width;
+            ctx.textAlign = this.width;
             ctx.textBaseline = "middle";
             ctx.font = this.height + "px PressStart2P";
             if (this.type == "type" && idComponent <= idTypeAct)
@@ -518,58 +484,22 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                 else ctx.fillText (this.src.substr (0, this.typeFrame), this.x, this.y);
                 if (idTypeAct == gameText.length) gameSound.sounds ["type"].stop ();
             }
-            else if ((this.type == "text" || this.type == "password" || this.type == "skin") && idInputAct != idComponent)
-            {
-                ctx.fillStyle = "white";
-                if (this.type == "skin" && this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.width + 13) / 2), this.y + 1);
-                else if (this.type != "skin") ctx.fillText (this.src, this.x, this.y + 1);
-            }
             else if (this.type != "type")
             {
-                if (this.type == "button" && idInputAct == idComponent) ctx.fillStyle = "white";
-                else if (this.type == "button" && idInputAct != idComponent) ctx.fillStyle = "gray";
-                else ctx.fillStyle = this.color;
-                if (this.type == "string" && this.src == "usersPlaying")
+                ctx.fillStyle = this.color;
+                if (this.type == "text" && this.src == "usersPlaying")
                 {
                     ctx.fillText (usersPlaying, this.x, this.y + 1);
                     var textMeasure = ctx.measureText (usersPlaying);
                 }
-                else if (this.type == "skin")
-                {
-                    if (this.src * 1 > -1) ctx.fillText (skins [this.src * 1].name, this.x - 4 + ((this.height * this.width + 13) / 2), this.y + 1);
-                    ctx.fillStyle = "white";
-                    ctx.fillText ("< " + (this.src * 1 + 1) + "/" + skins.length + " >", this.x - 4 + ((this.height * this.width + 13) / 2), this.y + 26);
-                }
                 else ctx.fillText (this.src, this.x, this.y + 1);
-            }
-        }
-        if (this.type == "text" || this.type == "password" || this.type == "color")
-        {
-            var inputDiv = document.getElementById ("input-div" + idComponent);
-            if (idInputAct == idComponent && !inputDiv)
-            {
-                inputDiv = document.createElement ("div");
-                inputDiv.id = "input-div" + idComponent;
-                inputDiv.style.position = "absolute";
-                inputDiv.style.top = (this.y - 8) + "px";
-                inputDiv.style.left = (this.x - 3) + "px";
-                document.getElementsByTagName ("article")[0].insertBefore (inputDiv, document.getElementsByTagName ("article")[0].childNodes [1]);
-                inputDiv.innerHTML = '<input id="input' + idComponent + '" type="' + this.type + '"' + (this.type == "color" ? ' onchange="javascript: menuShip.changeColor (this.value);"' : this.max > 0 ? ' maxlength="' + this.max + '"' : '') + ' style="width: ' + (this.width * this.height) + 'px; height: ' + (this.height * 2) + 'px; line-height: ' + (this.height * 2) + 'px; font-size: ' + this.height + 'px;"><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: white; font-size: 1.7em; text-shadow: none; margin: 5px;"></a>';
-                inputDiv.childNodes [0].focus ();
-                inputDiv.childNodes [0].value = gameInput [idInputAct].src;
-                if (this.type == "color" && gameInput [idInputAct + 1].type == "skin" && gameInput [idInputAct + 1].src * 1 > -1) inputDiv.childNodes [0].value = playerColors [0];
-            }
-            else if (idInputAct != idComponent && inputDiv)
-            {
-                inputDiv.childNodes [0].blur ();
-                inputDiv.remove ();
             }
         }
         if (this.rollover != "")
         {
             var mouseOver = false;
             if (this.type == "image" && mouse.x >= this.x - this.width / 2 && mouse.x <= this.x + this.width / 2 && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
-            else if (this.type == "string" && mouse.x >= this.x && mouse.x <= this.x + textMeasure.width && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
+            else if (this.type == "text" && mouse.x >= this.x && mouse.x <= this.x + textMeasure.width && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
             else if (this.type == "traffic" && (ctx.isPointInStroke (this.path, mouse.x, mouse.y) || ctx.isPointInPath (this.path, mouse.x, mouse.y))) mouseOver = true;
             if (mouseOver) mouse.rollover = new component ("rollover", this.rollover, this.rolloverColor);
             else if (mouse.rollover != null && mouse.rollover.src == this.rollover) mouse.rollover = null;
@@ -594,27 +524,24 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                         case "One Player":
                             gameModeHud (0);
                             if (typeof (localStorage.players0) !== "undefined" && localStorage.players0.length > 0) storedPlayers = JSON.parse (localStorage.players0);
-                            gameText.push (new component ("string", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-                            gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
-                            idInputAct = 0;
+                            gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
+                            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
                             changeTab ("input");
                         break;
                         case "Cooperative":
                             gameModeHud (1);
                             if (typeof (localStorage.players1) !== "undefined" && localStorage.players1.length > 0) storedPlayers = JSON.parse (localStorage.players1);
                             if (controlTab != "keyboard") changeControl ("keyboard", 99);
-                            gameText.push (new component ("string", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-                            gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
-                            idInputAct = 0;
+                            gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
+                            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
                             changeTab ("input");
                         break;
                         case "Versus":
                             gameModeHud (2);
                             if (typeof (localStorage.players2) !== "undefined" && localStorage.players2.length > 0) storedPlayers = JSON.parse (localStorage.players2);
                             if (controlTab != "keyboard") changeControl ("keyboard", 99);
-                            gameText.push (new component ("string", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-                            gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
-                            idInputAct = 0;
+                            gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
+                            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
                             changeTab ("input");
                         break;
                         case "Online":
@@ -623,18 +550,17 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                                 gameModeHud (3);
                                 if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
                                 if (controlTab != "keyboard") changeControl ("keyboard", 99);
-                                gameText.push (new component ("string", ">>> Enter your e.mail:", "orange", 705, 220, "left", 10));
-                                gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, 16, 10, 999, 99));
-                                gameText.push (new component ("string", "Enter your password:", "orange", 745, 270, "left", 10));
-                                gameInput.push (new component ("password", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, 16, 10, 12, 99));
-                                gameInput.push (new component ("button", "Sign in", null, 745, 320, "left", 10));
-                                gameInput.push (new component ("button", "Sign up", null, 850, 320, "left", 10));
-                                idInputAct = 0;
+                                gameText.push (new component ("text", ">>> Enter your e.mail:", "orange", 705, 220, "left", 10));
+                                gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, 16, 10, 999, 99));
+                                gameText.push (new component ("text", "Enter your password:", "orange", 745, 270, "left", 10));
+                                gameText.push (new component ("password", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, 16, 10, 12, 99));
+                                gameText.push (new component ("button", "Sign in", null, 745, 320, "left", 10));
+                                gameText.push (new component ("button", "Sign up", null, 850, 320, "left", 10));
                                 changeTab ("input");
                             }
                             else
                             {
-                                gameAlert.push (new component ("string", ">>> Server disconnected.", "red", 705, 295, "left", 10));
+                                gameAlert.push (new component ("text", ">>> Server disconnected.", "red", 705, 295, "left", 10));
                                 changeTab ("alert");
                             }
                         break;
@@ -743,7 +669,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             );
                         break;
                         case "Exit":
-                            gameConfirm.push (new component ("string", ">>> Are you sure?", "yellow", startPoint.x + 705, gameText [gameText.length - 2].y, "left", 10));
+                            gameConfirm.push (new component ("text", ">>> Are you sure?", "yellow", startPoint.x + 705, gameText [gameText.length - 2].y, "left", 10));
                             changeTab ("confirm");
                         break;
                     }

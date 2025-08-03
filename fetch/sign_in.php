@@ -11,15 +11,16 @@
     if ($mysqli->connect_errno) $return ["error"] = 'Error! Conexion has failed: ('.$mysqli->connect_errno.') '.$mysqli->connect_error;
     else
     {
-        $resultado = $mysqli->query ('SELECT * FROM players WHERE email = "'.$_POST ['email'].'" AND password = "'.$_POST ['password'].'"');
+        $resultado = $mysqli->query ('SELECT * FROM players WHERE email = "'.$_POST ['email'].'"');
         if ($mysqli->errno) $return ["error"] = 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
         else
         {
-            if ($resultado->num_rows == 0) $return ["error"] = 'Wrong credentials';
-            else
+            if ($resultado->num_rows == 0) $return ["error"] = 'email_ko';
+            else   
             {
                 $player = $resultado->fetch_assoc ();
-                if ($player ['validated'] == 0) $return ["error"] = 'Account not validated';
+                if ($player ['password'] != $_POST ['password']) $return ["error"] = 'password_ko';
+                else if ($player ['validated'] == 0) $return ["error"] = 'email_not_validated';
                 else $return ["player"] = [ 'id' => intval ($player ['id']), 'validated' => intval ($player ['validated']), 'email' => $player ['email'], 'name' => $player ['name'], 'password' => $player ['password'], 'color' => $player ['color'], 'skin' => null, 'skins' => $player ['skins'] ];
             }
             $resultado->free ();

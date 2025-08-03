@@ -53,15 +53,13 @@ function wssOpen ()
         {
             gameText.pop ();
             gameText.pop ();
-            gameInput = [];
-            gameText.push (new component ("string", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
-            gameInput.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
-            gameText.push (new component ("string", "Enter your ship color:", "orange", 745, 270, "left", 10));
-            gameInput.push (new component ("color", (storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0], null, 750, 295, 16, 10, 11));
-            gameText.push (new component ("string", "Select your ship skin:", "orange", 745, 320, "left", 10));
-            gameInput.push (new component ("skin", (storedPlayers [0] && storedPlayers [0].skin > -1) ? storedPlayers [0].skin : -1, "black", 750, 345, 16, 10, 16, -1));
+            gameText.push (new component ("text", ">>> Enter your ship name:", "orange", 705, 220, "left", 10));
+            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].name) ? storedPlayers [0].name : "Player", "black", 750, 245, 11, 10, 11, 99));
+            gameText.push (new component ("text", "Enter your ship color:", "orange", 745, 270, "left", 10));
+            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0], null, 750, 295, 16, 10, 11));
+            gameText.push (new component ("text", "Select your ship skin:", "orange", 745, 320, "left", 10));
+            gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].skin > -1) ? storedPlayers [0].skin : -1, "black", 750, 345, 16, 10, 16, -1));
             menuShip.changeColor ((storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0]);
-            idInputAct = 0;
             changeTab ("input");
             menuShip.turning (-1);
         }
@@ -69,8 +67,8 @@ function wssOpen ()
         {
             if (data.action == "ship")
             {
-                gameAlert.push (new component ("string", "This " + data.error + " is in use.", "red", 745, 370, "left", 10));
-                gameAlert.push (new component ("string", "Try another one.", "red", 745, 395, "left", 10));
+                gameAlert.push (new component ("text", "This " + data.error + " is in use.", "red", 745, 370, "left", 10));
+                gameAlert.push (new component ("text", "Try another one.", "red", 745, 395, "left", 10));
             }
             changeTab ("alert");
         }
@@ -196,7 +194,7 @@ function wssOpen ()
             if (gameModes.findIndex (mode => mode.active == true) == 3 && gameScreen == "game" && gameConfirm.length == 0) gameOpenModal ("exit", "Server disconnected");
             else if (gameScreen == "menu")
             {   
-                if (gameModes.findIndex (mode => mode.active == true) == 3 && gameInput.length > 0) gameLoadScreen ("menu");
+                if (gameModes.findIndex (mode => mode.active == true) == 3) gameLoadScreen ("menu");
                 setTimeout
                 (
                     () =>

@@ -9,7 +9,14 @@ function controls ()
     for (const gamepad of navigator.getGamepads ())
     {
         if (!gamepad || gamepad.mapping == "" && !gamepad.id.toLowerCase ().includes ("joystick")) continue;
-        if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.findIndex (input => input.control == gamepad.index * 1) == -1 && gameInput.length > 0) gameInput.push (new component ("text", (storedPlayers [gameInput.length] && storedPlayers [gameInput.length].name) ? storedPlayers [gameInput.length].name : "Player " + player, "black", 750, 270 + 25 * (player - 2), 11, 10, 11, gamepad.index * 1));
+        var form = document.getElementById ("players");
+        if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && form.elements.findIndex (input => input.id == gamepad.index * 1) == -1 && form.style.display == "block")
+        {
+            var input = document.createElement ("input");
+            input.id = gamepad.index * 1;
+            input.value = (storedPlayers [form.length - 1] && storedPlayers [form.length - 1].name ? storedPlayers [form.length - 1].name : "Player " + player);
+            form [0].insertBefore (input, form [0].childNodes [form.length - 1]);
+        }
         for (const [index, axis] of gamepad.axes.entries ())
         {
             if (axis.toFixed (2) * 1 != 0) startControl (gamepad.index * 1, (gamepad.mapping == "standard" ? "gamepad" : gamepad.id.toLowerCase ().includes ("joystick") ? "joystick" : ""), "axes", index, axis.toFixed (2) * 1);
@@ -46,7 +53,7 @@ function gamepadConnected (e)
         if (gameAlert.length > 0)
         {
             gameAlert = [];
-            if (gameInput.length > 0) changeTab ("input");
+            if (document.getElementById ("players").style.display == "block" || document.getElementById ("player").style.display == "block" || document.getElementById ("sign").style.display == "block") changeTab ("input");
             else changeTab ("menu");
         }
     }
@@ -55,12 +62,13 @@ function gamepadConnected (e)
 function gamepadDisconnected (e)
 {
     if (e.gamepad.mapping == "" && !e.gamepad.id.toLowerCase ().includes ("joystick")) return;
-    var oldControl = gameControls [e.gamepad.index * 1];
+    var oldControl = gameControls [e.gamepad.index * 1],
+        form = document.getElementById ("players");
     gameControls.splice (e.gamepad.index * 1, 1);
     pressed.buttons.splice (pressed.buttons.indexOf (e.gamepad.index * 1), 1);
     pressed.axes.splice (pressed.axes.indexOf (e.gamepad.index * 1), 1);
 
-    if (gameScreen == "menu" && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3 && gameInput.length > 1) gameInput = gameInput.slice (e.gamepad.index * 1, 1);
+    if (gameScreen == "menu" && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3 && form.length > 2) form.elements [e.gamepad.index * 1].remove ();
     var controlFinded = null;
     for (const gamepad of navigator.getGamepads ())
     {
@@ -82,7 +90,7 @@ function startControl (id_control, control, bt_type, bt_code, bt_value)
         if (!pressed [bt_type][id_control].includes (bt_code)) pressed [bt_type][id_control].push (bt_code);
         changeControl (control, id_control);
         var gameShip = null;
-        if (gameScreen == "game" && gameShips.length > 0 && gameConfirm.length == 0 && gameInput.length == 0)
+        if (gameScreen == "game" && gameShips.length > 0 && gameConfirm.length == 0)
         {
             if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var player = 0;
             else var player = players.findIndex (player => player.control == id_control);
@@ -93,11 +101,7 @@ function startControl (id_control, control, bt_type, bt_code, bt_value)
                 else bt_value = 1;
             }
         }
-        else if (control == "keyboard")
-        {
-            if (gameScreen == "menu" && gameInput.length > 0 && gameInput [idInputAct].type == "skin" && bt_code > 36 && bt_code < 41) bt_value = null;
-            else bt_value = 1;
-        }
+        else if (control == "keyboard") bt_value = 1;
         userActionStart (control, bt_type, bt_code, bt_value, gameShip);
     }
 }
@@ -107,7 +111,7 @@ function stopControl (id_control, control, bt_type, bt_code)
     if (pressed [bt_type][id_control].includes (bt_code))
     {
         pressed [bt_type][id_control].splice (pressed [bt_type][id_control].indexOf (bt_code), 1);
-        if (gameScreen == "game" && gameShips.length > 0 && gameConfirm.length == 0 && gameInput.length == 0)
+        if (gameScreen == "game" && gameShips.length > 0 && gameConfirm.length == 0)
         {
             if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
             else
@@ -195,13 +199,12 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
     else if (gameAlert.length > 0)
     {
         gameAlert = [];
-        if (gameInput.length > 0) changeTab ("input");
+        if (document.getElementById ("players").style.display == "block" || document.getElementById ("player").style.display == "block" || document.getElementById ("sign").style.display == "block") changeTab ("input");
         else changeTab ("menu");
     }
     else
     {
         if (gameConfirm.length > 0) var screen = "confirm";
-        else if (gameInput.length > 0 && gameAlert.length == 0) var screen = gameInput [idInputAct].type;
         else if (gameScreen == "menu" && menuShip != null && gameModal == null) var screen = "menu";
         else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null) var screen = "game";
         else if (gameModal != null) var screen = "modal_" + gameModal;
@@ -244,106 +247,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         }
                     }
                 break;
-                case 'input_change':
-                    if (gameInput [idInputAct].type == "text" || gameInput [idInputAct].type == "password" || gameInput [idInputAct].type == "color") gameInput [idInputAct].src = document.getElementById ("input-div" + idInputAct).childNodes [0].value;
-                    idInputAct++;
-                    if (idInputAct == gameInput.length) idInputAct = 0;
-                break;
-                case 'input_check':
-                    if ((gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && gameInput.length < 2)
-                    {
-                        gameAlert.push (new component ("string", "Connect other controllers", "red", 745, 270, "left", 10));
-                        gameAlert.push (new component ("string", "to add more players.", "red", 745, 295, "left", 10));
-                        changeTab ("alert");
-                    }
-                    else if (gameInput [idInputAct].type == "button")
-                    {
-                        if (wss != null && wss.readyState == WebSocket.OPEN)
-                        {
-                            var cont = "sign_" + (gameInput [idInputAct].src == "Sign in" ? "in" : gameInput [idInputAct].src == "Sign up" ? "up" : ""),
-                                param = "email=" + gameInput [0].src + "&password=" + gameInput [1].src + (gameInput [idInputAct].src == "Sign up" ? "&color=" + playerColors [0] : "");
-                            fetchLoad (cont, param);
-                        }
-                        else
-                        {
-                            gameAlert.push (new component ("string", ">>> Server disconnected.", "red", 705, 345, "left", 10));
-                            changeTab ("alert");
-                        }
-                    }
-                    else if (gameInput [gameInput.length - 1].type != "button")
-                    {
-                        players = [];
-                        gameAlert = [];
-                        for (var input in gameInput)
-                        {
-                            if (gameInput [input].type == "text")
-                            {
-                                players [input] =
-                                {
-                                    name: gameInput [input].src || "Player" + (input > 0 ? (" " + (input * 1 + 1)) : ""),
-                                    color: playerColors [input],
-                                    skin: input - 1,
-                                    control: (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 ? menuControl : gameInput [input].control)
-                                };
-                            }
-                            else if (gameInput [input].type == "color")
-                            {
-                                players [0].color = document.getElementById ("input-div" + input).childNodes [0].value || playerColors [0];
-                                if (players [0].color.trim () == "") players [0].color = playerColors [0];
-                            }
-                            else if (gameInput [input].type == "skin")
-                            {
-                                gameInput [input].src = gameInput [input].src * 1;
-                                players [0].skin = gameInput [input].src;
-                                if (gameInput [input].src > -1)
-                                {
-                                    gameInput [input - 1].src = "skin" + gameInput [input].src;
-                                    players [0].color = "skin" + gameInput [input].src;
-                                }
-                            }
-                        }
-                        if (gameModes.findIndex (mode => mode.active == true) == 3)
-                        {
-                            var inputDiv = document.getElementById ("input-div" + idInputAct);
-                            if (inputDiv)
-                            {
-                                inputDiv.childNodes [0].blur ();
-                                inputDiv.remove ();
-                            }
-                            const data =
-                            {
-                                action: "ship",
-                                player_id: playerId,
-                                name: players [0].name,
-                                color: players [0].color
-                            };
-                            wss.send (JSON.stringify (data));    
-                        }
-                        else if (!blackScreen)
-                        {
-                            blackScreen = true;
-                            $("#blackScreen").fadeIn (1000);
-                            setTimeout
-                            (
-                                () =>
-                                {
-                                    if (wss != null && wss.readyState === 1) wss.close (3000);
-                                    if (gameModes.findIndex (mode => mode.active == true) == 2) gameLoadScreen ("game");
-                                    else gameLoadScreen ("intro");
-                                },
-                                1000
-                            );
-                        }
-                    }
-                break;
                 case 'input_exit':
-                    var inputDiv = document.getElementById ("input-div" + idInputAct);
-                    if (inputDiv)
-                    {
-                        inputDiv.childNodes [0].blur ();
-                        inputDiv.remove ();
-                    }
-                    idInputAct = null;
                     if (gameModes.findIndex (mode => mode.active == true) == 3)
                     {
                         const data =
@@ -354,24 +258,6 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         wss.send (JSON.stringify (data));    
                     }
                     else gameLoadScreen ("menu");
-                break;
-                case 'skin_prev':
-                    if (gameInput [idInputAct].type == "skin")
-                    {
-                        gameInput [idInputAct].src = gameInput [idInputAct].src * 1 - 1;
-                        if (gameInput [idInputAct].src < -1) gameInput [idInputAct].src = skins.length - 1;
-                        if (gameInput [idInputAct].src > -1) menuShip.changeColor ("skin" + gameInput [idInputAct].src);
-                        else menuShip.changeColor (document.getElementById ("input-div" + (idInputAct - 1)).childNodes [0].value);
-                    }
-                break;
-                case 'skin_next':
-                    if (gameInput [idInputAct].type == "skin")
-                    {
-                        gameInput [idInputAct].src = gameInput [idInputAct].src * 1 + 1;
-                        if (gameInput [idInputAct].src >= skins.length) gameInput [idInputAct].src = -1;
-                        if (gameInput [idInputAct].src > -1) menuShip.changeColor ("skin" + gameInput [idInputAct].src);
-                        else menuShip.changeColor (document.getElementById ("input-div" + (idInputAct - 1)).childNodes [0].value);
-                    }
                 break;
                 case 'fire_menu':
                     menuShip.firing (true);
@@ -434,8 +320,8 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
 
 function userActionStop (control, bt_type, bt_code, gameShip)
 {
-    if ((gameScreen == "menu" || gameModal == "menu") && menuShip != null && gameConfirm.length == 0 && gameInput.length == 0) var screen = "modal";
-    else if (gameScreen == "game" && gameModal == null && gameShips.length > 0 && gameConfirm.length == 0 && gameInput.length == 0) var screen = "game";
+    if ((gameScreen == "menu" || gameModal == "menu") && menuShip != null && gameConfirm.length == 0) var screen = "modal";
+    else if (gameScreen == "game" && gameModal == null && gameShips.length > 0 && gameConfirm.length == 0) var screen = "game";
     
     var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control][bt_type].includes (bt_code));
 

@@ -1053,6 +1053,13 @@ a.interaction
     padding: 0;
     font-size: 6px;
 }
+form
+{
+    display: none;
+    position: absolute;
+    top: 215px;
+    left: 675px;
+}
 input
 {
     font-family: "PressStart2P";
