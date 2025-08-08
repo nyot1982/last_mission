@@ -127,11 +127,11 @@ const wss = createServerFrom
                     else if (data.action == 'ship')
                     {
                         if (gameShips.findIndex (ship => ship.name == data.name) > -1) error = "name";
-                        else if (gameShips.findIndex (ship => ship.color == data.color) > -1)
+                        /*else if (gameShips.findIndex (ship => ship.color == data.color) > -1)
                         {
                             if (data.color.substring (0, 4) == "skin") error = "skin";
                             else error = "color";
-                        }
+                        }*/
                         else
                         {
                             players [playersId].name = data.name;

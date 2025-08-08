@@ -58,7 +58,7 @@ function wssOpen ()
             form.style.display = "block";
             form.elements [0].focus ();
             form.elements [0].value = players [0].name || "Player";
-            if (players [0].color.substring (0, 4) != "skin") form.elements [1].value = players [0].color || playerColors [0];
+            form.elements [1].value = (players [0].color && players [0].color.substring (0, 4) != "skin" ? players [0].color : playerColors [0]);
             form.elements [2].innerHTML = '<option value="-1"' + (players [0].skin == -1 ? ' selected' : '') + '></option>';
             for (var i = 0; i < players [0].skins.length; i++) form.elements [2].innerHTML += '<option value="' + players [0].skins [i] + '"' + (players [0].skins [i] == players [0].skin ? ' selected' : '') + '>' + skins [players [0].skins [i]].name + '</option>';
             menuShip.changeColor (players [0].color || playerColors [0]);
