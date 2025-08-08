@@ -638,6 +638,7 @@ function fetchLoad (cont, param)
                 players [0] = responseJSON ["player"];
                 if (players [0].color.substring (0, 4) == "skin") players [0].skin = players [0].color.substring (4, players [0].color.length);
                 else players [0].skin = -1;
+                players [0].skins = players [0].skins.split (",");
                 if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
                 const json =
                 {
@@ -692,13 +693,8 @@ function submitForm (form)
             }
             else if (form.elements [i].type == "skin")
             {
-                form.elements [i].id = form.elements [i].id * 1;
-                players [0].skin = form.elements [i].id;
-                if (form.elements [i].id > -1)
-                {
-                    form.elements [i - 1].value = "skin" + form.elements [i].id;
-                    players [0].color = "skin" + form.elements [i].id;
-                }
+                players [0].skin = form.elements [i].value * 1;
+                if (players [0].skin > -1) players [0].color = "skin" + players [0].skin;
             }
         }
         if (gameModes.findIndex (mode => mode.active == true) == 3)
@@ -730,6 +726,17 @@ function submitForm (form)
         }
     }
 }
+
+function changeColor (color)
+{
+    if (document.getElementById ("skin").value == -1) menuShip.changeColor (color);
+}
+
+function changeSkin (skin)
+{
+    if (skin == -1) menuShip.changeColor (document.getElementById ("color").value);
+    else menuShip.changeColor ('skin' + skin);
+} 
 
 function rolloverLoad (text, color)
 {
@@ -978,21 +985,6 @@ function gameLoadScreen (screen)
                     };
                 }
                 localStorage.players2 = JSON.stringify (storedPlayers);
-            }
-            else if (gameModes.findIndex (mode => mode.active == true) == 3)
-            {
-                storedPlayers =
-                [
-                    {
-                        email: players [0].email,
-                        password: players [0].password,
-                        name: players [0].name,
-                        color: players [0].color,
-                        skin: players [0].skin,
-                        skins: players [0].skins
-                    }
-                ];
-                localStorage.players3 = JSON.stringify (storedPlayers);
             }
         }
         if (gameMusic.active)

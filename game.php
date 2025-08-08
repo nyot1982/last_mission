@@ -82,9 +82,9 @@
                     <div style="margin-left: -40px;">>>> Enter your ship name:</div>
                     <input id="name" name="name" type="text" maxlength="11" required oninput="javascript: this.setCustomValidity ('');">
                     <div>Select your ship color:</div>
-                    <input id="color" name="color" type="color" maxlength="11" required oninput="javascript: this.setCustomValidity ('');">
+                    <input id="color" name="color" type="color" maxlength="11" required oninput="javascript: this.setCustomValidity ('');" onchange="javascript: changeColor (this.value);">
                     <div>Select your ship skin:</div>
-                    <select id="skin" name="skin" placeholder="">
+                    <select id="skin" name="skin" onchange="javascript: changeSkin (this.value);">
                         <option value="-1"></option>
                     </select>
                     <input type="submit" value="Start game">

@@ -51,17 +51,17 @@ function wssOpen ()
         else if (data.action == "players") usersPlaying = data.game_ships.length;
         else if (data.action == "connected")
         {
-            if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
             if (controlTab != "keyboard") changeControl ("keyboard", 99);
             var form = document.getElementById ("sign");
             form.style.display = "none";
             form = document.getElementById ("player");
             form.style.display = "block";
             form.elements [0].focus ();
-            form.elements [0].value = (storedPlayers [0] && storedPlayers [0].name ? storedPlayers [0].name : "Player");
-            form.elements [1].value = (storedPlayers [0] && storedPlayers [0].color ? storedPlayers [0].color : playerColors [0]);
-            form.elements [2].value = (storedPlayers [0] && storedPlayers [0].skin > -1 ? storedPlayers [0].skin : -1);
-            menuShip.changeColor ((storedPlayers [0] && storedPlayers [0].color) ? storedPlayers [0].color : playerColors [0]);
+            form.elements [0].value = players [0].name || "Player";
+            if (players [0].color.substring (0, 4) != "skin") form.elements [1].value = players [0].color || playerColors [0];
+            form.elements [2].innerHTML = '<option value="-1"' + (players [0].skin == -1 ? ' selected' : '') + '></option>';
+            for (var i = 0; i < players [0].skins.length; i++) form.elements [2].innerHTML += '<option value="' + players [0].skins [i] + '"' + (players [0].skins [i] == players [0].skin ? ' selected' : '') + '>' + skins [players [0].skins [i]].name + '</option>';
+            menuShip.changeColor (players [0].color || playerColors [0]);
             changeTab ("input");
             menuShip.turning (-1);
         }
