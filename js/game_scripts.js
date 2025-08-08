@@ -33,8 +33,7 @@ var fpsMonitor = false,
         wheelX: 0,
         wheelY: 0,
         wheelZ: 0,
-        pressed: [],
-        rollover: null
+        pressed: []
     },
     menuShots = [],
     menuHits = [],
@@ -651,8 +650,8 @@ function fetchLoad (cont, param)
             {
                 gameText.pop ();
                 gameAlert.push (new component ("text", ">>> " + responseJSON ["ok"], "#0C0", 705, 345, "left", 10));
-                if (responseJSON ["email"]["error"]) gameAlert.push (new component ("text", responseJSON ["email"]["error"], "red", 745, 375, "left", 10));
-                else if (responseJSON ["email"]["ok"]) gameAlert.push (new component ("text", responseJSON ["email"]["ok"], "#0C0", 745, 375, "left", 10));
+                if (responseJSON ["email"]["error"]) gameAlert.push (new component ("text", responseJSON ["email"]["error"], "red", 745, 370, "left", 10));
+                else if (responseJSON ["email"]["ok"]) gameAlert.push (new component ("text", responseJSON ["email"]["ok"], "#0C0", 745, 370, "left", 10));
                 changeTab ("alert");
             }
             else document.getElementById (cont).innerHTML += responseJSON [cont];
@@ -663,10 +662,11 @@ function fetchLoad (cont, param)
 
 function submitForm (form)
 {
+
     if ((gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && form.length < 3)
     {
-        gameAlert.push (new component ("text", "Connect other controllers", "red", 745, 270, "left", 10));
-        gameAlert.push (new component ("text", "to add more players.", "red", 745, 295, "left", 10));
+        gameAlert.push (new component ("text", "Connect other controllers", "red", 745, 295, "left", 10));
+        gameAlert.push (new component ("text", "to add more players.", "red", 745, 320, "left", 10));
         changeTab ("alert");
     }
     else
@@ -731,6 +731,19 @@ function submitForm (form)
     }
 }
 
+function rolloverLoad (text, color)
+{
+    var rollover = document.getElementById ("rollover");
+    if (color != null) rollover.style.backgroundColor = color + "BB";
+    else ctx.fillStyle = rollover.style.backgroundColor = "#FFFFFFBB";
+    if (color != null) rollover.style.borderColor = color;
+    else rollover.style.borderColor = "white";
+    rollover.innerHTML = text;
+    rollover.style.top = (mouse.y - 18) + "px";
+    rollover.style.left = (mouse.x + 2) + "px";
+    rollover.style.display = "block";
+}
+
 function gameHighScores (max_high_scores, high_scores)
 {
     gameText.pop ();
@@ -774,7 +787,7 @@ function gameLoadScreen (screen)
     gameConfirm = [];
     idTypeAct = 0;
     gameModal = null;
-    mouse.rollover = null;
+    document.getElementById ("rollover").style.display = "none";
     document.getElementById ("players").style.display = "none";
     document.getElementById ("player").style.display = "none";
     document.getElementById ("sign").style.display = "none";
@@ -1161,7 +1174,6 @@ function updateGameArea ()
         for (var alert in gameAlert) gameAlert [alert].update ();
         if (menuShip) menuShip.update ();
     }
-    if (mouse.rollover != null) mouse.rollover.update ();
     gameArea.frame++;
     gameArea.animation = window.requestAnimationFrame (updateGameArea);
 }

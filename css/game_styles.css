@@ -1094,6 +1094,15 @@ input[type="submit"]
     border-radius: 10px;
     padding: 2px 5px;
 }
+#rollover
+{
+    position: absolute;
+    display: none;
+    border-radius: 5px;
+    border-width: 1px;
+    padding: 5px;
+    font-size: 10px;
+}
 #fps_monitor
 {
     margin-top: 1em;

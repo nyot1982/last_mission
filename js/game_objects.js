@@ -388,24 +388,6 @@ function component (type, src, color, x, y, width, height, max, control, rollove
             ctx.fillStyle = this.color;
             ctx.fill ();
         }
-        else if (this.type == "rollover")
-        {
-            ctx.font = "10px PressStart2P";
-            var textMeasure = ctx.measureText (this.src);
-            ctx.beginPath ();
-            ctx.roundRect (mouse.x, mouse.y - 20, textMeasure.width + 12, 22, 5);
-            if (this.color != null) ctx.fillStyle = this.color + "BB";
-            else ctx.fillStyle = "#FFFFFFBB";
-            ctx.fill ();
-            ctx.lineWidth = 1;
-            if (this.color != null) ctx.strokeStyle = this.color;
-            else ctx.strokeStyle = "white";
-            ctx.stroke ();
-            ctx.fillStyle = "black";
-            ctx.textAlign = "left";
-            ctx.textBaseline = "bottom";
-            ctx.fillText (this.src, mouse.x + 7, mouse.y - 4);
-        }
         else if (this.type == "traffic")
         {
             this.path = new Path2D ();
@@ -501,8 +483,12 @@ function component (type, src, color, x, y, width, height, max, control, rollove
             if (this.type == "image" && mouse.x >= this.x - this.width / 2 && mouse.x <= this.x + this.width / 2 && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
             else if (this.type == "text" && mouse.x >= this.x && mouse.x <= this.x + textMeasure.width && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
             else if (this.type == "traffic" && (ctx.isPointInStroke (this.path, mouse.x, mouse.y) || ctx.isPointInPath (this.path, mouse.x, mouse.y))) mouseOver = true;
-            if (mouseOver) mouse.rollover = new component ("rollover", this.rollover, this.rolloverColor);
-            else if (mouse.rollover != null && mouse.rollover.src == this.rollover) mouse.rollover = null;
+            if (mouseOver) rolloverLoad (this.rollover, this.rolloverColor);
+            else
+            {
+                var rollover = document.getElementById ("rollover");
+                if (rollover.style.display == "block" && rollover.innerText == this.rollover) rollover.style.display = "none";
+            }
         }
         if (gameModal == "menu" || gameScreen == "menu")
         {
