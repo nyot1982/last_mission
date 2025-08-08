@@ -691,7 +691,7 @@ function submitForm (form)
                 players [0].color = form.elements [i].value || playerColors [0];
                 if (players [0].color.trim () == "") players [0].color = playerColors [0];
             }
-            else if (form.elements [i].type == "skin")
+            else if (form.elements [i].id == "skin")
             {
                 players [0].skin = form.elements [i].value * 1;
                 if (players [0].skin > -1) players [0].color = "skin" + players [0].skin;
