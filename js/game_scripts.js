@@ -561,10 +561,15 @@ function fetchLoad (cont, param)
     if (cont == "highScoreHud") document.getElementById (cont).innerHTML = '<preloader><div class="spinner"></div></preloader>';
     else if (cont == "high_scores") gameText.push (new component ("text", "Loading...", "yellow", 400, 255, "left", 10));
     else if (cont == "sign_in" || cont == "sign_up") gameText.push (new component ("text", "Loading...", "yellow", 745, 345, "left", 10));
+    else if (cont == "player")
+    {
+        gameText.push (new component ("text", "Loading...", "yellow", 745, 395, "left", 10));
+        param = 'id=' + players [0].id + '&' + param;
+    }
   
     var cadParam = "fetch_call=fetch_origin";
     if (param) cadParam += "&" + param;
-    
+
     const options =
     {
         method: "POST",
@@ -603,12 +608,6 @@ function fetchLoad (cont, param)
                         form.password.setCustomValidity ("Wrong Password.");
                         form.password.reportValidity ();
                     }
-                    else if (responseJSON ["error"] == "name_exists")
-                    {
-                        var form = document.getElementById ("player");
-                        form.name.setCustomValidity ("Name already exists.");
-                        form.name.reportValidity ();
-                    }
                     else if (responseJSON ["error"] == "email_exists")
                     {
                         form.email.setCustomValidity ("E.mail already exists.");
@@ -618,6 +617,31 @@ function fetchLoad (cont, param)
                     {
                         form.email.setCustomValidity ("E.mail not validated.");
                         form.email.reportValidity ();
+                    }
+                    else
+                    {
+                        gameAlert.push (new component ("text", responseJSON ["error"], "red", 745, 345, "left", 10));
+                        changeTab ("alert");
+                    }
+                }
+                else if (cont == "player")
+                {
+                    gameText.pop ();
+                    var form = document.getElementById ("player");
+                    if (responseJSON ["error"] == "name_exists")
+                    {
+                        form.name.setCustomValidity ("Name already exists.");
+                        form.name.reportValidity ();
+                    }
+                    else if (responseJSON ["error"] == "password_ko")
+                    {
+                        form.password.setCustomValidity ("Wrong Password.");
+                        form.password.reportValidity ();
+                    }
+                    else
+                    {
+                        gameAlert.push (new component ("text", responseJSON ["error"], "red", 745, 395, "left", 10));
+                        changeTab ("alert");
                     }
                 }
                 else console.error ("Error! ", responseJSON ["error"]);
@@ -646,6 +670,21 @@ function fetchLoad (cont, param)
                     player_id: playerId
                 };
                 wss.send (JSON.stringify (json));       
+            }
+            else if (cont == "player")
+            {
+                gameText.pop ();
+                players [0].name = responseJSON ["player"].name;
+                players [0].color = responseJSON ["player"].color;
+                players [0].skin = responseJSON ["player"].skin;
+                const data =
+                {
+                    action: "ship",
+                    player_id: playerId,
+                    name: players [0].name,
+                    color: players [0].color
+                };
+                wss.send (JSON.stringify (data));       
             }
             else if (cont == "sign_up")
             {
@@ -686,30 +725,8 @@ function submitForm (form)
                     control: (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 ? menuControl : form.elements [i].id)
                 };
             }
-            else if (form.elements [i].type == "color")
-            {
-                players [0].color = form.elements [i].value || playerColors [0];
-                if (players [0].color.trim () == "") players [0].color = playerColors [0];
-            }
-            else if (form.elements [i].id == "skin")
-            {
-                players [0].skin = form.elements [i].value * 1;
-                if (players [0].skin > -1) players [0].color = "skin" + players [0].skin;
-            }
         }
-        if (gameModes.findIndex (mode => mode.active == true) == 3)
-        {
-            form.style.display = "none";
-            const data =
-            {
-                action: "ship",
-                player_id: playerId,
-                name: players [0].name,
-                color: players [0].color
-            };
-            wss.send (JSON.stringify (data));    
-        }
-        else if (!blackScreen)
+        if (!blackScreen)
         {
             blackScreen = true;
             $("#blackScreen").fadeIn (1000);

@@ -78,11 +78,11 @@
                     <input id="99" name="name" type="text" maxlength="11" required oninput="javascript: this.setCustomValidity ('');">
                     <input type="submit" value="Start game">
                 </form>
-                <form id="player" namwe="player" action="javascript: void (0);" onsubmit="javascript: submitForm (this);" method="POST">
+                <form id="player" name="player" action="javascript: void (0);" onsubmit="javascript: fetchLoad ('player', 'name=' + this.name.value + '&color=' + this.color.value + '&skin=' + this.skin.value);" method="POST">
                     <div style="margin-left: -40px;">>>> Enter your ship name:</div>
                     <input id="name" name="name" type="text" maxlength="11" required oninput="javascript: this.setCustomValidity ('');">
                     <div>Select your ship color:</div>
-                    <input id="color" name="color" type="color" maxlength="11" required oninput="javascript: this.setCustomValidity ('');" onchange="javascript: changeColor (this.value);">
+                    <input id="color" name="color" type="color" maxlength="11" required onchange="javascript: changeColor (this.value);">
                     <div>Select your ship skin:</div>
                     <select id="skin" name="skin" onchange="javascript: changeSkin (this.value);">
                         <option value="-1"></option>

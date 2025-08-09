@@ -16,6 +16,8 @@ function controls ()
             input.type = "text";
             input.id = gamepad.index * 1;
             input.value = (storedPlayers [form.length - 1] && storedPlayers [form.length - 1].name ? storedPlayers [form.length - 1].name : "Player " + player);
+            input.required = true;
+            input.setAttribute ("oninput", "javascript: this.setCustomValidity ('');");
             form.insertBefore (input, form.elements [form.length - 1]);
         }
         for (const [index, axis] of gamepad.axes.entries ())
