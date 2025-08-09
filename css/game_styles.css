@@ -1065,12 +1065,20 @@ form
 input,
 select
 {
-    border: 0;
+    border: solid 1px var(--color10);
     padding: 0;
     box-sizing: border-box;
     outline: 0;
     font-family: "PressStart2P";
     font-size: 10px;
+    color: var(--color10);
+    background-color: var(--color5);
+}
+input:focus,
+select:focus
+{
+    border: 0;
+    color: var(--color5);
     background-color: var(--color10);
 }
 input[type="text"],
@@ -1083,6 +1091,7 @@ select
     margin: 10px 0;
     width: 160px;
     height: 20px;
+    line-height: 20px;
 }
 input[type="color"],
 input[type="submit"]

@@ -52,7 +52,7 @@ var fpsMonitor = false,
     playerId = null,
     players = [],
     storedPlayers = [],
-    playerColors = ["#A5FF9A", "skin0", "skin1", "skin2", "skin3", "skin4", "skin5", "skin6", "skin7"],
+    playerColors = ["#A5FF9A", "#FF9AA5", "#9AA5FF", "#FFFF9A", "#9AFFFF", "#9A9A9A", "#FF9AFF", "#FFFFFF"],
     skins = [],
     userActions =
     [
@@ -723,8 +723,8 @@ function submitForm (form)
 
     if ((gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && form.length < 3)
     {
-        gameAlert.push (new component ("text", "Connect other controllers", "red", 745, 295, "left", 10));
-        gameAlert.push (new component ("text", "to add more players.", "red", 745, 320, "left", 10));
+        gameAlert.push (new component ("text", "Connect other controllers", "red", 745, 300, "left", 10));
+        gameAlert.push (new component ("text", "to add more players.", "red", 745, 325, "left", 10));
         changeTab ("alert");
     }
     else
@@ -735,6 +735,16 @@ function submitForm (form)
         {
             if (form.elements [i].type == "text")
             {
+                for (var j = i + 1; j < form.length; j++)
+                {
+                    if (form.elements [j].type == "text" && form.elements [i].value == form.elements [j].value)
+                    {
+                        players = [];
+                        gameAlert.push (new component ("text", "All names must be diferent.", "red", 745, 255 + (form.length * 25), "left", 10));
+                        changeTab ("alert");
+                        return;
+                    }
+                }
                 players [i] =
                 {
                     name: form.elements [i].value || "Player" + (i > 0 ? (" " + (i * 1 + 1)) : ""),
@@ -776,8 +786,8 @@ function changeSkin (skin)
 function rolloverLoad (text, color)
 {
     var rollover = document.getElementById ("rollover");
-    if (color != null) rollover.style.backgroundColor = color + "BB";
-    else ctx.fillStyle = rollover.style.backgroundColor = "#FFFFFFBB";
+    if (color != null) rollover.style.backgroundColor = color + "DD";
+    else ctx.fillStyle = rollover.style.backgroundColor = "#FFFFFFDD";
     if (color != null) rollover.style.borderColor = color;
     else rollover.style.borderColor = "white";
     rollover.innerHTML = text;
