@@ -1,5 +1,5 @@
-window.addEventListener ("keydown", (e) => { if (document.activeElement.tagName != "INPUT" || e.keyCode == 9 || e.keyCode == 13 || e.keyCode == 27) { e.preventDefault (); startControl (99, "keyboard", "keys", e.keyCode, e.key); }});
-window.addEventListener ("keyup", (e) => { if (document.activeElement.tagName != "INPUT" || e.keyCode == 9 || e.keyCode == 13 || e.keyCode == 27) { stopControl (99, "keyboard", "keys", e.keyCode); }});
+window.addEventListener ("keydown", (e) => { if (document.activeElement.tagName != "INPUT" || e.keyCode == 9 || e.keyCode == 27) { e.preventDefault (); startControl (99, "keyboard", "keys", e.keyCode, e.key); }});
+window.addEventListener ("keyup", (e) => { if (document.activeElement.tagName != "INPUT" || e.keyCode == 9 || e.keyCode == 27) { stopControl (99, "keyboard", "keys", e.keyCode); }});
 window.addEventListener ('gamepaddisconnected', gamepadDisconnected);
 window.addEventListener ('gamepadconnected', gamepadConnected);
 
@@ -251,6 +251,27 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                                 },
                                 1000
                             );
+                        }
+                    }
+                break;
+                case 'input_change':
+                    var form_sign = document.getElementById ("sign"),
+                        form_player = document.getElementById ("player"),
+                        form_players = document.getElementById ("players"),
+                        form = null;
+                    
+                    if (form_sign.style.display == "block") form = form_sign;
+                    else if (form_player.style.display == "block") form = form_player;
+                    else if (form_players.style.display == "block") form = form_players;
+                    
+                    for (var i = 0; i < form.length; i++)
+                    {
+                        if (form.elements [i] == document.activeElement)
+                        {
+                            i++;
+                            if (i == form.length) i = 0;
+                            form.elements [i].focus ();
+                            break;
                         }
                     }
                 break;

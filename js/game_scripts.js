@@ -58,6 +58,24 @@ var fpsMonitor = false,
     [
         {
             screen: ["input"],
+            action: "input_change",
+            keyboard:
+            {
+                keys: [9] // Tabulator
+            },
+            gamepad:
+            {
+                buttons: [],
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [],
+                axes: []
+            }
+        },
+        {
+            screen: ["input"],
             action: "input_exit",
             keyboard:
             {
