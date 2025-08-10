@@ -193,7 +193,7 @@ function wssOpen ()
         wss = event.code;
         if (wss != 3000)
         {
-            if (gameModes.findIndex (mode => mode.active == true) == 3 && gameScreen == "game" && gameConfirm.length == 0) gameOpenModal ("exit", "Server disconnected");
+            if (gameModes.findIndex (mode => mode.active == true) == 3 && gameScreen == "game" && gameConfirm.length == 0) gameOpenModal ("exit", "Server is down");
             else if (gameScreen == "menu")
             {   
                 if (gameModes.findIndex (mode => mode.active == true) == 3) gameLoadScreen ("menu");

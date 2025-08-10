@@ -553,7 +553,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             }
                             else
                             {
-                                gameAlert.push (new component ("text", ">>> Server disconnected.", "red", 705, 295, "left", 10));
+                                gameAlert.push (new component ("text", ">>> Server is down.", "red", 705, 295, "left", 10));
                                 changeTab ("alert");
                             }
                         break;
