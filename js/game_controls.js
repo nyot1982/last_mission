@@ -1,5 +1,5 @@
-window.addEventListener ("keydown", (e) => { if (document.activeElement.tagName != "INPUT" || e.keyCode == 9 || e.keyCode == 27 || gameAlert.length > 0) { e.preventDefault (); startControl (99, "keyboard", "keys", e.keyCode, e.key); }});
-window.addEventListener ("keyup", (e) => { if (document.activeElement.tagName != "INPUT" || e.keyCode == 9 || e.keyCode == 27 || gameAlert.length > 0) { stopControl (99, "keyboard", "keys", e.keyCode); }});
+window.addEventListener ("keydown", (e) => { if ((document.activeElement.tagName != "INPUT" && document.activeElement.tagName != "SELECT") || e.keyCode == 9 || e.keyCode == 27 || gameAlert.length > 0) { e.preventDefault (); startControl (99, "keyboard", "keys", e.keyCode, e.key); }});
+window.addEventListener ("keyup", (e) => { if ((document.activeElement.tagName != "INPUT" && document.activeElement.tagName != "SELECT") || e.keyCode == 9 || e.keyCode == 27 || gameAlert.length > 0) { stopControl (99, "keyboard", "keys", e.keyCode); }});
 window.addEventListener ('gamepaddisconnected', gamepadDisconnected);
 window.addEventListener ('gamepadconnected', gamepadConnected);
 

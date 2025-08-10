@@ -1093,6 +1093,11 @@ select
     height: 20px;
     line-height: 20px;
 }
+input[type="text"],
+input[type="password"]
+{
+    padding: 2px;
+}
 input[type="color"],
 input[type="submit"]
 {
