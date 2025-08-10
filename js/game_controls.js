@@ -67,11 +67,21 @@ function gamepadDisconnected (e)
     if (e.gamepad.mapping == "" && !e.gamepad.id.toLowerCase ().includes ("joystick")) return;
     var oldControl = gameControls [e.gamepad.index * 1],
         form = document.getElementById ("players");
-    gameControls.splice (e.gamepad.index * 1, 1);
+    delete gameControls [e.gamepad.index * 1];
     pressed.buttons.splice (pressed.buttons.indexOf (e.gamepad.index * 1), 1);
     pressed.axes.splice (pressed.axes.indexOf (e.gamepad.index * 1), 1);
 
-    if (gameScreen == "menu" && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3 && form.length > 2) form.elements [e.gamepad.index * 1].remove ();
+    if (gameScreen == "menu" && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3 && form.length > 2)
+    {
+        for (var i = 0; i < form.length; i++)
+        {
+            if (form.elements [i].id == e.gamepad.index * 1)
+            {
+                form.elements [i].remove ();
+                break;
+            }
+        }
+    }
     var controlFinded = null;
     for (const gamepad of navigator.getGamepads ())
     {
