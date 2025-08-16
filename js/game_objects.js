@@ -541,15 +541,10 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             if (wss != null && wss.readyState == WebSocket.OPEN)
                             {
                                 gameModeHud (3);
-                                if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
                                 if (controlTab != "keyboard") changeControl ("keyboard", 99);
                                 var form = document.getElementById ("sign");
                                 form.style.display = "block";
                                 form.elements [0].focus ();
-                                form.elements [0].value = (storedPlayers [0] && storedPlayers [0].email ? storedPlayers [0].email : "");
-                                form.elements [1].value = (storedPlayers [0] && storedPlayers [0].password ? storedPlayers [0].password : "");
-                                gameText.push (new component ("text", (storedPlayers [0] && storedPlayers [0].email) ? storedPlayers [0].email : "", "black", 750, 245, "left", 10, 999, 99));
-                                gameText.push (new component ("password", (storedPlayers [0] && storedPlayers [0].password) ? storedPlayers [0].password : "", "black", 750, 295, "left", 10, 12, 99));
                                 changeTab ("input");
                             }
                             else

@@ -681,7 +681,6 @@ function fetchLoad (cont, param)
                 if (players [0].color.substring (0, 4) == "skin") players [0].skin = players [0].color.substring (4, players [0].color.length);
                 else players [0].skin = -1;
                 players [0].skins = players [0].skins.split (",");
-                if (typeof (localStorage.players3) !== "undefined" && localStorage.players3.length > 0) storedPlayers = JSON.parse (localStorage.players3);
                 const json =
                 {
                     action: "connect",
