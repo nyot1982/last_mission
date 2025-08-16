@@ -882,7 +882,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     {
                         ctx.shadowOffsetX = this.shadowOffset;
                         ctx.shadowOffsetY = this.shadowOffset;
-                        console.log (this.moveSpeed + " - " + this.strafeSpeed);
                         if (gameArea.frame % (100 - (Math.abs (this.moveSpeed) > Math.abs (this.strafeSpeed) ? Math.abs (this.moveSpeed * 5) : Math.abs (this.strafeSpeed * 5))) == 0)
                         {
                             this.fuel--;
