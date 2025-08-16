@@ -1,6 +1,6 @@
 var fpsMonitor = false,
-    gameWidth = 1020,
-    gameHeight = 500,
+    canvasWidth = 1020,
+    canvasHeight = 500,
     enemies = 0,
     idTypeAct = 0,
     blackScreen = false,
@@ -489,8 +489,8 @@ var fpsMonitor = false,
         start: function ()
         {
             this.canvas.id = "lastMission";
-            this.canvas.width = gameWidth;
-            this.canvas.height = gameHeight;
+            this.canvas.width = canvasWidth;
+            this.canvas.height = canvasHeight;
             this.canvas.innerText = "Este navegador no soporta la etiqueta de canvas.";
             this.ctx = this.canvas.getContext ("2d");
             this.ctx.imageSmoothingEnabled = true;
@@ -515,8 +515,8 @@ var fpsMonitor = false,
             this.timer = Date.now ();
             this.centerPoint = 
             {
-                x: gameWidth / 2,
-                y: gameHeight / 2,
+                x: canvasWidth / 2,
+                y: canvasHeight / 2,
             };
             this.play ();
         },
@@ -850,7 +850,7 @@ function updateGameArea ()
     if (gameScreen == "game")
     {
         gameItems = gameItems.filter (item => !item.taken || item.z > 0);
-        gameShots = gameShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < gameWidth * 4 && shot.y > 0 && shot.y < gameHeight * 4);
+        gameShots = gameShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < canvasWidth * 4 && shot.y > 0 && shot.y < canvasHeight * 4);
         gameHits = gameHits.filter (hit => !hit.reverse || hit.r > 0);
         gameEnemies = gameEnemies.filter (enemy => enemy.life > 0);
         if (gameModes.findIndex (mode => mode.active == true) == 3 && wss != null && wss.readyState == WebSocket.OPEN) wssSend ();
@@ -862,7 +862,7 @@ function updateGameArea ()
         }
         if (enemies == 0 && gameModes.findIndex (mode => mode.active == true) < 2)
         {
-            if (!gameBoss) gameBoss = new boss (0, gameWidth * 2, gameHeight * 2);
+            if (!gameBoss) gameBoss = new boss (0, canvasWidth * 2, canvasHeight * 2);
             gameBoss.update ();
         }
         for (var object in gameObjects)
@@ -877,7 +877,7 @@ function updateGameArea ()
     {
         if (gameScreen == "menu" && wss != null && wss.readyState == WebSocket.OPEN) wssSend ();
         if (modalGround) modalGround.update ();
-        menuShots = menuShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < gameWidth * 4 && shot.y > 0 && shot.y < gameHeight * 4);
+        menuShots = menuShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < canvasWidth * 4 && shot.y > 0 && shot.y < canvasHeight * 4);
         for (var shot in menuShots) menuShots [shot].update ();
         menuHits = menuHits.filter (hit => !hit.reverse || hit.r > 0);
         if (gameTitle) gameTitle.update ();

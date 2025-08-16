@@ -112,10 +112,10 @@ function enemy (type, x, y, heading)
                 {
                     this.x += this.move * Math.sin (this.radians);
                     this.y -= this.move * Math.cos (this.radians);
-                    if (this.x < 0) this.x = gameWidth * 4;
-                    else if (this.x > gameWidth * 4) this.x = 0;
-                    if (this.y < 0) this.y = gameHeight * 4;
-                    else if (this.y > gameHeight * 4) this.y = 0;
+                    if (this.x < 0) this.x = canvasWidth * 4;
+                    else if (this.x > canvasWidth * 4) this.x = 0;
+                    if (this.y < 0) this.y = canvasHeight * 4;
+                    else if (this.y > canvasHeight * 4) this.y = 0;
                     this.enginemax = this.speed / 1.5 * 8;
                 }
                 ctx.shadowColor = "#00000066";
@@ -749,7 +749,7 @@ function enemy (type, x, y, heading)
                                 gameShips [gameShip].score += 1000;
                             }
                             if (enemies < 0) enemies = 0;
-                            if (this.type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameWidth * 4), Math.floor (Math.random () * gameHeight * 4), Math.floor (Math.random () * 720) - 360));
+                            if (this.type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * canvasWidth * 4), Math.floor (Math.random () * canvasHeight * 4), Math.floor (Math.random () * 720) - 360));
                         }
                         else
                         {

@@ -3,8 +3,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.idShip = null;
     this.idControl = null;
     this.name = name || null;
-    this.x = x || gameWidth / 2;
-    this.y = y || gameHeight / 2;
+    this.x = x || canvasWidth / 2;
+    this.y = y || canvasHeight / 2;
     this.z = z || 0;
     this.heading = heading || 0;
     this.moveSpeed = moveSpeed || 0;
@@ -298,13 +298,13 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     }
                     if (gameShips [this.idShip].name == players [0].name)
                     {
-                        if (gameArea.centerPoint.x > gameWidth / 2 && gameArea.centerPoint.x < gameWidth * 3 + gameWidth / 2) shot.x -= gameArea.centerPoint.x - gameWidth / 2;
-                        if (gameArea.centerPoint.y > gameHeight / 2 && gameArea.centerPoint.y < gameHeight * 3 + gameHeight / 2) shot.y -= gameArea.centerPoint.y - gameHeight / 2;
+                        if (gameArea.centerPoint.x > canvasWidth / 2 && gameArea.centerPoint.x < canvasWidth * 3 + canvasWidth / 2) shot.x -= gameArea.centerPoint.x - canvasWidth / 2;
+                        if (gameArea.centerPoint.y > canvasHeight / 2 && gameArea.centerPoint.y < canvasHeight * 3 + canvasHeight / 2) shot.y -= gameArea.centerPoint.y - canvasHeight / 2;
                     }
                     else if (gameShots [gameShot].name == players [0].name)
                     {
-                        if (gameArea.centerPoint.x > gameWidth / 2 && gameArea.centerPoint.x < gameWidth * 3 + gameWidth / 2) shot.x += gameArea.centerPoint.x - gameWidth / 2;
-                        if (gameArea.centerPoint.y > gameHeight / 2 && gameArea.centerPoint.y < gameHeight * 3 + gameHeight / 2) shot.y += gameArea.centerPoint.y - gameHeight / 2;
+                        if (gameArea.centerPoint.x > canvasWidth / 2 && gameArea.centerPoint.x < canvasWidth * 3 + canvasWidth / 2) shot.x += gameArea.centerPoint.x - canvasWidth / 2;
+                        if (gameArea.centerPoint.y > canvasHeight / 2 && gameArea.centerPoint.y < canvasHeight * 3 + canvasHeight / 2) shot.y += gameArea.centerPoint.y - canvasHeight / 2;
                     }
                     if (ctx.isPointInStroke (this.paths [path], shot.x, shot.y) || ctx.isPointInPath (this.paths [path], shot.x, shot.y))
                     {
@@ -400,14 +400,14 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     if (this.name == players [0].name)
                     {
                         var newPoint = this.x;
-                        if (newPoint < gameWidth / 2) newPoint = gameWidth / 2;
-                        else if (newPoint > gameWidth * 3 + gameWidth / 2) newPoint = gameWidth * 3 + gameWidth / 2;
+                        if (newPoint < canvasWidth / 2) newPoint = canvasWidth / 2;
+                        else if (newPoint > canvasWidth * 3 + canvasWidth / 2) newPoint = canvasWidth * 3 + canvasWidth / 2;
                         if (newPoint < gameArea.centerPoint.x) ctx.translate (gameArea.centerPoint.x - newPoint, 0);
                         else if (newPoint > gameArea.centerPoint.x) ctx.translate (-(newPoint - gameArea.centerPoint.x), 0);
                         gameArea.centerPoint.x = newPoint;
                         newPoint = this.y;
-                        if (newPoint < gameHeight / 2) newPoint = gameHeight / 2;
-                        else if (newPoint > gameHeight * 3 + gameHeight / 2) newPoint = gameHeight * 3 + gameHeight / 2;
+                        if (newPoint < canvasHeight / 2) newPoint = canvasHeight / 2;
+                        else if (newPoint > canvasHeight * 3 + canvasHeight / 2) newPoint = canvasHeight * 3 + canvasHeight / 2;
                         if (newPoint < gameArea.centerPoint.y) ctx.translate (0, gameArea.centerPoint.y - newPoint);
                         else if (newPoint > gameArea.centerPoint.y) ctx.translate (0, -(newPoint - gameArea.centerPoint.y));
                         gameArea.centerPoint.y = newPoint;
@@ -539,9 +539,9 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     }
                 }
                 if (this.x < 0) this.x = 0;
-                else if (this.x > gameWidth * 4) this.x = gameWidth * 4;
+                else if (this.x > canvasWidth * 4) this.x = canvasWidth * 4;
                 if (this.y < 0) this.y = 0;
-                else if (this.y > gameHeight * 4) this.y = gameHeight * 4;
+                else if (this.y > canvasHeight * 4) this.y = canvasHeight * 4;
                 if (gameScreen == "game" && gameModal == null)
                 {
                     if (this.name == players [0].name) mapHud ("mapItemPlayer", this.x, this.y, this.heading);
@@ -829,12 +829,12 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     ctx.fillText (this.name, this.x, this.y - this.height / 2 - (this.nameOffset - 6));
                     if (this.name == players [0].name)
                     {
-                        if (this.x > gameWidth / 2 && this.x < gameWidth * 3 + gameWidth / 2)
+                        if (this.x > canvasWidth / 2 && this.x < canvasWidth * 3 + canvasWidth / 2)
                         {
                             ctx.translate (-(this.x - gameArea.centerPoint.x), 0);
                             gameArea.centerPoint.x = this.x;
                         }
-                        if (this.y > gameHeight / 2 && this.y < gameHeight * 3 + gameHeight / 2)
+                        if (this.y > canvasHeight / 2 && this.y < canvasHeight * 3 + canvasHeight / 2)
                         {
                             ctx.translate (0, -(this.y - gameArea.centerPoint.y));
                             gameArea.centerPoint.y = this.y;
@@ -1048,7 +1048,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             if (this.shield < 0) this.shield = 0;
                             this.score += 500;
                             if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
-                            if (gameEnemies [gameEnemy].type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameWidth * 4), Math.floor (Math.random () * gameHeight * 4), Math.floor (Math.random () * 720) - 360));
+                            if (gameEnemies [gameEnemy].type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * canvasWidth * 4), Math.floor (Math.random () * canvasHeight * 4), Math.floor (Math.random () * 720) - 360));
                         }
                         else if (Math.sqrt (dx * dx + dy * dy) < 31 && this.z == gameEnemies [gameEnemy].z)
                         {
@@ -1067,7 +1067,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             document.getElementById ("enemyHud2").style.width = enemies + "px";
                             this.score += 250;
                             if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
-                            if (gameEnemies [gameEnemy].type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameWidth * 4), Math.floor (Math.random () * gameHeight * 4), Math.floor (Math.random () * 720) - 360));
+                            if (gameEnemies [gameEnemy].type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * canvasWidth * 4), Math.floor (Math.random () * canvasHeight * 4), Math.floor (Math.random () * 720) - 360));
                             this.playerDead ();
                         }
                     }

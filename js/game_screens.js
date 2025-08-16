@@ -48,11 +48,11 @@ function gameLoadScreen (screen)
 
     if (gameScreen == "game" && (screen == "menu" || screen == "game_over" || screen == "game_completed"))
     {
-        ctx.translate (gameArea.centerPoint.x - gameWidth / 2, gameArea.centerPoint.y - gameHeight / 2);
+        ctx.translate (gameArea.centerPoint.x - canvasWidth / 2, gameArea.centerPoint.y - canvasHeight / 2);
         gameArea.centerPoint =
         {
-            x: gameWidth / 2,
-            y: gameHeight / 2,
+            x: canvasWidth / 2,
+            y: canvasHeight / 2,
         };
         if (gameMusic.active)
         {
@@ -64,17 +64,17 @@ function gameLoadScreen (screen)
     gameScreen = screen;
     if (gameScreen == "start")
     {
-        gameGround.push (new ground ("menu", "black", 0, 0, gameWidth, gameHeight));
-        gameTitle = new component ("image", "svgs/title.svg", "", gameWidth / 2, 100, 203, 92);
-        gameText.push (new component ("text", "Welcome to Last Mission.", "white", gameWidth / 2, 275, "center", 10));
-        gameText.push (new component ("text", "Press any key to start...", "white", gameWidth / 2, gameText [0].y + 30, "center", 10));
-        gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", gameWidth / 2, 445, "center", 10));
+        gameGround.push (new ground ("menu", "black", 0, 0, canvasWidth, canvasHeight));
+        gameTitle = new component ("image", "svgs/title.svg", "", canvasWidth / 2, 100, 203, 92);
+        gameText.push (new component ("text", "Welcome to Last Mission.", "white", canvasWidth / 2, 275, "center", 10));
+        gameText.push (new component ("text", "Press any key to start...", "white", canvasWidth / 2, gameText [0].y + 30, "center", 10));
+        gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", canvasWidth / 2, 445, "center", 10));
     }
     else if (gameScreen == "menu")
     {
         if (gameMusic.active && !gameMusic.musics.menu.source) gameMusic.musics.menu.play ();
-        gameGround.push (new ground ("menu", "black", 0, 0, gameWidth, gameHeight));
-        gameTitle = new component ("image", "svgs/title.svg", "", gameWidth / 2, 100, 203, 92);
+        gameGround.push (new ground ("menu", "black", 0, 0, canvasWidth, canvasHeight));
+        gameTitle = new component ("image", "svgs/title.svg", "", canvasWidth / 2, 100, 203, 92);
         gameText.push (new component ("text", "Options:", "white", 310, gameTitle.y + 105, "left", 10));
         gameText.push (new component ("text", "One Player", "white", 575, gameText [0].y + 15, "left", 10));
         gameText.push (new component ("text", "Cooperative", "white", 575, gameText [1].y + 25, "left", 10));
@@ -84,7 +84,7 @@ function gameLoadScreen (screen)
         gameText.push (new component ("text", "Music", "white", 575, gameText [5].y + 25, "left", 10));
         gameText.push (new component ("text", "FPS Monitor", "white", 575, gameText [6].y + 25, "left", 10));
         gameText.push (new component ("text", "High Scores", "white", 575, gameText [7].y + 25, "left", 10));
-        gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", gameWidth / 2, 445, "center", 10));
+        gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", canvasWidth / 2, 445, "center", 10));
         gameText.push (new component ("traffic", "", "", 645, 295, 12, 28));
         menuShip = new ship (null, playerColors [0], 450, gameText [0].y + 15, 50, 90);
         changeTab ("menu");
@@ -93,15 +93,15 @@ function gameLoadScreen (screen)
     }
     else if (gameScreen == "high_scores")
     {
-        gameGround.push (new ground ("menu", "black", 0, 0, gameWidth, gameHeight));
-        gameTitle = new component ("image", "svgs/title.svg", "", gameWidth / 2, 100, 203, 92);
+        gameGround.push (new ground ("menu", "black", 0, 0, canvasWidth, canvasHeight));
+        gameTitle = new component ("image", "svgs/title.svg", "", canvasWidth / 2, 100, 203, 92);
         gameText.push (new component ("text", "High Scores:", "white", 310, gameTitle.y + 105, "left", 10));
         fetchLoad ("high_scores");
         changeTab ("alert");
     }
     else if (gameScreen == "intro" || gameScreen == "game_over" || gameScreen == "game_completed")
     {
-        gameGround.push (new ground ("menu", "black", 0, 0, gameWidth, gameHeight));
+        gameGround.push (new ground ("menu", "black", 0, 0, canvasWidth, canvasHeight));
         var textMeasure = ctx.measureText (" ");
         document.getElementById ("scoreHud").style.height = "0px";
         document.getElementById ("highScoreHud").style.height = "0px";
@@ -118,23 +118,23 @@ function gameLoadScreen (screen)
         }
         else if (gameScreen == "game_over")
         {
-            gameText.push (new component ("type", "LAST MISSION", "white", gameWidth / 2, 150, "center", 10));
-            gameText.push (new component ("type", "HARD LUCK!", "white", gameWidth / 2, 210, "center", 10));
-            gameText.push (new component ("type", "YOUR MISSION HAS FAILED.", "white", gameWidth / 2, 240, "center", 10));
+            gameText.push (new component ("type", "LAST MISSION", "white", canvasWidth / 2, 150, "center", 10));
+            gameText.push (new component ("type", "HARD LUCK!", "white", canvasWidth / 2, 210, "center", 10));
+            gameText.push (new component ("type", "YOUR MISSION HAS FAILED.", "white", canvasWidth / 2, 240, "center", 10));
         }
         else if (gameScreen == "game_completed")
         {
-            gameText.push (new component ("type", "LAST MISSION", "white", gameWidth / 2, 150, "center", 10));
-            gameText.push (new component ("type", "WELL DONE!", "white", gameWidth / 2, 210, "center", 10));
-            gameText.push (new component ("type", "YOUR MISSION HAS", "white", gameWidth / 2, 240, "center", 10));
-            gameText.push (new component ("type", "SUCCEEDED.", "white", gameWidth / 2, 270, "center", 10));
+            gameText.push (new component ("type", "LAST MISSION", "white", canvasWidth / 2, 150, "center", 10));
+            gameText.push (new component ("type", "WELL DONE!", "white", canvasWidth / 2, 210, "center", 10));
+            gameText.push (new component ("type", "YOUR MISSION HAS", "white", canvasWidth / 2, 240, "center", 10));
+            gameText.push (new component ("type", "SUCCEEDED.", "white", canvasWidth / 2, 270, "center", 10));
         }
         if (gameSound.active) gameSound.sounds ["type"].play ();
         changeTab ("alert");
     }
     else if (gameScreen == "game")
     {
-        gameGround.push (new ground ("water", "#292C9C", 0, 0, gameWidth * 4, gameHeight * 4));
+        gameGround.push (new ground ("water", "#292C9C", 0, 0, canvasWidth * 4, canvasHeight * 4));
         gameGround.push (new ground ("sand", "sandybrown", 250, 165, [380, 600, 900, 750, 650], [600, 950, 700, 500, 100]));
         gameGround.push (new ground ("grass", "green", 350, 175, [425, 575, 850, 675, 625], [550, 850, 700, 550, 150]));
         gameGround.push (new ground ("lava", "#FF2200", 470, 310, [530, 650, 750, 765, 645, 525, 420, 430], [450, 500, 500, 520, 520, 470, 380, 330]));
@@ -265,15 +265,15 @@ function gameOpenModal (modal, text)
     gameConfirm = [];
     startPoint =
     {
-        x: gameArea.centerPoint.x - gameWidth / 2,
-        y: gameArea.centerPoint.y - gameHeight / 2
+        x: gameArea.centerPoint.x - canvasWidth / 2,
+        y: gameArea.centerPoint.y - canvasHeight / 2
     }
     if (gameModal == null)
     {
         document.getElementById ("scoreHud").style.height = "0px";
         document.getElementById ("highScoreHud").style.height = "0px";
         document.getElementById ("lifesHud").style.height = "0px";
-        modalGround = new ground ("menu", "#000000DD", startPoint.x, startPoint.y, gameWidth, gameHeight);
+        modalGround = new ground ("menu", "#000000DD", startPoint.x, startPoint.y, canvasWidth, canvasHeight);
         changeTab ("menu");
     }
     gameModal = modal;
