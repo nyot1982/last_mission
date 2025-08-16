@@ -13,8 +13,11 @@ function controls ()
         if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && form.style.display == "block" && !document.getElementById (gamepad.index))
         {
             var input = document.createElement ("input");
-            input.type = "text";
             input.id = gamepad.index * 1;
+            input.name = "name";
+            input.type = "text";
+            input.autocomplete = "name";
+            input.maxLength = "11";
             input.value = (storedPlayers [form.length - 1] && storedPlayers [form.length - 1].name ? storedPlayers [form.length - 1].name : "Player " + player);
             input.required = true;
             input.setAttribute ("oninput", "javascript: this.setCustomValidity ('');");
