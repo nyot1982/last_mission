@@ -882,7 +882,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     {
                         ctx.shadowOffsetX = this.shadowOffset;
                         ctx.shadowOffsetY = this.shadowOffset;
-                        if (gameArea.frame % (50 - Math.abs (this.speed) * 5) == 0)
+                        console.log (this.moveSpeed + " - " + this.strafeSpeed);
+                        if (gameArea.frame % (100 - (Math.abs (this.moveSpeed) > Math.abs (this.strafeSpeed) ? Math.abs (this.moveSpeed * 5) : Math.abs (this.strafeSpeed * 5))) == 0)
                         {
                             this.fuel--;
                             if (this.name == players [0].name) vitalsHud ("fuel", this.fuel, "red");

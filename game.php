@@ -21,6 +21,7 @@
         <script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
         <script type="text/javascript" src="js/tinycolor.min.js"></script>
         <script type="text/javascript" src="js/game_scripts.js"></script>
+        <script type="text/javascript" src="js/game_screens.js"></script>
         <script type="text/javascript" src="js/game_controls.js"></script>
         <script type="text/javascript" src="js/game_multiplayer.js"></script>
         <script type="text/javascript" src="js/game_ground.js"></script>
@@ -75,12 +76,12 @@
             <article>
                 <form id="players" name="players" action="javascript: void (0);" onsubmit="javascript: submitForm (this);" method="POST">
                     <div style="margin-left: -40px;">>>> Enter your ship name:</div>
-                    <input id="99" name="name" type="text" maxlength="11" required oninput="javascript: this.setCustomValidity ('');">
+                    <input id="99" name="name" type="text" autocomplete="name" maxlength="11" required oninput="javascript: this.setCustomValidity ('');">
                     <input type="submit" value="Start game">
                 </form>
                 <form id="player" name="player" action="javascript: void (0);" onsubmit="javascript: fetchLoad ('player', 'name=' + this.name.value + '&color=' + this.color.value + '&skin=' + this.skin.value);" method="POST">
                     <div style="margin-left: -40px;">>>> Enter your ship name:</div>
-                    <input id="name" name="name" type="text" maxlength="11" required oninput="javascript: this.setCustomValidity ('');">
+                    <input id="name" name="name" type="text" autocomplete="name" maxlength="11" required oninput="javascript: this.setCustomValidity ('');">
                     <div>Select your ship color:</div>
                     <input id="color" name="color" type="color" maxlength="11" required onchange="javascript: changeColor (this.value);">
                     <div>Select your ship skin:</div>
@@ -91,9 +92,9 @@
                 </form>
                 <form id="sign" name="sign" action="javascript: void (0);" onsubmit="javascript: fetchLoad (this.action.value, 'email=' + this.email.value + '&password=' + this.password.value + (this.action.value == 'sign_up' ? '&color=' + playerColors [0] : ''));" method="POST">
                     <div style="margin-left: -40px;">>>> Enter your e.mail:</div>
-                    <input id="email" name="email" type="email" autocomplete="emaio" maxlength="999" required oninput="javascript: this.setCustomValidity ('');">
+                    <input id="email" name="email" type="email" autocomplete="email" maxlength="999" required oninput="javascript: this.setCustomValidity ('');">
                     <div>Enter your password:</div>
-                    <input id="password" name="password" type="password" autocomplete="new-password" maxlength="12" required oninput="javascript: this.setCustomValidity ('');">
+                    <input id="password" name="password" type="password" autocomplete="current-password" maxlength="12" required oninput="javascript: this.setCustomValidity ('');">
                     <input id="action" name="action" type="hidden" value="">
                     <input type="submit" value="Sign in" onclick="javascript: parent.action.value='sign_in';"> <input type="submit" value="Sign up" onclick="javascript: parent.action.value='sign_up';">
                 </form>
