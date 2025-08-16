@@ -7,6 +7,12 @@ var fpsMonitor = false,
     gameScreen = null,
     gameModal = null,
     gameTitle = null,
+    gameMap =
+    {
+        name: null,
+        width: canvasWidth,
+        height: canvasHeight
+    },
     modalGround = null,
     menuShip = null,
     gameBoss = null,
@@ -849,7 +855,7 @@ function updateGameArea ()
     if (gameScreen == "game")
     {
         gameItems = gameItems.filter (item => !item.taken || item.z > 0);
-        gameShots = gameShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < canvasWidth * 4 && shot.y > 0 && shot.y < canvasHeight * 4);
+        gameShots = gameShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < gameMap.width && shot.y > 0 && shot.y < gameMap.height);
         gameHits = gameHits.filter (hit => !hit.reverse || hit.r > 0);
         gameEnemies = gameEnemies.filter (enemy => enemy.life > 0);
         if (gameModes.findIndex (mode => mode.active == true) == 3 && wss != null && wss.readyState == WebSocket.OPEN) wssSend ();
@@ -876,7 +882,7 @@ function updateGameArea ()
     {
         if (gameScreen == "menu" && wss != null && wss.readyState == WebSocket.OPEN) wssSend ();
         if (modalGround) modalGround.update ();
-        menuShots = menuShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < canvasWidth * 4 && shot.y > 0 && shot.y < canvasHeight * 4);
+        menuShots = menuShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < gameMap.width && shot.y > 0 && shot.y < gameMap.height);
         for (var shot in menuShots) menuShots [shot].update ();
         menuHits = menuHits.filter (hit => !hit.reverse || hit.r > 0);
         if (gameTitle) gameTitle.update ();

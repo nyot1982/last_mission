@@ -132,7 +132,7 @@ function boss (type, x, y)
                             else this.movingX (-1);
                             break;
                         case 1:
-                            if (this.x > canvasWidth * 4 - 70) this.movingX (-1);
+                            if (this.x > gameMap.width - 70) this.movingX (-1);
                             else this.movingX (1);
                             break;
                         case 2:
@@ -140,7 +140,7 @@ function boss (type, x, y)
                             else this.movingY (-1);
                             break;
                         case 3:
-                            if (this.y > canvasHeight * 4 - 70) this.movingY (-1);
+                            if (this.y > gameMap.height - 70) this.movingY (-1);
                             else this.movingY (1);
                             break;
                         case 4:
@@ -175,7 +175,7 @@ function boss (type, x, y)
                     if (this.moveX < 0) this.engine3max = 40;
                     else if (this.moveX > 0) this.engine1max = 40;
                     if (this.x + this.moveX < 70) this.x = 70;
-                    else if (this.x + this.moveX > canvasWidth * 4 - 70) this.x = canvasWidth * 4 - 70;
+                    else if (this.x + this.moveX > gameMap.width - 70) this.x = gameMap.width - 70;
                     else this.x += this.moveX;
                 }
                 if (this.moveY != 0)
@@ -183,7 +183,7 @@ function boss (type, x, y)
                     if (this.moveY < 0) this.engine4max = 40;
                     else if (this.moveY > 0) this.engine2max = 40;
                     if (this.y + this.moveY < 70) this.y = 70;
-                    else if (this.y + this.moveY > canvasHeight * 4 - 70) this.y = canvasHeight * 4 - 70;
+                    else if (this.y + this.moveY > gameMap.height - 70) this.y = gameMap.height - 70;
                     else this.y += this.moveY;
                 }
                 if (gameScreen == "game" && gameModal == null) mapHud ('bossItem', this.x, this.y);

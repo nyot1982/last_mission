@@ -303,8 +303,8 @@ function mapHud (itemClass, x, y, heading)
         mapItem.setAttribute ('class', 'fa fa-location-arrow ' + itemClass);
         mapItem.style.transform = 'rotate(' + (heading - 45) + 'deg)';
     }
-    mapItem.style.left = (x / 29 + offSetX) + "px";
-    mapItem.style.top = (y / 29 + offSetY) + "px";
+    mapItem.style.left = (x / (gameMap.width / (canvasWidth * 4 / 29)) + offSetX) + "px";
+    mapItem.style.top = (y / (gameMap.height / (canvasHeight * 4 / 29)) + offSetY) + "px";
     mapHud.appendChild (mapItem, mapHud.childNodes [0]);
 }
 

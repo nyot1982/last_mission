@@ -134,53 +134,8 @@ function gameLoadScreen (screen)
     }
     else if (gameScreen == "game")
     {
-        gameGround.push (new ground ("water", "#292C9C", 0, 0, canvasWidth * 4, canvasHeight * 4));
-        gameGround.push (new ground ("sand", "sandybrown", 250, 165, [380, 600, 900, 750, 650], [600, 950, 700, 500, 100]));
-        gameGround.push (new ground ("grass", "green", 350, 175, [425, 575, 850, 675, 625], [550, 850, 700, 550, 150]));
-        gameGround.push (new ground ("lava", "#FF2200", 470, 310, [530, 650, 750, 765, 645, 525, 420, 430], [450, 500, 500, 520, 520, 470, 380, 330]));
-        gameGround.push (new ground ("base", "#B5B2B5", 488, 186, 80, 88));
-        gameGround.push (new digital ("1", "red", "white", 503, 240, 1, 0.075));
-        gameGround.push (new digital ("2", "red", "white", 503, 200, 1, 0.075));
-        gameGround.push (new digital ("3", "black", "yellow", 539, 200, 1, 0.075));
-        gameGround.push (new digital ("4", "black", "yellow", 539, 240, 1, 0.075));
-        gameGround.push (new ground ("snow", "white", 1650, 100, [2200, 2500, 2100, 1700, 1500, 1400, 1200], [200, 550, 700, 500, 600, 300, 200]));
-        gameGround.push (new ground ("snow", "white", 3150, 25, [3400, 3850, 3600, 3200, 3100, 2940, 2890], [200, 400, 600, 550, 700, 550, 200]));
-        gameGround.push (new ground ("sand", "sandybrown", 3310, 1165, [3240, 3600, 3960, 3810, 3710], [1600, 1950, 1700, 1500, 1100]));
-        gameGround.push (new ground ("grass", "green", 3410, 1175, [3285, 3550, 3910, 3735, 3685], [1550, 1850, 1700, 1550, 1150]));
-        gameGround.push (new ground ("concrete", "#939093", 3500, 1150, [3500, 3350, 3350, 3400, 3500, 3550, 3550, 3495, 3395, 3330, 3330, 3480, 3480], [1400, 1450, 1550, 1600, 1650, 1650, 1670, 1670, 1620, 1555, 1435, 1385, 1150]));
-        gameGround.push (new ground ("base", "#B5B2B5", 3548, 1686, 80, 88));
-        gameGround.push (new digital ("5", "red", "white", 3563, 1740, 1, 0.075));
-        gameGround.push (new digital ("6", "red", "white", 3563, 1700, 1, 0.075));
-        gameGround.push (new digital ("7", "black", "yellow", 3599, 1700, 1, 0.075));
-        gameGround.push (new digital ("8", "black", "yellow", 3599, 1740, 1, 0.075));
-        if (gameModes.findIndex (mode => mode.active == true) < 2)
-        {
-            enemies = 270;
-            gameEnemies.push (new enemy (3, 150, 100, 0));
-            gameEnemies.push (new enemy (3, 900, 200, 0));
-            gameEnemies.push (new enemy (3, 200, 400, 0));
-            gameEnemies.push (new enemy (4, 800, 400, 0));
-            gameEnemies.push (new enemy (5, 1300, 350, 0));
-            gameEnemies.push (new enemy (4, 1700, 250, 0));
-            gameEnemies.push (new enemy (6, 2500, 250, 0));
-            gameEnemies.push (new enemy (5, 3500, 150, 0));
-            gameEnemies.push (new enemy (3, 3850, 350, 0));
-            gameEnemies.push (new enemy (6, 2500, 650, 0));
-            gameEnemies.push (new enemy (6, 2700, 750, 0));
-            gameEnemies.push (new enemy (6, 2500, 1200, 0));
-            gameEnemies.push (new enemy (6, 3400, 1200, 0));
-            gameEnemies.push (new enemy (5, 400, 1800, 0));
-            gameEnemies.push (new enemy (5, 1500, 1600, 0));
-            gameEnemies.push (new enemy (5, 2300, 1700, 0));
-            gameEnemies.push (new enemy (5, 3900, 1900, 0));
-            for (var y = 195; y < 2000; y += 410)
-            {
-                for (var x = 195; x < 4080; x += 410)
-                {
-                    gameEnemies.push (new enemy (Math.floor (Math.random () * 3), x, y, Math.floor (Math.random () * 720) - 360));
-                }
-            }
-        }
+        if (gameModes.findIndex (mode => mode.active == true) < 2) generateGameMap ("level1");
+        else generateGameMap ("mode" + gameModes.findIndex (mode => mode.active == true));
         fetchLoad ("highScoreHud");
         document.getElementById ("highScoreHud").style.height = "23px";
         document.getElementById ("scoreHud").innerHTML = '';
@@ -317,4 +272,111 @@ function gameCloseModal ()
     if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
     else document.getElementById ("lifesHud").style.height = "23px";
     changeTab ("game");
+}
+
+function generateGameMap (map)
+{
+    switch (map)
+    {
+        case "level1":
+            gameMap =
+            {
+                name: map,
+                width: 4080,
+                height: 2000
+            };
+            gameGround.push (new ground ("water", "#292C9C", 0, 0, gameMap.width, gameMap.height));
+            gameGround.push (new ground ("sand", "sandybrown", 250, 165, [380, 600, 900, 750, 650], [600, 950, 700, 500, 100]));
+            gameGround.push (new ground ("grass", "green", 350, 175, [425, 575, 850, 675, 625], [550, 850, 700, 550, 150]));
+            gameGround.push (new ground ("lava", "#FF2200", 470, 310, [530, 650, 750, 765, 645, 525, 420, 430], [450, 500, 500, 520, 520, 470, 380, 330]));
+            gameGround.push (new ground ("base", "#B5B2B5", 488, 186, 80, 88));
+            gameGround.push (new digital ("1", "red", "white", 503, 240, 1, 0.075));
+            gameGround.push (new digital ("2", "red", "white", 503, 200, 1, 0.075));
+            gameGround.push (new digital ("3", "black", "yellow", 539, 200, 1, 0.075));
+            gameGround.push (new digital ("4", "black", "yellow", 539, 240, 1, 0.075));
+            gameGround.push (new ground ("snow", "white", 1650, 100, [2200, 2500, 2100, 1700, 1500, 1400, 1200], [200, 550, 700, 500, 600, 300, 200]));
+            gameGround.push (new ground ("snow", "white", 3150, 25, [3400, 3850, 3600, 3200, 3100, 2940, 2890], [200, 400, 600, 550, 700, 550, 200]));
+            gameGround.push (new ground ("sand", "sandybrown", 3310, 1165, [3240, 3600, 3960, 3810, 3710], [1600, 1950, 1700, 1500, 1100]));
+            gameGround.push (new ground ("grass", "green", 3410, 1175, [3285, 3550, 3910, 3735, 3685], [1550, 1850, 1700, 1550, 1150]));
+            gameGround.push (new ground ("concrete", "#939093", 3500, 1150, [3500, 3350, 3350, 3400, 3500, 3550, 3550, 3495, 3395, 3330, 3330, 3480, 3480], [1400, 1450, 1550, 1600, 1650, 1650, 1670, 1670, 1620, 1555, 1435, 1385, 1150]));
+            gameGround.push (new ground ("base", "#B5B2B5", 3548, 1686, 80, 88));
+            gameGround.push (new digital ("5", "red", "white", 3563, 1740, 1, 0.075));
+            gameGround.push (new digital ("6", "red", "white", 3563, 1700, 1, 0.075));
+            gameGround.push (new digital ("7", "black", "yellow", 3599, 1700, 1, 0.075));
+            gameGround.push (new digital ("8", "black", "yellow", 3599, 1740, 1, 0.075));
+            enemies = 270;
+            gameEnemies.push (new enemy (3, 150, 100, 0));
+            gameEnemies.push (new enemy (3, 900, 200, 0));
+            gameEnemies.push (new enemy (3, 200, 400, 0));
+            gameEnemies.push (new enemy (4, 800, 400, 0));
+            gameEnemies.push (new enemy (5, 1300, 350, 0));
+            gameEnemies.push (new enemy (4, 1700, 250, 0));
+            gameEnemies.push (new enemy (6, 2500, 250, 0));
+            gameEnemies.push (new enemy (5, 3500, 150, 0));
+            gameEnemies.push (new enemy (3, 3850, 350, 0));
+            gameEnemies.push (new enemy (6, 2500, 650, 0));
+            gameEnemies.push (new enemy (6, 2700, 750, 0));
+            gameEnemies.push (new enemy (6, 2500, 1200, 0));
+            gameEnemies.push (new enemy (6, 3400, 1200, 0));
+            gameEnemies.push (new enemy (5, 400, 1800, 0));
+            gameEnemies.push (new enemy (5, 1500, 1600, 0));
+            gameEnemies.push (new enemy (5, 2300, 1700, 0));
+            gameEnemies.push (new enemy (5, 3900, 1900, 0));
+            for (var y = 195; y < 2000; y += 410)
+            {
+                for (var x = 195; x < 4080; x += 410)
+                {
+                    gameEnemies.push (new enemy (Math.floor (Math.random () * 3), x, y, Math.floor (Math.random () * 720) - 360));
+                }
+            }
+        break;
+        case "mode2":
+            gameMap =
+            {
+                name: map,
+                width: 1020,
+                height: 500
+            };
+            gameGround.push (new ground ("water", "#292C9C", 0, 0, gameMap.width, gameMap.height));
+            gameGround.push (new ground ("sand", "sandybrown", 250, 165, [380, 400, 900, 750, 650], [300, 450, 400, 350, 100]));
+            gameGround.push (new ground ("grass", "green", 350, 175, [400, 425, 850, 675, 625], [250, 385, 400, 350, 150]));
+            gameGround.push (new ground ("base", "#B5B2B5", 488, 186, 80, 88));
+            gameGround.push (new digital ("1", "red", "white", 503, 240, 1, 0.075));
+            gameGround.push (new digital ("2", "red", "white", 503, 200, 1, 0.075));
+            gameGround.push (new digital ("3", "black", "yellow", 539, 200, 1, 0.075));
+            gameGround.push (new digital ("4", "black", "yellow", 539, 240, 1, 0.075));
+            gameGround.push (new ground ("base", "#B5B2B5", 488, 281, 80, 88));
+            gameGround.push (new digital ("5", "red", "white", 503, 335, 1, 0.075));
+            gameGround.push (new digital ("6", "red", "white", 503, 295, 1, 0.075));
+            gameGround.push (new digital ("7", "black", "yellow", 539, 295, 1, 0.075));
+            gameGround.push (new digital ("8", "black", "yellow", 539, 335, 1, 0.075));
+        break;
+        case "mode3":
+            gameMap =
+            {
+                name: map,
+                width: 4080,
+                height: 2000
+            };
+            gameGround.push (new ground ("water", "#292C9C", 0, 0, gameMap.width, gameMap.height));
+            gameGround.push (new ground ("sand", "sandybrown", 250, 165, [380, 600, 900, 750, 650], [600, 950, 700, 500, 100]));
+            gameGround.push (new ground ("grass", "green", 350, 175, [425, 575, 850, 675, 625], [550, 850, 700, 550, 150]));
+            gameGround.push (new ground ("lava", "#FF2200", 470, 310, [530, 650, 750, 765, 645, 525, 420, 430], [450, 500, 500, 520, 520, 470, 380, 330]));
+            gameGround.push (new ground ("base", "#B5B2B5", 488, 186, 80, 88));
+            gameGround.push (new digital ("1", "red", "white", 503, 240, 1, 0.075));
+            gameGround.push (new digital ("2", "red", "white", 503, 200, 1, 0.075));
+            gameGround.push (new digital ("3", "black", "yellow", 539, 200, 1, 0.075));
+            gameGround.push (new digital ("4", "black", "yellow", 539, 240, 1, 0.075));
+            gameGround.push (new ground ("snow", "white", 1650, 100, [2200, 2500, 2100, 1700, 1500, 1400, 1200], [200, 550, 700, 500, 600, 300, 200]));
+            gameGround.push (new ground ("snow", "white", 3150, 25, [3400, 3850, 3600, 3200, 3100, 2940, 2890], [200, 400, 600, 550, 700, 550, 200]));
+            gameGround.push (new ground ("sand", "sandybrown", 3310, 1165, [3240, 3600, 3960, 3810, 3710], [1600, 1950, 1700, 1500, 1100]));
+            gameGround.push (new ground ("grass", "green", 3410, 1175, [3285, 3550, 3910, 3735, 3685], [1550, 1850, 1700, 1550, 1150]));
+            gameGround.push (new ground ("concrete", "#939093", 3500, 1150, [3500, 3350, 3350, 3400, 3500, 3550, 3550, 3495, 3395, 3330, 3330, 3480, 3480], [1400, 1450, 1550, 1600, 1650, 1650, 1670, 1670, 1620, 1555, 1435, 1385, 1150]));
+            gameGround.push (new ground ("base", "#B5B2B5", 3548, 1686, 80, 88));
+            gameGround.push (new digital ("5", "red", "white", 3563, 1740, 1, 0.075));
+            gameGround.push (new digital ("6", "red", "white", 3563, 1700, 1, 0.075));
+            gameGround.push (new digital ("7", "black", "yellow", 3599, 1700, 1, 0.075));
+            gameGround.push (new digital ("8", "black", "yellow", 3599, 1740, 1, 0.075));
+        break;
+    }
 }
