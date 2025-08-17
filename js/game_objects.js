@@ -474,7 +474,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                     ctx.fillText (usersPlaying, this.x, this.y + 1);
                     var textMeasure = ctx.measureText (usersPlaying);
                 }
-                else ctx.fillText (this.src, this.x, this.y + 1);
+                else ctx.fillText (this.src, this.x, this.y + 1, this.max);
             }
         }
         if (this.rollover != "")

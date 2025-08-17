@@ -625,7 +625,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     else ctx.strokeStyle = this.colors.shipFill + "CC";
                     ctx.stroke (this.paths.engine2);
                 }
-                if (this.z > 0)
+                if (this.z > 0 && gameScreen != "skins")
                 {
                     if (gameScreen == "game" && gameModal == null) ctx.shadowColor = "#00000044";
                     else ctx.shadowColor = "transparent";
@@ -805,7 +805,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 {
                     if (this.colors.lightFill == "#7B797B")
                     {
-                        if (gameModal == "menu" || gameScreen == "menu") this.colors.lightFill = this.colors.weapons [4];
+                        if (gameModal == "menu" || gameScreen == "menu" || gameScreen == "skins") this.colors.lightFill = this.colors.weapons [4];
                         else this.colors.lightFill = this.colors.weapons [this.weapon];
                     }
                     else this.colors.lightFill = "#7B797B";

@@ -857,10 +857,14 @@ article p
 }
 a.interaction
 {
-    font-size: 2em;
+    font-size: 13px;
     color: var(--color5);
     text-shadow: 0 1px 0 var(--color6);
     cursor: default;
+}
+form a.interaction
+{
+    color: var(--color10);
 }
 .keys .keysContent
 {
@@ -1083,6 +1087,7 @@ input,
 select
 {
     border: solid 1px var(--color10);
+    margin-top: 10px;
     padding: 0;
     box-sizing: border-box;
     outline: 0;
@@ -1104,8 +1109,6 @@ input[type="password"],
 input[type="color"],
 select
 {
-    display: block;
-    margin: 10px 0;
     width: 160px;
     height: 20px;
     line-height: 20px;
@@ -1116,14 +1119,22 @@ input[type="password"]
     padding: 2px;
 }
 input[type="color"],
+input[type="button"],
 input[type="submit"]
 {
     cursor: pointer;
 }
+input[type="button"],
 input[type="submit"]
 {
     border-radius: 10px;
     padding: 2px 5px;
+}
+input[type="button"]:hover,
+input[type="submit"]:hover
+{
+    background-color: var(--color6);
+    transition: all 0.5s ease 0s;
 }
 #rollover
 {

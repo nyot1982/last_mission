@@ -12,16 +12,21 @@ function controls ()
         var form = document.getElementById ("players");
         if (gameScreen == "menu" && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) && form.style.display == "block" && !document.getElementById (gamepad.index))
         {
-            var input = document.createElement ("input");
-            input.id = gamepad.index * 1;
-            input.name = "name";
-            input.type = "text";
-            input.autocomplete = "name";
-            input.maxLength = "11";
-            input.value = (storedPlayers [form.length - 1] && storedPlayers [form.length - 1].name ? storedPlayers [form.length - 1].name : "Player " + player);
-            input.required = true;
-            input.setAttribute ("oninput", "javascript: this.setCustomValidity ('');");
-            form.insertBefore (input, form.elements [form.length - 1]);
+            var element = document.createElement ("input");
+            element.id = gamepad.index * 1;
+            element.name = "name";
+            element.type = "text";
+            element.autocomplete = "name";
+            element.maxLength = "11";
+            element.value = (storedPlayers [form.length - 1] && storedPlayers [form.length - 1].name ? storedPlayers [form.length - 1].name : "Player " + player);
+            element.required = true;
+            element.setAttribute ("oninput", "javascript: this.setCustomValidity ('');");
+            form.insertBefore (element, form.elements [form.length - 1]);
+            form.insertBefore (document.createTextNode (" "), form.elements [form.length - 1]);
+            element = document.createElement ("a");
+            element.title = "Mouse interaction";
+            element.className = "fa fa-mouse fa-beat interaction";
+            form.insertBefore (element, form.elements [form.length - 1]);
         }
         for (const [index, axis] of gamepad.axes.entries ())
         {

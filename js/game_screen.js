@@ -99,6 +99,23 @@ function gameLoadScreen (screen)
         fetchLoad ("high_scores");
         changeTab ("alert");
     }
+    else if (gameScreen == "skins")
+    {
+        var x = 60, y = 42;
+        gameGround.push (new ground ("menu", "black", 0, 0, canvasWidth, canvasHeight));
+        for (var skin in skins)
+        {
+            //console.log (skins [skin]);
+            gameShips.push (new ship (null, "skin" + skin, x, y - 23, 50));
+            gameText.push (new component ("text", skins [skin].name, "white", x, y, "center", 8, 80));
+            x += 100;
+            if (x % 1060 == 0)
+            {
+                x = 60;
+                y += 50;
+            }
+        }
+    }
     else if (gameScreen == "intro" || gameScreen == "game_over" || gameScreen == "game_completed")
     {
         gameGround.push (new ground ("menu", "black", 0, 0, canvasWidth, canvasHeight));

@@ -76,27 +76,27 @@
             <article>
                 <form id="players" name="players" action="javascript: void (0);" onsubmit="javascript: submitForm (this);" method="POST">
                     <div style="margin-left: -40px;">>>> Enter your ship name:</div>
-                    <input id="99" name="name" type="text" autocomplete="name" maxlength="11" required oninput="javascript: this.setCustomValidity ('');">
-                    <input type="submit" value="Start game">
+                    <input id="99" name="name" type="text" autocomplete="name" maxlength="11" required oninput="javascript: this.setCustomValidity ('');"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
+                    <input type="submit" value="Start game"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
                 </form>
                 <form id="player" name="player" action="javascript: void (0);" onsubmit="javascript: fetchLoad ('player', 'name=' + this.name.value + '&color=' + this.color.value + '&skin=' + this.skin.value);" method="POST">
                     <div style="margin-left: -40px;">>>> Enter your ship name:</div>
-                    <input id="name" name="name" type="text" autocomplete="name" maxlength="11" required oninput="javascript: this.setCustomValidity ('');">
-                    <div>Select your ship color:</div>
-                    <input id="color" name="color" type="color" maxlength="11" required onchange="javascript: changeColor (this.value);">
-                    <div>Select your ship skin:</div>
+                    <input id="name" name="name" type="text" autocomplete="name" maxlength="11" required oninput="javascript: this.setCustomValidity ('');"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
+                    <div style="margin-top: 10px;">Select your ship color:</div>
+                    <input id="color" name="color" type="color" maxlength="11" required onchange="javascript: changeColor (this.value);"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
+                    <div style="margin-top: 10px;">Select your ship skin:</div>
                     <select id="skin" name="skin" onchange="javascript: changeSkin (this.value);">
                         <option value="-1"></option>
-                    </select>
-                    <input type="submit" value="Start game">
+                    </select> <input type="button" value="Skins" onClick="javascript: $('#blackScreen').fadeIn (1000); setTimeout (() => { gameLoadScreen ('skins'); }, 1000);"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
+                    <input type="submit" value="Start game"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
                 </form>
                 <form id="sign" name="sign" action="javascript: void (0);" onsubmit="javascript: fetchLoad (this.action.value, 'email=' + this.email.value + '&password=' + this.password.value + (this.action.value == 'sign_up' ? '&color=' + playerColors [0] : ''));" method="POST">
                     <div style="margin-left: -40px;">>>> Enter your e.mail:</div>
-                    <input id="email" name="email" type="email" autocomplete="email" maxlength="999" required oninput="javascript: this.setCustomValidity ('');">
-                    <div>Enter your password:</div>
-                    <input id="password" name="password" type="password" autocomplete="current-password" maxlength="12" required oninput="javascript: this.setCustomValidity ('');">
-                    <input id="action" name="action" type="hidden" value="">
-                    <input type="submit" value="Sign in" onclick="javascript: parent.action.value='sign_in';"> <input type="submit" value="Sign up" onclick="javascript: parent.action.value='sign_up';">
+                    <input id="email" name="email" type="email" autocomplete="email" maxlength="999" required oninput="javascript: this.setCustomValidity ('');"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
+                    <div style="margin-top: 10px;">Enter your password:</div>
+                    <input id="password" name="password" type="password" autocomplete="current-password" maxlength="12" required oninput="javascript: this.setCustomValidity ('');"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
+                    <input id="action" name="action" type="hidden" value=""><br>
+                    <input type="submit" value="Sign in" onclick="javascript: parent.action.value='sign_in';"> <input type="submit" value="Sign up" onclick="javascript: parent.action.value='sign_up';"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
                 </form>
                 <div id="scoreHud" class="floatHuds"></div>
                 <div id="highScoreHud" class="floatHuds"></div>
@@ -181,7 +181,7 @@
                     <div class="keysContent">
                         <div class="tabs">
                             <a id="menu" href="javascript: changeTab ('menu');" class="tab active">MENU</a><a id="alert" href="javascript: changeTab ('alert');" class="tab">ALERT</a><a id="confirm" href="javascript: changeTab ('confirm');" class="tab">CONFIRM</a><a id="input" href="javascript: changeTab ('input');" class="tab">INPUT</a><a id="game" href="javascript: changeTab ('game');" class="tab">GAME</a><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="margin: 0 0 7px 4px;"></a>
-                            <div class="tab fixed"><a id="keyboard" href="javascript: changeControl ('keyboard', null);" class="fa fa-keyboard active" title="Show keyboard controls"></a><a id="gamepad" href="javascript: changeControl ('gamepad', null);" class="fa fa-gamepad-modern" style="display: none;"title="Show gamepad controls"></a><a id="joystick" href="javascript: changeControl ('joystick', null);" class="fa fa-joystick" style="display: none;" title="Show joystick controls"></a></div><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="position: absolute; right: 4px; bottom: 7px;"></a>
+                            <div class="tab fixed"><a id="keyboard" href="javascript: changeControl ('keyboard', null);" class="fa fa-keyboard active" title="Show keyboard controls"></a><a id="gamepad" href="javascript: changeControl ('gamepad', null);" class="fa fa-gamepad-modern" style="display: none;"title="Show gamepad controls"></a><a id="joystick" href="javascript: changeControl ('joystick', null);" class="fa fa-joystick" style="display: none;" title="Show joystick controls"></a></div><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="position: absolute; right: 6px; bottom: 7px;"></a>
                         </div>
                         <div id="menuTab-keyboard" class="tabContent cont-cols margin-1 active">
                             <div class="col">

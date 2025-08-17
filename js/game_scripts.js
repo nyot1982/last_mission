@@ -935,6 +935,7 @@ function updateGameArea ()
         for (var confirm in gameConfirm) gameConfirm [confirm].update ();
         for (var alert in gameAlert) gameAlert [alert].update ();
         if (menuShip) menuShip.update ();
+        else for (var ship in gameShips) gameShips [ship].update ();
     }
     gameArea.frame++;
     gameArea.animation = window.requestAnimationFrame (updateGameArea);
