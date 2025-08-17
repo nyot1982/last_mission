@@ -323,7 +323,8 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                 case 'fire':
                     gameShips [gameShip].firing (true);
                 break;
-                case 'turn':
+                case 'turn_left':
+                case 'turn_right':
                     gameShips [gameShip].turning (bt_value);
                 break;
                 case 'move_back':
@@ -381,7 +382,8 @@ function userActionStop (control, bt_type, bt_code, gameShip)
             case 'fire':
                 gameShips [gameShip].firing (false);
             break;
-            case 'turn':
+            case 'turn_left':
+            case 'turn_right':
                 gameShips [gameShip].turning (0);
             break;
             case 'move_back':
@@ -493,4 +495,138 @@ function changeControl (newControl, idControl)
             controlTab = newControl;
         }
     }
+}
+
+function showControls (control, bt_type)
+{
+    var tab = document.getElementById ("gameTab-" + control),
+        actions = userActions.filter (action => action.screen.includes ("game")),
+        str = "";
+    
+    for (var i = 0; i < actions.length; i++)
+    {
+        if (i % 2 == 0) str += '<div class="col">';
+        str += '<p>';
+        if (actions [i].editable) str += '<a href="javascript: changeButton ();" title="Change ' + bt_type + '" class="changeButton">';
+        var sep = "";
+        for (var key in actions [i][control][bt_type + "s"])
+        {
+            if (sep != "") str += sep;
+            if (control == "keyboard")
+            {
+                switch (actions [i][control][bt_type + "s"][key])
+                {
+                    case 9:
+                        str += '<span class="key" style="width: 5em; padding: 0;"><span class="fa fa-left-long-to-line" style="display: block;"></span><span class="fa fa-right-long-to-line" style="display: block;"></span></span> ';
+                    break;
+                    case 13:
+                        str += '<span class="fa fa-turn-down-left key"></span> ';
+                    break;
+                    case 17:
+                        str += '<span class="key2" style="width: 4.5em;">Ctrl</span> ';
+                    break;
+                    case 27:
+                        str += '<span class="key2">Esc</span> ';
+                    break;
+                    case 32:
+                        str += '<span class="fa fa-horizontal-rule key" style="width: 8em;"></span> ';
+                    break;            
+                    case 37:
+                        str += '<span class="fa fa-left key"></span> ';
+                    break;
+                    case 38:
+                        str += '<span class="fa fa-down key"></span> ';
+                    break;
+                    case 39:
+                        str += '<span class="fa fa-right key"></span> ';
+                    break;
+                    case 40:
+                        str += '<span class="fa fa-up key"></span> ';
+                    break;
+                    default:
+                        str += '<span class="key">' + String.fromCharCode (actions [i][control][bt_type + "s"][key]) + '</span> ';
+                    break;
+                }
+            }
+            else if (control == "gamepad")
+            {
+                switch (actions [i][control][bt_type + "s"][key])
+                {
+                    case 0:
+                        str += '<span class="button green">A</span> ';
+                    break;
+                    case 1:
+                        str += '<span class="button red">B</span> ';
+                    break;
+                    case 2:
+                        str += '<span class="button blue">X</span> ';
+                    break;
+                    case 3:
+                        str += '<span class="button yellow">Y</span> ';
+                    break;
+                    case 4:
+                        str += '<span class="button3">LB</span> ';
+                    break;
+                    case 5:
+                        str += '<span class="button4">RB</span> ';
+                    break;
+                    case 6:
+                        str += '<span class="button6">RT</span> ';
+                    break;
+                    case 7:
+                        str += '<span class="button5">LT</span> ';
+                    break;
+                    case 8:
+                        str += '<span class="button2">Select</span> ';
+                    break;            
+                    case 9:
+                        str += '<span class="button2">Start</span> ';
+                    break;
+                    case 16:
+                        str += '<span class="button gray">&nbsp;</span> ';
+                    break;
+                }
+            }
+            else if (control == "joystick") str += '<span class="button red">' + (actions [i][control][bt_type + "s"][key] + 1) + '</span> ';
+            sep = "/ ";
+        }
+        for (var key in actions [i][control]["axes"])
+        {
+            if (sep != "") str += sep;
+            if (control == "gamepad")
+            {
+                switch (actions [i][control]["axes"][key])
+                {
+                    case 0:
+                        if (actions [i].action == "turn_left") str += '<span class="fa fa-caret-left e1"></span><span class="button silver">LS</span> ';
+                        else str += '<span class="button silver">LS</span><span class="fa fa-caret-right e1"></span> ';
+                    break;
+                }
+            }
+            else if (control == "joystick")
+            {
+                switch (actions [i][control]["axes"][key])
+                {
+                    case 0:
+                        if (actions [i].action == "turn_left") str += '<span class="fa fa-caret-left e1"></span><span class="button silver">S</span> ';
+                        else str += '<span class="button silver">S</span><span class="fa fa-caret-right e1"></span> ';
+                    break;
+                    case 1:
+                        if (actions [i].action == "move_front") str += '<span class="fa fa-caret-up e1"></span><span class="button silver">S</span> ';
+                        else str += '<span class="fa fa-caret-down e1"></span><span class="button silver">S</span> ';
+                    break;
+                }
+            }
+            sep = "/ ";
+        }
+        if (actions [i].editable) str += actions [i].title + '</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>';
+        else str += actions [i].title + '</p>';
+        if (i % 2 != 0) str += '</div>';
+    }
+    tab.innerHTML = str;
+}
+
+function changeButton ()
+{
+
 }

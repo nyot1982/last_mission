@@ -244,25 +244,129 @@ var fpsMonitor = false,
         },
         {
             screen: ["game"],
-            action: "fire",
+            action: "move_front",
+            title: "Move forward",
+            editable: true,
             keyboard:
             {
-                keys: [32] // Space
+                keys: [40] // Up
             },
             gamepad:
             {
-                buttons: [0], // A
+                buttons: [6], // LT
                 axes: []
             },
             joystick:
             {
-                buttons: [0],
+                buttons: [],
+                axes: [1]
+            }
+        },
+        {
+            screen: ["game"],
+            action: "move_back",
+            title: "Move backward",
+            editable: true,
+            keyboard:
+            {
+                keys: [38] // Down
+            },
+            gamepad:
+            {
+                buttons: [7], // RT
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [],
+                axes: [1]
+            }
+        },
+        {
+            screen: ["game"],
+            action: "turn_left",
+            title: "Turn left",
+            editable: true,
+            keyboard:
+            {
+                keys: [37] // Left
+            },
+            gamepad:
+            {
+                buttons: [],
+                axes: [0] // LS
+            },
+            joystick:
+            {
+                buttons: [],
+                axes: [0]
+            }
+        },
+        {
+            screen: ["game"],
+            action: "turn_right",
+            title: "Turn right",
+            editable: true,
+            keyboard:
+            {
+                keys: [39] // Right
+            },
+            gamepad:
+            {
+                buttons: [],
+                axes: [0] // LS
+            },
+            joystick:
+            {
+                buttons: [],
+                axes: [0]
+            }
+        },
+        {
+            screen: ["game"],
+            action: "strafe_left",
+            title: "Strafe left",
+            editable: true,
+            keyboard:
+            {
+                keys: [90] // Z
+            },
+            gamepad:
+            {
+                buttons: [4], // LB
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [2],
+                axes: []
+            }
+        },
+        {
+            screen: ["game"],
+            action: "strafe_right",
+            title: "Strafe right",
+            editable: true,
+            keyboard:
+            {
+                keys: [88] // X
+            },
+            gamepad:
+            {
+                buttons: [5], // RB
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [3],
                 axes: []
             }
         },
         {
             screen: ["game"],
             action: "change_weapon",
+            title: "Fire mode",
+            editable: true,
             keyboard:
             {
                 keys: [9] // Tabulator
@@ -280,7 +384,29 @@ var fpsMonitor = false,
         },
         {
             screen: ["game"],
+            action: "fire",
+            title: "Fire",
+            editable: true,
+            keyboard:
+            {
+                keys: [32] // Space
+            },
+            gamepad:
+            {
+                buttons: [0], // A
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [0],
+                axes: []
+            }
+        },
+        {
+            screen: ["game"],
             action: "moveZ",
+            title: "Take off / Land",
+            editable: true,
             keyboard:
             {
                 keys: [17] // Control
@@ -295,100 +421,12 @@ var fpsMonitor = false,
                 buttons: [6],
                 axes: []
             }
-        },
-        {
-            screen: ["game"],
-            action: "turn",
-            keyboard:
-            {
-                keys: [37, 39] // Left, Right
-            },
-            gamepad:
-            {
-                buttons: [],
-                axes: [0] // L0
-            },
-            joystick:
-            {
-                buttons: [],
-                axes: [0]
-            }
-        },
-        {
-            screen: ["game"],
-            action: "strafe_left",
-            keyboard:
-            {
-                keys: [90] // Z
-            },
-            gamepad:
-            {
-                buttons: [4], // L1
-                axes: []
-            },
-            joystick:
-            {
-                buttons: [2],
-                axes: []
-            }
-        },
-        {
-            screen: ["game"],
-            action: "strafe_right",
-            keyboard:
-            {
-                keys: [88] // X
-            },
-            gamepad:
-            {
-                buttons: [5], // R1
-                axes: []
-            },
-            joystick:
-            {
-                buttons: [3],
-                axes: []
-            }
-        },
-        {
-            screen: ["game"],
-            action: "move_front",
-            keyboard:
-            {
-                keys: [40] // Up
-            },
-            gamepad:
-            {
-                buttons: [6], // L2
-                axes: []
-            },
-            joystick:
-            {
-                buttons: [],
-                axes: [1]
-            }
-        },
-        {
-            screen: ["game"],
-            action: "move_back",
-            keyboard:
-            {
-                keys: [38] // Down
-            },
-            gamepad:
-            {
-                buttons: [7], // R2
-                axes: []
-            },
-            joystick:
-            {
-                buttons: [],
-                axes: [1]
-            }
-        },
+        },        
         {
             screen: ["game"],
             action: "open_modal",
+            title: "Menu",
+            editable: false,
             keyboard:
             {
                 keys: [27] // Scape
@@ -556,6 +594,9 @@ var fpsMonitor = false,
 $(document).ready (function ()
 {
     $("preloader").fadeOut (1000);
+    showControls ("keyboard", "key");
+    showControls ("gamepad", "button");
+    showControls ("joystick", "button");
     if (typeof (Storage) === "undefined") alert ("This browser does not support local web storage.");
     else
     {

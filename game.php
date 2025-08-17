@@ -190,7 +190,7 @@
                             </div>
                             <div class="col">
                                 <p><span class="fa fa-turn-down-left key"></span> / <span class="fa fa-horizontal-rule key" style="width: 8em;"></span> Select</p>
-                                <p><span class="key2">Esc</span> Back</p>
+                                <p><span class="key2">Esc</span> Back / Game</p>
                             </div>
                         </div>
                         <div id="inputTab-keyboard" class="tabContent cont-cols margin-1 toggle">
@@ -219,28 +219,7 @@
                                 <p><span class="key3">Any key</span> Continue</p>
                             </div>
                         </div>
-                        <div id="gameTab-keyboard" class="tabContent cont-cols margin-1 toggle">
-                            <div class="col">
-                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="fa fa-up key"></span> Move forward</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
-                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="fa fa-down key"></span> Move backward</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
-                            </div>
-                            <div class="col">
-                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="fa fa-left key"></span> Turn left</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
-                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="key">Z</span> Strafe left</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
-                            </div>
-                            <div class="col">
-                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="fa fa-right key"></span> Turn right</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
-                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="key">X</span> Strafe right</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
-                            </div>
-                            <div class="col">
-                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="key" style="width: 5em; padding: 0;"><span class="fa fa-left-long-to-line" style="display: block;"></span><span class="fa fa-right-long-to-line" style="display: block;"></span></span> Fire mode</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
-                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="fa fa-horizontal-rule key" style="width: 8em;"></span> Fire</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
-                            </div>
-                            <div class="col">
-                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="key2" style="width: 4.5em;">Ctrl</span> Take off / Land</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
-                                <p><span class="key2">Esc</span> Menu</p>
-                            </div>
-                        </div>
+                        <div id="gameTab-keyboard" class="tabContent cont-cols margin-1 toggle"></div>
                         <div id="menuTab-gamepad" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
                                 <p><span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block; color: red;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block;"></span></span> Move up</p>
@@ -248,7 +227,7 @@
                             </div>
                             <div class="col">
                                 <p><span class="button green">A</span> Select</p>
-                                <p><span class="button2">Start</span> Back</p>
+                                <p><span class="button2">Start</span> Back / Game</p>
                             </div>
                         </div>
                         <div id="inputTab-gamepad" class="tabContent cont-cols margin-1 toggle">
@@ -277,28 +256,7 @@
                                 <p><span class="button2 silver">Any button</span> Continue</p>
                             </div>
                         </div>
-                        <div id="gameTab-gamepad" class="tabContent cont-cols margin-1 toggle">
-                            <div class="col">
-                                <p><span class="button6">RT</span> Move forward</p>
-                                <p><span class="button5">LT</span> Move backward</p>
-                            </div>
-                            <div class="col">
-                                <p><span class="fa fa-caret-left e1"></span><span class="button silver">LS</span> Turn left</p>
-                                <p><span class="button3">LB</span> Strafe left</p>
-                            </div>
-                            <div class="col">
-                                <p><span class="button silver">LS</span><span class="fa fa-caret-right e1"></span> Turn right</p>
-                                <p><span class="button4">RB</span> Strafe right</p>
-                            </div>
-                            <div class="col">
-                                <p><span class="button yellow">Y</span> Fire mode</p>
-                                <p><span class="button green">A</span> Fire</p>
-                            </div>
-                            <div class="col">
-                                <p><span class="button blue">X</span> / <span class="button red">B</span> Take off / Land</p>
-                                <p><span class="button2">Start</span> Menu</p>
-                            </div>
-                        </div>
+                        <div id="gameTab-gamepad" class="tabContent cont-cols margin-1 toggle"></div>
                         <div id="menuTab-joystick" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
                                 <p><span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block; color: red;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block;"></span></span> Move up</p>
@@ -306,7 +264,7 @@
                             </div>
                             <div class="col">
                                 <p><span class="button5">LT</span> / <span class="button6">RT</span> Select</p>
-                                <p><span class="button2">Start</span> Back</p>
+                                <p><span class="button2">Start</span> Back / Game</p>
                             </div>
                         </div>
                         <div id="inputTab-joystick" class="tabContent cont-cols margin-1 toggle">
@@ -335,28 +293,7 @@
                                 <p><span class="button2 silver">Any button</span> Continue</p>
                             </div>
                         </div>
-                        <div id="gameTab-joystick" class="tabContent cont-cols margin-1 toggle">
-                            <div class="col">
-                                <p><span class="fa fa-caret-up e1"></span><span class="button silver">LS</span> Move forward</p>
-                                <p><span class="button silver">LS</span> Move backward<span class="fa fa-caret-down e1"></span></p>
-                            </div>
-                            <div class="col">
-                                <p><span class="fa fa-caret-left e1"></span><span class="button silver">RS</span> Turn left</p>
-                                <p><span class="button silver">RS</span><span class="fa fa-caret-right e1"></span> Turn right</p>
-                            </div>
-                            <div class="col">
-                                <p><span class="fa fa-caret-left e1"></span><span class="button silver">LS</span> Strafe left</p>
-                                <p><span class="button silver">LS</span><span class="fa fa-caret-right e1"></span> Strafe right</p>
-                            </div>
-                            <div class="col">
-                                <p><span class="button yellow">Y</span> Fire mode</p>
-                                <p><span class="button5">LT</span> / <span class="button6">RT</span> Fire</p>
-                            </div>
-                            <div class="col">
-                                <p><span class="button green">A</span> Take off / Land</p>
-                                <p><span class="button2">Start</span> Menu</p>
-                            </div>
-                        </div>
+                        <div id="gameTab-joystick" class="tabContent cont-cols margin-1 toggle"></div>
                     </div>
                 </div>
                 <div id="blackScreen"></div>
