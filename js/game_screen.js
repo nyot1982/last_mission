@@ -105,7 +105,6 @@ function gameLoadScreen (screen)
         gameGround.push (new ground ("menu", "black", 0, 0, canvasWidth, canvasHeight));
         for (var skin in skins)
         {
-            //console.log (skins [skin]);
             gameShips.push (new ship (null, "skin" + skin, x, y - 23, 50));
             gameText.push (new component ("text", skins [skin].name, "white", x, y, "center", 8, 80));
             x += 100;
