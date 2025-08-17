@@ -221,23 +221,23 @@
                         </div>
                         <div id="gameTab-keyboard" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
-                                <p><span class="fa fa-up key"></span> Move forward</p>
-                                <p><span class="fa fa-down key"></span> Move backward</p>
+                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="fa fa-up key"></span> Move forward</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
+                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="fa fa-down key"></span> Move backward</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
                             </div>
                             <div class="col">
-                                <p><span class="fa fa-left key"></span> Turn left</p>
-                                <p><span class="key">Z</span> Strafe left</p>
+                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="fa fa-left key"></span> Turn left</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
+                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="key">Z</span> Strafe left</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
                             </div>
                             <div class="col">
-                                <p><span class="fa fa-right key"></span> Turn right</p>
-                                <p><span class="key">X</span> Strafe right</p>
+                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="fa fa-right key"></span> Turn right</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
+                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="key">X</span> Strafe right</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
                             </div>
                             <div class="col">
-                                <p><span class="key" style="width: 5em; padding: 0;"><span class="fa fa-left-long-to-line" style="display: block;"></span><span class="fa fa-right-long-to-line" style="display: block;"></span></span> Fire mode</p>
-                                <p><span class="fa fa-horizontal-rule key" style="width: 8em;"></span> Fire</p>
+                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="key" style="width: 5em; padding: 0;"><span class="fa fa-left-long-to-line" style="display: block;"></span><span class="fa fa-right-long-to-line" style="display: block;"></span></span> Fire mode</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
+                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="fa fa-horizontal-rule key" style="width: 8em;"></span> Fire</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
                             </div>
                             <div class="col">
-                                <p><span class="key2" style="width: 4.5em;">Ctrl</span> Take off / Land</p>
+                                <p><a href="javascript: changeControl ();" title="Change key" class="changeControl"><span class="key2" style="width: 4.5em;">Ctrl</span> Take off / Land</a> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a></p>
                                 <p><span class="key2">Esc</span> Menu</p>
                             </div>
                         </div>

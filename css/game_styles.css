@@ -900,6 +900,16 @@ a.interaction
 {
     margin: 1em 0.5em 0 0.5em;
 }
+.keys .keysContent .tabContent a.changeControl
+{
+    color: var(--color5);
+    text-decoration: none;
+}
+.keys .keysContent .tabContent a.changeControl:hover
+{
+    outline: solid 2px var(--color6);
+    outline-offset: 2px;
+}
 .keys .keysContent .tabContent .gamepad,
 .keys .keysContent .tabContent .joystick
 {

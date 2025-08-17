@@ -208,24 +208,6 @@ var fpsMonitor = false,
         },
         {
             screen: ["confirm"],
-            action: "confirm_no",
-            keyboard:
-            {
-                keys: [78] // N
-            },
-            gamepad:
-            {
-                buttons: [8], // Select
-                axes: []
-            },
-            joystick:
-            {
-                buttons: [0],
-                axes: []
-            }
-        },
-        {
-            screen: ["confirm"],
             action: "confirm_yes",
             keyboard:
             {
@@ -239,6 +221,24 @@ var fpsMonitor = false,
             joystick:
             {
                 buttons: [1],
+                axes: []
+            }
+        },
+        {
+            screen: ["confirm"],
+            action: "confirm_no",
+            keyboard:
+            {
+                keys: [78] // N
+            },
+            gamepad:
+            {
+                buttons: [8], // Select
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [0],
                 axes: []
             }
         },
