@@ -165,15 +165,9 @@
                             <p><span class="fa fa-fw fa-volume optionsIcon" title="Sound"></span> <span class="fa fa-caret-right e1"></span> <span id="sound">On</span></p>
                             <p><span class="fa fa-fw fa-music optionsIcon" title="Music"></span> <span class="fa fa-caret-right e1"></span> <span id="music">On</span></p>
                         </div>
-                        <div id="fps_monitor" class="cont-cols no-margin">
-                            <div class="col right">
-                                <div>frame rate:&nbsp;</div>
-                                <div>frame time:&nbsp;</div>
-                            </div>
-                            <div class="col left">
-                                <div id="frame_rate">0 fps</div>
-                                <div id="frame_time">0 ms</div>
-                            </div>
+                        <div id="fps_monitor">
+                            frame rate: <span id="frame_rate">0</span> fps<br>
+                            frame time: <span id="frame_time">0</span> ms
                         </div>
                     </div>
                 </div>

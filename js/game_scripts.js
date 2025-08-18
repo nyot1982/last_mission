@@ -1,4 +1,10 @@
-var fpsMonitor = false,
+var fpsMonitor =
+    {
+        timer: 0,
+        frame: 0,
+        fps: 0,
+        ms: 0
+    },
     canvasWidth = 1020,
     canvasHeight = 500,
     enemies = 0,
@@ -555,8 +561,6 @@ var fpsMonitor = false,
                 }
             );
             this.frame = 0;
-            this.fps = 0;
-            this.timer = Date.now ();
             this.centerPoint = 
             {
                 x: canvasWidth / 2,
@@ -610,12 +614,7 @@ $(document).ready (function ()
             gameMusic.active = localStorage.gameMusic == 1 ? true : false;
             document.getElementById ("music").innerHTML = gameMusic.active ? "On" : "Off";
         }
-        if (typeof (localStorage.fpsMonitor) !== "undefined" && localStorage.fpsMonitor != "")
-        {
-            fpsMonitor = localStorage.fpsMonitor == 1 ? true : false;
-            if (fpsMonitor) $("#fps_monitor").addClass ("active");
-            else $("#fps_monitor").removeClass ("active");
-        }
+        if (typeof (localStorage.fpsMonitor) !== "undefined" && localStorage.fpsMonitor == 1) fpsHud ("toggle");
     }
     gameLoadScreen ("start");
     gameArea.start ();
@@ -853,18 +852,7 @@ function updateGameArea ()
         console.log ('players (' + players.length + ') =', players);
         console.log ('gameShips (' + gameShips.length + ') =', gameShips);
     }*/
-    if (fpsMonitor)
-    {
-        var timer = Date.now () - gameArea.timer;
-        if (timer >= 1000)
-        {
-            document.getElementById ("frame_rate").innerHTML = (gameArea.frame - gameArea.fps) + " fps";
-            var ms = Math.round (1000 / (gameArea.frame - gameArea.fps));
-            document.getElementById ("frame_time").innerHTML = (isFinite (ms) ? ms : 0) + " ms";
-            gameArea.fps = gameArea.frame;
-            gameArea.timer = Date.now ();
-        }
-    }
+    if (fpsMonitor.timer > 0) fpsHud ("update");
     controls ();
     var mapHud = document.getElementById ("mapHud");
     mapHud.innerHTML = '<table cellspacing="0"><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></table>';

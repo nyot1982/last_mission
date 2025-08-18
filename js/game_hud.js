@@ -334,6 +334,40 @@ function gameModeHud (gameMode)
     );
 }
 
+function fpsHud (action)
+{
+    if (action == "toggle")
+    {
+        if ($("#fps_monitor").hasClass ("active"))
+        {
+            $("#fps_monitor").removeClass ("active");
+            action = 0;
+            fpsMonitor.timer = 0;
+            fpsMonitor.frame = 0;
+            fpsMonitor.fps = 0;
+            fpsMonitor.ms = 0;
+        }
+        else
+        {
+            $("#fps_monitor").addClass ("active");
+            action = 1;
+            fpsMonitor.timer = Date.now ();
+            fpsMonitor.frame = gameArea.frame;
+        }
+        if (typeof (Storage) === "undefined") alert ("This browser does not support local web storage.");
+        else localStorage.fpsMonitor = action;
+    }
+    else if (action == "update" && Date.now () - fpsMonitor.timer >= 1000)
+    {
+        fpsMonitor.fps = gameArea.frame - fpsMonitor.frame;
+        fpsMonitor.ms = Math.round (1000 / fpsMonitor.fps);
+        document.getElementById ("frame_rate").innerHTML = fpsMonitor.fps;
+        document.getElementById ("frame_time").innerHTML = fpsMonitor.ms;
+        fpsMonitor.frame = gameArea.frame;
+        fpsMonitor.timer = Date.now ();
+    }
+}
+
 function changeTab (newTab)
 {
     if (gameTab != newTab)

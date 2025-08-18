@@ -608,18 +608,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
                             );
                         break;
                         case "FPS Monitor":
-                            if (fpsMonitor)
-                            {
-                                $("#fps_monitor").removeClass ("active");
-                                fpsMonitor = false;
-                            }
-                            else
-                            {
-                                $("#fps_monitor").addClass ("active");
-                                fpsMonitor = true;
-                            }
-                            if (typeof (Storage) === "undefined") alert ("This browser does not support local web storage.");
-                            else localStorage.fpsMonitor = fpsMonitor ? 1 : 0;
+                            fpsHud ("toggle");
                         break;
                         case "High Scores":
                             setTimeout
