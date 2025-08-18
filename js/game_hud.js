@@ -346,6 +346,8 @@ function fpsHud (action)
             fpsMonitor.frame = 0;
             fpsMonitor.fps = 0;
             fpsMonitor.ms = 0;
+            document.getElementById ("frame_rate").innerHTML = 0;
+            document.getElementById ("frame_time").innerHTML = 0;
         }
         else
         {
