@@ -166,8 +166,8 @@
                             <p><span class="fa fa-fw fa-music optionsIcon" title="Music"></span> <span class="fa fa-caret-right e1"></span> <span id="music">On</span></p>
                         </div>
                         <div id="fps_monitor">
-                            frame rate: <span id="frame_rate">0</span> fps<br>
-                            frame time: <span id="frame_time">0</span> ms
+                            frame rate: <span id="frame_rate">0</span> <span title="Frames per second" style="cursor: default;">fps</span><br>
+                            frame time: <span id="frame_time">0</span> <span title="Milliseconds" style="cursor: default;">ms</span>
                         </div>
                     </div>
                 </div>

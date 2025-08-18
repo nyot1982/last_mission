@@ -1147,11 +1147,14 @@ input[type="submit"]:hover
 }
 #fps_monitor
 {
+    text-align: left;
+    display: inline-block;
     margin-top: 1em;
     border: solid 1px var(--color5);
     border-radius: 1em;
     padding: 0.75em;
     word-spacing: -0.75em;
+    line-height: 1.5em;
     transition: all 1s ease 0s;
     transform: scale(0);
 }

@@ -354,7 +354,7 @@ function fpsHud (action)
             $("#fps_monitor").addClass ("active");
             action = 1;
             fpsMonitor.timer = Date.now ();
-            fpsMonitor.frame = gameArea.frame;
+            fpsMonitor.frame = gameArea.frame || 0;
         }
         if (typeof (Storage) === "undefined") alert ("This browser does not support local web storage.");
         else localStorage.fpsMonitor = action;
