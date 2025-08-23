@@ -845,7 +845,7 @@ function fetchLoad (cont, param)
                         arr [index] = item * 1;
                     }
                 }
-                players [0].xp = players [0].xp * 1; 
+                players [0].xp = players [0].xp * 1;
                 const json =
                 {
                     action: "connect",
@@ -875,6 +875,11 @@ function fetchLoad (cont, param)
                 if (responseJSON ["email"]["error"]) gameAlert.push (new component ("text", responseJSON ["email"]["error"], "red", 745, 370, "left", 10));
                 else if (responseJSON ["email"]["ok"]) gameAlert.push (new component ("text", responseJSON ["email"]["ok"], "#0C0", 745, 370, "left", 10));
                 changeTab ("alert");
+            }
+            else if (cont == "unlock_skin")
+            {
+                players [0].skins.push (responseJSON ["skin"]);
+                gameText [responseJSON ["skin"]].color = "#0C0";
             }
             else document.getElementById (cont).innerHTML += responseJSON [cont];
         }

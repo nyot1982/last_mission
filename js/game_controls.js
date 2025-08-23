@@ -353,12 +353,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     gameShips [skinSel].turning (-1);
                 break;
                 case 'unlock_skin':
-                    if (players [0].skins.findIndex (skin => skin == skinSel) == -1)
-                    {
-                        players [0].skins.push (skinSel);
-                        gameText [skinSel].color = "#0C0";
-                        alert ("update mysql");
-                    }
+                    if (players [0].skins.findIndex (skin => skin == skinSel) == -1 && players [0].skins.length < players [0].xp / 100) fetchLoad ('unlock_skin', 'id=' + players [0].id + '&skins=' + players [0].skins.join (",") + '&skin=' + skinSel);
                 break;
                 case 'skins_exit':
                     $("#blackScreen").fadeIn (1000);
@@ -366,9 +361,9 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     (
                         () =>
                         {
-                            gameLoadScreen ("input");
+                            gameLoadScreen ("menu");
                             menuShip.y+=75;
-                            var form = document.getElementById ("player");
+                            form = document.getElementById ("player");
                             form.style.display = "block";
                             form.elements [0].focus ();
                         },
