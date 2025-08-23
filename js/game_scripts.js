@@ -66,44 +66,9 @@ var fpsMonitor =
     storedPlayers = [],
     playerColors = ["#A5FF9A", "#FF9AA5", "#9AA5FF", "#FFFF9A", "#9AFFFF", "#9A9A9A", "#FF9AFF", "#FFFFFF"],
     skins = [],
+    skinSel = 0,
     userActions =
     [
-        {
-            screen: ["input"],
-            action: "input_change",
-            keyboard:
-            {
-                keys: [9] // Tabulator
-            },
-            gamepad:
-            {
-                buttons: [],
-                axes: []
-            },
-            joystick:
-            {
-                buttons: [],
-                axes: []
-            }
-        },
-        {
-            screen: ["input"],
-            action: "input_exit",
-            keyboard:
-            {
-                keys: [27] // Scape
-            },
-            gamepad:
-            {
-                buttons: [2, 8], // X, Select
-                axes: []
-            },
-            joystick:
-            {
-                buttons: [2],
-                axes: []
-            }
-        },
         {
             screen: ["menu", "modal_menu"],
             action: "strafe_up",
@@ -245,6 +210,150 @@ var fpsMonitor =
             joystick:
             {
                 buttons: [0],
+                axes: []
+            }
+        },
+                {
+            screen: ["input"],
+            action: "input_change",
+            keyboard:
+            {
+                keys: [9] // Tabulator
+            },
+            gamepad:
+            {
+                buttons: [],
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [],
+                axes: []
+            }
+        },
+        {
+            screen: ["input"],
+            action: "input_exit",
+            keyboard:
+            {
+                keys: [27] // Scape
+            },
+            gamepad:
+            {
+                buttons: [2, 8], // X, Select
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [2],
+                axes: []
+            }
+        },
+        {
+            screen: ["skins"],
+            action: "skin_left",
+            keyboard:
+            {
+                keys: [37] // Left
+            },
+            gamepad:
+            {
+                buttons: [10], // Left
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [],
+                axes: [0]
+            }
+        },
+        {
+            screen: ["skins"],
+            action: "skin_right",
+            keyboard:
+            {
+                keys: [39] // Right
+            },
+            gamepad:
+            {
+                buttons: [11], // Right
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [],
+                axes: [0]
+            }
+        },
+        {
+            screen: ["skins"],
+            action: "skin_up",
+            keyboard:
+            {
+                keys: [40] // Up
+            },
+            gamepad:
+            {
+                buttons: [13], // Up
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [],
+                axes: [1]
+            }
+        },
+        {
+            screen: ["skins"],
+            action: "skin_down",
+            keyboard:
+            {
+                keys: [38] // Down
+            },
+            gamepad:
+            {
+                buttons: [12], // Down
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [],
+                axes: [1]
+            }
+        },
+        {
+            screen: ["skins"],
+            action: "unlock_skin",
+            keyboard:
+            {
+                keys: [13, 32] // Enter, Space
+            },
+            gamepad:
+            {
+                buttons: [0], // A
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [0],
+                axes: []
+            }
+        },
+        {
+            screen: ["skins"],
+            action: "skins_exit",
+            keyboard:
+            {
+                keys: [27] // Scape
+            },
+            gamepad:
+            {
+                buttons: [2, 8], // X, Select
+                axes: []
+            },
+            joystick:
+            {
+                buttons: [2],
                 axes: []
             }
         },
@@ -724,9 +833,14 @@ function fetchLoad (cont, param)
             {
                 gameText.pop ();
                 players [0] = responseJSON ["player"];
-                if (players [0].color.substring (0, 4) == "skin") players [0].skin = players [0].color.substring (4, players [0].color.length);
+                if (players [0].color.substring (0, 4) == "skin") players [0].skin = players [0].color.substring (4, players [0].color.length) * 1;
                 else players [0].skin = -1;
                 players [0].skins = players [0].skins.split (",");
+                players [0].skins.forEach (myFunction);
+                function myFunction (item, index, arr)
+                {
+                    arr [index] = item * 1;
+                }
                 const json =
                 {
                     action: "connect",

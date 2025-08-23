@@ -231,6 +231,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
             if (document.getElementById ("players").style.display == "block" || document.getElementById ("player").style.display == "block" || document.getElementById ("sign").style.display == "block") var screen = "input";
             else if (menuShip != null && gameModal == null) var screen = "menu";
         }
+        else if (gameScreen == "skins") var screen = "skins";
         else if (gameScreen == "game" && gameShips.length > 0 && gameModal == null) var screen = "game";
         else if (gameModal != null) var screen = "modal_" + gameModal;
 
@@ -241,6 +242,15 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
         {
             switch (userActions [userAction].action)
             {
+                case 'strafe_down':
+                    menuShip.strafing (-bt_value);
+                break;
+                case 'strafe_up':
+                    menuShip.strafing (bt_value);
+                break;
+                case 'fire_menu':
+                    menuShip.firing (true);
+                break;
                 case 'confirm_no':
                     gameConfirm = [];
                     changeTab ("menu");
@@ -310,14 +320,79 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     }
                     else gameLoadScreen ("menu");
                 break;
-                case 'fire_menu':
-                    menuShip.firing (true);
+                case 'skin_left':
+                case 'skin_right':
+                case 'skin_down':
+                case 'skin_up':
+                    if (players [0].skins.findIndex (skin => skin == skinSel) > -1) gameText [skinSel].color = "white";
+                    else gameText [skinSel].color = "yellow";
+                    gameShips [skinSel].turning (0);
+                    gameShips [skinSel].heading = 0;
+                    if (userActions [userAction].action == "skin_left")
+                    {     
+                        skinSel--;
+                        if (skinSel == -1) skinSel = skins.length - 1;
+                    }
+                    else if (userActions [userAction].action == "skin_right")
+                    {
+                        skinSel++;
+                        if (skinSel == skins.length) skinSel = 0;
+                    }
+                    else if (userActions [userAction].action == "skin_down")
+                    {
+                        skinSel-=10;
+                        if (skinSel < 0) skinSel = skins.length + skinSel;
+                    }
+                    else if (userActions [userAction].action == "skin_up")
+                    {
+                        skinSel+=10;
+                        if (skinSel >= skins.length) skinSel = skinSel - skins.length;
+                    }
+                    if (players [0].skins.findIndex (skin => skin == skinSel) > -1) gameText [skinSel].color = "green";
+                    else gameText [skinSel].color = "red";
+                    gameShips [skinSel].turning (-1);
                 break;
-                case 'strafe_down':
-                    menuShip.strafing (-bt_value);
+                case 'unlock_skin':
+                    if (players [0].skins.findIndex (skin => skin == skinSel) == -1)
+                    {
+                        players [0].skins.push (skinSel);
+                        gameText [skinSel].color = "green";
+                        alert ("update mysql");
+                    }
                 break;
-                case 'strafe_up':
-                    menuShip.strafing (bt_value);
+                case 'skins_exit':
+                    $("#blackScreen").fadeIn (1000);
+                    setTimeout
+                    (
+                        () =>
+                        {
+                            gameLoadScreen ("menu");
+                            menuShip.y+=75;
+                            fetchLoad ('sign_in', 'email=' + players [0].email + '&password=' + players [0].password);
+                        },
+                        1000
+                    );
+                break;
+                case 'open_modal':
+                    gameOpenModal ("menu");
+                break;
+                case 'close_exit':
+                    $("#blackScreen").fadeIn (1000);
+                    setTimeout
+                    (
+                        () =>
+                        {
+                            gameLoadScreen ("menu");
+                        },
+                        1000
+                    );
+                break;
+                case 'close_continue':
+                    gameOpenModal ("menu");
+                    gameArea.play ();
+                break;
+                case 'close_modal':
+                    gameCloseModal ();
                 break;
                 case 'change_weapon':
                     gameShips [gameShip].changeWeapon ();
@@ -343,27 +418,6 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                 break;
                 case 'strafe_left':
                     gameShips [gameShip].strafing (-bt_value);
-                break;
-                case 'open_modal':
-                    gameOpenModal ("menu");
-                break;
-                case 'close_exit':
-                    $("#blackScreen").fadeIn (1000);
-                    setTimeout
-                    (
-                        () =>
-                        {
-                            gameLoadScreen ("menu");
-                        },
-                        1000
-                    );
-                break;
-                case 'close_continue':
-                    gameOpenModal ("menu");
-                    gameArea.play ();
-                break;
-                case 'close_modal':
-                    gameCloseModal ();
                 break;
             }
         }

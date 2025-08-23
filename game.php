@@ -174,7 +174,7 @@
                 <div class="keys">
                     <div class="keysContent">
                         <div class="tabs">
-                            <a id="menu" href="javascript: changeTab ('menu');" class="tab active">MENU</a><a id="alert" href="javascript: changeTab ('alert');" class="tab">ALERT</a><a id="confirm" href="javascript: changeTab ('confirm');" class="tab">CONFIRM</a><a id="input" href="javascript: changeTab ('input');" class="tab">INPUT</a><a id="game" href="javascript: changeTab ('game');" class="tab">GAME</a><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="margin: 0 0 7px 4px;"></a>
+                            <a id="menu" href="javascript: changeTab ('menu');" class="tab active">MENU</a><a id="alert" href="javascript: changeTab ('alert');" class="tab">ALERT</a><a id="confirm" href="javascript: changeTab ('confirm');" class="tab">CONFIRM</a><a id="input" href="javascript: changeTab ('input');" class="tab">INPUT</a><a id="skins" href="javascript: changeTab ('skins');" class="tab">SKINS</a><a id="game" href="javascript: changeTab ('game');" class="tab">GAME</a><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="margin: 0 0 7px 4px;"></a>
                             <div class="tab fixed"><a id="keyboard" href="javascript: changeControl ('keyboard', null);" class="fa fa-keyboard active" title="Show keyboard controls"></a><a id="gamepad" href="javascript: changeControl ('gamepad', null);" class="fa fa-gamepad-modern" style="display: none;"title="Show gamepad controls"></a><a id="joystick" href="javascript: changeControl ('joystick', null);" class="fa fa-joystick" style="display: none;" title="Show joystick controls"></a></div><a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="position: absolute; right: 6px; bottom: 7px;"></a>
                         </div>
                         <div id="menuTab-keyboard" class="tabContent cont-cols margin-1 active">
@@ -185,6 +185,18 @@
                             <div class="col">
                                 <p><span class="fa fa-turn-down-left key"></span> / <span class="fa fa-horizontal-rule key" style="width: 8em;"></span> Select</p>
                                 <p><span class="key2">Esc</span> Back / Game</p>
+                            </div>
+                        </div>
+                        <div id="alertTab-keyboard" class="tabContent cont-cols margin-1 toggle">
+                            <div class="col">
+                                <p>&nbsp;</p>
+                                <p><span class="key3">Any key</span> Continue</p>
+                            </div>
+                        </div>
+                        <div id="confirmTab-keyboard" class="tabContent cont-cols margin-1 toggle">
+                            <div class="col">
+                                <p><span class="key">Y</span> Yes</p>
+                                <p><span class="key">N</span> No</p>
                             </div>
                         </div>
                         <div id="inputTab-keyboard" class="tabContent cont-cols margin-1 toggle">
@@ -201,16 +213,13 @@
                                 <p><span class="fa fa-left key"></span> / <span class="fa fa-right key"></span> / <span class="fa fa-down key"></span> / <span class="fa fa-up key"></span> Select</p>
                             </div>
                         </div>
-                        <div id="confirmTab-keyboard" class="tabContent cont-cols margin-1 toggle">
+                        <div id="skinsTab-keyboard" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
-                                <p><span class="key">Y</span> Yes</p>
-                                <p><span class="key">N</span> No</p>
+                                <p><span class="fa fa-turn-down-left key"></span> / <span class="fa fa-horizontal-rule key" style="width: 8em;"></span> Unlock</p>
+                                <p><span class="key2">Esc</span> Back</p>
                             </div>
-                        </div>
-                        <div id="alertTab-keyboard" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
-                                <p>&nbsp;</p>
-                                <p><span class="key3">Any key</span> Continue</p>
+                                <p><span class="fa fa-left key"></span> / <span class="fa fa-right key"></span> / <span class="fa fa-down key"></span> / <span class="fa fa-up key"></span> Select</p>
                             </div>
                         </div>
                         <div id="gameTab-keyboard" class="tabContent cont-cols margin-1 toggle"></div>
@@ -222,6 +231,19 @@
                             <div class="col">
                                 <p><span class="button green">A</span> Select</p>
                                 <p><span class="button2">Start</span> Back / Game</p>
+                            </div>
+                        </div>
+
+                        <div id="alertTab-gamepad" class="tabContent cont-cols margin-1 toggle">
+                            <div class="col">
+                                <p>&nbsp;</p>
+                                <p><span class="button2 silver">Any button</span> Continue</p>
+                            </div>
+                        </div>
+                        <div id="confirmTab-gamepad" class="tabContent cont-cols margin-1 toggle">
+                            <div class="col">
+                                <p><span class="button green">A</span> Yes</p>
+                                <p><span class="button red">B</span> No</p>
                             </div>
                         </div>
                         <div id="inputTab-gamepad" class="tabContent cont-cols margin-1 toggle">
@@ -238,16 +260,13 @@
                                 <p><span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block;"></span><span class="fa fa-square" style="color: red;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block;"></span></span> / <span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="color: red;"></span><span class="fa fa-square" style="display: block;"></span></span> / <span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block; color: red;"></span></span> / <span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block; color: red;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block;"></span></span> Select</p>
                             </div>
                         </div>
-                        <div id="confirmTab-gamepad" class="tabContent cont-cols margin-1 toggle">
+                        <div id="skinsTab-gamepad" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
-                                <p><span class="button green">A</span> Yes</p>
-                                <p><span class="button red">B</span> No</p>
+                                <p><span class="button2">Start</span> Unlock</p>
+                                <p><span class="button green">A</span> Back</p>
                             </div>
-                        </div>
-                        <div id="alertTab-gamepad" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
-                                <p>&nbsp;</p>
-                                <p><span class="button2 silver">Any button</span> Continue</p>
+                                <p><span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block;"></span><span class="fa fa-square" style="color: red;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block;"></span></span> / <span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="color: red;"></span><span class="fa fa-square" style="display: block;"></span></span> / <span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block; color: red;"></span></span> / <span class="button silver" style="padding: 0; line-height: 0; vertical-align: middle;"><span class="fa fa-square" style="display: block; color: red;"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square"></span><span class="fa fa-square" style="display: block;"></span></span> Select</p>
                             </div>
                         </div>
                         <div id="gameTab-gamepad" class="tabContent cont-cols margin-1 toggle"></div>
@@ -259,6 +278,18 @@
                             <div class="col">
                                 <p><span class="button5">LT</span> / <span class="button6">RT</span> Select</p>
                                 <p><span class="button2">Start</span> Back / Game</p>
+                            </div>
+                        </div>
+                        <div id="alertTab-joystick" class="tabContent cont-cols margin-1 toggle">
+                            <div class="col">
+                                <p>&nbsp;</p>
+                                <p><span class="button2 silver">Any button</span> Continue</p>
+                            </div>
+                        </div>
+                        <div id="confirmTab-joystick" class="tabContent cont-cols margin-1 toggle">
+                            <div class="col">
+                                <p><span class="button green">A</span> Yes</p>
+                                <p><span class="button red">B</span> No</p>
                             </div>
                         </div>
                         <div id="inputTab-joystick" class="tabContent cont-cols margin-1 toggle">
@@ -275,16 +306,13 @@
                                 <p><span class="fa fa-left key"></span> / <span class="fa fa-right key"></span> / <span class="fa fa-down key"></span> / <span class="fa fa-up key"></span> Select</p>
                             </div>
                         </div>
-                        <div id="confirmTab-joystick" class="tabContent cont-cols margin-1 toggle">
+                        <div id="skinsTab-joystick" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
-                                <p><span class="button green">A</span> Yes</p>
-                                <p><span class="button red">B</span> No</p>
+                                <p><span class="fa fa-turn-down-left key"></span> Unlock</p>
+                                <p><span class="key2">Esc</span> Back</p>
                             </div>
-                        </div>
-                        <div id="alertTab-joystick" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
-                                <p>&nbsp;</p>
-                                <p><span class="button2 silver">Any button</span> Continue</p>
+                                <p><span class="fa fa-left key"></span> / <span class="fa fa-right key"></span> / <span class="fa fa-down key"></span> / <span class="fa fa-up key"></span> Select</p>
                             </div>
                         </div>
                         <div id="gameTab-joystick" class="tabContent cont-cols margin-1 toggle"></div>
