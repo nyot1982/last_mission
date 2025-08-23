@@ -548,7 +548,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     else mapHud ("mapItem", this.x, this.y, this.heading);
                 }
                 ctx = gameArea.ctx;
-                if (gameScreen == "skins" && players [0].skins.findIndex (skin => skin == this.colors.skin) == -1) ctx.filter = "grayscale(1) blur(1px)";
                 ctx.shadowColor = "transparent";
                 ctx.shadowBlur = 3;
                 ctx.shadowOffsetX = this.shadowOffset;
@@ -557,7 +556,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 ctx.translate (this.x, this.y);
                 ctx.rotate (this.radians);
                 ctx.translate (-(this.width / 2), -(this.height / 2));
-                if (this.z < 0) ctx.globalAlpha = 0.5;
+                if (gameScreen == "skins" && players [0].skins.findIndex (skin => skin == this.colors.skin) == -1) ctx.globalAlpha = 0.25;
+                else if (this.z < 0) ctx.globalAlpha = 0.5;
                 else ctx.globalAlpha = 1;
                 ctx.transform ((this.z + 50) / 100, 0, 0, (this.z + 50) / 100, (this.width / 2) - (this.width * (this.z + 50) / 100 / 2), (this.height / 2) - (this.height * (this.z + 50) / 100 / 2));
                 this.paths = [];
@@ -812,7 +812,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     else this.colors.lightFill = "#7B797B";
                 }
                 else if (this.z == 0) this.colors.lightFill = "#7B797B";
-                ctx.filter = "none";
             }
             if (this.name)
             {

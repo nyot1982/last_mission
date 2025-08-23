@@ -835,11 +835,15 @@ function fetchLoad (cont, param)
                 players [0] = responseJSON ["player"];
                 if (players [0].color.substring (0, 4) == "skin") players [0].skin = players [0].color.substring (4, players [0].color.length) * 1;
                 else players [0].skin = -1;
-                players [0].skins = players [0].skins.split (",");
-                players [0].skins.forEach (myFunction);
-                function myFunction (item, index, arr)
+                if (players [0].skins == "") players [0].skins = []; 
+                else 
                 {
-                    arr [index] = item * 1;
+                    players [0].skins = players [0].skins.split (",");
+                    players [0].skins.forEach (Str2Int);
+                    function Str2Int (item, index, arr)
+                    {
+                        arr [index] = item * 1;
+                    }
                 }
                 const json =
                 {

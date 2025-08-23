@@ -368,7 +368,9 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         {
                             gameLoadScreen ("menu");
                             menuShip.y+=75;
-                            fetchLoad ('sign_in', 'email=' + players [0].email + '&password=' + players [0].password);
+                            var form = document.getElementById ("player");
+                            form.style.display = "block";
+                            form.elements [0].focus ();
                         },
                         1000
                     );
