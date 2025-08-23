@@ -610,19 +610,19 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.paths.ship.addPath (this.paths.engine2);
                 }
                 ctx.lineWidth = 2;
-                if (this.colors.shipStroke != null) ctx.strokeStyle = this.colors.shipStroke;
+                if (this.colors.shipStroke != null) ctx.strokeStyle = this.colors.shipStroke + "CC";
                 else ctx.strokeStyle = this.colors.negative + "CC";
                 ctx.stroke (this.paths.ship);
                 if (this.status.engine1)
                 {
-                    if (this.colors.engine1Stroke != null) ctx.strokeStyle = this.colors.engine1Stroke + "CC";
-                    else ctx.strokeStyle = this.colors.shipFill + "CC";
+                    if (this.colors.engine1Stroke != null) ctx.strokeStyle = this.colors.engine1Stroke + "88";
+                    else ctx.strokeStyle = this.colors.shipFill + "88";
                     ctx.stroke (this.paths.engine1);
                 }
                 if (this.status.engine2)
                 {
-                    if (this.colors.engine2Stroke != null) ctx.strokeStyle = this.colors.engine2Stroke + "CC";
-                    else ctx.strokeStyle = this.colors.shipFill + "CC";
+                    if (this.colors.engine2Stroke != null) ctx.strokeStyle = this.colors.engine2Stroke + "88";
+                    else ctx.strokeStyle = this.colors.shipFill + "88";
                     ctx.stroke (this.paths.engine2);
                 }
                 if (this.z > 0 && gameScreen != "skins")
