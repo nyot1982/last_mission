@@ -348,7 +348,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         skinSel+=10;
                         if (skinSel >= skins.length) skinSel = skinSel - skins.length;
                     }
-                    if (players [0].skins.findIndex (skin => skin == skinSel) > -1) gameText [skinSel].color = "green";
+                    if (players [0].skins.findIndex (skin => skin == skinSel) > -1) gameText [skinSel].color = "#0C0";
                     else gameText [skinSel].color = "red";
                     gameShips [skinSel].turning (-1);
                 break;
@@ -356,7 +356,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     if (players [0].skins.findIndex (skin => skin == skinSel) == -1)
                     {
                         players [0].skins.push (skinSel);
-                        gameText [skinSel].color = "green";
+                        gameText [skinSel].color = "#0C0";
                         alert ("update mysql");
                     }
                 break;
@@ -366,7 +366,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     (
                         () =>
                         {
-                            gameLoadScreen ("menu");
+                            gameLoadScreen ("input");
                             menuShip.y+=75;
                             var form = document.getElementById ("player");
                             form.style.display = "block";

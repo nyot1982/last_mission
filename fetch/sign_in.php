@@ -21,7 +21,7 @@
                 $player = $resultado->fetch_assoc ();
                 if ($player ['password'] != $_POST ['password']) $return ["error"] = 'password_ko';
                 else if ($player ['validated'] == 0) $return ["error"] = 'email_not_validated';
-                else $return ["player"] = [ 'id' => intval ($player ['id']), 'validated' => intval ($player ['validated']), 'email' => $player ['email'], 'name' => $player ['name'], 'password' => $player ['password'], 'color' => $player ['color'], 'skin' => null, 'skins' => $player ['skins'] ];
+                else $return ["player"] = [ 'id' => intval ($player ['id']), 'validated' => intval ($player ['validated']), 'email' => $player ['email'], 'name' => $player ['name'], 'password' => $player ['password'], 'color' => $player ['color'], 'skin' => null, 'skins' => $player ['skins'], 'xp' => $player ['xp'] ];
             }
             $resultado->free ();
         }

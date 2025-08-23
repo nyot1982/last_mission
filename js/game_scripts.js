@@ -845,6 +845,7 @@ function fetchLoad (cont, param)
                         arr [index] = item * 1;
                     }
                 }
+                players [0].xp = players [0].xp * 1; 
                 const json =
                 {
                     action: "connect",
@@ -984,7 +985,7 @@ function updateGameArea ()
             for (var sound in gameSound.sounds) if (gameSound.sounds [sound].duration > 0) loadedAudio++;
             for (var music in gameMusic.musics) if (gameMusic.musics [music].duration > 0) loadedAudio++;
             gameText [1].src = "Loading audio: " + loadedAudio + "/" + (Object.keys (gameSound.sounds).length + Object.keys (gameMusic.musics).length) + " Files.";
-            gameText [1].color = "green";
+            gameText [1].color = "#0C0";
             if (loadedAudio == Object.keys (gameSound.sounds).length + Object.keys (gameMusic.musics).length)
             {
                 $("#blackScreen").fadeIn (1000);

@@ -109,7 +109,7 @@ function gameLoadScreen (screen)
             if (skin == skinSel)
             {
                 gameShips [gameShips.length - 1].turning (-1);
-                if (players [0].skins.findIndex (skin2 => skin2 == skin) > -1) color = "green";
+                if (players [0].skins.findIndex (skin2 => skin2 == skin) > -1) color = "#0C0";
                 else color = "red";
             }
             else
