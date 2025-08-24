@@ -61,6 +61,7 @@ function wssOpen ()
             form.elements [1].value = (players [0].color && players [0].color.substring (0, 4) != "skin" ? players [0].color : playerColors [0]);
             form.elements [2].innerHTML = '<option value="-1"' + (players [0].skin == -1 ? ' selected' : '') + '></option>';
             for (var i = 0; i < players [0].skins.length; i++) form.elements [2].innerHTML += '<option value="' + players [0].skins [i] + '"' + (players [0].skins [i] == players [0].skin ? ' selected' : '') + '>' + skins [players [0].skins [i]].name + '</option>';
+            form.elements [3].value = players [0].xp;
             menuShip.changeColor (players [0].color || playerColors [0]);
             changeTab ("input");
             menuShip.turning (-1);
@@ -114,6 +115,7 @@ function wssOpen ()
                             data.game_ships [game_ship].wing2Status,
                             data.game_ships [game_ship].engine1Status,
                             data.game_ships [game_ship].engine2Status,
+                            data.game_ships [game_ship].xp,
                             data.game_ships [game_ship].time
                         )
                     );
@@ -152,6 +154,7 @@ function wssOpen ()
                         gameShips [gameShip].wing2Status = data.game_ships [game_ship].wing2Status;
                         gameShips [gameShip].engine1Status = data.game_ships [game_ship].engine1Status;
                         gameShips [gameShip].engine2Status = data.game_ships [game_ship].engine2Status;
+                        gameShips [gameShip].xp = data.game_ships [game_ship].xp;
                     }
                 }
             }
@@ -265,6 +268,7 @@ function wssSend ()
                 wing2Status: gameShips [gameShip].status.wing2,
                 engine1Status: gameShips [gameShip].status.engine1,
                 engine2Status: gameShips [gameShip].status.engine2,
+                xp: gameShips [gameShip].xp,
                 time: gameShips [gameShip].time
             }
         ));

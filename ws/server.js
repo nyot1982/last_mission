@@ -190,6 +190,7 @@ const wss = createServerFrom
                                     wing2Status: true,
                                     engine1Status: true,
                                     engine2Status: true,
+                                    xp: data.xp,
                                     time: Date.now ()
                                 }
                             );
@@ -227,6 +228,7 @@ const wss = createServerFrom
                             gameShips [gameShip].wing2Status = data.wing2Status;
                             gameShips [gameShip].engine1Status = data.engine1Status;
                             gameShips [gameShip].engine2Status = data.engine2Status;
+                            gameShips [gameShip].xp = data.xp;
                             gameShips [gameShip].time = Date.now ();
                         }
                     }

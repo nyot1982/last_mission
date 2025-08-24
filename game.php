@@ -88,6 +88,7 @@
                     <select id="skin" name="skin" onchange="javascript: changeSkin (this.value);">
                         <option value="-1"></option>
                     </select> <input type="button" value="Skins" onClick="javascript: $('#blackScreen').fadeIn (1000); setTimeout (() => { gameLoadScreen ('skins'); }, 1000);"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
+                    <input id="xp" name="xp" type="hidden">
                     <input type="submit" value="Start game"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
                 </form>
                 <form id="sign" name="sign" action="javascript: void (0);" onsubmit="javascript: fetchLoad (this.action.value, 'email=' + this.email.value + '&password=' + this.password.value + (this.action.value == 'sign_up' ? '&color=' + playerColors [0] : ''));" method="POST">

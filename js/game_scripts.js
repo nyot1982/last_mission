@@ -864,7 +864,8 @@ function fetchLoad (cont, param)
                     action: "ship",
                     player_id: playerId,
                     name: players [0].name,
-                    color: players [0].color
+                    color: players [0].color,
+                    xp: players [0].xp
                 };
                 wss.send (JSON.stringify (data));       
             }

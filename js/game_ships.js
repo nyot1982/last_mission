@@ -1,4 +1,4 @@
-function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, time)
+function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, xp, time)
 {
     this.idShip = null;
     this.idControl = null;
@@ -70,6 +70,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         engine1: engine1Status || true,
         engine2: engine2Status || true
     }
+    this.xp = xp || null;
     this.time = time || null;
     this.width = 28;
     this.height = 32;
@@ -819,14 +820,20 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 if (this.ground != "snow" || this.name == players [0].name)
                 {
                     ctx.beginPath ();
-                    ctx.font = "6px PressStart2P";
-                    ctx.textAlign = "center";
                     ctx.textBaseline = "middle";
                     var textMeasure = ctx.measureText (this.name);
                     ctx.rect (this.x - textMeasure.width / 2 - 2, this.y - this.height / 2 - this.nameOffset, textMeasure.width + 4, 10);
                     ctx.fillStyle = this.colors.negative;
                     ctx.fill ();
                     ctx.fillStyle = this.colors.shipFill;
+                    if (this.xp != null)
+                    {
+                        ctx.font = "8px PressStart2P";
+                        ctx.textAlign = "right";
+                        ctx.fillText (this.xp / 100, this.x - 20, this.y - this.height / 2 - (this.nameOffset - 6) + 10);
+                    }
+                    ctx.font = "6px PressStart2P";
+                    ctx.textAlign = "center";
                     ctx.fillText (this.name, this.x, this.y - this.height / 2 - (this.nameOffset - 6));
                     if (this.name == players [0].name)
                     {
