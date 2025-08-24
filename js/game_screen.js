@@ -25,6 +25,7 @@ function gameHighScores (max_high_scores, high_scores)
 function gameLoadScreen (screen)
 {
     gameTitle = null;
+    gameXP = null;
     gameGround = [];
     modalGround = null;
     menuShip = null;

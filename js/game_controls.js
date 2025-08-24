@@ -368,6 +368,8 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                             form.elements [0].focus ();
                             form.elements [2].innerHTML = '<option value="-1"' + (players [0].skin == -1 ? ' selected' : '') + '></option>';
                             for (var i = 0; i < players [0].skins.length; i++) form.elements [2].innerHTML += '<option value="' + players [0].skins [i] + '"' + (players [0].skins [i] == players [0].skin ? ' selected' : '') + '>' + skins [players [0].skins [i]].name + '</option>';
+                            menuShip.changeColor (players [0].color || playerColors [0]);
+                            gameText.push (new component ("text", players [0].xp / 100, menuShip.colors.negative, menuShip.x, menuShip.y - 35, "center", 10, null, menuShip.colors.shipFill));
                             changeTab ("input");
                             menuShip.turning (-1);
                         },

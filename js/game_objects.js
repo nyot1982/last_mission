@@ -352,7 +352,7 @@ function item (enemy, x, y)
     }
 }
 
-function component (type, src, color, x, y, width, height, max, control, rollover, rolloverColor)
+function component (type, src, color, x, y, width, height, max, backColor, rollover, rolloverColor)
 {
     this.type = type;
     this.src = src;
@@ -369,7 +369,7 @@ function component (type, src, color, x, y, width, height, max, control, rollove
     this.width = width;
     this.height = height;
     this.max = max;
-    this.control = control;
+    this.backColor = backColor;
     this.rollover = rollover || "";
     this.rolloverColor = rolloverColor || "";
 
@@ -381,6 +381,13 @@ function component (type, src, color, x, y, width, height, max, control, rollove
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
         if (this.type == "image") ctx.drawImage (this.image, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+        else if (this.type == "rect")
+        {
+            ctx.beginPath ();
+            ctx.rect (this.x, this.y, this.width, this.height);
+            ctx.fillStyle = this.color;
+            ctx.fill ();
+        }
         else if (this.type == "circle")
         {
             ctx.beginPath ();
@@ -468,13 +475,26 @@ function component (type, src, color, x, y, width, height, max, control, rollove
             }
             else if (this.type != "type")
             {
-                ctx.fillStyle = this.color;
                 if (this.type == "text" && this.src == "usersPlaying")
                 {
+                    ctx.fillStyle = this.color;
                     ctx.fillText (usersPlaying, this.x, this.y + 1);
                     var textMeasure = ctx.measureText (usersPlaying);
                 }
-                else ctx.fillText (this.src, this.x, this.y + 1, this.max);
+                else
+                {
+                    if (this.backColor != null)
+                    {
+                        ctx.beginPath ();
+                        var textMeasure = ctx.measureText (this.src);
+                        ctx.roundRect (this.x - textMeasure.width / 2, this.y - this.height / 2 - 2, textMeasure.width + 1, this.height + 4, Math.PI);
+                        ctx.fillStyle = this.backColor;
+                        ctx.fill ();
+                    }
+                    ctx.fillStyle = this.color;
+                    if (this.max != null) ctx.fillText (this.src, this.x, this.y + 1, this.max);
+                    else ctx.fillText (this.src, this.x, this.y + 1);
+                }
             }
         }
         if (this.rollover != "")

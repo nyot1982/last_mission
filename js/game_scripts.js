@@ -13,6 +13,7 @@ var fpsMonitor =
     gameScreen = null,
     gameModal = null,
     gameTitle = null,
+    gameXP = null,
     gameMap =
     {
         name: null,
@@ -951,6 +952,8 @@ function changeSkin (skin)
 {
     if (skin == -1) menuShip.changeColor (document.getElementById ("color").value);
     else menuShip.changeColor ('skin' + skin);
+    gameXP.color = menuShip.colors.shipFill;
+    gameXP.backColor = menuShip.colors.negative;
 } 
 
 function rolloverLoad (text, color)
@@ -1040,6 +1043,7 @@ function updateGameArea ()
         for (var shot in menuShots) menuShots [shot].update ();
         menuHits = menuHits.filter (hit => !hit.reverse || hit.r > 0);
         if (gameTitle) gameTitle.update ();
+        if (gameXP) gameXP.update ();
         for (var text in gameText)
         {
             if (gameText [text]) gameText [text].update (text);

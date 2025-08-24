@@ -819,21 +819,25 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 ctx.shadowColor = "transparent";
                 if (this.ground != "snow" || this.name == players [0].name)
                 {
-                    ctx.beginPath ();
+                    ctx.font = "6px PressStart2P";
+                    ctx.textAlign = "center";
                     ctx.textBaseline = "middle";
+                    if (this.xp != null)
+                    {
+                        ctx.beginPath ();
+                        textMeasure = ctx.measureText (this.xp / 100);
+                        ctx.rect (this.x - textMeasure.width / 2, this.y - this.height / 2 - this.nameOffset - 10, textMeasure.width, 10);
+                        ctx.fillStyle = this.colors.shipFill;
+                        ctx.fill ();
+                        ctx.fillStyle = this.colors.negative;
+                        ctx.fillText (this.xp / 100, this.x, this.y - this.height / 2 - (this.nameOffset - 6) - 10);
+                    }
+                    ctx.beginPath ();
                     var textMeasure = ctx.measureText (this.name);
                     ctx.rect (this.x - textMeasure.width / 2 - 2, this.y - this.height / 2 - this.nameOffset, textMeasure.width + 4, 10);
                     ctx.fillStyle = this.colors.negative;
                     ctx.fill ();
                     ctx.fillStyle = this.colors.shipFill;
-                    if (this.xp != null)
-                    {
-                        ctx.font = "8px PressStart2P";
-                        ctx.textAlign = "right";
-                        ctx.fillText (this.xp / 100, this.x - 20, this.y - this.height / 2 - (this.nameOffset - 6) + 10);
-                    }
-                    ctx.font = "6px PressStart2P";
-                    ctx.textAlign = "center";
                     ctx.fillText (this.name, this.x, this.y - this.height / 2 - (this.nameOffset - 6));
                     if (this.name == players [0].name)
                     {
