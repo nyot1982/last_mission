@@ -93,7 +93,7 @@ function gameLoadScreen (screen)
             resetHuds (true, 0);
             if (wss == null || wss == 1000 || wss == 3000) wssOpen ();
         }
-        gameScreen = "menu";
+        else gameScreen = "menu";
     }
     else if (gameScreen == "high_scores")
     {
