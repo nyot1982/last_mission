@@ -70,9 +70,9 @@ function gameLoadScreen (screen)
         gameText.push (new component ("text", "Press any key to start...", "white", canvasWidth / 2, gameText [0].y + 30, "center", 10));
         gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", canvasWidth / 2, 445, "center", 10));
     }
-    else if (gameScreen == "menu")
+    else if (gameScreen == "menu" || gameScreen == "player")
     {
-        if (gameMusic.active && !gameMusic.musics.menu.source) gameMusic.musics.menu.play ();
+        if (gameScreen == "menu" && gameMusic.active && !gameMusic.musics.menu.source) gameMusic.musics.menu.play ();
         gameGround.push (new ground ("menu", "black", 0, 0, canvasWidth, canvasHeight));
         gameTitle = new component ("image", "svgs/title.svg", "", canvasWidth / 2, 100, 203, 92);
         gameText.push (new component ("text", "Options:", "white", 310, gameTitle.y + 105, "left", 10));
@@ -87,9 +87,13 @@ function gameLoadScreen (screen)
         gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", canvasWidth / 2, 445, "center", 10));
         gameText.push (new component ("traffic", "", "", 645, 295, 12, 28));
         menuShip = new ship (null, playerColors [0], 450, gameText [0].y + 15, 50, 90);
-        changeTab ("menu");
-        resetHuds (true, 0);
-        if (wss == null || wss == 1000 || wss == 3000) wssOpen ();
+        if (gameScreen == "menu")
+        {
+            changeTab ("menu");
+            resetHuds (true, 0);
+            if (wss == null || wss == 1000 || wss == 3000) wssOpen ();
+        }
+        gameScreen = "menu";
     }
     else if (gameScreen == "high_scores")
     {

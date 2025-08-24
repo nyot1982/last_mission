@@ -361,11 +361,15 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     (
                         () =>
                         {
-                            gameLoadScreen ("menu");
+                            gameLoadScreen ("player");
                             menuShip.y+=75;
                             form = document.getElementById ("player");
                             form.style.display = "block";
                             form.elements [0].focus ();
+                            form.elements [2].innerHTML = '<option value="-1"' + (players [0].skin == -1 ? ' selected' : '') + '></option>';
+                            for (var i = 0; i < players [0].skins.length; i++) form.elements [2].innerHTML += '<option value="' + players [0].skins [i] + '"' + (players [0].skins [i] == players [0].skin ? ' selected' : '') + '>' + skins [players [0].skins [i]].name + '</option>';
+                            changeTab ("input");
+                            menuShip.turning (-1);
                         },
                         1000
                     );
