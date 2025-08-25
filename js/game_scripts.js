@@ -952,8 +952,8 @@ function changeSkin (skin)
 {
     if (skin == -1) menuShip.changeColor (document.getElementById ("color").value);
     else menuShip.changeColor ('skin' + skin);
-    gameXP.color = menuShip.colors.shipFill;
     gameXP.backColor = menuShip.colors.negative;
+    gameXP.color = menuShip.colors.shipFill;
 } 
 
 function rolloverLoad (text, color)
