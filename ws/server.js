@@ -322,7 +322,7 @@ function debugging (text)
     if (text !== undefined)
     {
         const date = new Date ();
-        console.log (date.toLocaleString ('es-ES') + ': ' + text);
+        console.log (date.toLocaleString ('en-ES') + ': ' + text);
     }
     else
     {
