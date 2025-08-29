@@ -1018,6 +1018,7 @@ function updateGameArea ()
         if (gameModes.findIndex (mode => mode.active == true) == 3 && wss != null && wss.readyState == WebSocket.OPEN) wssSend ();
         else
         {
+            if (gameModes.findIndex (mode => mode.active == true) == 2 && gameArea.frame % 500 == 0) gameItems.push (new item (0, Math.floor (Math.random () * gameMap.width), Math.floor (Math.random () * gameMap.height)));
             gameShips = gameShips.filter (ship => ship.lifes > 0);
             gameObjects = gameShips.concat (gameEnemies).concat (gameItems).concat (gameShots);
             gameObjects.sort ((object1, object2) => object1.z - object2.z);

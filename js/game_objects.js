@@ -233,7 +233,8 @@ function hit (name, x, y, radius, add)
 
 function item (enemy, x, y)
 {
-    if (enemy < 3) this.type = Math.floor (Math.random () * 4);
+    if (enemy == 0) this.type = Math.floor (Math.random () * 10);
+    else if (enemy < 3) this.type = Math.floor (Math.random () * 4);
     else this.type = Math.floor (Math.random () * 6) + 4;
     this.x = x;
     this.y = y;
@@ -289,7 +290,7 @@ function item (enemy, x, y)
                 if (Math.sqrt (dx * dx + dy * dy) < 30)
                 {
                     this.taken = true;
-                    if (gameShips [gameShip].name == players [0].name && gameShips [gameShip].life > 0)
+                    if (gameShips [gameShip].life > 0)
                     {
                         if (this.type == 0)
                         {
