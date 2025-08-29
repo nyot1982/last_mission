@@ -975,6 +975,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                         }
                                         gameShips [gameShip].playerDead ();
                                     }
+                                    else if (gameModes.findIndex (mode => mode.active == true) == 3) this.xp++;
                                     if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
                                     this.playerDead ();
                                     return;
@@ -1009,6 +1010,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                         }
                                         gameShips [gameShip].playerDead ();
                                         document.getElementById ("score-" + this.name).innerHTML = this.score;
+                                        if (gameModes.findIndex (mode => mode.active == true) == 3) this.xp += 2;
                                         if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
                                     }
                                     else if (gameShips [gameShip].shield > 0 && this.shield == 0)
