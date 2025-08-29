@@ -58,13 +58,14 @@ function scoreHud (gameShip)
     }
     else if (document.getElementById ("score-" + gameShips [gameShip].name).innerHTML != gameShips [gameShip].score)
     {
-        document.getElementById ("score-" + gameShips [gameShip].name).className = "change";
-        document.getElementById ("score-" + gameShips [gameShip].name).innerHTML = gameShips [gameShip].score;
+        var scoreHudElement = document.getElementById ("score-" + gameShips [gameShip].name);
+        scoreHudElement.className = "change";
+        scoreHudElement.innerHTML = gameShips [gameShip].score;
         setTimeout
         (
             () =>
             {
-                document.getElementById ("score-" + gameShips [gameShip].name).className = "";
+                scoreHudElement.className = "";
             },
             250
         );
@@ -134,7 +135,11 @@ function lifesHud (gameShip)
                     document.getElementById ("lifes-" + name).remove ();
                     document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
                     if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
-                    else if (gameScreen == "game") document.getElementById ("lifesHud").style.height = "23px";
+                    else if (gameScreen == "game")
+                    {
+                        if (gameShips.length == 0) document.getElementById ("lifesHud").style.height = "0px";
+                        else document.getElementById ("lifesHud").style.height = "23px";
+                    }
                 },
                 1000
             );

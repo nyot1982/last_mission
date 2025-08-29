@@ -413,3 +413,9 @@ function generateGameMap (map)
         break;
     }
 }
+
+function toggleFullScreen ()
+{
+    const canvasElement = document.getElementsByTagName ("canvas")[0];
+    canvasElement.requestFullscreen ();
+}

@@ -359,7 +359,16 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         (
             () =>
             {
-                if ((gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length == 0) || (gameModes.findIndex (mode => mode.active == true) == 3 && this.name == players [0].name && this.lifes == 0)) gameOpenModal ("exit", "Game over");
+                if (gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length < 2)
+                {
+                    if (gameShips.length == 0) gameOpenModal ("exit", "Game over: Draw game");
+                    else
+                    {
+                        gameOpenModal ("exit", "Game over: " + gameShips [0].name + " wins!");
+                        gameShips = [];
+                    }
+                }
+                else if (gameModes.findIndex (mode => mode.active == true) == 3 && this.name == players [0].name && this.lifes == 0) gameOpenModal ("exit", "Game over");
                 else if (gameModes.findIndex (mode => mode.active == true) < 2 && gameShips.length == 0)
                 {
                     $("#blackScreen").fadeIn (1000);
@@ -428,7 +437,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         }
                     }
                 }
-                //else if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) players.splice (players.findIndex (player => player.name == this.name), 1);
+                else if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) players.splice (players.findIndex (player => player.name == this.name), 1);
             },
             1000
         );
@@ -944,7 +953,47 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             {
                                 var dx = this.x - gameShips [gameShip].x;
                                 var dy = this.y - gameShips [gameShip].y;
-                                if (Math.sqrt (dx * dx + dy * dy) < 44)
+                                if (this.shield == 0 && gameShips [gameShip].shield == 0 && Math.sqrt (dx * dx + dy * dy) < 30)
+                                {
+                                    this.life = 0;
+                                    this.score += 500;
+                                    gameHits.push (new hit ("hit0", this.x, this.y, 40, 2));
+                                    if (gameSound.active)
+                                    {
+                                        gameSound.sounds ["hit0"].stop ();
+                                        gameSound.sounds ["hit0"].play ();
+                                    }
+                                    if (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2)
+                                    {
+                                        gameShips [gameShip].life = 0;
+                                        gameShips [gameShip].score += 500;
+                                        gameHits.push (new hit ("hit0", gameShips [gameShip].x, gameShips [gameShip].y, 40, 2));
+                                        if (gameSound.active)
+                                        {
+                                            gameSound.sounds ["hit0"].stop ();
+                                            gameSound.sounds ["hit0"].play ();
+                                        }
+                                        gameShips [gameShip].playerDead ();
+                                    }
+                                    if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
+                                    this.playerDead ();
+                                    return;
+                                }
+                                else if (this.shield > 0 && gameShips [gameShip].shield > 0 && Math.sqrt (dx * dx + dy * dy) < 58)
+                                {
+                                    this.shield -= 10;
+                                    if (this.shield < 0) this.shield = 0;
+                                    gameShips [gameShip].shield -= 10;
+                                    if (gameShips [gameShip].shield < 0) gameShips [gameShip].shield = 0;
+                                    gameHits.push (new hit ("hit0", this.x, this.y, 40, 2));
+                                    if (gameSound.active)
+                                    {
+                                        gameSound.sounds ["hit0"].stop ();
+                                        gameSound.sounds ["hit0"].play ();
+                                    }
+                                    if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
+                                }
+                                else if (Math.sqrt (dx * dx + dy * dy) < 44)
                                 {
                                     if (this.shield > 0 && gameShips [gameShip].shield == 0)
                                     {
@@ -981,31 +1030,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                         this.playerDead ();
                                         return;
                                     }
-                                }
-                                if (this.shield == 0 && gameShips [gameShip].shield == 0 && Math.sqrt (dx * dx + dy * dy) < 30)
-                                {
-                                    this.life = 0;
-                                    this.score += 500;
-                                    gameHits.push (new hit ("hit0", this.x, this.y, 40, 2));
-                                    if (gameSound.active)
-                                    {
-                                        gameSound.sounds ["hit0"].stop ();
-                                        gameSound.sounds ["hit0"].play ();
-                                    }
-                                    if (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2)
-                                    {
-                                        gameShips [gameShip].life = 0;
-                                        gameShips [gameShip].score += 500;
-                                        gameHits.push (new hit ("hit0", gameShips [gameShip].x, gameShips [gameShip].y, 40, 2));
-                                        if (gameSound.active)
-                                        {
-                                            gameSound.sounds ["hit0"].stop ();
-                                            gameSound.sounds ["hit0"].play ();
-                                        }
-                                    }
-                                    if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
-                                    this.playerDead ();
-                                    return;
                                 }
                             }
                         }

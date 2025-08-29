@@ -166,6 +166,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
             game: new audio ("music/game.mp3", true),
             boss: new audio ("music/boss.mp3", true)
         };
+        //toggleFullScreen ();
     }
     else if (gameScreen == "intro")
     {
