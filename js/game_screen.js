@@ -169,7 +169,7 @@ function gameLoadScreen (screen)
     {
         if (gameModes.findIndex (mode => mode.active == true) == 0) generateGameMap ("level1");
         else generateGameMap ("mode" + gameModes.findIndex (mode => mode.active == true));
-        fetchLoad ("highScoreHud");
+        fetchLoad ("high_score_hud");
         document.getElementById ("highScoreHud").style.height = "23px";
         document.getElementById ("scoreHud").innerHTML = '';
         document.getElementById ("lifesHud").innerHTML = '';
