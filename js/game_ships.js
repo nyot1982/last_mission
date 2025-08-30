@@ -421,7 +421,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         if (newPoint < gameArea.centerPoint.y) ctx.translate (0, gameArea.centerPoint.y - newPoint);
                         else if (newPoint > gameArea.centerPoint.y) ctx.translate (0, -(newPoint - gameArea.centerPoint.y));
                         gameArea.centerPoint.y = newPoint;
-                        resetHuds (false, 100);
+                        if (gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3) resetHuds (false, 100);
                     }
                     if (gameMusic.active)
                     {
@@ -452,6 +452,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             {
                 scoreHud (this.idShip);
                 lifesHud (this.idShip);
+                if (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) updateHuds (this.idShip);
             }
             if (players.findIndex (player => player.name == this.name) > -1) this.idControl = players [players.findIndex (player => player.name == this.name)].control;
         }
@@ -463,7 +464,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 if (this.turn != 0)
                 {
                     if (this.turn != 0) this.heading = (this.heading + this.turn) % 360;
-                    if (gameScreen == "game" && this.name == players [0].name) document.getElementById ("headingHud").style = "left: " + (-371.25 - this.heading) + "px;";
+                    if (gameScreen == "game" && this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) document.getElementById ("headingHud").style = "left: " + (-371.25 - this.heading) + "px;";
                 }
                 this.radians = this.heading * Math.PI / 180;
                 if (gameScreen == "menu" || gameModal == "menu")

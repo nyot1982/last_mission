@@ -167,7 +167,7 @@ function gameLoadScreen (screen)
     }
     else if (gameScreen == "game")
     {
-        if (gameModes.findIndex (mode => mode.active == true) < 2) generateGameMap ("level1");
+        if (gameModes.findIndex (mode => mode.active == true) == 0) generateGameMap ("level1");
         else generateGameMap ("mode" + gameModes.findIndex (mode => mode.active == true));
         fetchLoad ("highScoreHud");
         document.getElementById ("highScoreHud").style.height = "23px";
@@ -228,7 +228,8 @@ function gameLoadScreen (screen)
             gameMusic.musics.game.play ();
         }
         changeTab ("game");
-        resetHuds (true, 100);
+        if (gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3) resetHuds (true, 100);
+        else changeHuds (true);
     }
     if (document.getElementById ("blackScreen").style.display == 'block')
     {
@@ -362,6 +363,37 @@ function generateGameMap (map)
                     gameEnemies.push (new enemy (Math.floor (Math.random () * 3), x, y, Math.floor (Math.random () * 720) - 360));
                 }
             }
+        break;
+        case "mode1":
+            gameMap =
+            {
+                name: map,
+                width: 1020,
+                height: 500
+            };
+            gameGround.push (new ground ("water", "#292C9C", 0, 0, gameMap.width, gameMap.height));
+            gameGround.push (new ground ("sand", "sandybrown", 250, 165, [380, 400, 900, 750, 650], [300, 450, 400, 350, 100]));
+            gameGround.push (new ground ("grass", "green", 350, 175, [400, 425, 850, 675, 625], [250, 385, 400, 350, 150]));
+            gameGround.push (new ground ("base", "#B5B2B5", 488, 186, 80, 88));
+            gameGround.push (new digital ("1", "red", "white", 503, 240, 1, 0.075));
+            gameGround.push (new digital ("2", "red", "white", 503, 200, 1, 0.075));
+            gameGround.push (new digital ("3", "black", "yellow", 539, 200, 1, 0.075));
+            gameGround.push (new digital ("4", "black", "yellow", 539, 240, 1, 0.075));
+            gameGround.push (new ground ("base", "#B5B2B5", 488, 281, 80, 88));
+            gameGround.push (new digital ("5", "red", "white", 503, 335, 1, 0.075));
+            gameGround.push (new digital ("6", "red", "white", 503, 295, 1, 0.075));
+            gameGround.push (new digital ("7", "black", "yellow", 539, 295, 1, 0.075));
+            gameGround.push (new digital ("8", "black", "yellow", 539, 335, 1, 0.075));
+            enemies = 270;
+            gameEnemies.push (new enemy (3, 200, 100, 0));
+            gameEnemies.push (new enemy (4, 400, 100, 0));
+            gameEnemies.push (new enemy (5, 600, 100, 0));
+            gameEnemies.push (new enemy (6, 200, 250, 0));
+            gameEnemies.push (new enemy (3, 400, 250, 0));
+            gameEnemies.push (new enemy (4, 600, 250, 0));
+            gameEnemies.push (new enemy (5, 200, 400, 0));
+            gameEnemies.push (new enemy (6, 400, 400, 0));
+            gameEnemies.push (new enemy (3, 600, 400, 0));
         break;
         case "mode2":
             gameMap =

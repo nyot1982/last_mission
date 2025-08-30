@@ -618,6 +618,61 @@ article p
     background-color: var(--color6);
     transition: all 1s linear 0s;
 }
+.lifeHud,
+.lifeHud2,
+.fuelHud,
+.fuelHud2,
+.ammoHud,
+.ammoHud2,
+.shieldHud,
+.shieldHud2
+{
+    height: 12px;
+}
+.lifeHud,
+.fuelHud,
+.ammoHud,
+.shieldHud
+{
+    display: inline-block;
+    position: relative;
+    width: 12px;
+    background-color: var(--color14);
+}
+.lifeHud2,
+.fuelHud2,
+.ammoHud2,
+.shieldHud2
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 1s linear 0s;
+}
+.lifeHud,
+.lifeHud2
+{
+    -webkit-mask-image: url("../svgs/solid/heart.svg");
+    mask-image: url("../svgs/solid/heart.svg");
+}
+.fuelHud,
+.fuelHud2
+{
+    -webkit-mask-image: url("../svgs/solid/gas-pump.svg");
+    mask-image: url("../svgs/solid/gas-pump.svg");
+}
+.ammoHud,
+.ammoHud2
+{
+    -webkit-mask-image: url("../svgs/solid/crosshairs.svg");
+    mask-image: url("../svgs/solid/crosshairs.svg");
+}
+.shieldHud,
+.shieldHud2
+{
+    -webkit-mask-image: url("../svgs/solid/shield-halved.svg");
+    mask-image: url("../svgs/solid/shield-halved.svg");
+}
 .levelHud
 {
     display: inline-block;
@@ -771,6 +826,12 @@ article p
     color: var(--color6);
     transform: scale(10);
 }
+#hudsMulti
+{
+    display: none;
+    width: 400px;
+    background-color: var(--color5);
+}
 .keys
 {
     position: absolute;
@@ -906,15 +967,31 @@ form a.interaction
 {
     margin: 1em 0.5em 0 0.5em;
 }
-.keys .keysContent .tabContent a.changeButton
+.keys .keysContent .tabContent a.changeButton,
+.keys .keysContent .tabContent a.changingButton
 {
+    display: inline-block;
+    height: 100%;
     color: var(--color5);
     text-decoration: none;
+    transition: all 0.5s ease 0s;
+}
+.keys .keysContent .tabContent a.changeButton:hover,
+.keys .keysContent .tabContent a.changingButton
+{
+    border-radius: 3px;
+    margin: -2px;
+    padding: 2px;
 }
 .keys .keysContent .tabContent a.changeButton:hover
 {
     outline: solid 2px var(--color6);
-    outline-offset: 2px;
+    background-color: var(--colorKeys2);
+}
+.keys .keysContent .tabContent a.changingButton
+{
+    outline: solid 2px var(--color13);
+    background-color: var(--color3);
 }
 .keys .keysContent .tabContent .gamepad,
 .keys .keysContent .tabContent .joystick

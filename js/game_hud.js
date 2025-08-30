@@ -1,5 +1,6 @@
 function resetHuds (enemies, vitals)
 {
+    if (document.getElementById ("hudsMulti").style.display == "block") changeHuds (false);
     weaponHud (enemies);
     document.getElementById ("headingHud").style.left = "-371.25px";
     document.getElementById ("zHud").innerHTML = "0 m";
@@ -388,4 +389,31 @@ function changeTab (newTab)
         $('#' + newTab + 'Tab-' + controlTab).addClass ("active");
         gameTab = newTab;
     }
+}
+
+function changeHuds (multi)
+{
+    if (multi)
+    {
+        document.getElementById ("hudSpeedAltitude").style.display = "none";
+        document.getElementById ("hudWeapons").style.display = "none";
+        document.getElementById ("hudEnemy").innerHTML = "";
+        document.getElementById ("hudVitals").style.display = "none";
+        document.getElementById ("hudHeading").innerHTML = '<p><b>ENEMY</b></p><div id="enemyHud"><div id="enemyHud2" style="width: 270px;"></div></div><p>&nbsp;</p>';
+        document.getElementById ("hudsMulti").style.display = "block";
+    }
+    else
+    {
+        document.getElementById ("hudSpeedAltitude").style.display = "block";
+        document.getElementById ("hudWeapons").style.display = "block";
+        document.getElementById ("hudEnemy").innerHTML = '<p>&nbsp;</p><p><b>ENEMY</b></p><div id="enemyHud"><div id="enemyHud2"></div></div>';
+        document.getElementById ("hudVitals").style.display = "block";
+        document.getElementById ("hudHeading").innerHTML = '<p><b>HEADING</b></p><div class="turnHud"><div id="headingHud"><div class="e5">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div><div>|</div><div class="e5">SE</div><div>|</div><div class="e1">S</div><div>|</div><div class="e5">SW</div><div>|</div><div class="e1">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div><div>|</div><div class="e5">SE</div><div>|</div><div class="e1">S</div><div>|</div><div class="e5">SW</div><div>|</div><div class="e1">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div></div></div>';
+        document.getElementById ("hudsMulti").style.display = "none";
+    }
+}
+
+function updateHuds (gameShip)
+{
+    document.getElementById ("hudsMulti").innerHTML += '<br><div class="lifeHud"><div class="lifeHud2" style="width: ' + (gameShips [gameShip].life * 12 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.shipFill + ';"></div></div> <div class="fuelHud"><div class="fuelHud2" style="width: ' + (gameShips [gameShip].fuel * 12 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.shipFill + ';"></div></div> <div class="ammoHud"><div class="ammoHud2" style="width: ' + (gameShips [gameShip].ammo * 12 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.shipFill + ';"></div></div> <div class="shieldHud"><div class="shieldHud2" style="width: ' + (gameShips [gameShip].shield * 12 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.shipFill + ';"></div></div><br>';
 }

@@ -570,7 +570,7 @@ function showControls (control, bt_type)
     {
         if (i % 2 == 0) str += '<div class="col">';
         str += '<p>';
-        if (actions [i].editable) str += '<a href="javascript: changeButton ();" title="Change ' + bt_type + '" class="changeButton">';
+        if (actions [i].editable) str += '<a id="' + actions [i].action + '" href="javascript: changeButton (\'game\', \'' + actions [i].action + '\', \'' + control + '\', \'' + bt_type + '\');" title="Change ' + bt_type + '" class="changeButton">';
         var sep = "";
         for (var key in actions [i][control][bt_type + "s"])
         {
@@ -689,7 +689,24 @@ function showControls (control, bt_type)
     tab.innerHTML = str;
 }
 
-function changeButton ()
+function changeButton (screen, action, control, bt_type)
 {
+    if (changingButton == null)
+    {
+        changingButton =
+        {
+            screen: screen,
+            action: action, 
+            control: control,
+            bt_type: bt_type
+        };
+        document.getElementById (action).className = "changingButton";
+        document.getElementById (action).title = "Press a " + bt_type;
+        //userActions.findIndex (userAction => userAction.screen == screen && userAction.action == action && userAction.screen == screen ) == 1 
+    }
+}
 
+function buttonChange ()
+{
+    
 }

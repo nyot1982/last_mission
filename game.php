@@ -108,53 +108,64 @@
                 <div id="rollover"></div>
                 <div class="cont-cols huds">
                     <div class="col center">
-                        <p><b>SPEED</b></p>
-                        <?php include_once "svgs/speed.svg"; ?>
-                        <p>&nbsp;</p>
-                        <p><b>ALTITUDE</b></p>
-                        <div id="zHud" class="blackHud">0 m</div>
+                        <div id="hudSpeedAltitude">
+                            <p><b>SPEED</b></p>
+                            <?php include_once "svgs/speed.svg"; ?>
+                            <p>&nbsp;</p>
+                            <p><b>ALTITUDE</b></p>
+                            <div id="zHud" class="blackHud">0 m</div>
+                        </div>
+                        <div id="hudsMulti"></div>
                     </div>
                     <div class="col center">
-                        <p><b>WEAPON SYSTEM</b></p>
-                        <div class="blackHud">
-                            <div class="cont-cols no-margin">
-                                <div class="col">
-                                    <div id="fire0power" class="fa fa-fw fa-burst weaponExtra fire0"></div><div id="fire0rate" class="fa fa-fw fa-clock weaponExtra fire0"></div><div id="fire0special" class="fa fa-fw fa-fire weaponExtra fire0"></div>
-                                    <div id="fire0" class="weaponHud fire0 active">LASER</div>
-                                </div>
-                                <div class="col">
-                                    <div id="fire1power" class="fa fa-fw fa-burst weaponExtra fire1"></div><div id="fire1rate" class="fa fa-fw fa-clock weaponExtra fire1"></div><div id="fire1special" class="fa fa-fw fa-fire weaponExtra fire1"></div>
-                                    <div id="fire1" class="weaponHud fire1">PULS</div>
-                                </div>
-                                <div class="col">
-                                    <div id="fire2power" class="fa fa-fw fa-burst weaponExtra fire2"></div><div id="fire2rate" class="fa fa-fw fa-clock weaponExtra fire2"></div><div id="fire2special" class="fa fa-fw fa-fire weaponExtra fire2"></div>
-                                    <div id="fire2" class="weaponHud fire2">K-CAN</div>
-                                </div>
-                                <div class="col">
-                                    <div id="fire3power" class="fa fa-fw fa-burst weaponExtra fire3"></div><div id="fire3rate" class="fa fa-fw fa-clock weaponExtra fire3"></div><div id="fire3special" class="fa fa-fw fa-fire weaponExtra fire3"></div>
-                                    <div id="fire3" class="weaponHud fire3">HYPER</div>
+                        <div id="hudWeapons">
+                            <p><b>WEAPON SYSTEM</b></p>
+                            <div class="blackHud">
+                                <div class="cont-cols no-margin">
+                                    <div class="col">
+                                        <div id="fire0power" class="fa fa-fw fa-burst weaponExtra fire0"></div><div id="fire0rate" class="fa fa-fw fa-clock weaponExtra fire0"></div><div id="fire0special" class="fa fa-fw fa-fire weaponExtra fire0"></div>
+                                        <div id="fire0" class="weaponHud fire0 active">LASER</div>
+                                    </div>
+                                    <div class="col">
+                                        <div id="fire1power" class="fa fa-fw fa-burst weaponExtra fire1"></div><div id="fire1rate" class="fa fa-fw fa-clock weaponExtra fire1"></div><div id="fire1special" class="fa fa-fw fa-fire weaponExtra fire1"></div>
+                                        <div id="fire1" class="weaponHud fire1">PULS</div>
+                                    </div>
+                                    <div class="col">
+                                        <div id="fire2power" class="fa fa-fw fa-burst weaponExtra fire2"></div><div id="fire2rate" class="fa fa-fw fa-clock weaponExtra fire2"></div><div id="fire2special" class="fa fa-fw fa-fire weaponExtra fire2"></div>
+                                        <div id="fire2" class="weaponHud fire2">K-CAN</div>
+                                    </div>
+                                    <div class="col">
+                                        <div id="fire3power" class="fa fa-fw fa-burst weaponExtra fire3"></div><div id="fire3rate" class="fa fa-fw fa-clock weaponExtra fire3"></div><div id="fire3special" class="fa fa-fw fa-fire weaponExtra fire3"></div>
+                                        <div id="fire3" class="weaponHud fire3">HYPER</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <p>&nbsp;</p>
-                        <p><b>ENEMY</b></p>
-                        <div id="enemyHud"><div id="enemyHud2"></div></div>
-                    </div>
-                    <div class="col center">
-                        <p><b>VITALS</b></p>
-                        <div class="blackHud">
-                            <div class="fa fa-fw fa-heart levelIcon" title="Life"></div><div class="levelHud" id="lifeHud" title="Life"></div><br>
-                            <div class="fa fa-fw fa-gas-pump levelIcon" title="Fuel"></div><div class="levelHud" id="fuelHud" title="Fuel"></div><br>
-                            <div class="fa fa-fw fa-crosshairs levelIcon" title="Ammo"></div><div class="levelHud" id="ammoHud" title="Ammo"></div><br>
-                            <div class="fa fa-fw fa-shield-halved levelIcon" title="Shield"></div><div class="levelHud" id="shieldHud" title="Shield"></div><br>
-                            <div class="level2Hud"></div>
+                        <div id="hudEnemy">
+                            <p>&nbsp;</p>
+                            <p><b>ENEMY</b></p>
+                            <div id="enemyHud"><div id="enemyHud2"></div></div>
                         </div>
                     </div>
                     <div class="col center">
-                        <p><b>HEADING</b></p>
-                        <div class="turnHud">
-                            <div id="headingHud">
-                                <div class="e5">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div><div>|</div><div class="e5">SE</div><div>|</div><div class="e1">S</div><div>|</div><div class="e5">SW</div><div>|</div><div class="e1">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div><div>|</div><div class="e5">SE</div><div>|</div><div class="e1">S</div><div>|</div><div class="e5">SW</div><div>|</div><div class="e1">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div>
+                        <div id="hudVitals">
+                            <p><b>VITALS</b></p>
+                            <div class="blackHud">
+                                <div class="fa fa-fw fa-heart levelIcon" title="Life"></div><div class="levelHud" id="lifeHud" title="Life"></div><br>
+                                <div class="fa fa-fw fa-gas-pump levelIcon" title="Fuel"></div><div class="levelHud" id="fuelHud" title="Fuel"></div><br>
+                                <div class="fa fa-fw fa-crosshairs levelIcon" title="Ammo"></div><div class="levelHud" id="ammoHud" title="Ammo"></div><br>
+                                <div class="fa fa-fw fa-shield-halved levelIcon" title="Shield"></div><div class="levelHud" id="shieldHud" title="Shield"></div><br>
+                                <div class="level2Hud"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col center">
+                        <div id="hudHeading">
+                            <p><b>HEADING</b></p>
+                            <div class="turnHud">
+                                <div id="headingHud">
+                                    <div class="e5">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div><div>|</div><div class="e5">SE</div><div>|</div><div class="e1">S</div><div>|</div><div class="e5">SW</div><div>|</div><div class="e1">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div><div>|</div><div class="e5">SE</div><div>|</div><div class="e1">S</div><div>|</div><div class="e5">SW</div><div>|</div><div class="e1">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div>
+                                </div>
                             </div>
                         </div>
                         <p><b>MAP</b></p>

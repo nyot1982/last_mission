@@ -68,6 +68,7 @@ var fpsMonitor =
     playerColors = ["#A5FF9A", "#FF9AA5", "#9AA5FF", "#FFFF9A", "#9AFFFF", "#9A9A9A", "#FF9AFF", "#FFFFFF"],
     skins = [],
     skinSel = 0,
+    changingButton = null,
     userActions =
     [
         {
@@ -971,15 +972,6 @@ function rolloverLoad (text, color)
 
 function updateGameArea ()
 {
-    /*if (gameArea.frame % 1000 == 0)
-    {
-        //console.clear ();
-        console.log ('startPoints (' + startPoints.length + ') =', startPoints);
-        console.log ('gameControls (' + Object.keys (gameControls).length + ') =', gameControls);
-        console.log ('menuControl =', menuControl);
-        console.log ('players (' + players.length + ') =', players);
-        console.log ('gameShips (' + gameShips.length + ') =', gameShips);
-    }*/
     if (fpsMonitor.timer > 0) fpsHud ("update");
     controls ();
     var mapHud = document.getElementById ("mapHud");
@@ -1011,6 +1003,7 @@ function updateGameArea ()
     }
     if (gameScreen == "game")
     {
+        if (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) document.getElementById ("hudsMulti").innerHTML = "";
         gameItems = gameItems.filter (item => !item.taken || item.z > 0);
         gameShots = gameShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < gameMap.width && shot.y > 0 && shot.y < gameMap.height);
         gameHits = gameHits.filter (hit => !hit.reverse || hit.r > 0);
@@ -1018,7 +1011,8 @@ function updateGameArea ()
         if (gameModes.findIndex (mode => mode.active == true) == 3 && wss != null && wss.readyState == WebSocket.OPEN) wssSend ();
         else
         {
-            if (gameModes.findIndex (mode => mode.active == true) == 2 && gameArea.frame % 500 == 0) gameItems.push (new item (0, Math.floor (Math.random () * gameMap.width), Math.floor (Math.random () * gameMap.height)));
+            if (gameModes.findIndex (mode => mode.active == true) == 1 && gameArea.frame % 250 == 0) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), 0, 0, Math.floor (Math.random () * 720) - 360));
+            else if (gameModes.findIndex (mode => mode.active == true) == 2 && gameArea.frame % 500 == 0) gameItems.push (new item (0, Math.floor (Math.random () * gameMap.width), Math.floor (Math.random () * gameMap.height)));
             gameShips = gameShips.filter (ship => ship.lifes > 0);
             gameObjects = gameShips.concat (gameEnemies).concat (gameItems).concat (gameShots);
             gameObjects.sort ((object1, object2) => object1.z - object2.z);
