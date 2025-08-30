@@ -599,9 +599,10 @@ article p
 #enemyHud,
 #enemyHud2
 {
-    background-repeat: repeat-x;
     -webkit-mask-image: url("../svgs/star.svg");
+    -webkit-mask-repeat: repeat-x;
     mask-image: url("../svgs/star.svg");
+    mask-repeat: repeat-x;
     width: 270px;
     height: 16px;
 }
@@ -627,7 +628,13 @@ article p
 .shieldHud,
 .shieldHud2
 {
-    height: 12px;
+    height: 16px;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 16px 16px;
+    -webkit-mask-position: top left;
+    mask-repeat: no-repeat;
+    mask-size: 16px 16px;
+    mask-position: top left;
 }
 .lifeHud,
 .fuelHud,
@@ -636,8 +643,8 @@ article p
 {
     display: inline-block;
     position: relative;
-    width: 12px;
-    background-color: var(--color14);
+    width: 16px;
+    background-color: var(--color12);
 }
 .lifeHud2,
 .fuelHud2,
@@ -672,6 +679,21 @@ article p
 {
     -webkit-mask-image: url("../svgs/solid/shield-halved.svg");
     mask-image: url("../svgs/solid/shield-halved.svg");
+}
+.multiHud
+{
+    vertical-align: top;
+    font-size: 16px;
+}
+.multiHud2
+{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 8px;
+    vertical-align: top;
+    text-align: center;
 }
 .levelHud
 {
@@ -830,7 +852,15 @@ article p
 {
     display: none;
     width: 400px;
+}
+.multiHuds
+{
+    display: block;
+    width: 180px;
+    margin: 5px 0px;
+    padding: 5px;
     background-color: var(--color5);
+    border-radius: 5px;
 }
 .keys
 {

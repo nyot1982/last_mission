@@ -415,5 +415,28 @@ function changeHuds (multi)
 
 function updateHuds (gameShip)
 {
-    document.getElementById ("hudsMulti").innerHTML += '<br><div class="lifeHud"><div class="lifeHud2" style="width: ' + (gameShips [gameShip].life * 12 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.shipFill + ';"></div></div> <div class="fuelHud"><div class="fuelHud2" style="width: ' + (gameShips [gameShip].fuel * 12 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.shipFill + ';"></div></div> <div class="ammoHud"><div class="ammoHud2" style="width: ' + (gameShips [gameShip].ammo * 12 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.shipFill + ';"></div></div> <div class="shieldHud"><div class="shieldHud2" style="width: ' + (gameShips [gameShip].shield * 12 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.shipFill + ';"></div></div><br>';
+    var speed = Math.max (Math.abs (gameShips [gameShip].moveSpeed), Math.abs (gameShips [gameShip].strafeSpeed)),
+        speedIcon = "",
+        z = gameShips [gameShip].z,
+        zIcon = "",
+        heading = gameShips [gameShip].heading < 0 ? 360 + gameShips [gameShip].heading : gameShips [gameShip].heading,
+        headingIcon = "";
+
+    if (speed < 1.5) speedIcon = "gauge-min";
+    else if (speed < 3) speedIcon = "gauge-low";
+    else if (speed < 4.5) speedIcon = "gauge";
+    else if (speed < 6) speedIcon = "gauge-high";
+    else if (speed == 6) speedIcon = "gauge-max";
+    if (z == 0) zIcon = "down";
+    else zIcon = "up"
+    if (heading < 22.5) headingIcon = "N";
+    else if (heading < 67.5) headingIcon = "NE";
+    else if (heading < 112.5) headingIcon = "E";
+    else if (heading < 157.5) headingIcon = "SE";
+    else if (heading < 202.5) headingIcon = "S";
+    else if (heading < 247.5) headingIcon = "SW";
+    else if (heading < 292.5) headingIcon = "W";
+    else if (heading < 337.5) headingIcon = "NW";
+    else if (heading <= 360) headingIcon = "N";
+    document.getElementById ("hudsMulti").innerHTML += '<div class="multiHuds"><div class="lifeHud"><div class="lifeHud2" style="width: ' + (gameShips [gameShip].life * 16 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.near + ';"></div></div> <div class="fuelHud"><div class="fuelHud2" style="width: ' + (gameShips [gameShip].fuel * 16 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.near + ';"></div></div> <div class="ammoHud"><div class="ammoHud2" style="width: ' + (gameShips [gameShip].ammo * 16 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.near + ';"></div></div> <div class="shieldHud"><div class="shieldHud2" style="width: ' + (gameShips [gameShip].shield * 16 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.near + ';"></div></div> <div class="fa fa-' + speedIcon + ' multiHud" style="color: ' + gameShips [gameShip].colors.near + ';"></div> <div class="fa fa-' + zIcon + ' multiHud" style="color: ' + gameShips [gameShip].colors.near + ';"></div> <div class="multiHud2" style="color: ' + gameShips [gameShip].colors.near + ';">' + headingIcon + '</div></div>';
 }
