@@ -1,4 +1,4 @@
-function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weapon, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, xp, time)
+function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, xp, time)
 {
     this.idShip = null;
     this.idControl = null;
@@ -10,7 +10,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.moveSpeed = moveSpeed || 0;
     this.strafeSpeed = strafeSpeed || 0;
     this.fire = fire || false;
-    this.weapon = weapon || 0;
     if (this.name == null)
     {
         this.weapons =
@@ -18,7 +17,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             {
                 power: 1,
                 rate: 1,
-                fireRate: 50
+                fireRate: 50,
+                active: true
             }
         ];
     }
@@ -29,25 +29,30 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             {
                 power: 1,
                 rate: 1,
-                fireRate: 30
+                fireRate: 30,
+                active: true
             },
             {
                 power: 0,
                 rate: 1,
-                fireRate: 54
+                fireRate: 54,
+                active: false
             },
             {
                 power: 0,
                 rate: 1,
-                fireRate: 70
+                fireRate: 70,
+                active: false
             },
             {
                 power: 0,
                 rate: 1,
-                fireRate: 24
+                fireRate: 24,
+                active: false
             }
         ];
     }
+    this.weapon = this.weapons.findIndex (weapon => weapon.active == true)
     this.engine1 = engine1 || 0;
     this.engine2 = engine2 || 0;
     this.engine1max = 4;
@@ -148,6 +153,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     {
         if (this.z > 0) 
         {
+            this.weapon = this.weapons.findIndex (weapon => weapon.active == true)
+            this.weapons [this.weapon].active = false;
             this.weapon++;
             if (this.weapon == this.weapons.length) this.weapon = 0;
             while (this.weapons [this.weapon].power == 0)
@@ -155,6 +162,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 this.weapon++;
                 if (this.weapon == this.weapons.length) this.weapon = 0;
             }
+            this.weapons [this.weapon].active = true;
             weaponHud ();
         }
     }
@@ -391,7 +399,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.moveSpeed = 0;
                     this.strafeSpeed = 0;
                     this.fire = false;
-                    this.weapon = 0;
                     this.engine1 = 0;
                     this.engine2 = 0;
                     this.engine1inc = true;
@@ -1122,7 +1129,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 {
                     if (this.weapon == 0)
                     {
-                        gameShots.push (new shot (this.name, this.weapon, "black", this.x + (this.height / 2 + 24) * Math.sin (this.heading * Math.PI / 180), this.y - (this.height / 2 + 24) * Math.cos (this.heading * Math.PI / 180), 24, 3 * (this.weapons [this.weapon].power < 3 ? this.weapons [this.weapon].power : 1), 12, this.heading));
+                        gameShots.push (new shot (this.name, this.weapon, "black", this.x + (this.height / 2 + 24) * Math.sin (this.heading * Math.PI / 180), this.y - (this.height / 2 + 24) * Math.cos (this.heading * Math.PI / 180), 24, 3, 12, this.heading));
                     }
                     else if (this.weapon == 1)
                     {

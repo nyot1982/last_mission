@@ -319,22 +319,35 @@ function item (enemy, x, y)
                         }
                         else if (this.type == 4 && gameShips [gameShip].weapons [gameShips [gameShip].weapon].rate == 1) gameShips [gameShip].weapons [gameShips [gameShip].weapon].rate++;
                         else if (this.type == 5 && gameShips [gameShip].weapons [gameShips [gameShip].weapon].power == 1) gameShips [gameShip].weapons [gameShips [gameShip].weapon].power++;
-                        else if (this.type == 6 && gameShips [gameShip].weapons [gameShips [gameShip].weapon].power == 2) gameShips [gameShip].weapons [gameShips [gameShip].weapon].power++;
+                        else if (this.type == 6)
+                        {
+                            if (gameShips [gameShip].weapon != 1)
+                            {
+                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = false;
+                                gameShips [gameShip].weapon = 1;
+                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = true;
+                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
+                            }
+                        }
                         else if (this.type == 7)
                         {
-                            gameShips [gameShip].weapon = 1;
-                            if (gameShips [gameShip].weapons [gameShips [gameShip].weapon].power == 0) gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
+                            if (gameShips [gameShip].weapon != 2)
+                            {
+                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = false;
+                                gameShips [gameShip].weapon = 2;
+                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = true;
+                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
+                            }
                         }
                         else if (this.type == 8)
                         {
-                            gameShips [gameShip].weapon = 2;
-                            if (gameShips [gameShip].weapons [gameShips [gameShip].weapon].power == 0) gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
-                        }
-                        else if (this.type == 9)
-                        {
-                            gameShips [gameShip].weapon = 3;
-                            if (gameShips [gameShip].weapons [gameShips [gameShip].weapon].power == 0) gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
-                            
+                            if (gameShips [gameShip].weapon != 3)
+                            {
+                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = false;
+                                gameShips [gameShip].weapon = 3;
+                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = true;
+                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
+                            }
                         }
                         if (this.type > 3) weaponHud ();
                     }

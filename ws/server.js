@@ -149,28 +149,31 @@ const wss = createServerFrom
                                     moveSpeed: 0,
                                     strafeSpeed: 0,
                                     fire: false,
-                                    weapon: 0,
                                     weapons:
                                     [
                                         {
                                             power: 1,
                                             rate: 1,
-                                            fireRate: 30
+                                            fireRate: 30,
+                                            active: true
                                         },
                                         {
                                             power: 0,
                                             rate: 1,
-                                            fireRate: 54
+                                            fireRate: 54,
+                                            active: false
                                         },
                                         {
                                             power: 0,
                                             rate: 1,
-                                            fireRate: 70
+                                            fireRate: 70,
+                                            active: false
                                         },
                                         {
                                             power: 0,
                                             rate: 1,
-                                            fireRate: 24
+                                            fireRate: 24,
+                                            active: false
                                         }
                                     ],
                                     engine1: 0,
@@ -209,7 +212,6 @@ const wss = createServerFrom
                             gameShips [gameShip].moveSpeed = data.moveSpeed;
                             gameShips [gameShip].strafeSpeed = data.strafeSpeed;
                             gameShips [gameShip].fire = data.fire;
-                            gameShips [gameShip].weapon = data.weapon;
                             gameShips [gameShip].weapons = data.weapons;
                             gameShips [gameShip].engine1 = data.engine1;
                             gameShips [gameShip].engine2 = data.engine2;

@@ -247,7 +247,6 @@ function weaponHud (reset)
             $(weaponElements [i]).removeClass ("enable");
             $("#fire" + i + "rate").removeClass ("active");
             $("#fire" + i + "power").removeClass ("active");
-            $("#fire" + i + "special").removeClass ("active");
         }
         else if (gameScreen == "game")
         {
@@ -268,8 +267,6 @@ function weaponHud (reset)
                 else $("#fire" + i + "rate").removeClass ("active");
                 if (gameShips [gameShip].weapons [i].power > 1) $("#fire" + i + "power").addClass ("active");
                 else $("#fire" + i + "power").removeClass ("active");
-                if (gameShips [gameShip].weapons [i].power == 3) $("#fire" + i + "special").addClass ("active");
-                else $("#fire" + i + "special").removeClass ("active");
             }
         }
     }

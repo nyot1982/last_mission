@@ -97,7 +97,6 @@ function wssOpen ()
                             data.game_ships [game_ship].moveSpeed,
                             data.game_ships [game_ship].strafeSpeed,
                             data.game_ships [game_ship].fire,
-                            data.game_ships [game_ship].weapon,
                             data.game_ships [game_ship].weapons,
                             data.game_ships [game_ship].engine1,
                             data.game_ships [game_ship].engine2,
@@ -136,7 +135,6 @@ function wssOpen ()
                         gameShips [gameShip].moveSpeed = data.game_ships [game_ship].moveSpeed;
                         gameShips [gameShip].strafeSpeed = data.game_ships [game_ship].strafeSpeed;
                         gameShips [gameShip].fire = data.game_ships [game_ship].fire;
-                        gameShips [gameShip].weapon = data.game_ships [game_ship].weapon;
                         gameShips [gameShip].weapons = data.game_ships [game_ship].weapons;
                         gameShips [gameShip].engine1 = data.game_ships [game_ship].engine1;
                         gameShips [gameShip].engine2 = data.game_ships [game_ship].engine2;
@@ -250,7 +248,6 @@ function wssSend ()
                 moveSpeed: gameShips [gameShip].moveSpeed,
                 strafeSpeed: gameShips [gameShip].strafeSpeed,
                 fire: gameShips [gameShip].fire,
-                weapon: gameShips [gameShip].weapon,
                 weapons: gameShips [gameShip].weapons,
                 engine1: gameShips [gameShip].engine1,
                 engine2: gameShips [gameShip].engine2,
