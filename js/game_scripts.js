@@ -733,7 +733,7 @@ $(document).ready (function ()
 
 function fetchLoad (cont, param)
 {
-    if (cont == "high_score_hud") document.getElementById (cont).innerHTML = '<preloader><div class="spinner"></div></preloader>';
+    if (cont == "high_score_hud") document.getElementById ("highScoreHud").innerHTML = '<preloader><div class="spinner"></div></preloader>';
     else if (cont == "high_scores") gameText.push (new component ("text", "Loading...", "yellow", 400, 255, "left", 10));
     else if (cont == "sign_in" || cont == "sign_up") gameText.push (new component ("text", "Loading...", "yellow", 745, 345, "left", 10));
     else if (cont == "player")
@@ -823,7 +823,7 @@ function fetchLoad (cont, param)
             }
             else if (cont == "high_score_hud")
             {
-                document.getElementById (cont).innerHTML = "High Score: " + responseJSON [cont];
+                document.getElementById ("highScoreHud").innerHTML = "High Score: " + responseJSON [cont];
                 if (gameModes.findIndex (mode => mode.active == true) == 3) document.getElementById (cont).innerHTML += '<div id="playersConnecting"></div>';
             }
             else if (cont == "high_scores") gameHighScores (responseJSON ["max_high_scores"], responseJSON ["high_scores"]);

@@ -86,6 +86,7 @@ function gamepadDisconnected (e)
             if (form.elements [i].id == e.gamepad.index * 1)
             {
                 form.elements [i].remove ();
+                form.getElementsByTagName ("a")[i].remove ();
                 break;
             }
         }

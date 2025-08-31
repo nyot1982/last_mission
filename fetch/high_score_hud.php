@@ -6,7 +6,7 @@
     }
     else header ("Content-type: application/json");
 
-    $return ["highScoreHud"] = 0;
+    $return ["high_score_hud"] = 0;
     $mysqli = new mysqli ('localhost', 'nyot', '$P33dM4n1982', 'last_mission');
     $mysqli->query ("SET NAMES 'utf8'");
     if ($mysqli->connect_errno) $return ["error"] = 'Error! Conexion has failed: ('.$mysqli->connect_errno.') '.$mysqli->connect_error;
@@ -17,7 +17,7 @@
         else
         {
             $high_score = $resultado->fetch_row ();
-            $return ["highScoreHud"] = intval ($high_score [0]);
+            $return ["high_score_hud"] = intval ($high_score [0]);
             $resultado->free ();
         }
     }

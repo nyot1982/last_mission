@@ -122,20 +122,20 @@
                             <p><b>WEAPON SYSTEM</b></p>
                             <div class="blackHud">
                                 <div class="cont-cols no-margin">
-                                    <div class="col">
-                                        <div id="fire0power" class="fa fa-fw fa-burst weaponExtra fire0"></div><div id="fire0rate" class="fa fa-fw fa-clock weaponExtra fire0"></div><div id="fire0special" class="fa fa-fw fa-fire weaponExtra fire0"></div>
+                                    <div class="col center">
+                                        <div id="fire0power" class="fa fa-fw fa-burst weaponExtra fire0"></div><div id="fire0rate" class="fa fa-fw fa-clock weaponExtra fire0"></div>
                                         <div id="fire0" class="weaponHud fire0 active">LASER</div>
                                     </div>
-                                    <div class="col">
-                                        <div id="fire1power" class="fa fa-fw fa-burst weaponExtra fire1"></div><div id="fire1rate" class="fa fa-fw fa-clock weaponExtra fire1"></div><div id="fire1special" class="fa fa-fw fa-fire weaponExtra fire1"></div>
+                                    <div class="col center">
+                                        <div id="fire1power" class="fa fa-fw fa-burst weaponExtra fire1"></div><div id="fire1rate" class="fa fa-fw fa-clock weaponExtra fire1"></div>
                                         <div id="fire1" class="weaponHud fire1">PULS</div>
                                     </div>
-                                    <div class="col">
-                                        <div id="fire2power" class="fa fa-fw fa-burst weaponExtra fire2"></div><div id="fire2rate" class="fa fa-fw fa-clock weaponExtra fire2"></div><div id="fire2special" class="fa fa-fw fa-fire weaponExtra fire2"></div>
+                                    <div class="col center">
+                                        <div id="fire2power" class="fa fa-fw fa-burst weaponExtra fire2"></div><div id="fire2rate" class="fa fa-fw fa-clock weaponExtra fire2"></div>
                                         <div id="fire2" class="weaponHud fire2">K-CAN</div>
                                     </div>
-                                    <div class="col">
-                                        <div id="fire3power" class="fa fa-fw fa-burst weaponExtra fire3"></div><div id="fire3rate" class="fa fa-fw fa-clock weaponExtra fire3"></div><div id="fire3special" class="fa fa-fw fa-fire weaponExtra fire3"></div>
+                                    <div class="col center">
+                                        <div id="fire3power" class="fa fa-fw fa-burst weaponExtra fire3"></div><div id="fire3rate" class="fa fa-fw fa-clock weaponExtra fire3"></div>
                                         <div id="fire3" class="weaponHud fire3">HYPER</div>
                                     </div>
                                 </div>

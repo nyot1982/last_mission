@@ -233,16 +233,16 @@ function hit (name, x, y, radius, add)
 
 function item (enemy, x, y)
 {
-    if (enemy == 0) this.type = Math.floor (Math.random () * 10);
+    if (enemy == 0) this.type = Math.floor (Math.random () * 9);
     else if (enemy < 3) this.type = Math.floor (Math.random () * 4);
-    else this.type = Math.floor (Math.random () * 6) + 4;
+    else this.type = Math.floor (Math.random () * 5) + 4;
     this.x = x;
     this.y = y;
     this.z = 500;
     this.taken = false;
     this.radius = 16;
     this.shadowOffset = 18;
-    this.icons = ['heart', 'gas-pump', 'crosshairs', 'shield-halved', 'clock', 'burst', 'fire', 'P', 'K', 'H'];
+    this.icons = ['heart', 'gas-pump', 'crosshairs', 'shield-halved', 'clock', 'burst', 'P', 'K', 'H'];
 
     this.update = function ()
     {
