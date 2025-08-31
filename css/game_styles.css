@@ -716,6 +716,7 @@ article p
     color: var(--color5);
     border-radius: 3px;
     vertical-align: top;
+    background-color: var(--color12);
 }
 .levelHud
 {

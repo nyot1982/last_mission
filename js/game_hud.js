@@ -443,8 +443,8 @@ function updateHuds (gameShip)
         strHuds += '<div class="fa fa-' + speedIcon + ' multiHud" style="color: ' + gameShips [gameShip].colors.near + ';" title="' + gameShips [gameShip].name + ' Speed: ' + (speed * 300) + ' Km/h"></div> ';
         strHuds += '<div class="fa fa-' + zIcon + ' multiHud" style="color: ' + gameShips [gameShip].colors.near + ';" title="' + gameShips [gameShip].name + ' Altitude: ' + (gameShips [gameShip].z * 10) + ' m"></div> ';
         strHuds += '<div class="multiHud2" style="background-color: ' + gameShips [gameShip].colors.near + ';" title="' + gameShips [gameShip].name + ' Heading: ' + heading + 'º">' + headingIcon + '</div> ';
-        strHuds += '<div class="multiHudWeapons" style="background-color: ' + gameShips [gameShip].colors.near + ';">';
-            strHuds += '<div class="multiHud3" style="border-right: solid 1px #000;" title="' + gameShips [gameShip].name + ' Laser"><div class="fa fa-burst" style="position: absolute; top: 4px; left: 3px;"></div>L<div class="fa fa-clock" style="position: absolute; top: 4px; right: 3px;"></div></div>';
+        strHuds += '<div class="multiHudWeapons">';
+            strHuds += '<div class="multiHud3" style="background-color: ' + gameShips [gameShip].colors.near + '; border-right: solid 1px #000;" title="' + gameShips [gameShip].name + ' Laser"><div class="fa fa-burst" style="position: absolute; top: 4px; left: 3px;"></div>L<div class="fa fa-clock" style="position: absolute; top: 4px; right: 3px;"></div></div>';
             strHuds += '<div class="multiHud3" style="border-right: solid 1px #000;" title="' + gameShips [gameShip].name + ' Pulse">P</div>';
             strHuds += '<div class="multiHud3" style="border-right: solid 1px #000;" title="' + gameShips [gameShip].name + ' K-Can">K</div>';
             strHuds += '<div class="multiHud3" title="' + gameShips [gameShip].name + ' Hyper">H</div>';
