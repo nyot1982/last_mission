@@ -728,7 +728,7 @@ function enemy (type, x, y, heading)
                     {
                         var gameShip = gameShips.findIndex (ship => ship.name == gameShots [gameShot].name);
                         gameShots [gameShot].hit = true;
-                        this.life -= 10 * (gameShips [gameShip].weapon == 0 && gameShips [gameShip].weapons [gameShips [gameShip].weapon].power < 3 ? gameShips [gameShip].weapons [gameShips [gameShip].weapon].power : 1);
+                        this.life -= 10;
                         if (this.life == 0)
                         {
                             gameHits.push (new hit ("hit0", this.x, this.y, 40, 2));

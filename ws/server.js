@@ -152,24 +152,28 @@ const wss = createServerFrom
                                     weapons:
                                     [
                                         {
+                                            name: "Laser",
                                             power: 1,
                                             rate: 1,
                                             fireRate: 30,
                                             active: true
                                         },
                                         {
+                                            name: "Pulse",
                                             power: 0,
                                             rate: 1,
                                             fireRate: 54,
                                             active: false
                                         },
                                         {
+                                            name: "K-can",
                                             power: 0,
                                             rate: 1,
                                             fireRate: 70,
                                             active: false
                                         },
                                         {
+                                            name: "Hyper",
                                             power: 0,
                                             rate: 1,
                                             fireRate: 24,

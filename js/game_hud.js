@@ -265,7 +265,7 @@ function weaponHud (reset)
             {
                 if (gameShips [gameShip].weapons [i].rate == 2) $("#fire" + i + "rate").addClass ("active");
                 else $("#fire" + i + "rate").removeClass ("active");
-                if (gameShips [gameShip].weapons [i].power > 1) $("#fire" + i + "power").addClass ("active");
+                if (gameShips [gameShip].weapons [i].power == 2) $("#fire" + i + "power").addClass ("active");
                 else $("#fire" + i + "power").removeClass ("active");
             }
         }
@@ -443,12 +443,19 @@ function updateHuds (gameShip)
         strHuds += '<div class="fa fa-' + speedIcon + ' multiHud" style="color: ' + gameShips [gameShip].colors.near + ';" title="' + gameShips [gameShip].name + ' Speed: ' + (speed * 300) + ' Km/h"></div> ';
         strHuds += '<div class="fa fa-' + zIcon + ' multiHud" style="color: ' + gameShips [gameShip].colors.near + ';" title="' + gameShips [gameShip].name + ' Altitude: ' + (gameShips [gameShip].z * 10) + ' m"></div> ';
         strHuds += '<div class="multiHud2" style="background-color: ' + gameShips [gameShip].colors.near + ';" title="' + gameShips [gameShip].name + ' Heading: ' + heading + 'º">' + headingIcon + '</div> ';
-        strHuds += '<div class="multiHudWeapons">';
-            strHuds += '<div class="multiHud3" style="background-color: ' + gameShips [gameShip].colors.near + '; border-right: solid 1px #000;" title="' + gameShips [gameShip].name + ' Laser"><div class="fa fa-burst" style="position: absolute; top: 4px; left: 3px;"></div>L<div class="fa fa-clock" style="position: absolute; top: 4px; right: 3px;"></div></div>';
-            strHuds += '<div class="multiHud3" style="border-right: solid 1px #000;" title="' + gameShips [gameShip].name + ' Pulse">P</div>';
-            strHuds += '<div class="multiHud3" style="border-right: solid 1px #000;" title="' + gameShips [gameShip].name + ' K-Can">K</div>';
-            strHuds += '<div class="multiHud3" title="' + gameShips [gameShip].name + ' Hyper">H</div>';
-        strHuds += '</div>';
+        for (var weapon in gameShips [gameShip].weapons)
+        {
+            if (weapon == 0) classWeapon = " first";
+            else if (weapon == gameShips [gameShip].weapons.length - 1) classWeapon = " last";
+            else classWeapon = "";
+            if (gameShips [gameShip].weapons [weapon].active) styleWeapon = "background-color: " + gameShips [gameShip].colors.near + ";";
+            else if (gameShips [gameShip].weapons [weapon].power > 0) styleWeapon = "color: " + gameShips [gameShip].colors.near + "; border: solid 1px " + gameShips [gameShip].colors.near + "; background-color: var(--color5);";
+            else styleWeapon = "";
+            strHuds += '<div class="multiHud3' + classWeapon + '" style="' + styleWeapon + '" title="' + gameShips [gameShip].name + ' ' + gameShips [gameShip].weapons [weapon].name + '">' + gameShips [gameShip].weapons [weapon].name [0];
+                if (gameShips [gameShip].weapons [weapon].rate == 2) strHuds += '<div class="fa fa-clock"></div>';
+                if (gameShips [gameShip].weapons [weapon].power == 2) strHuds += '<div class="fa fa-burst"></div>';
+            strHuds += '</div>';
+        }       
     strHuds += '</div>';
     document.getElementById ("hudsMulti").innerHTML += strHuds;   
 }
