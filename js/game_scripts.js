@@ -864,7 +864,7 @@ function fetchLoad (cont, param)
                 gameMusic.active = players [0].game_music == 1 ? true : false;
                 document.getElementById ("music").innerHTML = gameMusic.active ? "On" : "Off";
                 if (players [0].fps_monitor == 1 && !$("#fps_monitor").hasClass ("active") || players [0].fps_monitor != 1 && $("#fps_monitor").hasClass ("active")) fpsHud ("toggle");
-                if (players [0].user_actions !== "undefined" && players [0].user_actions != "") userActions = JSON.parse (players [0].user_actions);
+                if (players [0].user_actions) userActions = JSON.parse (players [0].user_actions);
                 const json =
                 {
                     action: "connect",
