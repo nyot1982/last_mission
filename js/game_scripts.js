@@ -69,6 +69,7 @@ var fpsMonitor =
     skins = [],
     skinSel = 0,
     changingButton = null,
+    refresh_token = null,
     userActions =
     [
         {
@@ -742,7 +743,7 @@ function fetchLoad (cont, param)
         if (cont != "sign_in")
         {
             param = 'client_id=686557513597-ekg78s28rmsistjf7i8a8o9g8qc5gi02.apps.googleusercontent.com&client_secret=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';
-            if (cont == "sign_up") param += '&user_name=marcpinyot@gmail.com&refresh_token=' + refresh_token;
+            if (cont == "sign_up") { param += '&user_name=marcpinyot@gmail.com&refresh_token=' + refresh_token; console.log (refresh_token); }
         }
     }
     else if (cont == "player" || cont == "config_save")
@@ -863,7 +864,7 @@ function fetchLoad (cont, param)
                 gameMusic.active = players [0].game_music == 1 ? true : false;
                 document.getElementById ("music").innerHTML = gameMusic.active ? "On" : "Off";
                 if (players [0].fps_monitor == 1 && !$("#fps_monitor").hasClass ("active") || players [0].fps_monitor != 1 && $("#fps_monitor").hasClass ("active")) fpsHud ("toggle");
-                if (typeof (localStorage.userActions) !== "undefined" && localStorage.userActions != "") userActions = JSON.parse (localStorage.userActions);
+                if (players [0].user_actions !== "undefined" && players [0].user_actions != "") userActions = JSON.parse (players [0].user_actions);
                 const json =
                 {
                     action: "connect",
