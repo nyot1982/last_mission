@@ -21,24 +21,33 @@
     //If this causes an error, run 'composer install'
     require '../vendor/autoload.php';
 
+    //If you don't want to use the built-in form, set your client id and secret here
+    $clientId = $_POST ['client_id'];
+    $clientSecret = $_POST ['client_secret'];
+    $userName = $_POST ['user_name'];
+    $email = $_POST ['email'];
+    $password = $_POST ['password'];
+    $color = $_POST ['color'];
+    $refreshToken = $_POST ['refresh_token'];
 
     $mysqli = new mysqli ('localhost', 'nyot', '$P33dM4n1982', 'last_mission');
     $mysqli->query ("SET NAMES 'utf8'");
     if ($mysqli->connect_errno) $return ["error"] = 'Error! Conexion has failed: ('.$mysqli->connect_errno.') '.$mysqli->connect_error;
     else
     {
-        $resultado = $mysqli->query ('SELECT * FROM players WHERE email = "'.$_POST ['email'].'"');
+        $resultado = $mysqli->query ('SELECT * FROM players WHERE email = "'.$email.'"');
         if ($mysqli->errno) $return ["error"] = 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
         else
         {
             if ($resultado->num_rows > 0) $return ["error"] = 'email_exists';
             else
             {
-                $mysqli->query ('INSERT INTO players VALUES (NULL, 0, "'. $_POST ['email'].'", NULL, "'.$_POST ['password'].'", "'.$_POST ['color'].'", "", 0)');
+                $mysqli->query ('INSERT INTO players VALUES (NULL, 0, "'. $email.'", NULL, "'.$password.'", "'.$color.'", "", 0)');
                 if ($mysqli->errno) $return ["error"] = 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
                 else
                 {
                     $return ["ok"] = "Player created.";
+                    
                     if (isset ($_SERVER ['HTTPS'])) $path = 'https://';
                     else $path = 'http://';
                     $path .= $_SERVER ['HTTP_HOST'].dirname ($_SERVER ['PHP_SELF']);
@@ -77,80 +86,73 @@
                     $mail->AuthType = 'XOAUTH2';
 
                     //Use league/oauth2-client as OAuth2 token provider
-                    //Fill in authentication details here
-                    //Either the gmail account owner, or the user that gave consent
-                    $email = 'marcpinyot@gmail.com';
-                    $clientId = '686557513597-ekg78s28rmsistjf7i8a8o9g8qc5gi02.apps.googleusercontent.com';
-                    $clientSecret = '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';
-
-                    //Obtained by configuring and running get_oauth_token.php
-                    //after setting up an app in Google Developer Console.
-                    $refreshToken = '1//03jqCrJOXf6zGCgYIARAAGAMSNwF-L9Ir4EDsxmJzE1j_Pe5cC-apNWULpjQiRcOD67iVqHwx0knh6h_zPO8sJ-vPUIYzDVh9s_Y';
-
                     //Create a new OAuth2 provider instance
                     $provider = new Google
                     (
                         [
                             'clientId' => $clientId,
-                            'clientSecret' => $clientSecret,
+                            'clientSecret' => $clientSecret
                         ]
                     );
-
-                    //Pass the OAuth provider instance to PHPMailer
-                    $mail->setOAuth
-                    (
-                        new OAuth
+                    if ($provider === null) $return ['error'] = 'Provider missing';
+                    else
+                    {
+                        //Pass the OAuth provider instance to PHPMailer
+                        $mail->setOAuth
                         (
-                            [
-                                'provider' => $provider,
-                                'clientId' => $clientId,
-                                'clientSecret' => $clientSecret,
-                                'refreshToken' => $refreshToken,
-                                'userName' => $email,
-                            ]
-                        )
-                    );
+                            new OAuth
+                            (
+                                [
+                                    'provider' => $provider,
+                                    'clientId' => $clientId,
+                                    'clientSecret' => $clientSecret,
+                                    'refreshToken' => $refreshToken,
+                                    'userName' => $userName
+                                ]
+                            )
+                        );
 
-                    //Set who the message is to be sent from
-                    //For gmail, this generally needs to be the same as the user you logged in as
-                    $mail->setFrom ($email, 'Last Mission');
+                        //Set who the message is to be sent from
+                        //For gmail, this generally needs to be the same as the user you logged in as
+                        $mail->setFrom ($userName, 'Last Mission');
 
-                    //Set who the message is to be sent to
-                    $mail->addAddress ($_POST ['email']);
+                        //Set who the message is to be sent to
+                        $mail->addAddress ($userName);
 
-                    //Set the subject 
-                    $mail->Subject = 'Validate your player e.mail';
+                        //Set the subject 
+                        $mail->Subject = 'Validate your player e.mail';
 
-                    //Read an HTML message body from an external file, convert referenced images to embedded,
+                        //Read an HTML message body from an external file, convert referenced images to embedded,
 
-                    $mail->CharSet = PHPMailer::CHARSET_UTF8;
-                    $mail->msgHTML ('<!DOCTYPE html>
-                    <html lang="en" style="margin: 0; padding: 0; overflow: hidden;">
-                        <head>
-                            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-                            <title>Last Mission - Validate your player e.mail</title>
-                        </head>
-                        <body style="margin: 0; padding: 0; font-size: 14pt; font-family: Arial, Helvetica, sans-serif; text-align: left; overflow: auto;">
-                            <div align="center">
-                                <img width="203" height="92" src="cid:title" alt="Last Mission">
-                                <h1>Player created.</h1>
-                            </div>
-                            <p>Validate your emlail to activate the player account by clicking on the following link:</p>
-                            <div align="center">
-                                <a href="'.$path.'/validate_email.php"><h2>Validate e.mail</h2></a>
-                            </div>
-                        </body>
-                    </html>
-                    ');
+                        $mail->CharSet = PHPMailer::CHARSET_UTF8;
+                        $mail->msgHTML ('<!DOCTYPE html>
+                        <html lang="en" style="margin: 0; padding: 0; overflow: hidden;">
+                            <head>
+                                <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                                <title>Last Mission - Validate your player e.mail</title>
+                            </head>
+                            <body style="margin: 0; padding: 0; font-size: 14pt; font-family: Arial, Helvetica, sans-serif; text-align: left; overflow: auto;">
+                                <div align="center">
+                                    <img width="203" height="92" src="cid:title" alt="Last Mission">
+                                    <h1>Player created.</h1>
+                                </div>
+                                <p>Validate your emlail to activate the player account by clicking on the following link:</p>
+                                <div align="center">
+                                    <a href="'.$path.'/validate_email.php"><h2>Validate e.mail</h2></a>
+                                </div>
+                            </body>
+                        </html>
+                        ');
 
-                    //Replace the plain text body with one created manually
-                    $mail->AltBody = 'This is a plain-text message body';
+                        //Replace the plain text body with one created manually
+                        $mail->AltBody = 'This is a plain-text message body';
 
-                    $mail->AddEmbeddedImage ('../img/title.png','title', 'title.png'); 
+                        $mail->AddEmbeddedImage ('../img/title.png','title', 'title.png'); 
 
-                    //send the message, check for errors
-                    if (!$mail->send ()) $return ['email']['error'] = 'Error: '.$mail->ErrorInfo;
-                    else $return ['email']['ok'] = 'E.mail sent.';
+                        //send the message, check for errors
+                        if (!$mail->send ()) $return ['email']['error'] = 'Error: '.$mail->ErrorInfo;
+                        else $return ['email']['ok'] = 'E.mail sent.';
+                    }
                 }
             }
             $resultado->free ();

@@ -1078,6 +1078,15 @@ form a.interaction
         transform: rotateY(-90deg);
     }
 }
+.no-key
+{
+    font-size: 24px;
+    color: var(--color6);
+    vertical-align: middle;
+    width: 24px;
+    text-align: center;
+    font-weight: bold;
+}
 .key,
 .key2,
 .key3
@@ -1109,6 +1118,11 @@ form a.interaction
 .key3
 {
     padding: 0.25em 0;
+}
+.num
+{
+    color: var(--color11);
+    background-color: var(--color5);
 }
 .button,
 .button2,

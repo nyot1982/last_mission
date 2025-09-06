@@ -148,7 +148,8 @@ function stopControl (id_control, control, bt_type, bt_code)
 
 function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
 {
-    if (gameScreen == "start" && control == "keyboard")
+    if (changingButton != null && control == changingButton.control && bt_type == changingButton.bt_type) buttonChange (bt_code);
+    else if (gameScreen == "start" && control == "keyboard")
     {
         gameSound.sounds =
         {
@@ -571,50 +572,150 @@ function showControls (control, bt_type)
     {
         if (i % 2 == 0) str += '<div class="col">';
         str += '<p>';
-        if (actions [i].editable) str += '<a id="' + actions [i].action + '" href="javascript: changeButton (\'game\', \'' + actions [i].action + '\', \'' + control + '\', \'' + bt_type + '\');" title="Change ' + bt_type + '" class="changeButton">';
+        if (actions [i].editable) str += '<a id="' + actions [i].action + '" href="javascript: changeButton (\'game\', \'' + actions [i].action + '\', \'' + control + '\', \'' + bt_type + '\');" title="Change ' + bt_type.substring (0, bt_type.length - 1) + '" class="changeButton">';
         var sep = "";
-        for (var key in actions [i][control][bt_type + "s"])
+        if (actions [i][control][bt_type].length == 0) str += '<span class="fa fa-xmark no-key"></span> ';
+        for (var key in actions [i][control][bt_type])
         {
             if (sep != "") str += sep;
             if (control == "keyboard")
             {
-                switch (actions [i][control][bt_type + "s"][key])
+                switch (actions [i][control][bt_type][key])
                 {
+                    case 8:
+                        str += '<span class="fa fa-left-long key" style="width: 6em;"></span> ';
+                    break;
                     case 9:
                         str += '<span class="key" style="width: 5em; padding: 0;"><span class="fa fa-left-long-to-line" style="display: block;"></span><span class="fa fa-right-long-to-line" style="display: block;"></span></span> ';
                     break;
                     case 13:
-                        str += '<span class="fa fa-turn-down-left key"></span> ';
+                        str += '<span class="fa fa-turn-down-left key" style="width: 4em;"></span> ';
+                    break;
+                    case 16:
+                        str += '<span class="fa-regular fa-up key" style="font-size: 1.5em; padding: 0.25em; width: 5em;"></span> ';
                     break;
                     case 17:
                         str += '<span class="key2" style="width: 4.5em;">Ctrl</span> ';
+                    break;
+                    case 18:
+                        str += '<span class="key2" style="width: 4.5em;">Alt</span> ';
+                    break;
+                    case 19:
+                        str += '<span class="key2">Brk</span> ';
+                    break;
+                    case 20:
+                        str += '<span class="key2" style="width: 8em; padding-top: 0.3em;">Caps Lock</span> ';
                     break;
                     case 27:
                         str += '<span class="key2">Esc</span> ';
                     break;
                     case 32:
-                        str += '<span class="fa fa-horizontal-rule key" style="width: 8em;"></span> ';
-                    break;            
+                        str += '<span class="fa fa-horizontal-rule key" style="width: 9em;"></span> ';
+                    break;
+                    case 33:
+                        str += '<span class="key2" style="padding-top: 0.3em;">Pg Up</span> ';
+                    break;
+                    case 34:
+                        str += '<span class="key2" style="padding-top: 0.3em;">Pg Dn</span> ';
+                    break;
+                    case 35:
+                        str += '<span class="key2">End</span> ';
+                    break;
+                    case 36:
+                        str += '<span class="key2">Hom</span> ';
+                    break;
                     case 37:
                         str += '<span class="fa fa-left key"></span> ';
                     break;
                     case 38:
-                        str += '<span class="fa fa-down key"></span> ';
+                        str += '<span class="fa fa-up key"></span> ';
                     break;
                     case 39:
                         str += '<span class="fa fa-right key"></span> ';
                     break;
                     case 40:
-                        str += '<span class="fa fa-up key"></span> ';
+                        str += '<span class="fa fa-down key"></span> ';
+                    break;
+                    case 45:
+                        str += '<span class="key2">Ins</span> ';
+                    break;
+                    case 46:
+                        str += '<span class="key2">Del</span> ';
+                    break;
+                    case 91:
+                        str += '<span class="key2">Win</span> ';
+                    break;
+                    case 96: case 97: case 98: case 99: case 100: case 101: case 102: case 103: case 104: case 105:
+                        str += '<span class="key num">' + (actions [i][control][bt_type][key] - 96) + '</span> ';
+                    break;
+                    case 106:
+                        str += '<span class="key num">*</span> ';
+                    break;
+                    case 107:
+                        str += '<span class="key num">+</span> ';
+                    break;
+                    case 109:
+                        str += '<span class="key num">-</span> ';
+                    break;
+                    case 110:
+                        str += '<span class="key num">.</span> ';
+                    break;
+                    case 111:
+                        str += '<span class="key num">/</span> ';
+                    break;
+                    case 144:
+                        str += '<span class="key2 num" style="padding-top: 0.3em;">Num Lck</span> ';
+                    break;
+                    case 145:
+                        str += '<span class="key2" style="padding-top: 0.3em;">Scr Lck</span> ';
+                    break;
+                    case 186:
+                        str += '<span class="key">`</span> ';
+                    break;
+                    case 187:
+                        str += '<span class="key">+</span> ';
+                    break;
+                    case 188:
+                        str += '<span class="key">,</span> ';
+                    break;
+                    case 189:
+                        str += '<span class="key">-</span> ';
+                    break;
+                    case 190:
+                        str += '<span class="key">.</span> ';
+                    break;
+                    case 191:
+                        str += '<span class="key">Ç</span> ';
+                    break;
+                    case 192:
+                        str += '<span class="key">Ñ</span> ';
+                    break;
+                    case 219:
+                        str += '<span class="key">\'</span> ';
+                    break;
+                    case 220:
+                        str += '<span class="key">º</span> ';
+                    break;
+                    case 221:
+                        str += '<span class="key">¡</span> ';
+                    break;
+                    case 222:
+                        str += '<span class="key">´</span> ';
+                    break;
+                    case 226:
+                        str += '<span class="key"><</span> ';
+                    break;
+                    case 112: case 113: case 114: case 115: case 116: case 117: case 118: case 119: case 120: case 121: case 122: case 123:
+                        str += '<span class="key2">F' + (actions [i][control][bt_type][key] - 111) + '</span> ';
                     break;
                     default:
-                        str += '<span class="key">' + String.fromCharCode (actions [i][control][bt_type + "s"][key]) + '</span> ';
+                        str += '<span class="key">' + String.fromCharCode (actions [i][control][bt_type][key]) + '</span> ';
                     break;
                 }
             }
             else if (control == "gamepad")
             {
-                switch (actions [i][control][bt_type + "s"][key])
+                switch (actions [i][control][bt_type][key])
                 {
                     case 0:
                         str += '<span class="button green">A</span> ';
@@ -651,7 +752,7 @@ function showControls (control, bt_type)
                     break;
                 }
             }
-            else if (control == "joystick") str += '<span class="button red">' + (actions [i][control][bt_type + "s"][key] + 1) + '</span> ';
+            else if (control == "joystick") str += '<span class="button red">' + (actions [i][control][bt_type][key] + 1) + '</span> ';
             sep = "/ ";
         }
         for (var key in actions [i][control]["axes"])
@@ -696,18 +797,39 @@ function changeButton (screen, action, control, bt_type)
     {
         changingButton =
         {
+            i: userActions.findIndex (userAction => userAction.action == action),
             screen: screen,
-            action: action, 
             control: control,
             bt_type: bt_type
         };
-        document.getElementById (action).className = "changingButton";
-        document.getElementById (action).title = "Press a " + bt_type;
-        //userActions.findIndex (userAction => userAction.screen == screen && userAction.action == action && userAction.screen == screen ) == 1 
+        document.getElementById (action).className = 'changingButton';
+        document.getElementById (action).title = 'Press a ' + bt_type.substring (0, bt_type.length - 1) + ' to add/remove or "' + (control == 'gamepad' ? 'Start' : control == 'joystick' ? '8' : 'Esc') + '" to cancel';
     }
 }
 
-function buttonChange ()
+function buttonChange (key)
 {
-    
+    if (changingButton.control == "keyboard" && key != 27 || changingButton.control == "gamepad" && key != 9 || changingButton.control == "joystick" && key != 7)
+    {
+        for (var i = 0, add_bt = true; i < userActions.length; i++)
+        {
+            if (userActions [i].screen.includes (changingButton.screen))
+            {
+                var id_key = userActions [i][changingButton.control][changingButton.bt_type].indexOf (key);
+                if (id_key > -1)
+                {
+                    userActions [i][changingButton.control][changingButton.bt_type].splice (id_key, 1);
+                    if (i == changingButton.i) add_bt = false;
+                }
+            }
+        }
+        if (add_bt)
+        {
+            userActions [changingButton.i][changingButton.control][changingButton.bt_type].push (key);
+            if (userActions [changingButton.i][changingButton.control][changingButton.bt_type].length > 2) userActions [changingButton.i][changingButton.control][changingButton.bt_type].shift ();
+        }
+        localStorage.userActions = JSON.stringify (userActions);
+    }
+    showControls (changingButton.control, changingButton.bt_type);
+    changingButton = null;
 }

@@ -130,7 +130,7 @@ var fpsMonitor =
             action: "close_continue",
             keyboard:
             {
-                keys: [27] // Scape
+                keys: [27] // Escape
             },
             gamepad:
             {
@@ -148,7 +148,7 @@ var fpsMonitor =
             action: "close_exit",
             keyboard:
             {
-                keys: [27] // Scape
+                keys: [27] // Escape
             },
             gamepad:
             {
@@ -166,7 +166,7 @@ var fpsMonitor =
             action: "close_modal",
             keyboard:
             {
-                keys: [27] // Scape
+                keys: [27] // Escape
             },
             gamepad:
             {
@@ -238,7 +238,7 @@ var fpsMonitor =
             action: "input_exit",
             keyboard:
             {
-                keys: [27] // Scape
+                keys: [27] // Escape
             },
             gamepad:
             {
@@ -346,7 +346,7 @@ var fpsMonitor =
             action: "skins_exit",
             keyboard:
             {
-                keys: [27] // Scape
+                keys: [27] // Escape
             },
             gamepad:
             {
@@ -366,7 +366,7 @@ var fpsMonitor =
             editable: true,
             keyboard:
             {
-                keys: [40] // Up
+                keys: [38] // Up
             },
             gamepad:
             {
@@ -386,7 +386,7 @@ var fpsMonitor =
             editable: true,
             keyboard:
             {
-                keys: [38] // Down
+                keys: [40] // Down
             },
             gamepad:
             {
@@ -546,7 +546,7 @@ var fpsMonitor =
             editable: false,
             keyboard:
             {
-                keys: [27] // Scape
+                keys: [27] // Escape
             },
             gamepad:
             {
@@ -709,9 +709,6 @@ var fpsMonitor =
 $(document).ready (function ()
 {
     $("preloader").fadeOut (1000);
-    showControls ("keyboard", "key");
-    showControls ("gamepad", "button");
-    showControls ("joystick", "button");
     if (typeof (Storage) === "undefined") alert ("This browser does not support local web storage.");
     else
     {
@@ -726,7 +723,11 @@ $(document).ready (function ()
             document.getElementById ("music").innerHTML = gameMusic.active ? "On" : "Off";
         }
         if (typeof (localStorage.fpsMonitor) !== "undefined" && localStorage.fpsMonitor == 1) fpsHud ("toggle");
+        if (typeof (localStorage.userActions) !== "undefined" && localStorage.userActions != "") userActions = JSON.parse (localStorage.userActions);
     }
+    showControls ("keyboard", "keys");
+    showControls ("gamepad", "buttons");
+    showControls ("joystick", "buttons");
     gameLoadScreen ("start");
     gameArea.start ();
 });
@@ -735,10 +736,19 @@ function fetchLoad (cont, param)
 {
     if (cont == "high_score_hud") document.getElementById ("highScoreHud").innerHTML = '<preloader><div class="spinner"></div></preloader>';
     else if (cont == "high_scores") gameText.push (new component ("text", "Loading...", "yellow", 400, 255, "left", 10));
-    else if (cont == "sign_in" || cont == "sign_up") gameText.push (new component ("text", "Loading...", "yellow", 745, 345, "left", 10));
-    else if (cont == "player")
+    else if (cont == "sign_in" || cont == "sign_up" || cont == "get_oauth_token")
     {
-        gameText.push (new component ("text", "Loading...", "yellow", 745, 395, "left", 10));
+        if (cont != "sign_up") gameText.push (new component ("text", "Loading...", "yellow", 745, 345, "left", 10));
+        if (cont != "sign_in")
+        {
+            param = 'client_id=686557513597-ekg78s28rmsistjf7i8a8o9g8qc5gi02.apps.googleusercontent.com&client_secret=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';
+            if (cont == "sign_up") param += '&user_name=marcpinyot@gmail.com&refresh_token=' + refresh_token;
+        }
+    }
+    else if (cont == "player" || cont == "config_save")
+    {
+        gameText.push (new component ("text", "Saving...", "yellow", 745, 395, "left", 10));
+        if (cont == "config_save") param = 'game_music=' + (gameMusic.active ? '1' : '0') + '&game_sound=' + (gameSound.active ? '1' : '0') + '&fps_monitor=' + ($("#fps_monitor").hasClass ("active") ? '1' : '0') + '&user_actions=' + JSON.stringify (userActions);
         param = 'id=' + players [0].id + '&' + param;
     }
   
@@ -769,7 +779,7 @@ function fetchLoad (cont, param)
         {
             if (responseJSON ["error"])
             {
-                if (cont == "sign_in" || cont == "sign_up")
+                if (cont == "sign_in" || cont == "sign_up" || cont == "get_oauth_token")
                 {
                     gameText.pop ();
                     var form = document.getElementById ("sign");
@@ -799,7 +809,7 @@ function fetchLoad (cont, param)
                         changeTab ("alert");
                     }
                 }
-                else if (cont == "player")
+                else if (cont == "player" || cont == "config_save")
                 {
                     gameText.pop ();
                     var form = document.getElementById ("player");
@@ -848,6 +858,12 @@ function fetchLoad (cont, param)
                     }
                 }
                 players [0].xp = players [0].xp * 1;
+                gameSound.active = players [0].game_sound == 1 ? true : false;
+                document.getElementById ("sound").innerHTML = gameSound.active ? "On" : "Off";
+                gameMusic.active = players [0].game_music == 1 ? true : false;
+                document.getElementById ("music").innerHTML = gameMusic.active ? "On" : "Off";
+                if (players [0].fps_monitor == 1 && !$("#fps_monitor").hasClass ("active") || players [0].fps_monitor != 1 && $("#fps_monitor").hasClass ("active")) fpsHud ("toggle");
+                if (typeof (localStorage.userActions) !== "undefined" && localStorage.userActions != "") userActions = JSON.parse (localStorage.userActions);
                 const json =
                 {
                     action: "connect",
@@ -871,6 +887,12 @@ function fetchLoad (cont, param)
                 };
                 wss.send (JSON.stringify (data));       
             }
+            else if (cont == "get_oauth_token")
+            {
+                var form = document.getElementById ("sign");
+                refresh_token = responseJSON ["ok"];
+                form.submit ();
+            }
             else if (cont == "sign_up")
             {
                 gameText.pop ();
@@ -883,6 +905,12 @@ function fetchLoad (cont, param)
             {
                 players [0].skins.push (responseJSON ["skin"]);
                 gameText [responseJSON ["skin"]].color = "#0C0";
+            }
+            else if (cont == "config_save")
+            {
+                gameText.pop ();
+                gameAlert.push (new component ("text", ">>> " + responseJSON ["ok"], "#0C0", 705, 395, "left", 10));
+                changeTab ("alert");
             }
             else document.getElementById (cont).innerHTML += responseJSON [cont];
         }

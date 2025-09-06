@@ -92,7 +92,7 @@
                         <option value="-1"></option>
                     </select> <input type="button" value="Skins" onClick="javascript: $('#blackScreen').fadeIn (1000); setTimeout (() => { gameLoadScreen ('skins'); }, 1000);"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
                     <input id="xp" name="xp" type="hidden">
-                    <input type="submit" value="Start game"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
+                    <input type="submit" value="Start game"> <input type="button" value="Save config" onClick="javascript: fetchLoad ('config_save');"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
                 </form>
                 <form id="sign" name="sign" action="javascript: void (0);" onsubmit="javascript: fetchLoad (this.action.value, 'email=' + this.email.value + '&password=' + this.password.value + (this.action.value == 'sign_up' ? '&color=' + playerColors [0] : ''));" method="POST">
                     <div style="margin-left: -40px;">>>> Enter your e.mail:</div>
@@ -100,7 +100,7 @@
                     <div style="margin-top: 10px;">Enter your password:</div>
                     <input id="password" name="password" type="password" autocomplete="current-password" maxlength="12" required oninput="javascript: this.setCustomValidity ('');"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
                     <input id="action" name="action" type="hidden" value=""><br>
-                    <input type="submit" value="Sign in" onclick="javascript: if (parent.action.value == 'sign_up') { parent.email.setCustomValidity (''); parent.password.setCustomValidity (''); } parent.action.value='sign_in';"> <input type="submit" value="Sign up" onclick="javascript: if (parent.action.value == 'sign_in') { parent.email.setCustomValidity (''); parent.password.setCustomValidity (''); } parent.action.value='sign_up';"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
+                    <input type="submit" value="Sign in" onclick="javascript: if (parent.action.value == 'sign_up') { parent.email.setCustomValidity (''); parent.password.setCustomValidity (''); } parent.action.value='sign_in';"> <input type="button" value="Sign up" onclick="javascript: if (parent.action.value == 'sign_in') { parent.email.setCustomValidity (''); parent.password.setCustomValidity (''); } parent.action.value='sign_up'; fetchLoad ('get_oauth_token');"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
                 </form>
                 <div id="scoreHud" class="floatHuds"></div>
                 <div id="highScoreHud" class="floatHuds"></div>
@@ -198,7 +198,7 @@
                                 <p><span class="fa fa-down key"></span> Move down</p>
                             </div>
                             <div class="col">
-                                <p><span class="fa fa-turn-down-left key"></span> / <span class="fa fa-horizontal-rule key" style="width: 8em;"></span> Select</p>
+                                <p><span class="fa fa-turn-down-left key" style="width: 4em;"></span> / <span class="fa fa-horizontal-rule key" style="width: 9em;"></span> Select</p>
                                 <p><span class="key2">Esc</span> Back / Game</p>
                             </div>
                         </div>
@@ -220,7 +220,7 @@
                                 <p><span class="fa fa-left-long key" style="width: 6em;"></span> Delete</p>
                             </div>
                             <div class="col">
-                                <p><span class="fa fa-turn-down-left key"></span> Accept</p>
+                                <p><span class="fa fa-turn-down-left key" style="width: 4em;"></span> Accept</p>
                                 <p><span class="key2">Esc</span> Cancel</p>
                             </div>
                             <div class="col">
@@ -230,7 +230,7 @@
                         </div>
                         <div id="skinsTab-keyboard" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
-                                <p><span class="fa fa-turn-down-left key"></span> / <span class="fa fa-horizontal-rule key" style="width: 8em;"></span> Unlock</p>
+                                <p><span class="fa fa-turn-down-left key" style="width: 4em;"></span> / <span class="fa fa-horizontal-rule key" style="width: 9em;"></span> Unlock</p>
                                 <p><span class="key2">Esc</span> Back</p>
                             </div>
                             <div class="col">
@@ -310,10 +310,10 @@
                         <div id="inputTab-joystick" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
                                 <p><span class="key2">A-Z</span> Type</p>
-                                <p><span class="fa fa-left-long key" style="width: 4em;"></span> Delete</p>
+                                <p><span class="fa fa-left-long key" style="width: 6em;"></span> Delete</p>
                             </div>
                             <div class="col">
-                                <p><span class="fa fa-turn-down-left key"></span> Accept</p>
+                                <p><span class="fa fa-turn-down-left key" style="width: 4em;"></span> Accept</p>
                                 <p><span class="key2">Esc</span> Cancel</p>
                             </div>
                             <div class="col">
@@ -323,7 +323,7 @@
                         </div>
                         <div id="skinsTab-joystick" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
-                                <p><span class="fa fa-turn-down-left key"></span> Unlock</p>
+                                <p><span class="fa fa-turn-down-left key" style="width: 4em;"></span> Unlock</p>
                                 <p><span class="key2">Esc</span> Back</p>
                             </div>
                             <div class="col">
