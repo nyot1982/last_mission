@@ -413,10 +413,10 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                 case 'turn_right':
                     gameShips [gameShip].turning (bt_value);
                 break;
-                case 'move_back':
+                case 'move_front':
                     gameShips [gameShip].moving (bt_value);
                 break;
-                case 'move_front':
+                case 'move_back':
                     gameShips [gameShip].moving (-bt_value);
                 break;
                 case 'strafe_right':

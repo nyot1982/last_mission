@@ -748,7 +748,7 @@ function fetchLoad (cont, param)
     }
     else if (cont == "player" || cont == "config_save")
     {
-        gameText.push (new component ("text", "Saving...", "yellow", 745, 395, "left", 10));
+        gameText.push (new component ("text", cont == "player" ? "Loading..." : "Saving...", "yellow", 745, 395, "left", 10));
         if (cont == "config_save") param = 'game_music=' + (gameMusic.active ? '1' : '0') + '&game_sound=' + (gameSound.active ? '1' : '0') + '&fps_monitor=' + ($("#fps_monitor").hasClass ("active") ? '1' : '0') + '&user_actions=' + JSON.stringify (userActions);
         param = 'id=' + players [0].id + '&' + param;
     }
@@ -863,7 +863,7 @@ function fetchLoad (cont, param)
                 document.getElementById ("sound").innerHTML = gameSound.active ? "On" : "Off";
                 gameMusic.active = players [0].game_music == 1 ? true : false;
                 document.getElementById ("music").innerHTML = gameMusic.active ? "On" : "Off";
-                if (players [0].fps_monitor == 1 && !$("#fps_monitor").hasClass ("active") || players [0].fps_monitor != 1 && $("#fps_monitor").hasClass ("active")) fpsHud ("toggle");
+                if (players [0].fps_monitor == 1 && !$("#fps_monitor").hasClass ("active") || players [0].fps_monitor == 0 && $("#fps_monitor").hasClass ("active")) fpsHud ("toggle");
                 if (players [0].user_actions) userActions = JSON.parse (players [0].user_actions);
                 const json =
                 {
