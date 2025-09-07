@@ -13,7 +13,7 @@
     session_start ();
 
     $clientId = '686557513597-ekg78s28rmsistjf7i8a8o9g8qc5gi02.apps.googleusercontent.com';
-    $clientSecret = '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';
+    $clientSecret = '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';
     //$clientId = $_POST ['client_id'];
     //$clientSecret = $_POST ['client_secret'];
 
