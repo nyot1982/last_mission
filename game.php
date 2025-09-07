@@ -230,11 +230,11 @@
                         </div>
                         <div id="skinsTab-keyboard" class="tabContent cont-cols margin-1 toggle">
                             <div class="col">
+                                <p><span class="fa fa-left key"></span> / <span class="fa fa-right key"></span> / <span class="fa fa-down key"></span> / <span class="fa fa-up key"></span> Select</p>
                                 <p><span class="fa fa-turn-down-left key" style="width: 4em;"></span> / <span class="fa fa-horizontal-rule key" style="width: 9em;"></span> Unlock</p>
-                                <p><span class="key2">Esc</span> Back</p>
                             </div>
                             <div class="col">
-                                <p><span class="fa fa-left key"></span> / <span class="fa fa-right key"></span> / <span class="fa fa-down key"></span> / <span class="fa fa-up key"></span> Select</p>
+                                <p><span class="key2">Esc</span> Back</p>
                             </div>
                         </div>
                         <div id="gameTab-keyboard" class="tabContent cont-cols margin-1 toggle"></div>
