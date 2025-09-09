@@ -742,8 +742,8 @@ function fetchLoad (cont, param)
         if (cont != "sign_up") gameText.push (new component ("text", "Loading...", "yellow", 745, 345, "left", 10));
         if (cont != "sign_in")
         {
-            param = 'client_id=686557513597-ekg78s28rmsistjf7i8a8o9g8qc5gi02.apps.googleusercontent.com&client_secret=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';
-            if (cont == "sign_up") { param += '&user_name=marcpinyot@gmail.com&refresh_token=' + refresh_token; console.log (refresh_token); }
+            param += '&client_id=686557513597-ekg78s28rmsistjf7i8a8o9g8qc5gi02.apps.googleusercontent.com&client_secret=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';
+            if (cont == "sign_up") param += '&user_name=marcpinyot@gmail.com&refresh_token=1//03jqCrJOXf6zGCgYIARAAGAMSNwF-L9Ir4EDsxmJzE1j_Pe5cC-apNWULpjQiRcOD67iVqHwx0knh6h_zPO8sJ-vPUIYzDVh9s_Y&game_music=' + (gameMusic.active ? '1' : '0') + '&game_sound=' + (gameSound.active ? '1' : '0') + '&fps_monitor=' + ($("#fps_monitor").hasClass ("active") ? '1' : '0') + '&user_actions=' + JSON.stringify (userActions);//&refresh_token=' + refresh_token
         }
     }
     else if (cont == "player" || cont == "config_save")

@@ -100,7 +100,7 @@
                     <div style="margin-top: 10px;">Enter your password:</div>
                     <input id="password" name="password" type="password" autocomplete="current-password" maxlength="12" required oninput="javascript: this.setCustomValidity ('');"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
                     <input id="action" name="action" type="hidden" value=""><br>
-                    <input type="submit" value="Sign in" onclick="javascript: if (parent.action.value == 'sign_up') { parent.email.setCustomValidity (''); parent.password.setCustomValidity (''); } parent.action.value='sign_in';"> <input type="button" value="Sign up" onclick="javascript: if (parent.action.value == 'sign_in') { parent.email.setCustomValidity (''); parent.password.setCustomValidity (''); } parent.action.value='sign_up'; fetchLoad ('get_oauth_token');"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
+                    <input type="submit" value="Sign in" onclick="javascript: if (parent.action.value == 'sign_up') { parent.email.setCustomValidity (''); parent.password.setCustomValidity (''); } parent.action.value='sign_in';"> <input type="submit" value="Sign up" onclick="javascript: if (parent.action.value == 'sign_in') { parent.email.setCustomValidity (''); parent.password.setCustomValidity (''); } parent.action.value='sign_up';"> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction"></a>
                 </form>
                 <div id="scoreHud" class="floatHuds"></div>
                 <div id="highScoreHud" class="floatHuds"></div>

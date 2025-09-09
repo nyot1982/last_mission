@@ -28,6 +28,10 @@
     $email = $_POST ['email'];
     $password = $_POST ['password'];
     $color = $_POST ['color'];
+    $gameMusic = $_POST ['game_music'];
+    $gameSound = $_POST ['game_sound'];
+    $fpsMonitor= $_POST ['fps_monitor'];
+    $userActions= $_POST ['user_actions'];
     $refreshToken = $_POST ['refresh_token'];
 
     $mysqli = new mysqli ('localhost', 'nyot', '$P33dM4n1982', 'last_mission');
@@ -42,7 +46,7 @@
             if ($resultado->num_rows > 0) $return ["error"] = 'email_exists';
             else
             {
-                $mysqli->query ('INSERT INTO players VALUES (NULL, 0, "'. $email.'", NULL, "'.$password.'", "'.$color.'", "", 0)');
+                $mysqli->query ('INSERT INTO players VALUES (NULL, 0, "'.$email.'", NULL, "'.$password.'", "'.$color.'", "", 0, '.$gameMusic.', '.$gameSound.', '.$fpsMonitor.', \'s'.$userActions.'\')');
                 if ($mysqli->errno) $return ["error"] = 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
                 else
                 {
