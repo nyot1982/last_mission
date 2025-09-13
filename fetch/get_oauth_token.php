@@ -57,8 +57,6 @@
                 'code' => $_GET ['code']
             ]
         );
-        echo "<pre>";
-        echo "</pre>";
         $refreshToken = htmlspecialchars ($token->getRefreshToken ());
         $return ['ok'] = $refreshToken;
     }

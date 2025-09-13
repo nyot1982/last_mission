@@ -124,7 +124,7 @@ function startControl (id_control, control, bt_type, bt_code, bt_value)
             }
         }
         else if (control == "keyboard") bt_value = 1;
-        if (gameShips [gameShip].life > 0) userActionStart (control, bt_type, bt_code, bt_value, gameShip);
+        userActionStart (control, bt_type, bt_code, bt_value, gameShip);
     }
 }
 
@@ -141,7 +141,7 @@ function stopControl (id_control, control, bt_type, bt_code)
                 var player = players.findIndex (player => player.control == id_control);
                 var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
             }
-            if (gameShips [gameShip].life > 0) userActionStop (control, bt_type, bt_code, gameShip);
+            userActionStop (control, bt_type, bt_code, gameShip);
         }
     }
 }
@@ -437,7 +437,7 @@ function userActionStop (control, bt_type, bt_code, gameShip)
     
     var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control][bt_type].includes (bt_code));
 
-    if (userAction > -1)
+    if (userAction > -1 && (menuShip || gameShips [gameShip]))
     {
         switch (userActions [userAction].action)
         {
