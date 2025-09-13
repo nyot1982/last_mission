@@ -46,7 +46,7 @@
             if ($resultado->num_rows > 0) $return ["error"] = 'email_exists';
             else
             {
-                $mysqli->query ('INSERT INTO players VALUES (NULL, 0, "'.$email.'", NULL, "'.$password.'", "'.$color.'", "", 0, '.$gameMusic.', '.$gameSound.', '.$fpsMonitor.', \'s'.$userActions.'\')');
+                $mysqli->query ('INSERT INTO players VALUES (NULL, 0, "'.$email.'", NULL, "'.$password.'", "'.$color.'", "", 0, '.$gameMusic.', '.$gameSound.', '.$fpsMonitor.', \''.$userActions.'\')');
                 if ($mysqli->errno) $return ["error"] = 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
                 else
                 {
@@ -105,7 +105,7 @@
                         if ($mysqli->errno) $return ['email']['error'] = 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
                         else
                         {
-                            $refreshToken = $resultado->fetch_row ();
+                            $refreshToken = $resultado->fetch_column ();
 
                             //Pass the OAuth provider instance to PHPMailer
                             $mail->setOAuth
