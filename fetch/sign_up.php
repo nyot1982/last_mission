@@ -121,7 +121,7 @@
                         $mail->setFrom ($userName, 'Last Mission');
 
                         //Set who the message is to be sent to
-                        $mail->addAddress ($userName);
+                        $mail->addAddress ($email);
 
                         //Set the subject 
                         $mail->Subject = 'Validate your player e.mail';
@@ -142,7 +142,7 @@
                                 </div>
                                 <p>Validate your emlail to activate the player account by clicking on the following link:</p>
                                 <div align="center">
-                                    <a href="'.$path.'/validate_email.php"><h2>Validate e.mail</h2></a>
+                                    <a href="'.$path.'/validate_email.php?fetch_call='.base64_encode ("fetch_origin").'&email='.base64_encode ($email).'"><h2>Validate e.mail</h2></a>
                                 </div>
                             </body>
                         </html>

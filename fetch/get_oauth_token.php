@@ -1,10 +1,10 @@
 <?php
-    /*if ((!isset ($_POST ['fetch_call']) || $_POST ['fetch_call'] != "fetch_origin") && (!isset ($_GET ['code']) || !isset ($_GET ['state'])))
+    if ((!isset ($_POST ['fetch_call']) || $_POST ['fetch_call'] != "fetch_origin") && (!isset ($_GET ['code']) || !isset ($_GET ['state'])))
     {
         header ("Location: /");
         exit ();
     }
-    else */header ("Content-type: application/json");
+    else header ("Content-type: application/json");
 
     use League\OAuth2\Client\Provider\Google;
 
@@ -12,8 +12,8 @@
 
     session_start ();
 
-    $clientId = '686557513597-ekg78s28rmsistjf7i8a8o9g8qc5gi02.apps.googleusercontent.com';
-    $clientSecret = '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';
+    $clientId = '686557513597-2vmk1vfsjgre9fabt7r450kms0es58cb.apps.googleusercontent.com';
+    $clientSecret = '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';
     //$clientId = $_POST ['client_id'];
     //$clientSecret = $_POST ['client_secret'];
 
@@ -23,7 +23,8 @@
         'clientId' => $clientId,
         'clientSecret' => $clientSecret,
         'redirectUri' => $redirectUri,
-        'accessType' => 'offline'
+        'accessType' => 'offline',
+        'prompt' => 'consent'
     ];
     $provider = new Google ($params);
     $options =
@@ -56,6 +57,8 @@
                 'code' => $_GET ['code']
             ]
         );
+        echo "<pre>";
+        echo "</pre>";
         $refreshToken = htmlspecialchars ($token->getRefreshToken ());
         $return ['ok'] = $refreshToken;
     }
