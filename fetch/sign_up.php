@@ -32,7 +32,6 @@
     $gameSound = $_POST ['game_sound'];
     $fpsMonitor= $_POST ['fps_monitor'];
     $userActions= $_POST ['user_actions'];
-    $refreshToken = $_POST ['refresh_token'];
 
     $mysqli = new mysqli ('localhost', 'nyot', '$P33dM4n1982', 'last_mission');
     $mysqli->query ("SET NAMES 'utf8'");

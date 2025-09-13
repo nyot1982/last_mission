@@ -69,7 +69,6 @@ var fpsMonitor =
     skins = [],
     skinSel = 0,
     changingButton = null,
-    refresh_token = null,
     userActions =
     [
         {
@@ -737,13 +736,13 @@ function fetchLoad (cont, param)
 {
     if (cont == "high_score_hud") document.getElementById ("highScoreHud").innerHTML = '<preloader><div class="spinner"></div></preloader>';
     else if (cont == "high_scores") gameText.push (new component ("text", "Loading...", "yellow", 400, 255, "left", 10));
-    else if (cont == "sign_in" || cont == "sign_up" || cont == "get_oauth_token")
+    else if (cont == "sign_in" || cont == "sign_up")
     {
         if (cont != "sign_up") gameText.push (new component ("text", "Loading...", "yellow", 745, 345, "left", 10));
         if (cont != "sign_in")
         {
             param += '&client_id=686557513597-2vmk1vfsjgre9fabt7r450kms0es58cb.apps.googleusercontent.com&client_secret=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';
-            if (cont == "sign_up") param += '&user_name=marcpinyot@gmail.com&refresh_token=1//03sA6GeyWJnGyCgYIARAAGAMSNwF-L9IrnhbNosyZ5Hjd5Q5iuXTHFZLw2V4nAIixdFvG3L-J_RM6r0zbK_XhNqd3v0MYKSSeh0Q&game_music=' + (gameMusic.active ? '1' : '0') + '&game_sound=' + (gameSound.active ? '1' : '0') + '&fps_monitor=' + ($("#fps_monitor").hasClass ("active") ? '1' : '0') + '&user_actions=' + JSON.stringify (userActions);//&refresh_token=' + refresh_token
+            if (cont == "sign_up") param += '&user_name=marcpinyot@gmail.com&game_music=' + (gameMusic.active ? '1' : '0') + '&game_sound=' + (gameSound.active ? '1' : '0') + '&fps_monitor=' + ($("#fps_monitor").hasClass ("active") ? '1' : '0') + '&user_actions=' + JSON.stringify (userActions);
         }
     }
     else if (cont == "player" || cont == "config_save")
@@ -780,7 +779,7 @@ function fetchLoad (cont, param)
         {
             if (responseJSON ["error"])
             {
-                if (cont == "sign_in" || cont == "sign_up" || cont == "get_oauth_token")
+                if (cont == "sign_in" || cont == "sign_up")
                 {
                     gameText.pop ();
                     var form = document.getElementById ("sign");
@@ -887,12 +886,6 @@ function fetchLoad (cont, param)
                     xp: players [0].xp
                 };
                 wss.send (JSON.stringify (data));       
-            }
-            else if (cont == "get_oauth_token")
-            {
-                var form = document.getElementById ("sign");
-                refresh_token = responseJSON ["ok"];
-                form.submit ();
             }
             else if (cont == "sign_up")
             {
