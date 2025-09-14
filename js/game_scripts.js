@@ -61,7 +61,7 @@ var fpsMonitor =
     gameShots = [],
     gameHits = [],
     highScores = [],
-    highScoreSave = 0,
+    highScoreSave = [],
     playerId = null,
     players = [],
     storedPlayers = [],
@@ -839,7 +839,7 @@ function fetchLoad (cont, param)
             else if (cont == "high_scores") gameHighScores (responseJSON ["max_high_scores"], responseJSON ["high_scores"]);
             else if (cont == "high_score_save")
             {
-                if (responseJSON ["high_score_save"] > 0) highScoreSave = responseJSON ["high_score_save"];
+                if (responseJSON ["high_score_save"] > 0) highScoreSave.push (responseJSON ["high_score_save"]);
             }
             else if (cont == "sign_in")
             {
