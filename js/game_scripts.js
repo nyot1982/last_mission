@@ -834,7 +834,7 @@ function fetchLoad (cont, param)
             else if (cont == "high_score_hud")
             {
                 document.getElementById ("highScoreHud").innerHTML = "High Score: " + responseJSON [cont];
-                if (gameModes.findIndex (mode => mode.active == true) == 3) document.getElementById (cont).innerHTML += '<div id="playersConnecting"></div>';
+                if (gameModes.findIndex (mode => mode.active == true) == 3) document.getElementById ("highScoreHud").innerHTML += '<div id="playersConnecting"></div>';
             }
             else if (cont == "high_scores") gameHighScores (responseJSON ["max_high_scores"], responseJSON ["high_scores"]);
             else if (cont == "high_score_save")
