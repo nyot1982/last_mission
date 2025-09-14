@@ -292,64 +292,26 @@ function item (enemy, x, y)
                     this.taken = true;
                     if (gameShips [gameShip].life > 0)
                     {
-                        if (this.type == 0)
-                        {
-                            gameShips [gameShip].life += 10;
-                            if (gameShips [gameShip].life > 100) gameShips [gameShip].life = 100;        
-                            vitalsHud ("life", gameShips [gameShip].life, "blue");
-                        }
-                        else if (this.type == 1)
-                        {
-                            gameShips [gameShip].fuel += 10;
-                            if (gameShips [gameShip].fuel > 100) gameShips [gameShip].fuel = 100;
-                            vitalsHud ("fuel", gameShips [gameShip].fuel, "blue");
-                        }
-                        else if (this.type == 2)
-                        {
-                            gameShips [gameShip].ammo += 10;
-                            if (gameShips [gameShip].ammo > 100) gameShips [gameShip].ammo = 100;
-                            vitalsHud ("ammo", gameShips [gameShip].ammo, "blue");
-                            
-                        }
-                        else if (this.type == 3)
-                        {
-                            gameShips [gameShip].shield += 10;
-                            if (gameShips [gameShip].shield > 100) gameShips [gameShip].shield = 100;
-                            vitalsHud ("shield", gameShips [gameShip].shield, "blue");
-                        }
+                        if (this.type == 0) var vital = "life";
+                        else if (this.type == 1) var vital = "fuel";
+                        else if (this.type == 2) var vital = "ammo";
+                        else if (this.type == 3) var vital = "shield";
                         else if (this.type == 4 && gameShips [gameShip].weapons [gameShips [gameShip].weapon].rate == 1) gameShips [gameShip].weapons [gameShips [gameShip].weapon].rate++;
                         else if (this.type == 5 && gameShips [gameShip].weapons [gameShips [gameShip].weapon].power == 1) gameShips [gameShip].weapons [gameShips [gameShip].weapon].power++;
-                        else if (this.type == 6)
+                        else if (this.type > 5 && gameShips [gameShip].weapon != this.type - 5)
                         {
-                            if (gameShips [gameShip].weapon != 1)
-                            {
-                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = false;
-                                gameShips [gameShip].weapon = 1;
-                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = true;
-                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
-                            }
+                            gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = false;
+                            gameShips [gameShip].weapon = this.type - 5;
+                            gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = true;
+                            gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
                         }
-                        else if (this.type == 7)
+                        if (this.type > 3 && gameShips [gameShip].name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) weaponHud ();
+                        else
                         {
-                            if (gameShips [gameShip].weapon != 2)
-                            {
-                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = false;
-                                gameShips [gameShip].weapon = 2;
-                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = true;
-                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
-                            }
+                            gameShips [gameShip][vital] += 10;
+                            if (gameShips [gameShip][vital] > 100) gameShips [gameShip][vital] = 100;        
+                            if (gameShips [gameShip].name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud (vital, gameShips [gameShip][vital], "blue");
                         }
-                        else if (this.type == 8)
-                        {
-                            if (gameShips [gameShip].weapon != 3)
-                            {
-                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = false;
-                                gameShips [gameShip].weapon = 3;
-                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = true;
-                                gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
-                            }
-                        }
-                        if (this.type > 3) weaponHud ();
                     }
                 }
             }

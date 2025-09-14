@@ -167,7 +167,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 if (this.weapon == this.weapons.length) this.weapon = 0;
             }
             this.weapons [this.weapon].active = true;
-            weaponHud ();
+            if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) weaponHud ();
         }
     }
 
@@ -324,7 +324,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         if (this.status [path] == true) this.status [path] = false;
                         gameShots [gameShot].hit = true;
                         this.life -= 10;
-                        if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
+                        if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                         if (this.life > 0)
                         {
                             gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
@@ -815,7 +815,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         }
                         if (gameControls [this.idControl] == "gamepad") vibrate (this.idControl, 300);
                         this.shield--;
-                        if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
+                        if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("shield", this.shield, "red");
                     }
                 }
                 if (this.name)
@@ -875,11 +875,11 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     }
                 }
                 this.z += this.moveZ;
-                if (this.moveZ != 0 && this.name == players [0].name) document.getElementById ("zHud").innerHTML = Math.round (this.z * 10) + " m";
+                if (this.moveZ != 0 && this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) document.getElementById ("zHud").innerHTML = Math.round (this.z * 10) + " m";
                 if (this.z == -50)
                 {
                     this.moveZ = 0;
-                    if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
+                    if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                     this.life = 0;
                     this.playerDead ();
                     return;
@@ -918,7 +918,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         if (gameArea.frame % (60 - (Math.abs (this.moveSpeed) > Math.abs (this.strafeSpeed) ? Math.abs (this.moveSpeed * 5) : Math.abs (this.strafeSpeed * 5))) == 0)
                         {
                             this.fuel--;
-                            if (this.name == players [0].name) vitalsHud ("fuel", this.fuel, "red");
+                            if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("fuel", this.fuel, "red");
                         }
                     }
                 }
@@ -950,7 +950,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         gameSound.sounds ["hit0"].stop ();
                         gameSound.sounds ["hit0"].play ();
                     }
-                    if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
+                    if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                     this.life = 0;
                     this.playerDead ();
                     return;
@@ -988,7 +988,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                         gameShips [gameShip].playerDead ();
                                     }
                                     else if (gameModes.findIndex (mode => mode.active == true) == 3) this.xp++;
-                                    if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
+                                    if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                                     this.playerDead ();
                                     return;
                                 }
@@ -1004,7 +1004,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                         gameSound.sounds ["hit0"].stop ();
                                         gameSound.sounds ["hit0"].play ();
                                     }
-                                    if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
+                                    if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("shield", this.shield, "red");
                                 }
                                 else if (Math.sqrt (dx * dx + dy * dy) < 44)
                                 {
@@ -1023,7 +1023,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                         gameShips [gameShip].playerDead ();
                                         document.getElementById ("score-" + this.name).innerHTML = this.score;
                                         if (gameModes.findIndex (mode => mode.active == true) == 3) this.xp += 2;
-                                        if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
+                                        if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("shield", this.shield, "red");
                                     }
                                     else if (gameShips [gameShip].shield > 0 && this.shield == 0)
                                     {
@@ -1040,7 +1040,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                             if (gameShips [gameShip].shield < 0) gameShips [gameShip].shield = 0;
                                             gameShips [gameShip].score += 1000;
                                         }
-                                        if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
+                                        if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                                         this.playerDead ();
                                         return;
                                     }
@@ -1061,7 +1061,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             }
                             this.shield -= 5;
                             if (this.shield < 0) this.shield = 0;
-                            if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
+                            if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("shield", this.shield, "red");
                         }
                         else if (Math.sqrt (dx * dx + dy * dy) < 31 && this.z == gameBoss.z)
                         {
@@ -1072,7 +1072,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 gameSound.sounds ["hit0"].stop ();
                                 gameSound.sounds ["hit0"].play ();
                             }
-                            if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
+                            if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                             this.playerDead ();
                         }
                     }
@@ -1096,7 +1096,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             this.shield -= 5;
                             if (this.shield < 0) this.shield = 0;
                             this.score += 500;
-                            if (this.name == players [0].name) vitalsHud ("shield", this.shield, "red");
+                            if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("shield", this.shield, "red");
                             if (gameEnemies [gameEnemy].type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameMap.width), Math.floor (Math.random () * gameMap.height), Math.floor (Math.random () * 720) - 360));
                         }
                         else if (Math.sqrt (dx * dx + dy * dy) < 31 && this.z == gameEnemies [gameEnemy].z)
@@ -1115,7 +1115,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             if (enemies > 0) enemies--;
                             document.getElementById ("enemyHud2").style.width = enemies + "px";
                             this.score += 250;
-                            if (this.name == players [0].name) vitalsHud ("life", this.life, "red");
+                            if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                             if (gameEnemies [gameEnemy].type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameMap.width), Math.floor (Math.random () * gameMap.height), Math.floor (Math.random () * 720) - 360));
                             this.playerDead ();
                         }
@@ -1205,7 +1205,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     if (shot_fired)
                     {
                         this.ammo--;
-                        if (this.name == players [0].name & (gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3)) vitalsHud ("ammo", this.ammo, "red");
+                        if (this.name == players [0].name & gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("ammo", this.ammo, "red");
                     }
                 }
                 if (shot_fired)

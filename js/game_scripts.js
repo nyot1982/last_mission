@@ -1050,7 +1050,7 @@ function updateGameArea ()
             if (gameHits.findIndex (hit => hit.name == gameObjects [object].name) > -1) for (var hit in gameHits.filter (hit => hit.name == gameObjects [object].name)) gameHits [hit].update ();
         }
         for (var hit in gameHits.filter (hit => hit.name == "hit0")) gameHits [hit].update ();
-        speedHud ();
+        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) speedHud ();
     }
     if (gameModal != null || gameScreen != "game")
     {
