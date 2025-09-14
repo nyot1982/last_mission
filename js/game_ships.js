@@ -363,7 +363,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         if (gameControls [this.idControl] == "gamepad" && this.z >= 0) vibrate (this.idControl, 600);
         if (this.lifes > 0)
         {
-            if (this.lifes == 1 && gameModes.findIndex (mode => mode.active == true) < 2 && this.name == players [0].name) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
+            if (this.lifes == 1 && gameModes.findIndex (mode => mode.active == true) < 2) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
             this.lifes--;
             lifesHud (this.idShip);
         }
@@ -448,7 +448,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         }
                     }
                 }
-                else if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) players.splice (players.findIndex (player => player.name == this.name), 1);
+                else if (this.lifes == 0 && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2)) players.splice (players.findIndex (player => player.name == this.name), 1);
             },
             1000
         );

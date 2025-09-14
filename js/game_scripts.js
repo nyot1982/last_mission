@@ -260,7 +260,7 @@ var fpsMonitor =
             },
             gamepad:
             {
-                buttons: [10], // Left
+                buttons: [14], // Left
                 axes: []
             },
             joystick:
@@ -278,7 +278,7 @@ var fpsMonitor =
             },
             gamepad:
             {
-                buttons: [11], // Right
+                buttons: [15], // Right
                 axes: []
             },
             joystick:
@@ -370,7 +370,7 @@ var fpsMonitor =
             },
             gamepad:
             {
-                buttons: [6], // LT
+                buttons: [7], // RT
                 axes: []
             },
             joystick:
@@ -390,7 +390,7 @@ var fpsMonitor =
             },
             gamepad:
             {
-                buttons: [7], // RT
+                buttons: [6], // LT
                 axes: []
             },
             joystick:
@@ -411,7 +411,7 @@ var fpsMonitor =
             gamepad:
             {
                 buttons: [],
-                axes: [0] // LS
+                axes: [0, 2] // LS, RS
             },
             joystick:
             {
@@ -431,7 +431,7 @@ var fpsMonitor =
             gamepad:
             {
                 buttons: [],
-                axes: [0] // LS
+                axes: [0, 2] // LS, RS
             },
             joystick:
             {

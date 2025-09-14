@@ -545,7 +545,14 @@ function component (type, src, color, x, y, width, height, max, backColor, rollo
                             gameModeHud (0);
                             if (typeof (localStorage.players0) !== "undefined" && localStorage.players0.length > 0) storedPlayers = JSON.parse (localStorage.players0);
                             var form = document.getElementById ("players");
-                            if (form.length > 2) for (var i = 1; i < form.length - 1; i++) form.elements [i].remove ();
+                            if (form.length > 2)
+                            {
+                                for (var i = 1; i < form.length - 1; i++)
+                                {
+                                    form.elements [i].remove ();
+                                    form.getElementsByTagName ("a")[i].remove ();
+                                }
+                            }
                             form.style.display = "block";
                             form.elements [0].focus ();
                             form.elements [0].value = (storedPlayers [0] && storedPlayers [0].name ? storedPlayers [0].name : "Player");
