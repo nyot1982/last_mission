@@ -111,12 +111,12 @@ function startControl (id_control, control, bt_type, bt_code, bt_value)
     {
         if (!pressed [bt_type][id_control].includes (bt_code)) pressed [bt_type][id_control].push (bt_code);
         changeControl (control, id_control);
-        var gameShip = null;
+        var player = 0,
+            gameShip = -1;
         if (gameScreen == "game" && gameShips.length > 0 && gameConfirm.length == 0)
         {
-            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var player = 0;
-            else var player = players.findIndex (player => player.control == id_control);
-            gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
+            if (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) player = players.findIndex (player => player.control == id_control);
+            if (player > -1) gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
             if (control == "keyboard")
             {
                 if (bt_code == 37) bt_value = -1;
@@ -133,14 +133,12 @@ function stopControl (id_control, control, bt_type, bt_code)
     if (pressed [bt_type][id_control].includes (bt_code))
     {
         pressed [bt_type][id_control].splice (pressed [bt_type][id_control].indexOf (bt_code), 1);
+        var player = 0,
+            gameShip = -1;
         if (gameScreen == "game" && gameShips.length > 0 && gameConfirm.length == 0)
         {
-            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
-            else
-            {
-                var player = players.findIndex (player => player.control == id_control);
-                var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
-            }
+            if (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) player = players.findIndex (player => player.control == id_control);
+            if (player > -1) gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
             userActionStop (control, bt_type, bt_code, gameShip);
         }
     }
@@ -343,12 +341,12 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     }
                     else if (userActions [userAction].action == "skin_down")
                     {
-                        skinSel-=10;
+                        skinSel -= 10;
                         if (skinSel < 0) skinSel = skins.length + skinSel;
                     }
                     else if (userActions [userAction].action == "skin_up")
                     {
-                        skinSel+=10;
+                        skinSel += 10;
                         if (skinSel >= skins.length) skinSel = skinSel - skins.length;
                     }
                     if (players [0].skins.findIndex (skin => skin == skinSel) > -1) gameText [skinSel].color = "#0C0";
@@ -365,7 +363,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                         () =>
                         {
                             gameLoadScreen ("player");
-                            menuShip.y+=75;
+                            menuShip.y += 75;
                             form = document.getElementById ("player");
                             form.style.display = "block";
                             form.elements [0].focus ();
@@ -401,29 +399,29 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     gameCloseModal ();
                 break;
                 case 'change_weapon':
-                    gameShips [gameShip].changeWeapon ();
+                    if (gameShip > -1) gameShips [gameShip].changeWeapon ();
                 break;
                 case 'moveZ':
-                    gameShips [gameShip].movingZ ();    
+                    if (gameShip > -1) gameShips [gameShip].movingZ ();    
                 break;
                 case 'fire':
-                    gameShips [gameShip].firing (true);
+                    if (gameShip > -1) gameShips [gameShip].firing (true);
                 break;
                 case 'turn_left':
                 case 'turn_right':
-                    gameShips [gameShip].turning (bt_value);
+                    if (gameShip > -1) gameShips [gameShip].turning (bt_value);
                 break;
                 case 'move_front':
-                    gameShips [gameShip].moving (bt_value);
+                    if (gameShip > -1) gameShips [gameShip].moving (bt_value);
                 break;
                 case 'move_back':
-                    gameShips [gameShip].moving (-bt_value);
+                    if (gameShip > -1) gameShips [gameShip].moving (-bt_value);
                 break;
                 case 'strafe_right':
-                    gameShips [gameShip].strafing (bt_value);
+                    if (gameShip > -1) gameShips [gameShip].strafing (bt_value);
                 break;
                 case 'strafe_left':
-                    gameShips [gameShip].strafing (-bt_value);
+                    if (gameShip > -1) gameShips [gameShip].strafing (-bt_value);
                 break;
             }
         }
@@ -437,7 +435,7 @@ function userActionStop (control, bt_type, bt_code, gameShip)
     
     var userAction = userActions.findIndex (action => action.screen.includes (screen) && action [control][bt_type].includes (bt_code));
 
-    if (userAction > -1 && (menuShip || gameShips [gameShip]))
+    if (userAction > -1)
     {
         switch (userActions [userAction].action)
         {
@@ -445,19 +443,19 @@ function userActionStop (control, bt_type, bt_code, gameShip)
                 menuShip.firing (false);
             break;
             case 'fire':
-                gameShips [gameShip].firing (false);
+                if (gameShip > -1) gameShips [gameShip].firing (false);
             break;
             case 'turn_left':
             case 'turn_right':
-                gameShips [gameShip].turning (0);
+                if (gameShip > -1) gameShips [gameShip].turning (0);
             break;
             case 'move_back':
             case 'move_front':
-                gameShips [gameShip].moving (0);
+                if (gameShip > -1) gameShips [gameShip].moving (0);
             break;
             case 'strafe_right':
             case 'strafe_left':
-                gameShips [gameShip].strafing (0);  
+                if (gameShip > -1) gameShips [gameShip].strafing (0);  
             break;
         }
     }
