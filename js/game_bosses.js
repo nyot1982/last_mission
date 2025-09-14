@@ -124,7 +124,7 @@ function boss (type, x, y)
             {
                 if (gameArea.frame % 10 == 0)
                 {
-                    this.action = Math.floor (Math.random () * 8);
+                    this.action = Math.floor (Math.random () * 11);
                     switch (this.action)
                     {
                         case 0:
@@ -196,6 +196,7 @@ function boss (type, x, y)
                 ctx.translate (this.x, this.y);
                 ctx.translate (-(this.width / 2), -(this.height / 2));
                 ctx.lineWidth = 0;
+                this.paths = [];
                 this.paths.engine1 = new Path2D ();
                 this.paths.engine1.rect (8, 21, 7, 28);
                 this.canvas = document.createElement ("canvas");

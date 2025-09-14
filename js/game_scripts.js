@@ -1041,7 +1041,7 @@ function updateGameArea ()
         }
         if (enemies == 0 && gameModes.findIndex (mode => mode.active == true) < 2)
         {
-            if (!gameBoss) gameBoss = new boss (0, canvasWidth * 2, canvasHeight * 2);
+            if (!gameBoss) gameBoss = new boss (0, gameMap.width / 2, gameMap.height / 2);
             gameBoss.update ();
         }
         for (var object in gameObjects)
