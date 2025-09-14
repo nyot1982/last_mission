@@ -1124,20 +1124,27 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             }
             if (this.fire && (gameArea.frame - this.lastShotFrame) >= this.weapons [this.weapon].fireRate / this.weapons [this.weapon].rate)
             {
+                var shot_fired = false;
                 if (gameModal == "menu" || gameScreen == "menu")
                 {
                     menuShots.push (new shot (this.name, 0, "#c66d73", this.x + (this.height / 2) * Math.sin (this.heading * Math.PI / 180), this.y - (this.height / 2) * Math.cos (this.heading * Math.PI / 180), 24, 3, 16, this.heading));
                     this.fire = false;
+                    shot_fired = true;
                 }
                 else if (gameScreen == "game" && gameModal == null && this.ammo > 0)
                 {
                     if (this.weapon == 0)
                     {
-                        if (this.weapons [this.weapon].power == 1 && this.status.gun) gameShots.push (new shot (this.name, this.weapon, "black", this.x + (this.height / 2 + 24) * Math.sin (this.heading * Math.PI / 180), this.y - (this.height / 2 + 24) * Math.cos (this.heading * Math.PI / 180), 24, 3, 12, this.heading));
+                        if (this.weapons [this.weapon].power == 1 && this.status.gun)
+                        {
+                            gameShots.push (new shot (this.name, this.weapon, "black", this.x + (this.height / 2 + 24) * Math.sin (this.heading * Math.PI / 180), this.y - (this.height / 2 + 24) * Math.cos (this.heading * Math.PI / 180), 24, 3, 12, this.heading));
+                            shot_fired = true;
+                        }
                         if (this.weapons [this.weapon].power == 2)
                         {
                             if (this.status.wing1) gameShots.push (new shot (this.name, this.weapon, "black", this.x + (this.height / 2 + 16) * Math.sin ((this.heading - 18) * Math.PI / 180), this.y - (this.height / 2 + 16) * Math.cos ((this.heading - 18) * Math.PI / 180), 24, 3, 12, this.heading));
                             if (this.status.wing2) gameShots.push (new shot (this.name, this.weapon, "black", this.x + (this.height / 2 + 16) * Math.sin ((this.heading + 18) * Math.PI / 180), this.y - (this.height / 2 + 16) * Math.cos ((this.heading + 18) * Math.PI / 180), 24, 3, 12, this.heading));
+                            if (this.status.wing1 || this.status.wing2) shot_fired = true;
                         }
                     }
                     else if (this.weapon == 1)
@@ -1163,6 +1170,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 gameShots.push (new shot (this.name, this.weapon, "#BBB", this.x, this.y + 12, 12, 3, 8, this.heading + 90));
                             }
                         }
+                        if (this.status.gun || this.status.wing1 || this.status.wing2) shot_fired = true;
                     }
                     else if (this.weapon == 2)
                     {
@@ -1174,6 +1182,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             if (this.status.wing1) gameShots.push (new shot (this.name, this.weapon, "#292C9C", this.x + 96 * Math.sin ((this.heading - 90) * Math.PI / 180), this.y - 96 * Math.cos ((this.heading - 90) * Math.PI / 180), 16, 0, 10, this.heading));
                             if (this.status.wing2) gameShots.push (new shot (this.name, this.weapon, "#292C9C", this.x + 96 * Math.sin ((this.heading + 90) * Math.PI / 180), this.y - 96 * Math.cos ((this.heading + 90) * Math.PI / 180), 16, 0, 10, this.heading));
                         }
+                        if (this.status.gun || this.status.wing1 || this.status.wing2) shot_fired = true;
                     }
                     else if (this.weapon == 3)
                     {
@@ -1191,15 +1200,22 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             if (this.status.wing1) gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.heading - 90));
                             if (this.status.wing2) gameShots.push (new shot (this.name, this.weapon, "black", this.x, this.y, 14, 3, 11, this.heading + 90));
                         }
+                        if (this.status.gun || this.status.wing1 || this.status.wing2) shot_fired = true;
                     }
-                    this.ammo--;
-                    if (this.name == players [0].name) vitalsHud ("ammo", this.ammo, "red");
+                    if (shot_fired)
+                    {
+                        this.ammo--;
+                        if (this.name == players [0].name & (gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3)) vitalsHud ("ammo", this.ammo, "red");
+                    }
                 }
-                this.lastShotFrame = gameArea.frame;
-                if (gameSound.active && this.ammo > 0)
+                if (shot_fired)
                 {
-                    gameSound.sounds ["shot" + this.weapon].stop ();
-                    gameSound.sounds ["shot" + this.weapon].play ();
+                    this.lastShotFrame = gameArea.frame;
+                    if (gameSound.active && this.ammo > 0)
+                    {
+                        gameSound.sounds ["shot" + this.weapon].stop ();
+                        gameSound.sounds ["shot" + this.weapon].play ();
+                    }
                 }
                 if (gameControls [this.idControl] == "gamepad") vibrate (this.idControl, 150);
             }

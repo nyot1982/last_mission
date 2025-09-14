@@ -14,12 +14,9 @@ function gameHighScores (max_high_scores, high_scores)
         else var pre = "";
         gameText.push (new component ("text", pos + high_scores [i].name, "white", 400, 255 + i * 20, "left", 10));
         gameText.push (new component ("text", pre + high_scores [i].score, "white", 400 + ((max_high_scores + 8) * 10), 255 + i * 20, "left", 10));
-        if (highScoreSave.indexOf (high_scores [i].id) > -1)
-        {
-            gameText.push (new component ("text", ">>> New high score!", "#0C0", 400 + ((max_high_scores + 17) * 10), 255 + i * 20, "left", 10));
-            highScoreSave = [];
-        }
+        if (highScoreSave.indexOf (high_scores [i].id) > -1) gameText.push (new component ("text", ">>> New high score!", "#0C0", 400 + ((max_high_scores + 17) * 10), 255 + i * 20, "left", 10));
     }
+    highScoreSave = [];
 }
 
 function gameLoadScreen (screen)
