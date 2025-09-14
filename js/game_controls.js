@@ -468,10 +468,13 @@ function stopUserInteractions (player)
     {
         pressed =
         {
-            keys: [],
+            keys:
+            {
+                99: []
+            },
             buttons: [],
             axes: []
-        }
+        };
     }
     else
     {

@@ -448,7 +448,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         }
                     }
                 }
-                else if (this.lifes == 0 && (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2)) players.splice (players.findIndex (player => player.name == this.name), 1);
+                else if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3) players.splice (players.findIndex (player => player.name == this.name), 1);
             },
             1000
         );
