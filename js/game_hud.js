@@ -1,289 +1,15 @@
 function resetHuds (enemies, vitals)
 {
     if (document.getElementById ("hudsMulti").style.display == "block") changeHuds (false);
-    weaponHud (enemies);
     document.getElementById ("headingHud").style.left = "-371.25px";
     document.getElementById ("zHud").innerHTML = "0 m";
-    if (enemies) document.getElementById ("enemyHud2").style.width = "270px";
-    if (vitals == 0) var color = "red";
-    else var color = "blue";
-    vitalsHud ("life", vitals, color);
-    vitalsHud ("fuel", vitals, color);
-    vitalsHud ("ammo", vitals, color);
-    vitalsHud ("shield", 0, "red");
+    if (enemies) document.getElementById ("enemiesHud2").style.width = "270px";
+    else gameShips [gameShips.findIndex (ship => ship.name == players [0].name)].weaponsHud (true);
+    document.getElementById ("lifeHud").style.width = vitals + "px";
+    document.getElementById ("fuelHud").style.width = vitals + "px";
+    document.getElementById ("ammoHud").style.width = vitals + "px";
+    document.getElementById ("shieldHud").style.width = vitals + "px";
     if (vitals == 0 && gameModes.findIndex (mode => mode.active == true) > -1) gameModeHud (-1);
-}
-
-function scoreHud (gameShip)
-{
-    if (!document.getElementById ("score-" + gameShips [gameShip].name)) 
-    {
-        if (gameModes.findIndex (mode => mode.active == true) == 0)
-        {
-            document.getElementById ("scoreHud").style.lineHeight = "23px";
-            document.getElementById ("scoreHud").innerHTML = '<span id="score-' + gameShips [gameShip].name + '">0</span>';
-        }
-        else
-        {
-            document.getElementById ("scoreHud").style.lineHeight = null;
-            if (gameShips [gameShip].colors.skin)
-            {
-                if (skins [gameShips [gameShip].colors.skin].image != null)
-                {
-                    var skin = '<defs><pattern id="skin' + gameShips [gameShip].colors.skin + '-score" patternUnits="userSpaceOnUse" width="27" height="30"><image href="skins/' + gameShips [gameShip].colors.skin + '.png" x="0" y="0" width="27" height="30" /></pattern></defs>';
-                    var shipFill = 'url(#skin' + gameShips [gameShip].colors.skin + '-score)';
-                }
-                else
-                {
-                    var skin = "";
-                    var shipFill = null;
-                }
-            }
-            else
-            {
-                var skin = "";
-                var shipFill = gameShips [gameShip].colors.shipFill;
-            }
-            if (shipFill != null) skin += '<g><path fill="' + shipFill + '" d="m12 3c0 1.7-0.5 3-1 3-0.6 0-1 1.2-1 2.8 0 1.6-0.8 3.3-2 4.2-1.1 0.8-2 2.3-2 3.3 0 0.9-0.4 1.7-1 1.7-0.6 0-1-2.3-1-5 0-2.8-0.4-5-1-5-0.6 0-1 0.9-1 2 0 1.1-0.4 2-1 2-0.6 0-1 3.7-1 9 0 5 0.3 9 0.8 9 0.4 0 1.4-0.9 2.2-2 0.8-1.1 1.8-2 2.3-2 0.4 0 0.7 0.9 0.7 2q0 2 2 2c1.1 0 2-0.5 2-1 0-0.5 1.6-1 3.5-1 1.9 0 3.5 0.5 3.5 1 0 0.5 0.9 1 2 1q2 0 2-2c0-1.1 0.3-2 0.8-2 0.4 0 1.4 0.9 2.2 2 0.8 1.1 1.8 2 2.3 2 0.4 0 0.7-4 0.7-9 0-5.3-0.4-9-1-9-0.5 0-1-0.9-1-2 0-1.1-0.5-2-1-2-0.5 0-1 2.3-1 5 0 2.8-0.5 5-1 5-0.5 0-1-0.8-1-1.7 0-1-0.9-2.5-2-3.3-1.2-0.9-2-2.6-2-4.3 0-1.5-0.5-2.7-1-2.7-0.5 0-1-1.3-1-3q0-3-1.5-3-1.5 0-1.5 3 z"/>';
-            else skin = '<g><path fill="' + skins [gameShips [gameShip].colors.skin].engine1Fill + '" d="m 6 28 q 0 2 2 2 c 1.1 0 2 -0.5 2 -2 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].engine2Fill + '" d="m 17 28 c 0 1.5 1 2 2 2 q 2 0 2 -2 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].hook1Fill + '" d="m 6 16.3 c 0 0.9 -0.4 1.7 -1 1.7 c -0.6 0 -1 -2.3 -1 -5 l 0 13.8 c 0 0 0.8 -0.8 1.3 -0.8 c 0.4 0 0.7 0.9 0.7 2 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].hook2Fill + '" d="m 21 28 c 0 -1.1 0.3 -2 0.8 -2 c 0.4 0 1.2 0.7 1.2 0.7 l 0 -13.7 c 0 2.8 -0.5 5 -1 5 c -0.5 0 -1 -0.8 -1 -1.7 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].gunFill + '" d="m 12 3 c 0 1.7 -0.5 3 -1 3 c -0.6 0 -1 1.2 -1 2.8 c 0 1.6 -0.8 3.3 -2 4.2 L 19 13 c -1.2 -0.9 -2 -2.6 -2 -4.3 c 0 -1.5 -0.5 -2.7 -1 -2.7 c -0.5 0 -1 -1.3 -1 -3 q 0 -3 -1.5 -3 q -1.5 0 -1.5 3 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].shipFill + '" d="m 8 13 c -1.1 0.8 -2 2.3 -2 3.3 l 0 11.7 l 15 0 l 0 -11.7 c 0 -1 -0.9 -2.5 -2 -3.3 l -11 0 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].wing1Fill + '" d="m 4 13 c 0 -2.8 -0.4 -5 -1 -5 c -0.6 0 -1 0.9 -1 2 c 0 1.1 -0.4 2 -1 2 c -0.6 0 -1 3.7 -1 9 c 0 5 0.3 9 0.8 9 c 0.4 0 1.4 -0.9 2.2 -2 l 1 -1.2 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].wing2Fill + '" d="m 23 26.8 l 1 1.3 c 0.8 1.1 1.8 2 2.3 2 c 0.4 0 0.7 -4 0.7 -9 c 0 -5.3 -0.4 -9 -1 -9 c -0.5 0 -1 -0.9 -1 -2 c 0 -1.1 -0.5 -2 -1 -2 c -0.5 0 -1 2.3 -1 5 z"/>';
-            document.getElementById ("scoreHud").innerHTML += '<div id="score-' + gameShips [gameShip].name + '-div"><svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + gameShips [gameShip].colors.negative + '; border: solid 2px ' + gameShips [gameShip].colors.negative + ';"><title>' + gameShips [gameShip].name + ' Score</title>' +
-                                                              skin + '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg> <span id="score-' + gameShips [gameShip].name + '">0</span></div>';
-        }
-    }
-    else if (document.getElementById ("score-" + gameShips [gameShip].name).innerHTML != gameShips [gameShip].score)
-    {
-        var scoreHudElement = document.getElementById ("score-" + gameShips [gameShip].name);
-        scoreHudElement.className = "change";
-        scoreHudElement.innerHTML = gameShips [gameShip].score;
-        setTimeout
-        (
-            () =>
-            {
-                scoreHudElement.className = "";
-            },
-            250
-        );
-    }
-} 
-
-function lifesHud (gameShip)
-{
-    if (!document.getElementById ("life0-" + gameShips [gameShip].name)) 
-    {
-        if (gameModes.findIndex (mode => mode.active == true) == 0)
-        {
-            document.getElementById ("lifesHud").innerHTML = '<img id="life0-' + gameShips [gameShip].name + '" title="' + gameShips [gameShip].name + ' Life 1" src="svgs/ship.svg"/>' +
-                                                             '<img id="life1-' + gameShips [gameShip].name + '" title="' + gameShips [gameShip].name + ' Life 2" src="svgs/ship.svg"/>' +
-                                                             '<img id="life2-' + gameShips [gameShip].name + '" title="' + gameShips [gameShip].name + ' Life 3" src="svgs/ship.svg"/>' +
-                                                             '<img id="life3-' + gameShips [gameShip].name + '" title="' + gameShips [gameShip].name + ' Life 4" src="svgs/ship.svg"/>' +
-                                                             '<img id="life4-' + gameShips [gameShip].name + '" title="' + gameShips [gameShip].name + ' Life 5" src="svgs/ship.svg"/>';
-        }
-        else
-        {
-            document.getElementById ("lifesHud").innerHTML += '<div id="lifes-' + gameShips [gameShip].name + '"></div>';
-            for (var i = 0; i < 5; i++)
-            {
-                if (gameShips [gameShip].colors.skin)
-                {
-                    if (skins [gameShips [gameShip].colors.skin].image != null)
-                    {
-                        var skin = '<defs><pattern id="skin' + gameShips [gameShip].colors.skin + '-life' + i + '" patternUnits="userSpaceOnUse" width="27" height="30"><image href="skins/' + gameShips [gameShip].colors.skin + '.png" x="0" y="0" width="27" height="30" /></pattern></defs>';
-                        var shipFill = 'url(#skin' + gameShips [gameShip].colors.skin + '-life' + i + ')';
-                    }
-                    else
-                    {
-                        var skin = "";
-                        var shipFill = null;
-                    }
-                }
-                else
-                {
-                    var skin = "";
-                    var shipFill = gameShips [gameShip].colors.shipFill;
-                }
-                if (shipFill != null) skin += '<g><path fill="' + shipFill + '" d="m12 3c0 1.7-0.5 3-1 3-0.6 0-1 1.2-1 2.8 0 1.6-0.8 3.3-2 4.2-1.1 0.8-2 2.3-2 3.3 0 0.9-0.4 1.7-1 1.7-0.6 0-1-2.3-1-5 0-2.8-0.4-5-1-5-0.6 0-1 0.9-1 2 0 1.1-0.4 2-1 2-0.6 0-1 3.7-1 9 0 5 0.3 9 0.8 9 0.4 0 1.4-0.9 2.2-2 0.8-1.1 1.8-2 2.3-2 0.4 0 0.7 0.9 0.7 2q0 2 2 2c1.1 0 2-0.5 2-1 0-0.5 1.6-1 3.5-1 1.9 0 3.5 0.5 3.5 1 0 0.5 0.9 1 2 1q2 0 2-2c0-1.1 0.3-2 0.8-2 0.4 0 1.4 0.9 2.2 2 0.8 1.1 1.8 2 2.3 2 0.4 0 0.7-4 0.7-9 0-5.3-0.4-9-1-9-0.5 0-1-0.9-1-2 0-1.1-0.5-2-1-2-0.5 0-1 2.3-1 5 0 2.8-0.5 5-1 5-0.5 0-1-0.8-1-1.7 0-1-0.9-2.5-2-3.3-1.2-0.9-2-2.6-2-4.3 0-1.5-0.5-2.7-1-2.7-0.5 0-1-1.3-1-3q0-3-1.5-3-1.5 0-1.5 3 z"/>';
-                else skin = '<g><path fill="' + skins [gameShips [gameShip].colors.skin].engine1Fill + '" d="m 6 28 q 0 2 2 2 c 1.1 0 2 -0.5 2 -2 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].engine2Fill + '" d="m 17 28 c 0 1.5 1 2 2 2 q 2 0 2 -2 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].hook1Fill + '" d="m 6 16.3 c 0 0.9 -0.4 1.7 -1 1.7 c -0.6 0 -1 -2.3 -1 -5 l 0 13.8 c 0 0 0.8 -0.8 1.3 -0.8 c 0.4 0 0.7 0.9 0.7 2 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].hook2Fill + '" d="m 21 28 c 0 -1.1 0.3 -2 0.8 -2 c 0.4 0 1.2 0.7 1.2 0.7 l 0 -13.7 c 0 2.8 -0.5 5 -1 5 c -0.5 0 -1 -0.8 -1 -1.7 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].gunFill + '" d="m 12 3 c 0 1.7 -0.5 3 -1 3 c -0.6 0 -1 1.2 -1 2.8 c 0 1.6 -0.8 3.3 -2 4.2 L 19 13 c -1.2 -0.9 -2 -2.6 -2 -4.3 c 0 -1.5 -0.5 -2.7 -1 -2.7 c -0.5 0 -1 -1.3 -1 -3 q 0 -3 -1.5 -3 q -1.5 0 -1.5 3 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].shipFill + '" d="m 8 13 c -1.1 0.8 -2 2.3 -2 3.3 l 0 11.7 l 15 0 l 0 -11.7 c 0 -1 -0.9 -2.5 -2 -3.3 l -11 0 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].wing1Fill + '" d="m 4 13 c 0 -2.8 -0.4 -5 -1 -5 c -0.6 0 -1 0.9 -1 2 c 0 1.1 -0.4 2 -1 2 c -0.6 0 -1 3.7 -1 9 c 0 5 0.3 9 0.8 9 c 0.4 0 1.4 -0.9 2.2 -2 l 1 -1.2 z"/>' +
-                        '<path fill="' + skins [gameShips [gameShip].colors.skin].wing2Fill + '" d="m 23 26.8 l 1 1.3 c 0.8 1.1 1.8 2 2.3 2 c 0.4 0 0.7 -4 0.7 -9 c 0 -5.3 -0.4 -9 -1 -9 c -0.5 0 -1 -0.9 -1 -2 c 0 -1.1 -0.5 -2 -1 -2 c -0.5 0 -1 2.3 -1 5 z"/>';
-                document.getElementById ("lifes-" + gameShips [gameShip].name).innerHTML += '<svg id="life' + i + '-' + gameShips [gameShip].name + '" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + gameShips [gameShip].colors.negative + '; border: solid 2px ' + gameShips [gameShip].colors.negative + ';"><title>' + gameShips [gameShip].name + ' Life ' + (i + 1) + '</title>' +
-                                                    skin + '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg>';
-            }
-        }
-    }
-    else if (gameShips [gameShip].lifes < 5 && !document.getElementById ("life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name).style.display && !document.getElementById ("life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name).style.opacity)
-    {
-        $(document.getElementById ("life" + gameShips [gameShip].lifes + "-" + gameShips [gameShip].name)).fadeOut (1000);
-        if (gameShips [gameShip].lifes == 0 && gameModes.findIndex (mode => mode.active == true) > 0)
-        {
-            var name = gameShips [gameShip].name;
-            setTimeout
-            (
-                () =>
-                {
-                    document.getElementById ("score-" + name + "-div").remove ();
-                    document.getElementById ("lifes-" + name).remove ();
-                    document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
-                    if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
-                    else if (gameScreen == "game")
-                    {
-                        if (gameShips.length == 0) document.getElementById ("lifesHud").style.height = "0px";
-                        else document.getElementById ("lifesHud").style.height = "23px";
-                    }
-                },
-                1000
-            );
-        }
-    }
-}
-
-function speedHud ()
-{
-    var gameShip = gameShips.findIndex (ship => ship.name == players [0].name),
-        speedHud = document.getElementById ("speedHud"),
-        speedElements = speedHud.getElementsByClassName ("speed"),
-        meterHud = speedHud.getElementById ("meterHud"),
-        kphElement = speedHud.getElementById ("kph"),
-        speed = ["moveSpeed", 0];
-
-    if (gameShip > -1)
-    {
-        if (Math.abs (gameShips [gameShip].strafeSpeed) > Math.abs (gameShips [gameShip].moveSpeed)) speed [0] = "strafeSpeed";
-        speed [1] = Math.abs (gameShips [gameShip][speed [0]]) * 300;
-    }
-    for (var i = 0; i < speedElements.length; i++)
-    {
-        if (gameShip > -1 && i <= Math.abs (gameShips [gameShip][speed [0]])) speedElements [i].setAttribute ("class", "speed active");
-        else speedElements [i].setAttribute ("class", "speed");
-    }
-    meterHud.setAttribute ("style", "transform: rotate(" + (gameShip > -1 ? Math.abs (gameShips [gameShip][speed [0]]) * 30 : 0) + "deg);");
-    kphElement.setAttribute ("class", "kph" + Math.floor (gameShip > -1 ? Math.abs (gameShips [gameShip][speed [0]]) : 0));
-    speed = speed [1].toString ();
-    if (speed.length == 4)
-    {
-        speedDigits (3, speed.at (0));
-        speedDigits (2, speed.at (1));
-        speedDigits (1, speed.at (2));
-        speedDigits (0, speed.at (3));
-    }
-    else if (speed.length == 3)
-    {
-        speedDigits (3, null);
-        speedDigits (2, speed.at (0));
-        speedDigits (1, speed.at (1));
-        speedDigits (0, speed.at (2));
-    }
-    else if (speed.length == 2)
-    {
-        speedDigits (3, null);
-        speedDigits (2, null);
-        speedDigits (1, speed.at (0));
-        speedDigits (0, speed.at (1));
-    }
-    else if (speed.length == 1)
-    {
-        speedDigits (3, null);
-        speedDigits (2, null);
-        speedDigits (1, null);
-        speedDigits (0, speed);
-    }
-    else
-    {
-        speedDigits (3, null);
-        speedDigits (2, null);
-        speedDigits (1, null);
-        speedDigits (0, null);
-    }
-}
-
-function speedDigits (digit, number)
-{
-    var d0 = document.getElementById ("d" + digit + "l0"),
-        d1 = document.getElementById ("d" + digit + "l1"),
-        d2 = document.getElementById ("d" + digit + "l2"),
-        d3 = document.getElementById ("d" + digit + "l3"),
-        d4 = document.getElementById ("d" + digit + "l4"),
-        d5 = document.getElementById ("d" + digit + "l5"),
-        d6 = document.getElementById ("d" + digit + "l6");
-
-    if (number == 0 || number == 2 || number == 3 || number == 5 || number == 6 || number == 7 || number == 8 || number == 9) d0.setAttribute ("class", "on");
-    else d0.removeAttribute ("class");
-    if (number == 0 || number == 4 || number == 5 || number == 6 || number == 8 || number == 9) d1.setAttribute ("class", "on");
-    else d1.removeAttribute ("class");
-    if (number == 0 || number == 1 || number == 2 || number == 3 || number == 4 || number == 7 || number == 8 || number == 9) d2.setAttribute ("class", "on");
-    else d2.removeAttribute ("class");
-    if (number == 2 || number == 3 || number == 4 || number == 5 || number == 6 || number == 8 || number == 9) d3.setAttribute ("class", "on");
-    else d3.removeAttribute ("class");
-    if (number == 0 || number == 2 || number == 6 || number == 8) d4.setAttribute ("class", "on");
-    else d4.removeAttribute ("class");
-    if (number == 0 || number == 1 || number == 3 || number == 4 || number == 5 || number == 6 || number == 7 || number == 8 || number == 9) d5.setAttribute ("class", "on");
-    else d5.removeAttribute ("class");
-    if (number == 0 || number == 2 || number == 3 || number == 5 || number == 6 || number == 8 || number == 9) d6.setAttribute ("class", "on");
-    else d6.removeAttribute ("class");
-}
-
-function weaponHud (reset)
-{
-    var weaponElements = document.getElementsByClassName ("weaponHud");
-    var gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
-    
-    for (var i = 0; i < weaponElements.length; i++)
-    {
-        if (reset)
-        {
-            if (i == 0) $(weaponElements [i]).addClass ("active");
-            else $(weaponElements [i]).removeClass ("active");
-            $(weaponElements [i]).removeClass ("enable");
-            $("#fire" + i + "rate").removeClass ("active");
-            $("#fire" + i + "power").removeClass ("active");
-        }
-        else if (gameScreen == "game")
-        {
-            if (i == gameShips [gameShip].weapon)
-            {
-                if ($(weaponElements [i]).hasClass ("enable")) $(weaponElements [i]).removeClass ("enable");
-                if (!$(weaponElements [i]).hasClass ("active")) $(weaponElements [i]).addClass ("active");
-            }
-            else 
-            {
-                if ($(weaponElements [i]).hasClass ("active")) $(weaponElements [i]).removeClass ("active");
-                if (gameShips [gameShip].weapons [i].power == 0 && $(weaponElements [i]).hasClass ("enable")) $(weaponElements [i]).removeClass ("enable");
-                else if (gameShips [gameShip].weapons [i].power > 0 && !$(weaponElements [i]).hasClass ("enable")) $(weaponElements [i]).addClass ("enable");
-            }
-            if (gameShips [gameShip].weapons [i].power > 0)
-            {
-                if (gameShips [gameShip].weapons [i].rate == 2) $("#fire" + i + "rate").addClass ("active");
-                else $("#fire" + i + "rate").removeClass ("active");
-                if (gameShips [gameShip].weapons [i].power == 2) $("#fire" + i + "power").addClass ("active");
-                else $("#fire" + i + "power").removeClass ("active");
-            }
-        }
-    }
-}
-
-function vitalsHud (hud, width, color)
-{
-    document.getElementById (hud + "Hud").style.width = width + "px";
-    document.getElementById (hud + "Hud").style.backgroundColor = color;
-    setTimeout
-    (
-        () =>
-        {
-            document.getElementById (hud + "Hud").style.backgroundColor = "#52AE4A";
-        },
-        250
-    );
 }
 
 function mapHud (itemClass, x, y, heading)
@@ -373,6 +99,24 @@ function fpsHud (action)
     }
 }
 
+function enemiesHud ()
+{
+    var element = document.getElementById ("enemiesHud2");
+    if (enemies != parseInt (element.style.width))
+    {
+        element.style.width = enemies + "px";
+        element.className = "change";
+        setTimeout
+        (
+            () =>
+            {
+                element.className = "";
+            },
+            1000
+        );
+    }
+}
+
 function changeTab (newTab)
 {
     if (gameTab != newTab)
@@ -396,66 +140,16 @@ function changeHuds (multi)
         document.getElementById ("hudWeapons").style.display = "none";
         document.getElementById ("hudEnemy").innerHTML = "";
         document.getElementById ("hudVitals").style.display = "none";
-        document.getElementById ("hudHeading").innerHTML = '<p><b>ENEMY</b></p><div id="enemyHud"><div id="enemyHud2" style="width: 270px;"></div></div><p>&nbsp;</p>';
+        document.getElementById ("hudHeading").innerHTML = '<p><b>ENEMY</b></p><div id="enemiesHud"><div id="enemiesHud2" style="width: 270px;"></div></div><p>&nbsp;</p>';
         document.getElementById ("hudsMulti").style.display = "block";
     }
     else
     {
         document.getElementById ("hudSpeedAltitude").style.display = "block";
         document.getElementById ("hudWeapons").style.display = "block";
-        document.getElementById ("hudEnemy").innerHTML = '<p>&nbsp;</p><p><b>ENEMY</b></p><div id="enemyHud"><div id="enemyHud2"></div></div>';
+        document.getElementById ("hudEnemy").innerHTML = '<p>&nbsp;</p><p><b>ENEMY</b></p><div id="enemiesHud"><div id="enemiesHud2"></div></div>';
         document.getElementById ("hudVitals").style.display = "block";
         document.getElementById ("hudHeading").innerHTML = '<p><b>HEADING</b></p><div class="turnHud"><div id="headingHud"><div class="e5">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div><div>|</div><div class="e5">SE</div><div>|</div><div class="e1">S</div><div>|</div><div class="e5">SW</div><div>|</div><div class="e1">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div><div>|</div><div class="e5">SE</div><div>|</div><div class="e1">S</div><div>|</div><div class="e5">SW</div><div>|</div><div class="e1">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div></div></div>';
         document.getElementById ("hudsMulti").style.display = "none";
     }
-}
-
-function updateHuds (gameShip)
-{
-    var speed = Math.max (Math.abs (gameShips [gameShip].moveSpeed), Math.abs (gameShips [gameShip].strafeSpeed)),
-        speedIcon = "",
-        z = gameShips [gameShip].z,
-        zIcon = "",
-        heading = gameShips [gameShip].heading < 0 ? 360 + gameShips [gameShip].heading : gameShips [gameShip].heading,
-        headingIcon = "";
-
-    if (speed < 1.5) speedIcon = "gauge-min";
-    else if (speed < 3) speedIcon = "gauge-low";
-    else if (speed < 4.5) speedIcon = "gauge";
-    else if (speed < 6) speedIcon = "gauge-high";
-    else if (speed == 6) speedIcon = "gauge-max";
-    if (z == 0) zIcon = "down-long";
-    else zIcon = "up-long"
-    if (heading < 22.5) headingIcon = "N";
-    else if (heading < 67.5) headingIcon = "NE";
-    else if (heading < 112.5) headingIcon = "E";
-    else if (heading < 157.5) headingIcon = "SE";
-    else if (heading < 202.5) headingIcon = "S";
-    else if (heading < 247.5) headingIcon = "SW";
-    else if (heading < 292.5) headingIcon = "W";
-    else if (heading < 337.5) headingIcon = "NW";
-    else if (heading <= 360) headingIcon = "N";
-    var strHuds = '<div class="multiHuds">';
-        strHuds += '<div class="lifeHud" title="' + gameShips [gameShip].name + ' Life: ' + gameShips [gameShip].life + '%"><div class="lifeHud2" style="width: ' + (gameShips [gameShip].life * 16 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.near + ';"></div></div> ';
-        strHuds += '<div class="fuelHud" title="' + gameShips [gameShip].name + ' Fuel: ' + gameShips [gameShip].fuel + '%"><div class="fuelHud2" style="width: ' + (gameShips [gameShip].fuel * 16 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.near + ';"></div></div> ';
-        strHuds += '<div class="ammoHud" title="' + gameShips [gameShip].name + ' Ammo: ' + gameShips [gameShip].ammo + '%"><div class="ammoHud2" style="width: ' + (gameShips [gameShip].ammo * 16 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.near + ';"></div></div> ';
-        strHuds += '<div class="shieldHud" title="' + gameShips [gameShip].name + ' Shield: ' + gameShips [gameShip].shield + '%"><div class="shieldHud2" style="width: ' + (gameShips [gameShip].shield * 16 / 100) + 'px; background-color: ' + gameShips [gameShip].colors.near + ';"></div></div> ';
-        strHuds += '<div class="fa fa-' + speedIcon + ' multiHud" style="color: ' + gameShips [gameShip].colors.near + ';" title="' + gameShips [gameShip].name + ' Speed: ' + (speed * 300) + ' Km/h"></div> ';
-        strHuds += '<div class="fa fa-' + zIcon + ' multiHud" style="color: ' + gameShips [gameShip].colors.near + ';" title="' + gameShips [gameShip].name + ' Altitude: ' + (gameShips [gameShip].z * 10) + ' m"></div> ';
-        strHuds += '<div class="multiHud2" style="background-color: ' + gameShips [gameShip].colors.near + ';" title="' + gameShips [gameShip].name + ' Heading: ' + heading + 'º">' + headingIcon + '</div> ';
-        for (var weapon in gameShips [gameShip].weapons)
-        {
-            if (weapon == 0) classWeapon = " first";
-            else if (weapon == gameShips [gameShip].weapons.length - 1) classWeapon = " last";
-            else classWeapon = "";
-            if (gameShips [gameShip].weapons [weapon].active) styleWeapon = "background-color: " + gameShips [gameShip].colors.near + ";";
-            else if (gameShips [gameShip].weapons [weapon].power > 0) styleWeapon = "color: " + gameShips [gameShip].colors.near + "; border: solid 1px " + gameShips [gameShip].colors.near + "; background-color: var(--color5);";
-            else styleWeapon = "";
-            strHuds += '<div class="multiHud3' + classWeapon + '" style="' + styleWeapon + '" title="' + gameShips [gameShip].name + ' ' + gameShips [gameShip].weapons [weapon].name + '">' + gameShips [gameShip].weapons [weapon].name [0];
-                if (gameShips [gameShip].weapons [weapon].rate == 2) strHuds += '<div class="fa fa-clock"></div>';
-                if (gameShips [gameShip].weapons [weapon].power == 2) strHuds += '<div class="fa fa-burst"></div>';
-            strHuds += '</div>';
-        }       
-    strHuds += '</div>';
-    document.getElementById ("hudsMulti").innerHTML += strHuds;   
 }

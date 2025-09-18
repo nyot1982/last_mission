@@ -167,7 +167,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 if (this.weapon == this.weapons.length) this.weapon = 0;
             }
             this.weapons [this.weapon].active = true;
-            if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) weaponHud ();
         }
     }
 
@@ -324,7 +323,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         if (this.status [path] == true) this.status [path] = false;
                         gameShots [gameShot].hit = true;
                         this.life -= 10;
-                        if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                         if (this.life > 0)
                         {
                             gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
@@ -365,7 +363,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         {
             if (this.lifes == 1 && gameModes.findIndex (mode => mode.active == true) < 2) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
             this.lifes--;
-            lifesHud (this.idShip);
         }
         setTimeout
         (
@@ -453,18 +450,377 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             1000
         );
     }
+
+    this.vitalsHud = function (hud)
+    {
+        var element = document.getElementById (hud + "Hud"),
+            color = null;
+
+        if (this [hud] < parseInt (element.style.width)) color = "red";
+        else if (this [hud] > parseInt (element.style.width)) color = "blue";
+        if (color != null)
+        {
+            element.style.width = this [hud] + "px";
+            element.style.backgroundColor = color;
+            setTimeout
+            (
+                () =>
+                {
+                    element.style.backgroundColor = "#52AE4A";
+                },
+                250
+            );
+        }
+    }
+
+    this.speedHud = function ()
+    {
+        var speedHud = document.getElementById ("speedHud"),
+            speedElements = speedHud.getElementsByClassName ("speed"),
+            meterHud = speedHud.getElementById ("meterHud"),
+            kphElement = speedHud.getElementById ("kph"),
+            speed = ["moveSpeed", 0];
+
+        if (Math.abs (this.strafeSpeed) > Math.abs (this.moveSpeed)) speed [0] = "strafeSpeed";
+        speed [1] = Math.abs (this [speed [0]]) * 300;
+        for (var i = 0; i < speedElements.length; i++)
+        {
+            if (i <= Math.abs (this [speed [0]])) speedElements [i].setAttribute ("class", "speed active");
+            else speedElements [i].setAttribute ("class", "speed");
+        }
+        meterHud.setAttribute ("style", "transform: rotate(" + (Math.abs (this [speed [0]]) * 30) + "deg);");
+        kphElement.setAttribute ("class", "kph" + Math.floor (Math.abs (this [speed [0]])));
+        speed = speed [1].toString ();
+        if (speed.length == 4)
+        {
+            this.speedDigits (3, speed.at (0));
+            this.speedDigits (2, speed.at (1));
+            this.speedDigits (1, speed.at (2));
+            this.speedDigits (0, speed.at (3));
+        }
+        else if (speed.length == 3)
+        {
+            this.speedDigits (3, null);
+            this.speedDigits (2, speed.at (0));
+            this.speedDigits (1, speed.at (1));
+            this.speedDigits (0, speed.at (2));
+        }
+        else if (speed.length == 2)
+        {
+            this.speedDigits (3, null);
+            this.speedDigits (2, null);
+            this.speedDigits (1, speed.at (0));
+            this.speedDigits (0, speed.at (1));
+        }
+        else if (speed.length == 1)
+        {
+            this.speedDigits (3, null);
+            this.speedDigits (2, null);
+            this.speedDigits (1, null);
+            this.speedDigits (0, speed);
+        }
+        else
+        {
+            this.speedDigits (3, null);
+            this.speedDigits (2, null);
+            this.speedDigits (1, null);
+            this.speedDigits (0, null);
+        }
+    }
+
+    this.speedDigits = function (digit, number)
+    {
+        var d0 = document.getElementById ("d" + digit + "l0"),
+            d1 = document.getElementById ("d" + digit + "l1"),
+            d2 = document.getElementById ("d" + digit + "l2"),
+            d3 = document.getElementById ("d" + digit + "l3"),
+            d4 = document.getElementById ("d" + digit + "l4"),
+            d5 = document.getElementById ("d" + digit + "l5"),
+            d6 = document.getElementById ("d" + digit + "l6");
+
+        if (number == 0 || number == 2 || number == 3 || number == 5 || number == 6 || number == 7 || number == 8 || number == 9) d0.setAttribute ("class", "on");
+        else d0.removeAttribute ("class");
+        if (number == 0 || number == 4 || number == 5 || number == 6 || number == 8 || number == 9) d1.setAttribute ("class", "on");
+        else d1.removeAttribute ("class");
+        if (number == 0 || number == 1 || number == 2 || number == 3 || number == 4 || number == 7 || number == 8 || number == 9) d2.setAttribute ("class", "on");
+        else d2.removeAttribute ("class");
+        if (number == 2 || number == 3 || number == 4 || number == 5 || number == 6 || number == 8 || number == 9) d3.setAttribute ("class", "on");
+        else d3.removeAttribute ("class");
+        if (number == 0 || number == 2 || number == 6 || number == 8) d4.setAttribute ("class", "on");
+        else d4.removeAttribute ("class");
+        if (number == 0 || number == 1 || number == 3 || number == 4 || number == 5 || number == 6 || number == 7 || number == 8 || number == 9) d5.setAttribute ("class", "on");
+        else d5.removeAttribute ("class");
+        if (number == 0 || number == 2 || number == 3 || number == 5 || number == 6 || number == 8 || number == 9) d6.setAttribute ("class", "on");
+        else d6.removeAttribute ("class");
+    }
+
+    this.weaponsHud = function (reset)
+    {
+        var weaponElements = document.getElementsByClassName ("weaponsHud");
+        
+        for (var i = 0; i < weaponElements.length; i++)
+        {
+            if (reset)
+            {
+                if (i == 0) $(weaponElements [i]).addClass ("active");
+                else $(weaponElements [i]).removeClass ("active");
+                $(weaponElements [i]).removeClass ("enable");
+                $("#fire" + i + "rate").removeClass ("active");
+                $("#fire" + i + "power").removeClass ("active");
+            }
+            else
+            {
+                if (i == this.weapon)
+                {
+                    if ($(weaponElements [i]).hasClass ("enable")) $(weaponElements [i]).removeClass ("enable");
+                    if (!$(weaponElements [i]).hasClass ("active")) $(weaponElements [i]).addClass ("active");
+                }
+                else 
+                {
+                    if ($(weaponElements [i]).hasClass ("active")) $(weaponElements [i]).removeClass ("active");
+                    if (this.weapons [i].power == 0 && $(weaponElements [i]).hasClass ("enable")) $(weaponElements [i]).removeClass ("enable");
+                    else if (this.weapons [i].power > 0 && !$(weaponElements [i]).hasClass ("enable")) $(weaponElements [i]).addClass ("enable");
+                }
+                if (this.weapons [i].power > 0)
+                {
+                    if (this.weapons [i].rate == 2) $("#fire" + i + "rate").addClass ("active");
+                    else $("#fire" + i + "rate").removeClass ("active");
+                    if (this.weapons [i].power == 2) $("#fire" + i + "power").addClass ("active");
+                    else $("#fire" + i + "power").removeClass ("active");
+                }
+            }
+        }
+    }
+
+    this.scoreHud = function ()
+    {
+        var scoreHudElement = document.getElementById ("score-" + this.name);
+        if (!scoreHudElement) 
+        {
+            if (gameShips.length == 1)
+            {
+                document.getElementById ("scoreHud").style.lineHeight = "23px";
+                document.getElementById ("scoreHud").innerHTML = '<span id="score-' + this.name + '">0</span>';
+            }
+            else
+            {
+                document.getElementById ("scoreHud").style.lineHeight = null;
+                if (this.colors.skin)
+                {
+                    if (skins [this.colors.skin].image != null)
+                    {
+                        var skin = '<defs><pattern id="skin' + this.colors.skin + '-score" patternUnits="userSpaceOnUse" width="27" height="30"><image href="skins/' + this.colors.skin + '.png" x="0" y="0" width="27" height="30" /></pattern></defs>';
+                        var shipFill = 'url(#skin' + this.colors.skin + '-score)';
+                    }
+                    else
+                    {
+                        var skin = "";
+                        var shipFill = null;
+                    }
+                }
+                else
+                {
+                    var skin = "";
+                    var shipFill = this.colors.shipFill;
+                }
+                if (shipFill != null) skin += '<g><path fill="' + shipFill + '" d="m12 3c0 1.7-0.5 3-1 3-0.6 0-1 1.2-1 2.8 0 1.6-0.8 3.3-2 4.2-1.1 0.8-2 2.3-2 3.3 0 0.9-0.4 1.7-1 1.7-0.6 0-1-2.3-1-5 0-2.8-0.4-5-1-5-0.6 0-1 0.9-1 2 0 1.1-0.4 2-1 2-0.6 0-1 3.7-1 9 0 5 0.3 9 0.8 9 0.4 0 1.4-0.9 2.2-2 0.8-1.1 1.8-2 2.3-2 0.4 0 0.7 0.9 0.7 2q0 2 2 2c1.1 0 2-0.5 2-1 0-0.5 1.6-1 3.5-1 1.9 0 3.5 0.5 3.5 1 0 0.5 0.9 1 2 1q2 0 2-2c0-1.1 0.3-2 0.8-2 0.4 0 1.4 0.9 2.2 2 0.8 1.1 1.8 2 2.3 2 0.4 0 0.7-4 0.7-9 0-5.3-0.4-9-1-9-0.5 0-1-0.9-1-2 0-1.1-0.5-2-1-2-0.5 0-1 2.3-1 5 0 2.8-0.5 5-1 5-0.5 0-1-0.8-1-1.7 0-1-0.9-2.5-2-3.3-1.2-0.9-2-2.6-2-4.3 0-1.5-0.5-2.7-1-2.7-0.5 0-1-1.3-1-3q0-3-1.5-3-1.5 0-1.5 3 z"/>';
+                else skin = '<g><path fill="' + skins [this.colors.skin].engine1Fill + '" d="m 6 28 q 0 2 2 2 c 1.1 0 2 -0.5 2 -2 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].engine2Fill + '" d="m 17 28 c 0 1.5 1 2 2 2 q 2 0 2 -2 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].hook1Fill + '" d="m 6 16.3 c 0 0.9 -0.4 1.7 -1 1.7 c -0.6 0 -1 -2.3 -1 -5 l 0 13.8 c 0 0 0.8 -0.8 1.3 -0.8 c 0.4 0 0.7 0.9 0.7 2 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].hook2Fill + '" d="m 21 28 c 0 -1.1 0.3 -2 0.8 -2 c 0.4 0 1.2 0.7 1.2 0.7 l 0 -13.7 c 0 2.8 -0.5 5 -1 5 c -0.5 0 -1 -0.8 -1 -1.7 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].gunFill + '" d="m 12 3 c 0 1.7 -0.5 3 -1 3 c -0.6 0 -1 1.2 -1 2.8 c 0 1.6 -0.8 3.3 -2 4.2 L 19 13 c -1.2 -0.9 -2 -2.6 -2 -4.3 c 0 -1.5 -0.5 -2.7 -1 -2.7 c -0.5 0 -1 -1.3 -1 -3 q 0 -3 -1.5 -3 q -1.5 0 -1.5 3 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].shipFill + '" d="m 8 13 c -1.1 0.8 -2 2.3 -2 3.3 l 0 11.7 l 15 0 l 0 -11.7 c 0 -1 -0.9 -2.5 -2 -3.3 l -11 0 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].wing1Fill + '" d="m 4 13 c 0 -2.8 -0.4 -5 -1 -5 c -0.6 0 -1 0.9 -1 2 c 0 1.1 -0.4 2 -1 2 c -0.6 0 -1 3.7 -1 9 c 0 5 0.3 9 0.8 9 c 0.4 0 1.4 -0.9 2.2 -2 l 1 -1.2 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].wing2Fill + '" d="m 23 26.8 l 1 1.3 c 0.8 1.1 1.8 2 2.3 2 c 0.4 0 0.7 -4 0.7 -9 c 0 -5.3 -0.4 -9 -1 -9 c -0.5 0 -1 -0.9 -1 -2 c 0 -1.1 -0.5 -2 -1 -2 c -0.5 0 -1 2.3 -1 5 z"/>';
+                document.getElementById ("scoreHud").innerHTML += '<div id="score-' + this.name + '-div"><svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + this.colors.negative + '; border: solid 2px ' + this.colors.negative + ';"><title>' + this.name + ' Score</title>' +
+                                                                skin + '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg> <span id="score-' + this.name + '">0</span></div>';
+            }
+        }
+        else if (scoreHudElement.textContent * 1 != this.score)
+        {
+            scoreHudElement.className = "change";
+            scoreHudElement.textContent = this.score;
+            setTimeout
+            (
+                () =>
+                {
+                    scoreHudElement.className = "";
+                    if (gameShips.length > 1) this.scoreHudSort ("score-" + this.name + "-div");
+                },
+                250
+            );
+        }
+    }
+
+    this.scoreHudSort = function (idScoreHud)
+    {
+        if (document.getElementById ("scoreHud").firstChild.id != idScoreHud)
+        {
+            var scoreHudElement = document.getElementById (idScoreHud);
+            if (this.score > scoreHudElement.previousSibling.lastChild.textContent * 1)
+            {
+                scoreHudElement.className = "exchange";
+                setTimeout
+                (
+                    () =>
+                    {
+                        document.getElementById ("scoreHud").moveBefore (scoreHudElement, scoreHudElement.previousSibling);
+                        scoreHudElement.className = "";
+                        if (document.getElementById ("scoreHud").firstChild.id != idScoreHud) this.scoreHudSort (scoreHudElement.previousSibling.id);
+                    },
+                    500
+                );
+            }
+        }
+    }
+
+    this.lifesHud = function ()
+    {
+        if (!document.getElementById ("life0-" + this.name)) 
+        {
+            if (gameModes.findIndex (mode => mode.active == true) == 0)
+            {
+                document.getElementById ("lifesHud").innerHTML = '<img id="life0-' + this.name + '" title="' + this.name + ' Life 1" src="svgs/ship.svg"/>' +
+                                                                '<img id="life1-' + this.name + '" title="' + this.name + ' Life 2" src="svgs/ship.svg"/>' +
+                                                                '<img id="life2-' + this.name + '" title="' + this.name + ' Life 3" src="svgs/ship.svg"/>' +
+                                                                '<img id="life3-' + this.name + '" title="' + this.name + ' Life 4" src="svgs/ship.svg"/>' +
+                                                                '<img id="life4-' + this.name + '" title="' + this.name + ' Life 5" src="svgs/ship.svg"/>';
+            }
+            else
+            {
+                document.getElementById ("lifesHud").innerHTML += '<div id="lifes-' + this.name + '"></div>';
+                for (var i = 0; i < 5; i++)
+                {
+                    if (this.colors.skin)
+                    {
+                        if (skins [this.colors.skin].image != null)
+                        {
+                            var skin = '<defs><pattern id="skin' + this.colors.skin + '-life' + i + '" patternUnits="userSpaceOnUse" width="27" height="30"><image href="skins/' + this.colors.skin + '.png" x="0" y="0" width="27" height="30" /></pattern></defs>';
+                            var shipFill = 'url(#skin' + this.colors.skin + '-life' + i + ')';
+                        }
+                        else
+                        {
+                            var skin = "";
+                            var shipFill = null;
+                        }
+                    }
+                    else
+                    {
+                        var skin = "";
+                        var shipFill = this.colors.shipFill;
+                    }
+                    if (shipFill != null) skin += '<g><path fill="' + shipFill + '" d="m12 3c0 1.7-0.5 3-1 3-0.6 0-1 1.2-1 2.8 0 1.6-0.8 3.3-2 4.2-1.1 0.8-2 2.3-2 3.3 0 0.9-0.4 1.7-1 1.7-0.6 0-1-2.3-1-5 0-2.8-0.4-5-1-5-0.6 0-1 0.9-1 2 0 1.1-0.4 2-1 2-0.6 0-1 3.7-1 9 0 5 0.3 9 0.8 9 0.4 0 1.4-0.9 2.2-2 0.8-1.1 1.8-2 2.3-2 0.4 0 0.7 0.9 0.7 2q0 2 2 2c1.1 0 2-0.5 2-1 0-0.5 1.6-1 3.5-1 1.9 0 3.5 0.5 3.5 1 0 0.5 0.9 1 2 1q2 0 2-2c0-1.1 0.3-2 0.8-2 0.4 0 1.4 0.9 2.2 2 0.8 1.1 1.8 2 2.3 2 0.4 0 0.7-4 0.7-9 0-5.3-0.4-9-1-9-0.5 0-1-0.9-1-2 0-1.1-0.5-2-1-2-0.5 0-1 2.3-1 5 0 2.8-0.5 5-1 5-0.5 0-1-0.8-1-1.7 0-1-0.9-2.5-2-3.3-1.2-0.9-2-2.6-2-4.3 0-1.5-0.5-2.7-1-2.7-0.5 0-1-1.3-1-3q0-3-1.5-3-1.5 0-1.5 3 z"/>';
+                    else skin = '<g><path fill="' + skins [this.colors.skin].engine1Fill + '" d="m 6 28 q 0 2 2 2 c 1.1 0 2 -0.5 2 -2 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].engine2Fill + '" d="m 17 28 c 0 1.5 1 2 2 2 q 2 0 2 -2 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].hook1Fill + '" d="m 6 16.3 c 0 0.9 -0.4 1.7 -1 1.7 c -0.6 0 -1 -2.3 -1 -5 l 0 13.8 c 0 0 0.8 -0.8 1.3 -0.8 c 0.4 0 0.7 0.9 0.7 2 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].hook2Fill + '" d="m 21 28 c 0 -1.1 0.3 -2 0.8 -2 c 0.4 0 1.2 0.7 1.2 0.7 l 0 -13.7 c 0 2.8 -0.5 5 -1 5 c -0.5 0 -1 -0.8 -1 -1.7 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].gunFill + '" d="m 12 3 c 0 1.7 -0.5 3 -1 3 c -0.6 0 -1 1.2 -1 2.8 c 0 1.6 -0.8 3.3 -2 4.2 L 19 13 c -1.2 -0.9 -2 -2.6 -2 -4.3 c 0 -1.5 -0.5 -2.7 -1 -2.7 c -0.5 0 -1 -1.3 -1 -3 q 0 -3 -1.5 -3 q -1.5 0 -1.5 3 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].shipFill + '" d="m 8 13 c -1.1 0.8 -2 2.3 -2 3.3 l 0 11.7 l 15 0 l 0 -11.7 c 0 -1 -0.9 -2.5 -2 -3.3 l -11 0 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].wing1Fill + '" d="m 4 13 c 0 -2.8 -0.4 -5 -1 -5 c -0.6 0 -1 0.9 -1 2 c 0 1.1 -0.4 2 -1 2 c -0.6 0 -1 3.7 -1 9 c 0 5 0.3 9 0.8 9 c 0.4 0 1.4 -0.9 2.2 -2 l 1 -1.2 z"/>' +
+                            '<path fill="' + skins [this.colors.skin].wing2Fill + '" d="m 23 26.8 l 1 1.3 c 0.8 1.1 1.8 2 2.3 2 c 0.4 0 0.7 -4 0.7 -9 c 0 -5.3 -0.4 -9 -1 -9 c -0.5 0 -1 -0.9 -1 -2 c 0 -1.1 -0.5 -2 -1 -2 c -0.5 0 -1 2.3 -1 5 z"/>';
+                    document.getElementById ("lifes-" + this.name).innerHTML += '<svg id="life' + i + '-' + this.name + '" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + this.colors.negative + '; border: solid 2px ' + this.colors.negative + ';"><title>' + this.name + ' Life ' + (i + 1) + '</title>' +
+                                                        skin + '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg>';
+                }
+            }
+        }
+        else if (this.lifes < 5 && !document.getElementById ("life" + this.lifes + "-" + this.name).style.display && !document.getElementById ("life" + this.lifes + "-" + this.name).style.opacity)
+        {
+            $(document.getElementById ("life" + this.lifes + "-" + this.name)).fadeOut (1000);
+            if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) > 0)
+            {
+                var name = this.name;
+                setTimeout
+                (
+                    () =>
+                    {
+                        document.getElementById ("score-" + name + "-div").remove ();
+                        document.getElementById ("lifes-" + name).remove ();
+                        document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
+                        if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
+                        else if (gameScreen == "game")
+                        {
+                            if (gameShips.length == 0) document.getElementById ("lifesHud").style.height = "0px";
+                            else document.getElementById ("lifesHud").style.height = "23px";
+                        }
+                    },
+                    1000
+                );
+            }
+        }
+    }
+
+    this.updateHuds = function ()
+    {
+        this.scoreHud ();
+        this.lifesHud ();
+        if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2)
+        {  
+            document.getElementById ("headingHud").style = "left: " + (-371.25 - this.heading) + "px;";
+            document.getElementById ("zHud").innerHTML = Math.round (this.z * 10) + " m";
+            this.speedHud ();
+            this.weaponsHud ();
+            this.vitalsHud ("life");
+            this.vitalsHud ("fuel");
+            this.vitalsHud ("ammo");
+            this.vitalsHud ("shield");
+        }
+        else 
+        {
+            var speed = Math.max (Math.abs (this.moveSpeed), Math.abs (this.strafeSpeed)),
+                speedIcon = "",
+                z = this.z,
+                zIcon = "",
+                heading = this.heading < 0 ? 360 + this.heading : this.heading,
+                headingIcon = "";
+
+            if (speed < 1.5) speedIcon = "gauge-min";
+            else if (speed < 3) speedIcon = "gauge-low";
+            else if (speed < 4.5) speedIcon = "gauge";
+            else if (speed < 6) speedIcon = "gauge-high";
+            else if (speed == 6) speedIcon = "gauge-max";
+            if (z == 0) zIcon = "down-long";
+            else zIcon = "up-long"
+            if (heading < 22.5) headingIcon = "N";
+            else if (heading < 67.5) headingIcon = "NE";
+            else if (heading < 112.5) headingIcon = "E";
+            else if (heading < 157.5) headingIcon = "SE";
+            else if (heading < 202.5) headingIcon = "S";
+            else if (heading < 247.5) headingIcon = "SW";
+            else if (heading < 292.5) headingIcon = "W";
+            else if (heading < 337.5) headingIcon = "NW";
+            else if (heading <= 360) headingIcon = "N";
+            var strHuds = '<div class="multiHuds">';
+                strHuds += '<div class="lifeHud" title="' + this.name + ' Life: ' + this.life + '%"><div class="lifeHud2" style="width: ' + (this.life * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
+                strHuds += '<div class="fuelHud" title="' + this.name + ' Fuel: ' + this.fuel + '%"><div class="fuelHud2" style="width: ' + (this.fuel * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
+                strHuds += '<div class="ammoHud" title="' + this.name + ' Ammo: ' + this.ammo + '%"><div class="ammoHud2" style="width: ' + (this.ammo * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
+                strHuds += '<div class="shieldHud" title="' + this.name + ' Shield: ' + this.shield + '%"><div class="shieldHud2" style="width: ' + (this.shield * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
+                strHuds += '<div class="fa fa-' + speedIcon + ' multiHud" style="color: ' + this.colors.near + ';" title="' + this.name + ' Speed: ' + (speed * 300) + ' Km/h"></div> ';
+                strHuds += '<div class="fa fa-' + zIcon + ' multiHud" style="color: ' + this.colors.near + ';" title="' + this.name + ' Altitude: ' + (this.z * 10) + ' m"></div> ';
+                strHuds += '<div class="multiHud2" style="background-color: ' + this.colors.near + ';" title="' + this.name + ' Heading: ' + heading + 'º">' + headingIcon + '</div> ';
+                for (var weapon in this.weapons)
+                {
+                    if (weapon == 0) classWeapon = " first";
+                    else if (weapon == this.weapons.length - 1) classWeapon = " last";
+                    else classWeapon = "";
+                    if (this.weapons [weapon].active) styleWeapon = "background-color: " + this.colors.near + ";";
+                    else if (this.weapons [weapon].power > 0) styleWeapon = "color: " + this.colors.near + "; border: solid 1px " + this.colors.near + "; background-color: var(--color5);";
+                    else styleWeapon = "";
+                    strHuds += '<div class="multiHud3' + classWeapon + '" style="' + styleWeapon + '" title="' + this.name + ' ' + this.weapons [weapon].name + '">' + this.weapons [weapon].name [0];
+                        if (this.weapons [weapon].rate == 2) strHuds += '<div class="fa fa-clock"></div>';
+                        if (this.weapons [weapon].power == 2) strHuds += '<div class="fa fa-burst"></div>';
+                    strHuds += '</div>';
+                }       
+            strHuds += '</div>';
+            document.getElementById ("hudsMulti").innerHTML += strHuds;
+        }
+    }
     
     this.update = function ()
     {
         if (this.name)
         {
             this.idShip = gameShips.findIndex (ship => ship.name == this.name);
-            if (this.idShip > -1)
-            {
-                scoreHud (this.idShip);
-                lifesHud (this.idShip);
-                if (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) updateHuds (this.idShip);
-            }
+            if (this.idShip > -1) this.updateHuds ();
             if (players.findIndex (player => player.name == this.name) > -1) this.idControl = players [players.findIndex (player => player.name == this.name)].control;
         }
         else this.idControl = menuControl;
@@ -475,7 +831,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 if (this.turn != 0)
                 {
                     if (this.turn != 0) this.heading = (this.heading + this.turn) % 360;
-                    if (gameScreen == "game" && this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) document.getElementById ("headingHud").style = "left: " + (-371.25 - this.heading) + "px;";
                 }
                 this.radians = this.heading * Math.PI / 180;
                 if (gameScreen == "menu" || gameModal == "menu")
@@ -815,7 +1170,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         }
                         if (gameControls [this.idControl] == "gamepad") vibrate (this.idControl, 300);
                         this.shield--;
-                        if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("shield", this.shield, "red");
                     }
                 }
                 if (this.name)
@@ -875,11 +1229,9 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     }
                 }
                 this.z += this.moveZ;
-                if (this.moveZ != 0 && this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) document.getElementById ("zHud").innerHTML = Math.round (this.z * 10) + " m";
                 if (this.z == -50)
                 {
                     this.moveZ = 0;
-                    if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                     this.life = 0;
                     this.playerDead ();
                     return;
@@ -918,7 +1270,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         if (gameArea.frame % (60 - (Math.abs (this.moveSpeed) > Math.abs (this.strafeSpeed) ? Math.abs (this.moveSpeed * 5) : Math.abs (this.strafeSpeed * 5))) == 0)
                         {
                             this.fuel--;
-                            if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("fuel", this.fuel, "red");
                         }
                     }
                 }
@@ -950,7 +1301,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         gameSound.sounds ["hit0"].stop ();
                         gameSound.sounds ["hit0"].play ();
                     }
-                    if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                     this.life = 0;
                     this.playerDead ();
                     return;
@@ -988,7 +1338,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                         gameShips [gameShip].playerDead ();
                                     }
                                     else if (gameModes.findIndex (mode => mode.active == true) == 3) this.xp++;
-                                    if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                                     this.playerDead ();
                                     return;
                                 }
@@ -1004,7 +1353,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                         gameSound.sounds ["hit0"].stop ();
                                         gameSound.sounds ["hit0"].play ();
                                     }
-                                    if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("shield", this.shield, "red");
                                 }
                                 else if (Math.sqrt (dx * dx + dy * dy) < 44)
                                 {
@@ -1023,7 +1371,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                         gameShips [gameShip].playerDead ();
                                         document.getElementById ("score-" + this.name).innerHTML = this.score;
                                         if (gameModes.findIndex (mode => mode.active == true) == 3) this.xp += 2;
-                                        if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("shield", this.shield, "red");
                                     }
                                     else if (gameShips [gameShip].shield > 0 && this.shield == 0)
                                     {
@@ -1040,7 +1387,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                             if (gameShips [gameShip].shield < 0) gameShips [gameShip].shield = 0;
                                             gameShips [gameShip].score += 1000;
                                         }
-                                        if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                                         this.playerDead ();
                                         return;
                                     }
@@ -1061,7 +1407,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             }
                             this.shield -= 5;
                             if (this.shield < 0) this.shield = 0;
-                            if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("shield", this.shield, "red");
                         }
                         else if (Math.sqrt (dx * dx + dy * dy) < 31 && this.z == gameBoss.z)
                         {
@@ -1072,7 +1417,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 gameSound.sounds ["hit0"].stop ();
                                 gameSound.sounds ["hit0"].play ();
                             }
-                            if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                             this.playerDead ();
                         }
                     }
@@ -1092,11 +1436,9 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             }
                             if (gameControls [this.idControl] == "gamepad") vibrate (this.idControl, 300);
                             if (enemies > 0) enemies--;
-                            document.getElementById ("enemyHud2").style.width = enemies + "px";
                             this.shield -= 5;
                             if (this.shield < 0) this.shield = 0;
                             this.score += 500;
-                            if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("shield", this.shield, "red");
                             if (gameEnemies [gameEnemy].type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameMap.width), Math.floor (Math.random () * gameMap.height), Math.floor (Math.random () * 720) - 360));
                         }
                         else if (Math.sqrt (dx * dx + dy * dy) < 31 && this.z == gameEnemies [gameEnemy].z)
@@ -1113,9 +1455,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             }
                             if (gameControls [this.idControl] == "gamepad") vibrate (this.idControl, 600);
                             if (enemies > 0) enemies--;
-                            document.getElementById ("enemyHud2").style.width = enemies + "px";
                             this.score += 250;
-                            if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("life", this.life, "red");
                             if (gameEnemies [gameEnemy].type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameMap.width), Math.floor (Math.random () * gameMap.height), Math.floor (Math.random () * 720) - 360));
                             this.playerDead ();
                         }
@@ -1202,11 +1542,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         }
                         if (this.status.gun || this.status.wing1 || this.status.wing2) shot_fired = true;
                     }
-                    if (shot_fired)
-                    {
-                        this.ammo--;
-                        if (this.name == players [0].name & gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud ("ammo", this.ammo, "red");
-                    }
+                    if (shot_fired) this.ammo--;
                 }
                 if (shot_fired)
                 {

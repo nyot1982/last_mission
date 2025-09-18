@@ -124,19 +124,19 @@
                                 <div class="cont-cols no-margin">
                                     <div class="col center">
                                         <div id="fire0power" class="fa fa-fw fa-burst weaponExtra fire0"></div><div id="fire0rate" class="fa fa-fw fa-clock weaponExtra fire0"></div>
-                                        <div id="fire0" class="weaponHud fire0 active">LASER</div>
+                                        <div id="fire0" class="weaponsHud fire0 active">LASER</div>
                                     </div>
                                     <div class="col center">
                                         <div id="fire1power" class="fa fa-fw fa-burst weaponExtra fire1"></div><div id="fire1rate" class="fa fa-fw fa-clock weaponExtra fire1"></div>
-                                        <div id="fire1" class="weaponHud fire1">PULS</div>
+                                        <div id="fire1" class="weaponsHud fire1">PULS</div>
                                     </div>
                                     <div class="col center">
                                         <div id="fire2power" class="fa fa-fw fa-burst weaponExtra fire2"></div><div id="fire2rate" class="fa fa-fw fa-clock weaponExtra fire2"></div>
-                                        <div id="fire2" class="weaponHud fire2">K-CAN</div>
+                                        <div id="fire2" class="weaponsHud fire2">K-CAN</div>
                                     </div>
                                     <div class="col center">
                                         <div id="fire3power" class="fa fa-fw fa-burst weaponExtra fire3"></div><div id="fire3rate" class="fa fa-fw fa-clock weaponExtra fire3"></div>
-                                        <div id="fire3" class="weaponHud fire3">HYPER</div>
+                                        <div id="fire3" class="weaponsHud fire3">HYPER</div>
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@
                         <div id="hudEnemy">
                             <p>&nbsp;</p>
                             <p><b>ENEMY</b></p>
-                            <div id="enemyHud"><div id="enemyHud2"></div></div>
+                            <div id="enemiesHud"><div id="enemiesHud2"></div></div>
                         </div>
                     </div>
                     <div class="col center">

@@ -339,6 +339,16 @@ article p
     transition-duration: 0s;
     transform: scale(2);
 }
+#scoreHud div.exchange
+{
+    transition: all 0.5s ease 0s;
+    transform: translateY(-23px);
+}
+*:has(+ .exchange)
+{
+    transition: all 0.5s ease 0s;
+    transform: translateY(23px);
+}
 #highScoreHud
 {
     line-height: 23px;
@@ -526,7 +536,7 @@ article p
     text-align: right;
     letter-spacing: 2px;
 }
-.weaponHud
+.weaponsHud
 {
     display: block;
     margin: 0 0.5em;
@@ -552,52 +562,52 @@ article p
     padding: 0.2em 0.1em;
     transition: all 0.75s ease 0s;
 }
-.weaponHud.fire0.enable
+.weaponsHud.fire0.enable
 {
     color: var(--color1);
     border-color: var(--color1);
 }
-.weaponHud.fire0.active,
+.weaponsHud.fire0.active,
 .weaponExtra.fire0.active
 {
     color: var(--color5);
     background-color: var(--color1);
 }
-.weaponHud.fire1.enable
+.weaponsHud.fire1.enable
 {
     color: var(--color2);
     border-color: var(--color2);
 }
-.weaponHud.fire1.active,
+.weaponsHud.fire1.active,
 .weaponExtra.fire1.active
 {
     color: var(--color5);
     background-color: var(--color2);
 }
-.weaponHud.fire2.enable
+.weaponsHud.fire2.enable
 {
     color: var(--color3);
     border-color: var(--color3);
 }
-.weaponHud.fire2.active,
+.weaponsHud.fire2.active,
 .weaponExtra.fire2.active
 {
     color: var(--color5);
     background-color: var(--color3);
 }
-.weaponHud.fire3.enable
+.weaponsHud.fire3.enable
 {
     color: var(--color4);
     border-color: var(--color4);
 }
-.weaponHud.fire3.active,
+.weaponsHud.fire3.active,
 .weaponExtra.fire3.active
 {
     color: var(--color5);
     background-color: var(--color4);
 }
-#enemyHud,
-#enemyHud2
+#enemiesHud,
+#enemiesHud2
 {
     -webkit-mask-image: url("../svgs/star.svg");
     -webkit-mask-repeat: repeat-x;
@@ -606,18 +616,22 @@ article p
     width: 270px;
     height: 16px;
 }
-#enemyHud
+#enemiesHud
 {
     position: relative;
     background-color: var(--color11);
 }
-#enemyHud2
+#enemiesHud2
 {
     position: absolute;
     top: 0;
     left: 0;
     background-color: var(--color6);
     transition: all 1s linear 0s;
+}
+#enemiesHud2.change
+{
+    background-color: var(--color6);
 }
 .lifeHud,
 .lifeHud2,

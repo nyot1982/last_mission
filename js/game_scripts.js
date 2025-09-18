@@ -1026,6 +1026,7 @@ function updateGameArea ()
     if (gameScreen == "game")
     {
         if (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) document.getElementById ("hudsMulti").innerHTML = "";
+        if (gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 1) enemiesHud ();
         gameItems = gameItems.filter (item => !item.taken || item.z > 0);
         gameShots = gameShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < gameMap.width && shot.y > 0 && shot.y < gameMap.height);
         gameHits = gameHits.filter (hit => !hit.reverse || hit.r > 0);
@@ -1050,7 +1051,6 @@ function updateGameArea ()
             if (gameHits.findIndex (hit => hit.name == gameObjects [object].name) > -1) for (var hit in gameHits.filter (hit => hit.name == gameObjects [object].name)) gameHits [hit].update ();
         }
         for (var hit in gameHits.filter (hit => hit.name == "hit0")) gameHits [hit].update ();
-        if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) speedHud ();
     }
     if (gameModal != null || gameScreen != "game")
     {

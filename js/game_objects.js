@@ -305,12 +305,10 @@ function item (enemy, x, y)
                             gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = true;
                             gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
                         }
-                        if (this.type > 3 && gameShips [gameShip].name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) weaponHud ();
-                        else
+                        if (this.type < 4)
                         {
                             gameShips [gameShip][vital] += 10;
                             if (gameShips [gameShip][vital] > 100) gameShips [gameShip][vital] = 100;        
-                            if (gameShips [gameShip].name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2) vitalsHud (vital, gameShips [gameShip][vital], "blue");
                         }
                     }
                 }
