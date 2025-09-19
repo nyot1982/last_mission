@@ -1148,7 +1148,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         this.colors.shield++;
                         if (this.colors.shield == this.colors.shields.length) this.colors.shield = 0;
                     }
-                    var gameShot = gameShots.findIndex (shot => ctx.isPointInStroke (shot.x, shot.y) || ctx.isPointInPath (shot.x, shot.y));
+                    var gameShot = gameShots.findIndex (shot => shot.name != this.name && (ctx.isPointInStroke (shot.x, shot.y) || ctx.isPointInPath (shot.x, shot.y)));
                     if (gameShot > -1)
                     {
                         gameShots [gameShot].hit = true;
