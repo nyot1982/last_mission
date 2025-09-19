@@ -1148,18 +1148,28 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         this.colors.shield++;
                         if (this.colors.shield == this.colors.shields.length) this.colors.shield = 0;
                     }
-                    var gameShot = gameShots.findIndex (shot => shot.name != this.name && (ctx.isPointInStroke (shot.x, shot.y) || ctx.isPointInPath (shot.x, shot.y)));
-                    if (gameShot > -1)
+                    for (var gameShot in gameShots)
                     {
-                        gameShots [gameShot].hit = true;
-                        gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
-                        if (gameSound.active)
+                        if (this.name != gameShots [gameShot].name)
                         {
-                            gameSound.sounds ["hit1"].stop ();
-                            gameSound.sounds ["hit1"].play ();
+                            var shot = 
+                            {
+                                x: gameShots [gameShot].x,
+                                y: gameShots [gameShot].y
+                            }
+                            if (ctx.isPointInStroke (shot.x, shot.y) || ctx.isPointInPath (shot.x, shot.y))
+                            {
+                                gameShots [gameShot].hit = true;
+                                gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
+                                if (gameSound.active)
+                                {
+                                    gameSound.sounds ["hit1"].stop ();
+                                    gameSound.sounds ["hit1"].play ();
+                                }
+                                if (gameControls [this.idControl] == "gamepad") vibrate (this.idControl, 300);
+                                this.shield--;
+                            }
                         }
-                        if (gameControls [this.idControl] == "gamepad") vibrate (this.idControl, 300);
-                        this.shield--;
                     }
                 }
                 if (this.name)
