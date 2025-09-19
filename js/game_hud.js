@@ -3,8 +3,19 @@ function resetHuds (enemies, vitals)
     if (document.getElementById ("hudsMulti").style.display == "block") changeHuds (false);
     document.getElementById ("headingHud").style.left = "-371.25px";
     document.getElementById ("zHud").innerHTML = "0 m";
-    if (enemies) document.getElementById ("enemiesHud2").style.width = "270px";
-    else gameShips [gameShips.findIndex (ship => ship.name == players [0].name)].weaponsHud (true);
+    if (enemies)
+    {
+        document.getElementById ("enemiesHud2").style.width = "270px";
+        var weaponElements = document.getElementsByClassName ("weaponsHud");
+        for (var i = 0; i < weaponElements.length; i++)
+        {
+            if (i == 0) $(weaponElements [i]).addClass ("active");
+            else $(weaponElements [i]).removeClass ("active");
+            $(weaponElements [i]).removeClass ("enable");
+            $("#fire" + i + "rate").removeClass ("active");
+            $("#fire" + i + "power").removeClass ("active");
+        }
+    }
     document.getElementById ("lifeHud").style.width = vitals + "px";
     document.getElementById ("fuelHud").style.width = vitals + "px";
     document.getElementById ("ammoHud").style.width = vitals + "px";
@@ -142,6 +153,7 @@ function changeHuds (multi)
         document.getElementById ("hudVitals").style.display = "none";
         document.getElementById ("hudHeading").innerHTML = '<p><b>ENEMY</b></p><div id="enemiesHud"><div id="enemiesHud2" style="width: 270px;"></div></div><p>&nbsp;</p>';
         document.getElementById ("hudsMulti").style.display = "block";
+        document.getElementById ("hudsMulti").innerHTML = "";
     }
     else
     {

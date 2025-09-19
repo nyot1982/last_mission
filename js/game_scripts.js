@@ -1025,7 +1025,6 @@ function updateGameArea ()
     }
     if (gameScreen == "game")
     {
-        if (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) document.getElementById ("hudsMulti").innerHTML = "";
         if (gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 1) enemiesHud ();
         gameItems = gameItems.filter (item => !item.taken || item.z > 0);
         gameShots = gameShots.filter (shot => !shot.hit && shot.x > 0 && shot.x < gameMap.width && shot.y > 0 && shot.y < gameMap.height);

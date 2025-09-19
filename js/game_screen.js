@@ -168,8 +168,8 @@ function gameLoadScreen (screen)
         else generateGameMap ("mode" + gameModes.findIndex (mode => mode.active == true));
         fetchLoad ("high_score_hud");
         document.getElementById ("highScoreHud").style.height = "23px";
-        document.getElementById ("scoreHud").innerHTML = '';
         document.getElementById ("lifesHud").innerHTML = '';
+        document.getElementById ("scoreHud").innerHTML = '';
         if (gameModes.findIndex (mode => mode.active == true) < 3)
         {
             for (var i = players.length - 1; i >= 0; i--)
@@ -180,53 +180,40 @@ function gameLoadScreen (screen)
             document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
             if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
             else document.getElementById ("lifesHud").style.height = "23px";
-        }
-        if (typeof (Storage) === "undefined") alert ("This browser does not support local web storage.");
-        else
-        {
-            if (gameModes.findIndex (mode => mode.active == true) == 0)
+            if (typeof (Storage) === "undefined") alert ("This browser does not support local web storage.");
+            else
             {
-                storedPlayers =
-                [
+                if (gameModes.findIndex (mode => mode.active == true) == 0)
+                {
+                    storedPlayers =
+                    [
+                        {
+                            name: players [0].name,
+                        }
+                    ];
+                }
+                else
+                {
+                    storedPlayers = [];
+                    for (var player in players)
                     {
-                        name: players [0].name,
+                        storedPlayers [player] =
+                        {
+                            name: players [player].name
+                        };
                     }
-                ];
-                localStorage.players0 = JSON.stringify (storedPlayers);
-            }
-            else if (gameModes.findIndex (mode => mode.active == true) == 1)
-            {
-                storedPlayers = [];
-                for (var player in players)
-                {
-                    storedPlayers [player] =
-                    {
-                        name: players [player].name
-                    };
                 }
-                localStorage.players1 = JSON.stringify (storedPlayers);
-            }
-            else if (gameModes.findIndex (mode => mode.active == true) == 2)
-            {
-                storedPlayers = [];
-                for (var player in players)
-                {
-                    storedPlayers [player] =
-                    {
-                        name: players [player].name
-                    };
-                }
-                localStorage.players2 = JSON.stringify (storedPlayers);
+                localStorage ["players" + gameModes.findIndex (mode => mode.active == true)] = JSON.stringify (storedPlayers);
             }
         }
+        if (gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3) resetHuds (true, 100);
+        else changeHuds (true);
         if (gameMusic.active)
         {
             gameMusic.musics.menu.stop ();
             gameMusic.musics.game.play ();
         }
         changeTab ("game");
-        if (gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3) resetHuds (true, 100);
-        else changeHuds (true);
     }
     if (document.getElementById ("blackScreen").style.display == 'block')
     {

@@ -554,40 +554,29 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         else d6.removeAttribute ("class");
     }
 
-    this.weaponsHud = function (reset)
+    this.weaponsHud = function ()
     {
         var weaponElements = document.getElementsByClassName ("weaponsHud");
         
         for (var i = 0; i < weaponElements.length; i++)
         {
-            if (reset)
+            if (i == this.weapon)
             {
-                if (i == 0) $(weaponElements [i]).addClass ("active");
-                else $(weaponElements [i]).removeClass ("active");
-                $(weaponElements [i]).removeClass ("enable");
-                $("#fire" + i + "rate").removeClass ("active");
-                $("#fire" + i + "power").removeClass ("active");
+                if ($(weaponElements [i]).hasClass ("enable")) $(weaponElements [i]).removeClass ("enable");
+                if (!$(weaponElements [i]).hasClass ("active")) $(weaponElements [i]).addClass ("active");
             }
-            else
+            else 
             {
-                if (i == this.weapon)
-                {
-                    if ($(weaponElements [i]).hasClass ("enable")) $(weaponElements [i]).removeClass ("enable");
-                    if (!$(weaponElements [i]).hasClass ("active")) $(weaponElements [i]).addClass ("active");
-                }
-                else 
-                {
-                    if ($(weaponElements [i]).hasClass ("active")) $(weaponElements [i]).removeClass ("active");
-                    if (this.weapons [i].power == 0 && $(weaponElements [i]).hasClass ("enable")) $(weaponElements [i]).removeClass ("enable");
-                    else if (this.weapons [i].power > 0 && !$(weaponElements [i]).hasClass ("enable")) $(weaponElements [i]).addClass ("enable");
-                }
-                if (this.weapons [i].power > 0)
-                {
-                    if (this.weapons [i].rate == 2) $("#fire" + i + "rate").addClass ("active");
-                    else $("#fire" + i + "rate").removeClass ("active");
-                    if (this.weapons [i].power == 2) $("#fire" + i + "power").addClass ("active");
-                    else $("#fire" + i + "power").removeClass ("active");
-                }
+                if ($(weaponElements [i]).hasClass ("active")) $(weaponElements [i]).removeClass ("active");
+                if (this.weapons [i].power == 0 && $(weaponElements [i]).hasClass ("enable")) $(weaponElements [i]).removeClass ("enable");
+                else if (this.weapons [i].power > 0 && !$(weaponElements [i]).hasClass ("enable")) $(weaponElements [i]).addClass ("enable");
+            }
+            if (this.weapons [i].power > 0)
+            {
+                if (this.weapons [i].rate == 2) $("#fire" + i + "rate").addClass ("active");
+                else $("#fire" + i + "rate").removeClass ("active");
+                if (this.weapons [i].power == 2) $("#fire" + i + "power").addClass ("active");
+                else $("#fire" + i + "power").removeClass ("active");
             }
         }
     }
@@ -728,13 +717,15 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             $(document.getElementById ("life" + this.lifes + "-" + this.name)).fadeOut (1000);
             if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) > 0)
             {
-                var name = this.name;
+                $(document.getElementById ("score-" + this.name + "-div")).fadeOut (1000);
+                if (gameModes.findIndex (mode => mode.active == true) < 3) $(document.getElementById ("multiHuds-" + this.name)).fadeOut (1000);
                 setTimeout
                 (
                     () =>
                     {
-                        document.getElementById ("score-" + name + "-div").remove ();
-                        document.getElementById ("lifes-" + name).remove ();
+                        document.getElementById ("lifes-" + this.name).remove ();
+                        document.getElementById ("score-" + this.name + "-div").remove ();
+                        if (gameModes.findIndex (mode => mode.active == true) < 3) document.getElementById ("multiHuds-" + this.name).remove ();
                         document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
                         if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
                         else if (gameScreen == "game")
@@ -789,29 +780,28 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             else if (heading < 292.5) headingIcon = "W";
             else if (heading < 337.5) headingIcon = "NW";
             else if (heading <= 360) headingIcon = "N";
-            var strHuds = '<div class="multiHuds">';
-                strHuds += '<div class="lifeHud" title="' + this.name + ' Life: ' + this.life + '%"><div class="lifeHud2" style="width: ' + (this.life * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
-                strHuds += '<div class="fuelHud" title="' + this.name + ' Fuel: ' + this.fuel + '%"><div class="fuelHud2" style="width: ' + (this.fuel * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
-                strHuds += '<div class="ammoHud" title="' + this.name + ' Ammo: ' + this.ammo + '%"><div class="ammoHud2" style="width: ' + (this.ammo * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
-                strHuds += '<div class="shieldHud" title="' + this.name + ' Shield: ' + this.shield + '%"><div class="shieldHud2" style="width: ' + (this.shield * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
-                strHuds += '<div class="fa fa-' + speedIcon + ' multiHud" style="color: ' + this.colors.near + ';" title="' + this.name + ' Speed: ' + (speed * 300) + ' Km/h"></div> ';
-                strHuds += '<div class="fa fa-' + zIcon + ' multiHud" style="color: ' + this.colors.near + ';" title="' + this.name + ' Altitude: ' + (this.z * 10) + ' m"></div> ';
-                strHuds += '<div class="multiHud2" style="background-color: ' + this.colors.near + ';" title="' + this.name + ' Heading: ' + heading + 'º">' + headingIcon + '</div> ';
-                for (var weapon in this.weapons)
-                {
-                    if (weapon == 0) classWeapon = " first";
-                    else if (weapon == this.weapons.length - 1) classWeapon = " last";
-                    else classWeapon = "";
-                    if (this.weapons [weapon].active) styleWeapon = "background-color: " + this.colors.near + ";";
-                    else if (this.weapons [weapon].power > 0) styleWeapon = "color: " + this.colors.near + "; border: solid 1px " + this.colors.near + "; background-color: var(--color5);";
-                    else styleWeapon = "";
-                    strHuds += '<div class="multiHud3' + classWeapon + '" style="' + styleWeapon + '" title="' + this.name + ' ' + this.weapons [weapon].name + '">' + this.weapons [weapon].name [0];
-                        if (this.weapons [weapon].rate == 2) strHuds += '<div class="fa fa-clock"></div>';
-                        if (this.weapons [weapon].power == 2) strHuds += '<div class="fa fa-burst"></div>';
-                    strHuds += '</div>';
-                }       
-            strHuds += '</div>';
-            document.getElementById ("hudsMulti").innerHTML += strHuds;
+            var strHuds = '<div class="lifeHud" title="' + this.name + ' Life: ' + this.life + '%"><div class="lifeHud2" style="width: ' + (this.life * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
+            strHuds += '<div class="fuelHud" title="' + this.name + ' Fuel: ' + this.fuel + '%"><div class="fuelHud2" style="width: ' + (this.fuel * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
+            strHuds += '<div class="ammoHud" title="' + this.name + ' Ammo: ' + this.ammo + '%"><div class="ammoHud2" style="width: ' + (this.ammo * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
+            strHuds += '<div class="shieldHud" title="' + this.name + ' Shield: ' + this.shield + '%"><div class="shieldHud2" style="width: ' + (this.shield * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
+            strHuds += '<div class="fa fa-' + speedIcon + ' multiHud" style="color: ' + this.colors.near + ';" title="' + this.name + ' Speed: ' + (speed * 300) + ' Km/h"></div> ';
+            strHuds += '<div class="fa fa-' + zIcon + ' multiHud" style="color: ' + this.colors.near + ';" title="' + this.name + ' Altitude: ' + (this.z * 10) + ' m"></div> ';
+            strHuds += '<div class="multiHud2" style="background-color: ' + this.colors.near + ';" title="' + this.name + ' Heading: ' + heading + 'º">' + headingIcon + '</div> ';
+            for (var weapon in this.weapons)
+            {
+                if (weapon == 0) classWeapon = " first";
+                else if (weapon == this.weapons.length - 1) classWeapon = " last";
+                else classWeapon = "";
+                if (this.weapons [weapon].active) styleWeapon = "background-color: " + this.colors.near + ";";
+                else if (this.weapons [weapon].power > 0) styleWeapon = "color: " + this.colors.near + "; border: solid 1px " + this.colors.near + "; background-color: var(--color5);";
+                else styleWeapon = "";
+                strHuds += '<div class="multiHud3' + classWeapon + '" style="' + styleWeapon + '" title="' + this.name + ' ' + this.weapons [weapon].name + '">' + this.weapons [weapon].name [0];
+                    if (this.weapons [weapon].rate == 2) strHuds += '<div class="fa fa-clock"></div>';
+                    if (this.weapons [weapon].power == 2) strHuds += '<div class="fa fa-burst"></div>';
+                strHuds += '</div>';
+            }
+            if (document.getElementById ("multiHuds-" + this.name)) document.getElementById ("multiHuds-" + this.name).innerHTML = strHuds;
+            else document.getElementById ("hudsMulti").innerHTML += '<div id="multiHuds-' + this.name + '" class="multiHuds">' + strHuds + '</div>';
         }
     }
     

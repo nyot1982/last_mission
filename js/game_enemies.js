@@ -741,12 +741,12 @@ function enemy (type, x, y, heading)
                             if (this.type < 3)
                             {
                                 enemies--;
-                                gameShips [gameShip].score += 500;
+                                if (gameShip > -1) gameShips [gameShip].score += 500;
                             }
                             else
                             {
                                 enemies -= 8;
-                                gameShips [gameShip].score += 1000;
+                                if (gameShip > -1) gameShips [gameShip].score += 1000;
                             }
                             if (enemies < 0) enemies = 0;
                             if (this.type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameMap.width), Math.floor (Math.random () * gameMap.height), Math.floor (Math.random () * 720) - 360));
@@ -762,7 +762,7 @@ function enemy (type, x, y, heading)
                             if (players [0].name == gameShots [gameShot].name)
                             {
                                 if (enemies > 0) enemies--;
-                                gameShips [gameShip].score += 100;
+                                if (gameShip > -1) gameShips [gameShip].score += 100;
                             }
                         }
                     }
