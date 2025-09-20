@@ -297,7 +297,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
 
     this.shotsHit = function (path)
     {
-        if (gameScreen == "game" && gameModal == null && this.shield == 0 && this.z == 50)
+        if (gameScreen == "game" && gameModal == null && this.z == 50)
         {
             for (var gameShot in gameShots)
             {
@@ -320,9 +320,13 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     }
                     if (ctx.isPointInStroke (this.paths [path], shot.x, shot.y) || ctx.isPointInPath (this.paths [path], shot.x, shot.y))
                     {
-                        if (this.status [path] == true) this.status [path] = false;
                         gameShots [gameShot].hit = true;
-                        this.life -= 10;
+                        if (path == "shield") this.shield--;
+                        else
+                        {
+                            if (this.status [path] == true) this.status [path] = false;
+                            this.life -= 10;
+                        }
                         if (this.life > 0)
                         {
                             gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
@@ -331,7 +335,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 gameSound.sounds ["hit1"].stop ();
                                 gameSound.sounds ["hit1"].play ();
                             }
-                            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && players [0].name == this.name)
+                            if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && players [0].name == this.name && path != "shield")
                             {
                                 var gameShip = gameShips.findIndex (ship => ship.name == gameShots [gameShot].name);
                                 if (gameShip > -1) gameShips [gameShip].score += 100;
@@ -1135,55 +1139,22 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 }
                 if (this.shield > 0 && this.z == 50)
                 {
+                    this.paths.shield = new Path2D ();
+                    this.paths.shield.arc (14, 19, 30, 0, 2 * Math.PI);
+                    this.paths.ship.addPath (this.paths.shield);
                     ctx.shadowColor = "#00000022";
                     ctx.beginPath ();
                     ctx.lineWidth = 4;
-                    ctx.arc (14, 19, 30, 0, 2 * Math.PI);
                     ctx.strokeStyle = this.colors.shields [this.colors.shield] + "FF";
                     ctx.fillStyle = this.colors.shields [this.colors.shield] + "66";
-                    ctx.stroke ();
-                    ctx.fill ();
+                    ctx.stroke (this.paths.shield);
+                    ctx.fill (this.paths.shield);
                     if (gameArea.frame % 5 == 0)
                     {
                         this.colors.shield++;
                         if (this.colors.shield == this.colors.shields.length) this.colors.shield = 0;
                     }
-                    /*for (var gameShot in gameShots)
-                    {
-                        if (this.name != gameShots [gameShot].name)
-                        {
-                            var shot = 
-                            {
-                                x: gameShots [gameShot].x,
-                                y: gameShots [gameShot].y
-                            }
-                            if (ctx.isPointInStroke (shot.x, shot.y) || ctx.isPointInPath (shot.x, shot.y))
-                            {
-                                gameShots [gameShot].hit = true;
-                                gameHits.push (new hit (this.name, shot.x, shot.y, 20, 1));
-                                if (gameSound.active)
-                                {
-                                    gameSound.sounds ["hit1"].stop ();
-                                    gameSound.sounds ["hit1"].play ();
-                                }
-                                if (gameControls [this.idControl] == "gamepad") vibrate (this.idControl, 300);
-                                this.shield--;
-                            }
-                        }
-                    }*/
-                    var gameShot = gameShots.findIndex (shot => shot.name != this.name && (ctx.isPointInStroke (shot.x, shot.y) || ctx.isPointInPath (shot.x, shot.y)));
-                    if (gameShot > -1)
-                    {
-                        gameShots [gameShot].hit = true;
-                        gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
-                        if (gameSound.active)
-                        {
-                            gameSound.sounds ["hit1"].stop ();
-                            gameSound.sounds ["hit1"].play ();
-                        }
-                        if (gameControls [this.idControl] == "gamepad") vibrate (this.idControl, 300);
-                        this.shield--;
-                    }
+                    this.shotsHit ("shield");
                 }
                 if (this.name)
                 {
