@@ -2,6 +2,7 @@
 function resetHuds ()
 {
     if (document.getElementById ("hudsMulti").style.display == "block") changeHuds (false);
+    menuShip.speedHud ();
     document.getElementById ("headingHud").style.left = "-371.25px";
     document.getElementById ("zHud").innerHTML = "0 m";
     document.getElementById ("enemiesHud2").style.width = "270px";
