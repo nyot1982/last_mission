@@ -172,7 +172,7 @@ function gameLoadScreen (screen)
         document.getElementById ("scoreHud").innerHTML = '';
         if (gameModes.findIndex (mode => mode.active == true) < 3)
         {
-            for (var i = players.length - 1; i >= 0; i--)
+            for (var i = 0; i < players.length; i++)
             {
                 gameShips.push (new ship (players [i].name, players [i].color, startPoints [i].x, startPoints [i].y, startPoints [i].z));
                 startPoints [i].ship = players [i].name;

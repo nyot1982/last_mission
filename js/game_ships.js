@@ -773,7 +773,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             else if (speed < 4.5) speedIcon = "gauge";
             else if (speed < 6) speedIcon = "gauge-high";
             else if (speed == 6) speedIcon = "gauge-max";
-            if (z == 0) zIcon = "down-long";
+            if (z <= 0) zIcon = "down-long";
             else zIcon = "up-long"
             if (heading < 22.5) headingIcon = "N";
             else if (heading < 67.5) headingIcon = "NE";
