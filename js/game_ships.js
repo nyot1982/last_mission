@@ -363,45 +363,29 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.playerDead = function ()
     {
         if (gameControls [this.idControl] == "gamepad" && this.z >= 0) vibrate (this.idControl, 600);
-        if (this.lifes > 0)
-        {
-            if (this.lifes == 1 && gameModes.findIndex (mode => mode.active == true) < 2) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
-            this.lifes--;
-        }
+        this.z = 0;
+        this.heading = 0;
+        this.moveSpeed = 0;
+        this.strafeSpeed = 0;
+        this.fire = false;
+        this.engine1 = 0;
+        this.engine2 = 0;
+        this.life = 0;
+        this.fuel = 0;
+        this.ammo = 0;
+        this.shield = 0;
+        if (this.lifes > 0) this.lifes--;
+        if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) < 2) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
         setTimeout
         (
             () =>
             {
-                if (gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length < 2)
-                {
-                    if (gameShips.length == 0) gameOpenModal ("exit", "Game over: Draw game");
-                    else gameOpenModal ("exit", "Game over: " + gameShips [0].name + " wins!");
-                }
-                else if (gameModes.findIndex (mode => mode.active == true) == 3 && this.name == players [0].name && this.lifes == 0) gameOpenModal ("exit", "Game over");
-                else if (gameModes.findIndex (mode => mode.active == true) < 2 && gameShips.length == 0)
-                {
-                    $("#blackScreen").fadeIn (1000);
-                    setTimeout
-                    (
-                        () =>
-                        {
-                            gameLoadScreen ("game_over");
-                        },
-                        1000
-                    );
-                }
-                else if (this.lifes > 0)
+                if (this.lifes > 0)
                 {
                     if (gameModal != null) gameCloseModal ();
                     this.x = startPoints [startPoints.findIndex (startPoint => startPoint.ship == this.name)].x;
                     this.y = startPoints [startPoints.findIndex (startPoint => startPoint.ship == this.name)].y;
                     this.z = startPoints [startPoints.findIndex (startPoint => startPoint.ship == this.name)].z;
-                    this.heading = 0;
-                    this.moveSpeed = 0;
-                    this.strafeSpeed = 0;
-                    this.fire = false;
-                    this.engine1 = 0;
-                    this.engine2 = 0;
                     this.engine1inc = true;
                     this.engine2inc = true;
                     this.shadowOffset = 1;
@@ -409,7 +393,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.life = 100;
                     this.fuel = 100;
                     this.ammo = 100;
-                    this.shield = 0;
                     this.status.gun = true;
                     this.status.wing1 = true;
                     this.status.wing2 = true;
@@ -429,7 +412,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         if (newPoint < gameArea.centerPoint.y) ctx.translate (0, gameArea.centerPoint.y - newPoint);
                         else if (newPoint > gameArea.centerPoint.y) ctx.translate (0, -(newPoint - gameArea.centerPoint.y));
                         gameArea.centerPoint.y = newPoint;
-                        if (gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3) resetHuds (false, 100);
                     }
                     if (gameMusic.active)
                     {
@@ -445,7 +427,36 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         }
                     }
                 }
-                else if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3) players.splice (players.findIndex (player => player.name == this.name), 1);
+                else
+                {
+                    if (gameModes.findIndex (mode => mode.active == true) == 3 && this.name == players [0].name)
+                    {
+                        gameShips.splice (this.idShip, 1);
+                        gameOpenModal ("exit", "Game over");
+                    }
+                    else
+                    {
+                        if (gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3) players.splice (players.findIndex (player => player.name == this.name), 1);
+                        gameShips.splice (this.idShip, 1);
+                        if (gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length < 2)
+                        {
+                            if (gameShips.length == 0) gameOpenModal ("exit", "Game over: Draw game");
+                            else gameOpenModal ("exit", "Game over: " + gameShips [0].name + " wins!");
+                        }
+                        else if (gameModes.findIndex (mode => mode.active == true) < 2 && gameShips.length == 0)
+                        {
+                            $("#blackScreen").fadeIn (1000);
+                            setTimeout
+                            (
+                                () =>
+                                {
+                                    gameLoadScreen ("game_over");
+                                },
+                                1000
+                            );
+                        }
+                    }
+                }
             },
             1000
         );
@@ -584,9 +595,9 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.scoreHud = function ()
     {
         var scoreHudElement = document.getElementById ("score-" + this.name);
-        if (!scoreHudElement) 
+        if (!scoreHudElement && this.lifes == 5)
         {
-            if (gameShips.length == 1)
+            if (gameModes.findIndex (mode => mode.active == true) == 0)
             {
                 document.getElementById ("scoreHud").style.lineHeight = "23px";
                 document.getElementById ("scoreHud").innerHTML = '<span id="score-' + this.name + '">0</span>';
@@ -639,6 +650,19 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 250
             );
         }
+        else if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) > 0 && !document.getElementById ("score-" + this.name + "-div").style.display && !document.getElementById ("score-" + this.name + "-div").style.opacity)
+        {
+            $(document.getElementById ("score-" + this.name + "-div")).fadeOut (1000);
+            setTimeout
+            (
+                () =>
+                {
+                    document.getElementById ("score-" + this.name + "-div").remove ();
+                    document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
+                },
+                1000
+            );
+        }
     }
 
     this.scoreHudSort = function (idScoreHud)
@@ -665,7 +689,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
 
     this.lifesHud = function ()
     {
-        if (!document.getElementById ("life0-" + this.name)) 
+        if (!document.getElementById ("life0-" + this.name) && this.lifes == 5) 
         {
             if (gameModes.findIndex (mode => mode.active == true) == 0)
             {
@@ -717,16 +741,11 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             $(document.getElementById ("life" + this.lifes + "-" + this.name)).fadeOut (1000);
             if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) > 0)
             {
-                $(document.getElementById ("score-" + this.name + "-div")).fadeOut (1000);
-                if (gameModes.findIndex (mode => mode.active == true) < 3) $(document.getElementById ("multiHuds-" + this.name)).fadeOut (1000);
                 setTimeout
                 (
                     () =>
                     {
                         document.getElementById ("lifes-" + this.name).remove ();
-                        document.getElementById ("score-" + this.name + "-div").remove ();
-                        if (gameModes.findIndex (mode => mode.active == true) < 3) document.getElementById ("multiHuds-" + this.name).remove ();
-                        document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
                         if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
                         else if (gameScreen == "game")
                         {
@@ -754,6 +773,18 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             this.vitalsHud ("fuel");
             this.vitalsHud ("ammo");
             this.vitalsHud ("shield");
+        }
+        else if (this.lifes == 0 && !document.getElementById ("multiHuds-" + this.name).style.display && !document.getElementById ("multiHuds-" + this.name).style.opacity)
+        {
+            $(document.getElementById ("multiHuds-" + this.name)).fadeOut (1000);
+            setTimeout
+            (
+                () =>
+                {
+                    document.getElementById ("multiHuds-" + this.name).remove ();
+                },
+                1000
+            );
         }
         else 
         {

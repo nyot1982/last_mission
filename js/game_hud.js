@@ -1,26 +1,24 @@
-function resetHuds (enemies, vitals)
+
+function resetHuds ()
 {
     if (document.getElementById ("hudsMulti").style.display == "block") changeHuds (false);
     document.getElementById ("headingHud").style.left = "-371.25px";
     document.getElementById ("zHud").innerHTML = "0 m";
-    if (enemies)
+    document.getElementById ("enemiesHud2").style.width = "270px";
+    var weaponElements = document.getElementsByClassName ("weaponsHud");
+    for (var i = 0; i < weaponElements.length; i++)
     {
-        document.getElementById ("enemiesHud2").style.width = "270px";
-        var weaponElements = document.getElementsByClassName ("weaponsHud");
-        for (var i = 0; i < weaponElements.length; i++)
-        {
-            if (i == 0) $(weaponElements [i]).addClass ("active");
-            else $(weaponElements [i]).removeClass ("active");
-            $(weaponElements [i]).removeClass ("enable");
-            $("#fire" + i + "rate").removeClass ("active");
-            $("#fire" + i + "power").removeClass ("active");
-        }
+        if (i == 0) $(weaponElements [i]).addClass ("active");
+        else $(weaponElements [i]).removeClass ("active");
+        $(weaponElements [i]).removeClass ("enable");
+        $("#fire" + i + "rate").removeClass ("active");
+        $("#fire" + i + "power").removeClass ("active");
     }
-    document.getElementById ("lifeHud").style.width = vitals + "px";
-    document.getElementById ("fuelHud").style.width = vitals + "px";
-    document.getElementById ("ammoHud").style.width = vitals + "px";
-    document.getElementById ("shieldHud").style.width = vitals + "px";
-    if (vitals == 0 && gameModes.findIndex (mode => mode.active == true) > -1) gameModeHud (-1);
+    document.getElementById ("lifeHud").style.width = "0px";
+    document.getElementById ("fuelHud").style.width = "0px";
+    document.getElementById ("ammoHud").style.width = "0px";
+    document.getElementById ("shieldHud").style.width = "0px";
+    if (gameModes.findIndex (mode => mode.active == true) > -1) gameModeHud (-1);
 }
 
 function mapHud (itemClass, x, y, heading)

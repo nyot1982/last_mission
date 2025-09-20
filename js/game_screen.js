@@ -88,7 +88,7 @@ function gameLoadScreen (screen)
         if (gameScreen == "menu")
         {
             changeTab ("menu");
-            resetHuds (true, 0);
+            resetHuds ();
             if (wss == null || wss == 1000 || wss == 3000) wssOpen ();
         }
         else gameScreen = "menu";
@@ -206,8 +206,7 @@ function gameLoadScreen (screen)
                 localStorage ["players" + gameModes.findIndex (mode => mode.active == true)] = JSON.stringify (storedPlayers);
             }
         }
-        if (gameModes.findIndex (mode => mode.active == true) == 0 || gameModes.findIndex (mode => mode.active == true) == 3) resetHuds (true, 100);
-        else changeHuds (true);
+        if (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2) changeHuds (true);
         if (gameMusic.active)
         {
             gameMusic.musics.menu.stop ();

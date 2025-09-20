@@ -1035,7 +1035,7 @@ function updateGameArea ()
         {
             if (gameModes.findIndex (mode => mode.active == true) == 1 && gameArea.frame % 250 == 0) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), 0, 0, Math.floor (Math.random () * 720) - 360));
             else if (gameModes.findIndex (mode => mode.active == true) == 2 && gameArea.frame % 500 == 0) gameItems.push (new item (0, Math.floor (Math.random () * gameMap.width), Math.floor (Math.random () * gameMap.height)));
-            gameShips = gameShips.filter (ship => ship.lifes > 0);
+            //gameShips = gameShips.filter (ship => ship.lifes > 0);
             gameObjects = gameShips.concat (gameEnemies).concat (gameItems).concat (gameShots);
             gameObjects.sort ((object1, object2) => object1.z - object2.z);
         }

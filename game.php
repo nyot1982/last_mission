@@ -151,10 +151,10 @@
                         <div id="hudVitals">
                             <p><b>VITALS</b></p>
                             <div class="blackHud">
-                                <div class="fa fa-fw fa-heart levelIcon" title="Life"></div><div class="levelHud" id="lifeHud" title="Life"></div><br>
-                                <div class="fa fa-fw fa-gas-pump levelIcon" title="Fuel"></div><div class="levelHud" id="fuelHud" title="Fuel"></div><br>
-                                <div class="fa fa-fw fa-crosshairs levelIcon" title="Ammo"></div><div class="levelHud" id="ammoHud" title="Ammo"></div><br>
-                                <div class="fa fa-fw fa-shield-halved levelIcon" title="Shield"></div><div class="levelHud" id="shieldHud" title="Shield"></div><br>
+                                <div class="fa fa-fw fa-heart levelIcon" title="Life"></div><div class="levelHud" id="lifeHud" title="Life" style="width: 0px;"></div><br>
+                                <div class="fa fa-fw fa-gas-pump levelIcon" title="Fuel"></div><div class="levelHud" id="fuelHud" title="Fuel" style="width: 0px;"></div><br>
+                                <div class="fa fa-fw fa-crosshairs levelIcon" title="Ammo"></div><div class="levelHud" id="ammoHud" title="Ammo" style="width: 0px;"></div><br>
+                                <div class="fa fa-fw fa-shield-halved levelIcon" title="Shield"></div><div class="levelHud" id="shieldHud" title="Shield" style="width: 0px;"></div><br>
                                 <div class="level2Hud"></div>
                             </div>
                         </div>
