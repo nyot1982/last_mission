@@ -1148,7 +1148,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         this.colors.shield++;
                         if (this.colors.shield == this.colors.shields.length) this.colors.shield = 0;
                     }
-                    for (var gameShot in gameShots)
+                    /*for (var gameShot in gameShots)
                     {
                         if (this.name != gameShots [gameShot].name)
                         {
@@ -1160,7 +1160,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             if (ctx.isPointInStroke (shot.x, shot.y) || ctx.isPointInPath (shot.x, shot.y))
                             {
                                 gameShots [gameShot].hit = true;
-                                gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
+                                gameHits.push (new hit (this.name, shot.x, shot.y, 20, 1));
                                 if (gameSound.active)
                                 {
                                     gameSound.sounds ["hit1"].stop ();
@@ -1170,6 +1170,19 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 this.shield--;
                             }
                         }
+                    }*/
+                    var gameShot = gameShots.findIndex (shot => shot.name != this.name && (ctx.isPointInStroke (shot.x, shot.y) || ctx.isPointInPath (shot.x, shot.y)));
+                    if (gameShot > -1)
+                    {
+                        gameShots [gameShot].hit = true;
+                        gameHits.push (new hit (this.name, gameShots [gameShot].x, gameShots [gameShot].y, 20, 1));
+                        if (gameSound.active)
+                        {
+                            gameSound.sounds ["hit1"].stop ();
+                            gameSound.sounds ["hit1"].play ();
+                        }
+                        if (gameControls [this.idControl] == "gamepad") vibrate (this.idControl, 300);
+                        this.shield--;
                     }
                 }
                 if (this.name)
