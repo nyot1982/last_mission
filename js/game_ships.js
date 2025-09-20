@@ -372,10 +372,10 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         (
             () =>
             {
-                if (gameModes.findIndex (mode => mode.active == true) == 2)
+                if (gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length < 2)
                 {
                     if (gameShips.length == 0) gameOpenModal ("exit", "Game over: Draw game");
-                    else if (gameShips.length == 1) gameOpenModal ("exit", "Game over: " + gameShips [0].name + " wins!");
+                    else gameOpenModal ("exit", "Game over: " + gameShips [0].name + " wins!");
                 }
                 else if (gameModes.findIndex (mode => mode.active == true) == 3 && this.name == players [0].name && this.lifes == 0) gameOpenModal ("exit", "Game over");
                 else if (gameModes.findIndex (mode => mode.active == true) < 2 && gameShips.length == 0)
