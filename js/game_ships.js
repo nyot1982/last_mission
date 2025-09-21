@@ -37,21 +37,21 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 name: "Pulse",
                 power: 0,
                 rate: 1,
-                fireRate: 54,
+                fireRate: 66,
                 active: false
             },
             {
                 name: "K-can",
                 power: 0,
                 rate: 1,
-                fireRate: 70,
+                fireRate: 54,
                 active: false
             },
             {
                 name: "Hyper",
                 power: 0,
                 rate: 1,
-                fireRate: 24,
+                fireRate: 36,
                 active: false
             }
         ];
@@ -580,7 +580,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             }
             if (this.weapons [i].power > 0)
             {
-                if (this.weapons [i].rate == 2) $("#fire" + i + "rate").addClass ("active");
+                if (this.weapons [i].rate == 1.5) $("#fire" + i + "rate").addClass ("active");
                 else $("#fire" + i + "rate").removeClass ("active");
                 if (this.weapons [i].power == 2) $("#fire" + i + "power").addClass ("active");
                 else $("#fire" + i + "power").removeClass ("active");
@@ -823,7 +823,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 else if (this.weapons [weapon].power > 0) styleWeapon = "color: " + this.colors.near + "; border: solid 1px " + this.colors.near + "; background-color: var(--color5);";
                 else styleWeapon = "";
                 strHuds += '<div class="multiHud3' + classWeapon + '" style="' + styleWeapon + '" title="' + this.name + ' ' + this.weapons [weapon].name + '">' + this.weapons [weapon].name [0];
-                    if (this.weapons [weapon].rate == 2) strHuds += '<div class="fa fa-clock"></div>';
+                    if (this.weapons [weapon].rate == 1.5) strHuds += '<div class="fa fa-clock"></div>';
                     if (this.weapons [weapon].power == 2) strHuds += '<div class="fa fa-burst"></div>';
                 strHuds += '</div>';
             }

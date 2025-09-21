@@ -162,21 +162,21 @@ const wss = createServerFrom
                                             name: "Pulse",
                                             power: 0,
                                             rate: 1,
-                                            fireRate: 54,
+                                            fireRate: 66,
                                             active: false
                                         },
                                         {
                                             name: "K-can",
                                             power: 0,
                                             rate: 1,
-                                            fireRate: 70,
+                                            fireRate: 54,
                                             active: false
                                         },
                                         {
                                             name: "Hyper",
                                             power: 0,
                                             rate: 1,
-                                            fireRate: 24,
+                                            fireRate: 36,
                                             active: false
                                         }
                                     ],

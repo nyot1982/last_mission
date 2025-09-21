@@ -296,7 +296,7 @@ function item (enemy, x, y)
                         else if (this.type == 1) var vital = "fuel";
                         else if (this.type == 2) var vital = "ammo";
                         else if (this.type == 3) var vital = "shield";
-                        else if (this.type == 4 && gameShips [gameShip].weapons [gameShips [gameShip].weapon].rate == 1) gameShips [gameShip].weapons [gameShips [gameShip].weapon].rate++;
+                        else if (this.type == 4 && gameShips [gameShip].weapons [gameShips [gameShip].weapon].rate == 1) gameShips [gameShip].weapons [gameShips [gameShip].weapon].rate = 1.5;
                         else if (this.type == 5 && gameShips [gameShip].weapons [gameShips [gameShip].weapon].power == 1) gameShips [gameShip].weapons [gameShips [gameShip].weapon].power++;
                         else if (this.type > 5 && gameShips [gameShip].weapon != this.type - 5)
                         {

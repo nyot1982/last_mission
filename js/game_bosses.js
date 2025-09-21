@@ -20,7 +20,7 @@ function boss (type, x, y)
             fireRate: 10
         },
         {
-            fireRate: 10
+            fireRate: 5
         }
     ];
     this.lastShotFrame = -this.weapons [this.weapon].fireRate;
@@ -392,11 +392,10 @@ function boss (type, x, y)
                     else if (gameShots [gameShot].x >= this.x - 20 && gameShots [gameShot].x <= this.x + 20 && gameShots [gameShot].y >= this.y - 20 && gameShots [gameShot].y <= this.y + 20 && this.z == 50) bossHit (gameShot, 0);
                 }
             }
-            if (this.fire)
+            if (this.fire && (gameArea.frame - this.lastShotFrame >= this.weapons [this.weapon].fireRate))
             {
-                if (this.weapon == 0 && (gameArea.frame - this.lastShotFrame) >= this.weapons [this.weapon].fireRate)
+                if (this.weapon == 0)
                 {
-
                     gameShots.push (new shot ("boss", 4, "black", this.x - this.width, this.y, 28, 3, 10, 0));
                     gameShots.push (new shot ("boss", 4, "black", this.x - this.width + 28, this.y, 28, 3, 10, 0));
                     gameShots.push (new shot ("boss", 4, "black", this.x, this.y - this.height, 28, 3, 10, 90));
@@ -406,30 +405,16 @@ function boss (type, x, y)
                     gameShots.push (new shot ("boss", 4, "black", this.x, this.y + this.height - 28, 28, 3, 10, 270));
                     gameShots.push (new shot ("boss", 4, "black", this.x, this.y + this.height, 28, 3, 10, 270));
                 }
-                else if (this.weapon == 1)
+                else if (this.weapon == 1) gameShots.push (new shot ("boss", 5, "#B2B2B2", this.x + 32 * Math.sin (this.shotHeading * Math.PI / 180), this.y - 32 * Math.cos (this.shotHeading * Math.PI / 180), 4, 4, 8, this.shotHeading));
+                else if (this.weapon == 2)
                 {
-                    if (this.shotHeading == 360) this.shotHeading = 0;
-                    if (this.shotHeading % 10 == 0)
-                    {
-                        gameShots.push (new shot ("boss", 5, "#B2B2B2", this.x + 32 * Math.sin (this.shotHeading * Math.PI / 180), this.y - 32 * Math.cos (this.shotHeading * Math.PI / 180), 4, 4, 8, this.shotHeading));
-                        gameShots.push (new shot ("boss", 5, "#B2B2B2", this.x + 48 * Math.sin ((this.shotHeading + 5) * Math.PI / 180), this.y - 48 * Math.cos ((this.shotHeading + 5) * Math.PI / 180), 4, 4, 8, (this.shotHeading + 5)));
-                        gameShots.push (new shot ("boss", 5, "#B2B2B2", this.x + 64 * Math.sin ((this.shotHeading + 10) * Math.PI / 180), this.y - 64 * Math.cos ((this.shotHeading + 10) * Math.PI / 180), 4, 4, 8, (this.shotHeading + 10)));
-                    }
-                    this.shotHeading++;
-                }
-                else if (this.weapon == 2 && (gameArea.frame - this.lastShotFrame) >= this.weapons [this.weapon].fireRate)
-                {
-                    gameShots.push (new shot ("boss", 0, "black", this.x, this.y, 24, 3, 12, -45));
-                    gameShots.push (new shot ("boss", 0, "black", this.x, this.y, 24, 3, 12, 0));
-                    gameShots.push (new shot ("boss", 0, "black", this.x, this.y, 24, 3, 12, 45));
-                    gameShots.push (new shot ("boss", 0, "black", this.x, this.y, 24, 3, 12, -135));
-                    gameShots.push (new shot ("boss", 0, "black", this.x, this.y, 24, 3, 12, 180));
-                    gameShots.push (new shot ("boss", 0, "black", this.x, this.y, 24, 3, 12, 135));
-                    gameShots.push (new shot ("boss", 0, "black", this.x, this.y, 24, 3, 12, -90));
-                    gameShots.push (new shot ("boss", 0, "black", this.x, this.y, 24, 3, 12, 90));
+                    var shotHeading = Math.floor (Math.random () * 8) * 45;
+                    gameShots.push (new shot ("boss", 0, "black", this.x + 32 * Math.sin (shotHeading * Math.PI / 180), this.y - 32 * Math.cos (shotHeading * Math.PI / 180), 24, 3, 12, shotHeading));
                 }
                 this.lastShotFrame = gameArea.frame;
             }
+            this.shotHeading++;
+            if (this.shotHeading == 360) this.shotHeading = 0;
         }
     }
 }
