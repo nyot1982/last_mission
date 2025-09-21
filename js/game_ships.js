@@ -363,17 +363,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.playerDead = function ()
     {
         if (gameControls [this.idControl] == "gamepad" && this.z >= 0) vibrate (this.idControl, 600);
-        this.z = 0;
-        this.heading = 0;
-        this.moveSpeed = 0;
-        this.strafeSpeed = 0;
-        this.fire = false;
-        this.engine1 = 0;
-        this.engine2 = 0;
-        this.life = 0;
-        this.fuel = 0;
-        this.ammo = 0;
-        this.shield = 0;
         if (this.lifes > 0) this.lifes--;
         if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) < 2) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
         setTimeout
@@ -386,6 +375,12 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.x = startPoints [startPoints.findIndex (startPoint => startPoint.ship == this.name)].x;
                     this.y = startPoints [startPoints.findIndex (startPoint => startPoint.ship == this.name)].y;
                     this.z = startPoints [startPoints.findIndex (startPoint => startPoint.ship == this.name)].z;
+                    this.heading = 0;
+                    this.moveSpeed = 0;
+                    this.strafeSpeed = 0;
+                    this.fire = false;
+                    this.engine1 = 0;
+                    this.engine2 = 0;
                     this.engine1inc = true;
                     this.engine2inc = true;
                     this.shadowOffset = 1;
@@ -393,6 +388,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.life = 100;
                     this.fuel = 100;
                     this.ammo = 100;
+                    this.shield = 0;
                     this.status.gun = true;
                     this.status.wing1 = true;
                     this.status.wing2 = true;
