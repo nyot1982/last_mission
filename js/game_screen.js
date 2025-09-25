@@ -446,6 +446,6 @@ function generateGameMap (map)
 
 function toggleFullScreen ()
 {
-    const canvasElement = document.getElementsByTagName ("canvas")[0];
-    canvasElement.requestFullscreen ();
+    const element = document.getElementsByTagName ("article")[0];
+    element.requestFullscreen ();
 }

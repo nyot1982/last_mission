@@ -284,7 +284,7 @@ article p
 #lastMission
 {
     margin: 1px;
-    width: 1022px;
+    width: calc(100% - 2px);
     height: 502px;
     background-color: var(--color12);
     border: solid 1px var(--color12);
