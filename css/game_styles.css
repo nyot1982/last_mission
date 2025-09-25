@@ -335,7 +335,7 @@ article p
 }
 #scoreHud span.change
 {
-    color: var(--color1);
+    color: var(--color7);
     transition-duration: 0s;
     transform: scale(2);
 }
@@ -358,16 +358,9 @@ article p
     transform: translateX(-50%);
     text-align: center;
 }
-#playersConnecting
-{
-    color: var(--color3);
-}
 #lifesHud
 {
-    min-width: 87px;
-    max-width: 294.5px;
     right: 20px;
-    color: var(--color2);
     padding: 0 1em;
 }
 #lifesHud div
@@ -382,11 +375,23 @@ article p
     height: 15px;
     margin: 0 2px;
 }
+#lifesHud span
+{
+    display: inline-block;
+    transition: all 0.5s ease-in-out 0s;
+    color: var(--color4);
+}
+#lifesHud span.change
+{
+    transition-duration: 0s;
+    transform: scale(2);
+}
 #lifesHud img,
 #lifesHud svg
 {
     animation: rotation 5.0s linear 0s infinite normal none running;
     transform-style: preserve-3d;
+    vertical-align: middle;
 }
 @keyframes rotation
 {

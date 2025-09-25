@@ -13,7 +13,7 @@ var fpsMonitor =
     gameScreen = null,
     gameModal = null,
     gameTitle = null,
-    gameXP = null,
+    gameXP = [],
     gameMap =
     {
         name: null,
@@ -834,7 +834,11 @@ function fetchLoad (cont, param)
             else if (cont == "high_score_hud")
             {
                 document.getElementById ("highScoreHud").innerHTML = "High Score: " + responseJSON [cont];
-                if (gameModes.findIndex (mode => mode.active == true) == 3) document.getElementById ("highScoreHud").innerHTML += '<div id="playersConnecting"></div>';
+                if (gameModes.findIndex (mode => mode.active == true) == 3)
+                {
+                    document.getElementById ("highScoreHud").innerHTML = '';
+                    document.getElementById ("highScoreHud").style.height = '0px';
+                }
             }
             else if (cont == "high_scores") gameHighScores (responseJSON ["max_high_scores"], responseJSON ["high_scores"]);
             else if (cont == "high_score_save")
@@ -975,8 +979,10 @@ function changeSkin (skin)
 {
     if (skin == -1) menuShip.changeColor (document.getElementById ("color").value);
     else menuShip.changeColor ('skin' + skin);
-    gameXP.backColor = menuShip.colors.negative;
-    gameXP.color = menuShip.colors.shipFill;
+    gameXP [0].backColor = menuShip.colors.negative;
+    gameXP [0].color = menuShip.colors.shipFill;
+    gameXP [1].backColor = menuShip.colors.shipFill;
+    gameXP [1].color = menuShip.colors.negative;
 } 
 
 function rolloverLoad (text, color)
@@ -1059,7 +1065,7 @@ function updateGameArea ()
         for (var shot in menuShots) menuShots [shot].update ();
         menuHits = menuHits.filter (hit => !hit.reverse || hit.r > 0);
         if (gameTitle) gameTitle.update ();
-        if (gameXP) gameXP.update ();
+        for (var xp in gameXP) gameXP [xp].update ();
         for (var text in gameText)
         {
             if (gameText [text]) gameText [text].update (text);

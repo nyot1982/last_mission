@@ -91,42 +91,45 @@ function enemy (type, x, y, heading)
         if (this.life > 0 && enemies > 0)
         {
             ctx = gameArea.ctx;
-            if (this.type < 3)
+            if (this.type < 3 || this.type == 7)
             {
-                if (gameArea.frame % 15 == 0)
+                if (this.type < 3)
                 {
-                    this.action = Math.floor (Math.random () * 5);
-                    switch (this.action)
+                    if (gameArea.frame % 15 == 0)
                     {
-                        case 0:
-                            this.turning (-1);
-                            break;
-                        case 1:
-                            this.turning (0);
-                            break;
-                        case 2:
-                            this.turning (1);
-                            break;
-                        case 3:
-                            this.firing (true);
-                            break;
-                        case 4:
-                            this.firing (false);
-                            break;
+                        this.action = Math.floor (Math.random () * 5);
+                        switch (this.action)
+                        {
+                            case 0:
+                                this.turning (-1);
+                                break;
+                            case 1:
+                                this.turning (0);
+                                break;
+                            case 2:
+                                this.turning (1);
+                                break;
+                            case 3:
+                                this.firing (true);
+                                break;
+                            case 4:
+                                this.firing (false);
+                                break;
+                        }
                     }
-                }
-                this.enginemax = 4;
-                if (this.turn != 0) this.heading = (this.heading + this.turn) % 360;
-                this.radians = this.heading * Math.PI / 180;
-                if (this.move != 0)
-                {
-                    this.x += this.move * Math.sin (this.radians);
-                    this.y -= this.move * Math.cos (this.radians);
-                    if (this.x < 0) this.x = gameMap.width;
-                    else if (this.x > gameMap.width) this.x = 0;
-                    if (this.y < 0) this.y = gameMap.height;
-                    else if (this.y > gameMap.height) this.y = 0;
-                    this.enginemax = this.speed / 1.5 * 8;
+                    this.enginemax = 4;
+                    if (this.turn != 0) this.heading = (this.heading + this.turn) % 360;
+                    this.radians = this.heading * Math.PI / 180;
+                    if (this.move != 0)
+                    {
+                        this.x += this.move * Math.sin (this.radians);
+                        this.y -= this.move * Math.cos (this.radians);
+                        if (this.x < 0) this.x = gameMap.width;
+                        else if (this.x > gameMap.width) this.x = 0;
+                        if (this.y < 0) this.y = gameMap.height;
+                        else if (this.y > gameMap.height) this.y = 0;
+                        this.enginemax = this.speed / 1.5 * 8;
+                    }
                 }
                 ctx.shadowColor = "#00000066";
                 ctx.shadowBlur = 3;
@@ -722,7 +725,7 @@ function enemy (type, x, y, heading)
                 ctx.strokeStyle = "#4A4A4A";
                 ctx.stroke ();
                 ctx.fillStyle = "#000";
-                ctx.shadowColor = "#00000044";
+                ctx.shadowColor = "#00000066";
                 ctx.fill ();
                 ctx.strokeStyle = "#B2B2B2";
                 ctx.beginPath ();
@@ -823,7 +826,15 @@ function enemy (type, x, y, heading)
                             if (players [0].name == gameShots [gameShot].name && this.type < 7)
                             {
                                 if (enemies > 0) enemies--;
-                                if (gameShip > -1) gameShips [gameShip].score += 100;
+                                if (gameShip > -1)
+                                {
+                                    if (gameModes.findIndex (mode => mode.active == true) == 3)
+                                    {
+                                        gameShips [gameShip].xp++;
+                                        if (gameShips [gameShip].xp > 10000) gameShips [gameShip].xp = 10000;
+                                    }
+                                    else gameShips [gameShip].score += 100;
+                                }
                             }
                         }
                     }

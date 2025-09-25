@@ -22,7 +22,7 @@ function gameHighScores (max_high_scores, high_scores)
 function gameLoadScreen (screen)
 {
     gameTitle = null;
-    gameXP = null;
+    gameXP = [];
     gameGround = [];
     modalGround = null;
     menuShip = null;
@@ -283,8 +283,7 @@ function gameCloseModal ()
     menuShots = [];
     menuHits = [];
     gameModal = null;
-    if (gameModes.findIndex (mode => mode.active == true) == 3 && document.getElementById ("playersConnecting").innerHTML.length > 0) document.getElementById ("highScoreHud").style.height = "46px";
-    else document.getElementById ("highScoreHud").style.height = "23px";
+    if (gameModes.findIndex (mode => mode.active == true) != 3 || document.getElementById ("highScoreHud").innerHTML.length > 0) document.getElementById ("highScoreHud").style.height = "23px";
     document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
     if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
     else document.getElementById ("lifesHud").style.height = "23px";
@@ -293,6 +292,7 @@ function gameCloseModal ()
 
 function generateGameMap (map)
 {
+    enemies = 270;
     switch (map)
     {
         case "level1":
@@ -321,7 +321,6 @@ function generateGameMap (map)
             gameGround.push (new digital ("6", "red", "white", 3563, 1700, 1, 0.075));
             gameGround.push (new digital ("7", "black", "yellow", 3599, 1700, 1, 0.075));
             gameGround.push (new digital ("8", "black", "yellow", 3599, 1740, 1, 0.075));
-            enemies = 270;
             gameEnemies.push (new enemy (3, 150, 100, 0));
             gameEnemies.push (new enemy (3, 900, 200, 0));
             gameEnemies.push (new enemy (3, 200, 400, 0));
@@ -367,7 +366,6 @@ function generateGameMap (map)
             gameGround.push (new digital ("6", "red", "white", 503, 295, 1, 0.075));
             gameGround.push (new digital ("7", "black", "yellow", 539, 295, 1, 0.075));
             gameGround.push (new digital ("8", "black", "yellow", 539, 335, 1, 0.075));
-            enemies = 270;
             gameEnemies.push (new enemy (3, 200, 100, 0));
             gameEnemies.push (new enemy (4, 400, 100, 0));
             gameEnemies.push (new enemy (5, 600, 100, 0));
@@ -398,7 +396,6 @@ function generateGameMap (map)
             gameGround.push (new digital ("6", "red", "white", 503, 295, 1, 0.075));
             gameGround.push (new digital ("7", "black", "yellow", 539, 295, 1, 0.075));
             gameGround.push (new digital ("8", "black", "yellow", 539, 335, 1, 0.075));
-            enemies = 1;
             gameEnemies.push (new enemy (7, 125, 125, 0));
             gameEnemies.push (new enemy (7, 325, 125, 0));
             gameEnemies.push (new enemy (7, 525, 125, 0));

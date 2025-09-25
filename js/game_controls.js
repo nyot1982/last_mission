@@ -354,7 +354,7 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     gameShips [skinSel].turning (-1);
                 break;
                 case 'unlock_skin':
-                    if (players [0].skins.findIndex (skin => skin == skinSel) == -1 && players [0].skins.length < players [0].xp / 100) fetchLoad ('unlock_skin', 'id=' + players [0].id + '&skins=' + players [0].skins.join (",") + '&skin=' + skinSel);
+                    if (players [0].skins.findIndex (skin => skin == skinSel) == -1 && players [0].skins.length < Math.floor (players [0].xp / 100)) fetchLoad ('unlock_skin', 'id=' + players [0].id + '&skins=' + players [0].skins.join (",") + '&skin=' + skinSel);
                 break;
                 case 'skins_exit':
                     $("#blackScreen").fadeIn (1000);
@@ -370,7 +370,8 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                             form.elements [2].innerHTML = '<option value="-1"' + (players [0].skin == -1 ? ' selected' : '') + '></option>';
                             for (var i = 0; i < players [0].skins.length; i++) form.elements [2].innerHTML += '<option value="' + players [0].skins [i] + '"' + (players [0].skins [i] == players [0].skin ? ' selected' : '') + '>' + skins [players [0].skins [i]].name + '</option>';
                             menuShip.changeColor (players [0].color || playerColors [0]);
-                            gameXP = new component ("text", players [0].xp / 100, menuShip.colors.shipFill, menuShip.x, menuShip.y - 35, "center", 10, null, menuShip.colors.negative);
+                            gameXP.push (new component ("text", Math.floor (players [0].xp / 100), menuShip.colors.shipFill, menuShip.x, menuShip.y - 50, "center", 10, null, menuShip.colors.negative));
+                            gameXP.push (new component ("text", (players [0].xp == 10000 ? 100 : players [0].xp - Math.floor (players [0].xp / 100) * 100) + "/100 XP", menuShip.colors.negative, menuShip.x, menuShip.y - 30, "center", 8, null, menuShip.colors.shipFill));
                             changeTab ("input");
                             menuShip.turning (-1);
                         },

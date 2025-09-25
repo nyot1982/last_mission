@@ -1,4 +1,4 @@
-function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, xp, time)
+function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weapons, engine1, engine2, engine1inc, engine2inc, shadowOffset, nameOffset, lifes, life, fuel, ammo, shield, score_xp, gunStatus, wing1Status, wing2Status, engine1Status, engine2Status, time)
 {
     this.idShip = null;
     this.idControl = null;
@@ -70,7 +70,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.fuel = fuel || 100;
     this.ammo = ammo || 100;
     this.shield = shield || 0;
-    this.score = score || 0;
     this.status =
     {
         gun: gunStatus || true,
@@ -79,7 +78,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         engine1: engine1Status || true,
         engine2: engine2Status || true
     }
-    this.xp = xp || null;
     this.time = time || null;
     this.width = 28;
     this.height = 32;
@@ -89,6 +87,16 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.turn = 0;
     this.lastShotFrame = -this.weapons [this.weapon].fireRate / this.weapons [this.weapon].rate;
     this.repairing = null;
+    if (gameModes.findIndex (mode => mode.active == true) == 3)
+    {
+        this.score = null;
+        this.xp = score_xp || 0;
+    }
+    else
+    {
+        this.xp = null;
+        this.score = score_xp || 0;
+    }
 
     this.changeColor = function (color)
     {
@@ -340,7 +348,15 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             if (gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2 && players [0].name == this.name && path != "shield")
                             {
                                 var gameShip = gameShips.findIndex (ship => ship.name == gameShots [gameShot].name);
-                                if (gameShip > -1) gameShips [gameShip].score += 100;
+                                if (gameShip > -1)
+                                {
+                                    if (gameModes.findIndex (mode => mode.active == true) == 3)
+                                    {
+                                        gameShips [gameShip].xp++;
+                                        if (gameShips [gameShip].xp > 10000) gameShips [gameShip].xp = 10000;
+                                    }
+                                    else gameShips [gameShip].score += 100;
+                                }
                             }
                             if (gameControls [this.idControl] == "gamepad") vibrate (this.idControl, 300);
                         }
@@ -353,7 +369,15 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 gameSound.sounds ["hit0"].play ();
                             }
                             var gameShip = gameShips.findIndex (ship => ship.name == gameShots [gameShot].name);
-                            if (gameShip > -1) gameShips [gameShip].score += 1000;
+                            if (gameShip > -1)
+                            {
+                                if (gameModes.findIndex (mode => mode.active == true) == 3)
+                                {
+                                    gameShips [gameShip].xp += 10;
+                                    if (gameShips [gameShip].xp > 10000) gameShips [gameShip].xp = 10000;
+                                }
+                                else gameShips [gameShip].score += 1000;
+                            }
                             this.playerDead ();
                         }
                     }
@@ -365,7 +389,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.playerDead = function ()
     {
         if (gameControls [this.idControl] == "gamepad" && this.z >= 0) vibrate (this.idControl, 600);
-        if (this.lifes > 0) this.lifes--;
+        if (this.lifes > 0 && gameModes.findIndex (mode => mode.active == true) < 3) this.lifes--;
         if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) < 2) fetchLoad ("high_score_save", "name=" + this.name + "&score=" + this.score);
         setTimeout
         (
@@ -592,13 +616,18 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
 
     this.scoreHud = function ()
     {
-        var scoreHudElement = document.getElementById ("score-" + this.name);
-        if (!scoreHudElement && this.lifes == 5)
+        var element = document.getElementById ("score-" + this.name);
+        if (!element)
         {
             if (gameModes.findIndex (mode => mode.active == true) == 0)
             {
                 document.getElementById ("scoreHud").style.lineHeight = "23px";
-                document.getElementById ("scoreHud").innerHTML = '<span id="score-' + this.name + '">0</span>';
+                document.getElementById ("scoreHud").innerHTML = '<span id="score-' + this.name + '" title="' + this.name + ' Score">0</span>';
+            }
+            else if (gameModes.findIndex (mode => mode.active == true) == 3)
+            {
+                document.getElementById ("scoreHud").style.lineHeight = "23px";
+                document.getElementById ("scoreHud").innerHTML = '<span id="score-' + this.name + '" title="' + this.name + ' XP">' + (this.xp == 10000 ? 100 : this.xp - Math.floor (this.xp / 100) * 100) + '</span>';
             }
             else
             {
@@ -634,21 +663,22 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                                                 skin + '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg> <span id="score-' + this.name + '">0</span></div>';
             }
         }
-        else if (scoreHudElement.textContent * 1 != this.score)
+        else if ((element.textContent * 1 != this.score && gameModes.findIndex (mode => mode.active == true) != 3) || (element.textContent * 1 != (this.xp == 10000 ? 100 : this.xp - Math.floor (this.xp / 100) * 100) && gameModes.findIndex (mode => mode.active == true) == 3))
         {
-            scoreHudElement.className = "change";
-            scoreHudElement.textContent = this.score;
+            element.className = "change";
+            if (gameModes.findIndex (mode => mode.active == true) == 3) element.textContent = (this.xp == 10000 ? 100 : this.xp - Math.floor (this.xp / 100) * 100);
+            else element.textContent = this.score;
             setTimeout
             (
                 () =>
                 {
-                    scoreHudElement.className = "";
-                    if (gameShips.length > 1) this.scoreHudSort ("score-" + this.name + "-div");
+                    element.className = "";
+                    if (gameShips.length > 1 && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3) this.scoreHudSort ("score-" + this.name + "-div");
                 },
                 250
             );
         }
-        else if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) > 0 && !document.getElementById ("score-" + this.name + "-div").style.display && !document.getElementById ("score-" + this.name + "-div").style.opacity)
+        else if (this.lifes == 0 && gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3 && !document.getElementById ("score-" + this.name + "-div").style.display && !document.getElementById ("score-" + this.name + "-div").style.opacity)
         {
             $(document.getElementById ("score-" + this.name + "-div")).fadeOut (1000);
             setTimeout
@@ -667,17 +697,17 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     {
         if (document.getElementById ("scoreHud").firstChild.id != idScoreHud)
         {
-            var scoreHudElement = document.getElementById (idScoreHud);
-            if (this.score > scoreHudElement.previousSibling.lastChild.textContent * 1)
+            var element = document.getElementById (idScoreHud);
+            if (this.score > element.previousSibling.lastChild.textContent * 1)
             {
-                scoreHudElement.className = "exchange";
+                element.className = "exchange";
                 setTimeout
                 (
                     () =>
                     {
-                        document.getElementById ("scoreHud").moveBefore (scoreHudElement, scoreHudElement.previousSibling);
-                        scoreHudElement.className = "";
-                        if (document.getElementById ("scoreHud").firstChild.id != idScoreHud) this.scoreHudSort (scoreHudElement.previousSibling.id);
+                        document.getElementById ("scoreHud").moveBefore (element, element.previousSibling);
+                        element.className = "";
+                        if (document.getElementById ("scoreHud").firstChild.id != idScoreHud) this.scoreHudSort (element.previousSibling.id);
                     },
                     500
                 );
@@ -687,19 +717,47 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
 
     this.lifesHud = function ()
     {
-        if (!document.getElementById ("life0-" + this.name) && this.lifes == 5) 
+        var element = document.getElementById ("lifesHud");
+        if (gameModes.findIndex (mode => mode.active == true) == 3)
         {
+            if (element.innerHTML == "")
+            {
+                element.style.minWidth = null;
+                element.style.maxWidth = null;
+                element.innerHTML = '<img title="Players in game" src="svgs/ship.svg"/> <span id="numberOfPlayers" title="Number of players">' + gameShips.length + '</span>';
+            }
+            else if (gameShips.length != document.getElementById ("numberOfPlayers").textContent * 1)
+            {
+                if (gameShips.length > document.getElementById ("numberOfPlayers").textContent * 1) document.getElementById ("numberOfPlayers").style.color = "var(--color-7)";
+                else document.getElementById ("numberOfPlayers").style.color = "var(--color-6)";
+                document.getElementById ("numberOfPlayers").className = "change";
+                document.getElementById ("numberOfPlayers").textContent = gameShips.length;
+                setTimeout
+                (
+                    () =>
+                    {
+                        document.getElementById ("numberOfPlayers").style.color = null;
+                        document.getElementById ("numberOfPlayers").className = "";
+                    },
+                    250
+                );
+            }
+        }
+        else if (!document.getElementById ("life0-" + this.name) && this.lifes == 5) 
+        {
+            element.style.minWidth = "87px";
+            element.style.maxWidth = "294.5px";
             if (gameModes.findIndex (mode => mode.active == true) == 0)
             {
-                document.getElementById ("lifesHud").innerHTML = '<img id="life0-' + this.name + '" title="' + this.name + ' Life 1" src="svgs/ship.svg"/>' +
-                                                                '<img id="life1-' + this.name + '" title="' + this.name + ' Life 2" src="svgs/ship.svg"/>' +
-                                                                '<img id="life2-' + this.name + '" title="' + this.name + ' Life 3" src="svgs/ship.svg"/>' +
-                                                                '<img id="life3-' + this.name + '" title="' + this.name + ' Life 4" src="svgs/ship.svg"/>' +
-                                                                '<img id="life4-' + this.name + '" title="' + this.name + ' Life 5" src="svgs/ship.svg"/>';
+                element.innerHTML = '<img id="life0-' + this.name + '" title="' + this.name + ' Life 1" src="svgs/ship.svg"/>' +
+                                    '<img id="life1-' + this.name + '" title="' + this.name + ' Life 2" src="svgs/ship.svg"/>' +
+                                    '<img id="life2-' + this.name + '" title="' + this.name + ' Life 3" src="svgs/ship.svg"/>' +
+                                    '<img id="life3-' + this.name + '" title="' + this.name + ' Life 4" src="svgs/ship.svg"/>' +
+                                    '<img id="life4-' + this.name + '" title="' + this.name + ' Life 5" src="svgs/ship.svg"/>';
             }
             else
             {
-                document.getElementById ("lifesHud").innerHTML += '<div id="lifes-' + this.name + '"></div>';
+                element.innerHTML += '<div id="lifes-' + this.name + '"></div>';
                 for (var i = 0; i < 5; i++)
                 {
                     if (this.colors.skin)
@@ -744,11 +802,11 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     () =>
                     {
                         document.getElementById ("lifes-" + this.name).remove ();
-                        if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
+                        if (gameShips.length > 2) element.style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
                         else if (gameScreen == "game")
                         {
-                            if (gameShips.length == 0) document.getElementById ("lifesHud").style.height = "0px";
-                            else document.getElementById ("lifesHud").style.height = "23px";
+                            if (gameShips.length == 0) element.style.height = "0px";
+                            else element.style.height = "23px";
                         }
                     },
                     1000
@@ -759,10 +817,15 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
 
     this.updateHuds = function ()
     {
-        this.scoreHud ();
-        this.lifesHud ();
-        if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2)
-        {  
+        if (gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3)
+        {
+            this.scoreHud ();
+            this.lifesHud ();
+        }
+        else if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2)
+        {
+            this.scoreHud ();
+            this.lifesHud ();
             document.getElementById ("headingHud").style = "left: " + (-371.25 - this.heading) + "px;";
             document.getElementById ("zHud").innerHTML = Math.round (this.z * 10) + " m";
             this.speedHud ();
@@ -1209,12 +1272,12 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     if (this.xp != null)
                     {
                         ctx.beginPath ();
-                        textMeasure = ctx.measureText (this.xp / 100);
+                        textMeasure = ctx.measureText (Math.floor (this.xp / 100));
                         ctx.rect (this.x - textMeasure.width / 2, this.y - this.height / 2 - this.nameOffset - 10, textMeasure.width, 10);
                         ctx.fillStyle = this.colors.shipFill;
                         ctx.fill ();
                         ctx.fillStyle = this.colors.negative;
-                        ctx.fillText (this.xp / 100, this.x, this.y - this.height / 2 - (this.nameOffset - 6) - 10);
+                        ctx.fillText (Math.floor (this.xp / 100), this.x, this.y - this.height / 2 - (this.nameOffset - 6) - 10);
                     }
                     ctx.beginPath ();
                     var textMeasure = ctx.measureText (this.name);
@@ -1343,7 +1406,12 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                 if (this.shield == 0 && gameShips [gameShip].shield == 0 && Math.sqrt (dx * dx + dy * dy) < 30)
                                 {
                                     this.life = 0;
-                                    this.score += 500;
+                                    if (gameModes.findIndex (mode => mode.active == true) == 3)
+                                    {
+                                        this.xp += 5;
+                                        if (this.xp > 10000) this.xp = 10000;
+                                    }
+                                    else this.score += 500;
                                     gameHits.push (new hit ("hit0", this.x, this.y, 40, 2));
                                     if (gameSound.active)
                                     {
@@ -1362,7 +1430,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                         }
                                         gameShips [gameShip].playerDead ();
                                     }
-                                    else if (gameModes.findIndex (mode => mode.active == true) == 3) this.xp++;
                                     this.playerDead ();
                                     return;
                                 }
@@ -1385,7 +1452,12 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                     {
                                         this.shield -= 10;
                                         if (this.shield < 0) this.shield = 0;
-                                        this.score += 1000;
+                                        if (gameModes.findIndex (mode => mode.active == true) == 3)
+                                        {
+                                            this.xp += 10;
+                                            if (this.xp > 10000) this.xp = 10000;
+                                        }
+                                        else this.score += 1000;
                                         gameShips [gameShip].life = 0;
                                         gameHits.push (new hit ("hit0", gameShips [gameShip].x, gameShips [gameShip].y, 40, 2));
                                         if (gameSound.active)
@@ -1394,23 +1466,23 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                                             gameSound.sounds ["hit0"].play ();
                                         }
                                         gameShips [gameShip].playerDead ();
-                                        document.getElementById ("score-" + this.name).innerHTML = this.score;
-                                        if (gameModes.findIndex (mode => mode.active == true) == 3) this.xp += 2;
                                     }
                                     else if (gameShips [gameShip].shield > 0 && this.shield == 0)
                                     {
+                                        gameShips [gameShip].shield -= 10;
+                                        if (gameShips [gameShip].shield < 0) gameShips [gameShip].shield = 0;       
+                                        if (gameModes.findIndex (mode => mode.active == true) == 3)
+                                        {
+                                            gameShips [gameShip].xp += 10;
+                                            if (gameShips [gameShip].xp > 10000) gameShips [gameShip].xp = 10000;
+                                        }
+                                        else gameShips [gameShip].score += 1000;
                                         this.life = 0;
                                         gameHits.push (new hit ("hit0", this.x, this.y, 40, 2));
                                         if (gameSound.active)
                                         {
                                             gameSound.sounds ["hit0"].stop ();
                                             gameSound.sounds ["hit0"].play ();
-                                        }
-                                        if (gameModes.findIndex (mode => mode.active == true) == 1 || gameModes.findIndex (mode => mode.active == true) == 2)
-                                        {
-                                            gameShips [gameShip].shield -= 10;
-                                            if (gameShips [gameShip].shield < 0) gameShips [gameShip].shield = 0;
-                                            gameShips [gameShip].score += 1000;
                                         }
                                         this.playerDead ();
                                         return;

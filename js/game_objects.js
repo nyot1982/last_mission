@@ -461,7 +461,7 @@ function component (type, src, color, x, y, width, height, max, backColor, rollo
                     {
                         ctx.beginPath ();
                         var textMeasure = ctx.measureText (this.src);
-                        ctx.roundRect (this.x - textMeasure.width / 2, this.y - this.height / 2 - 2, textMeasure.width + 1, this.height + 4, Math.PI);
+                        ctx.roundRect (this.x - textMeasure.width / 2 - (this.height < 10 ? 4 : 6), this.y - this.height / 2 - (this.height < 10 ? 2 : 4), textMeasure.width + (this.height < 10 ? 8 : 12), this.height + (this.height < 10 ? 4 : 8), 2 * Math.PI);
                         ctx.fillStyle = this.backColor;
                         ctx.fill ();
                     }

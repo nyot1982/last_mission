@@ -186,18 +186,16 @@ const wss = createServerFrom
                                     engine2inc: true,
                                     shadowOffset: 1,
                                     nameOffset: 5,
-                                    lifes: 5,
                                     life: 100,
                                     fuel: 100,
                                     ammo: 100,
                                     shield: 0,
-                                    score: 0,
+                                    xp: data.xp,
                                     gunStatus: true,
                                     wing1Status: true,
                                     wing2Status: true,
                                     engine1Status: true,
                                     engine2Status: true,
-                                    xp: data.xp,
                                     time: Date.now ()
                                 }
                             );
@@ -223,18 +221,16 @@ const wss = createServerFrom
                             gameShips [gameShip].engine2inc = data.engine2inc;
                             gameShips [gameShip].shadowOffset = data.shadowOffset;
                             gameShips [gameShip].nameOffset = data.nameOffset;
-                            gameShips [gameShip].lifes = data.lifes;
                             gameShips [gameShip].life = data.life;
                             gameShips [gameShip].fuel = data.fuel;
                             gameShips [gameShip].ammo = data.ammo;
                             gameShips [gameShip].shield = data.shield;
-                            gameShips [gameShip].score = data.score;
+                            gameShips [gameShip].xp = data.xp;
                             gameShips [gameShip].gunStatus = data.gunStatus;
                             gameShips [gameShip].wing1Status = data.wing1Status;
                             gameShips [gameShip].wing2Status = data.wing2Status;
                             gameShips [gameShip].engine1Status = data.engine1Status;
                             gameShips [gameShip].engine2Status = data.engine2Status;
-                            gameShips [gameShip].xp = data.xp;
                             gameShips [gameShip].time = Date.now ();
                         }
                     }
@@ -315,7 +311,7 @@ function clearUnactive ()
 {
     for (var gameShip in gameShips)
     {
-        if (gameShips [gameShip].lifes == 0 || Date.now () - gameShips [gameShip].time > 1000)
+        if (Date.now () - gameShips [gameShip].time > 1000)
         {
             startPoints [startPoints.findIndex (startPoint => startPoint.ship == gameShips [gameShip].name)].ship = null;
             gameShips.splice (gameShip, 1);
@@ -343,7 +339,7 @@ function debugging (text)
                 {
                     name: gameShips [gameShip].name,
                     color: gameShips [gameShip].color,
-                    lifes: gameShips [gameShip].lifes,
+                    life: gameShips [gameShip].life,
                     time: Date.now () - gameShips [gameShip].time
                 }
             );

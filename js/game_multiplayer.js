@@ -15,17 +15,17 @@ function wssOpen ()
     wss.onmessage = function (event)
     {
         const data = JSON.parse (event.data);
-        if (gameScreen == "game" && document.getElementById ("playersConnecting"))
+        if (gameScreen == "game")
         {
             if (data.players_connecting > 0)
             {
-                if (gameModal == null) document.getElementById ("highScoreHud").style.height = "46px";
-                document.getElementById ("playersConnecting").innerHTML = data.players_connecting + " player" + (data.players_connecting > 1 ? "s" : "") + " connecting...";
+                if (gameModal == null) document.getElementById ("highScoreHud").style.height = "23px";
+                document.getElementById ("highScoreHud").innerHTML = data.players_connecting + " player" + (data.players_connecting > 1 ? "s" : "") + " connecting...";
             }
             else
             {
-                if (gameModal == null) document.getElementById ("highScoreHud").style.height = "23px";
-                document.getElementById ("playersConnecting").innerHTML = "";
+                if (gameModal == null) document.getElementById ("highScoreHud").style.height = "0px";
+                document.getElementById ("highScoreHud").innerHTML = "";
             }
             playersConnecting = data.players_connecting;
         }
@@ -63,7 +63,8 @@ function wssOpen ()
             for (var i = 0; i < players [0].skins.length; i++) form.elements [2].innerHTML += '<option value="' + players [0].skins [i] + '"' + (players [0].skins [i] == players [0].skin ? ' selected' : '') + '>' + skins [players [0].skins [i]].name + '</option>';
             form.elements [4].value = players [0].xp;
             menuShip.changeColor (players [0].color || playerColors [0]);
-            gameXP = new component ("text", players [0].xp / 100, menuShip.colors.shipFill, menuShip.x, menuShip.y - 35, "center", 10, null, menuShip.colors.negative);
+            gameXP.push (new component ("text", Math.floor (players [0].xp / 100), menuShip.colors.shipFill, menuShip.x, menuShip.y - 50, "center", 10, null, menuShip.colors.negative));
+            gameXP.push (new component ("text", (players [0].xp == 10000 ? 100 : players [0].xp - Math.floor (players [0].xp / 100) * 100) + "/100 XP", menuShip.colors.negative, menuShip.x, menuShip.y - 30, "center", 8, null, menuShip.colors.shipFill));
             changeTab ("input");
             menuShip.turning (-1);
         }
@@ -104,18 +105,17 @@ function wssOpen ()
                             data.game_ships [game_ship].engine2inc,
                             data.game_ships [game_ship].shadowOffset,
                             data.game_ships [game_ship].nameOffset,
-                            data.game_ships [game_ship].lifes,
+                            1,
                             data.game_ships [game_ship].life,
                             data.game_ships [game_ship].fuel,
                             data.game_ships [game_ship].ammo,
                             data.game_ships [game_ship].shield,
-                            data.game_ships [game_ship].score,
+                            data.game_ships [game_ship].xp,
                             data.game_ships [game_ship].gunStatus,
                             data.game_ships [game_ship].wing1Status,
                             data.game_ships [game_ship].wing2Status,
                             data.game_ships [game_ship].engine1Status,
                             data.game_ships [game_ship].engine2Status,
-                            data.game_ships [game_ship].xp,
                             data.game_ships [game_ship].time
                         )
                     );
@@ -142,18 +142,16 @@ function wssOpen ()
                         gameShips [gameShip].engine2inc = data.game_ships [game_ship].engine2inc;
                         gameShips [gameShip].shadowOffset = data.game_ships [game_ship].shadowOffset;
                         gameShips [gameShip].nameOffset = data.game_ships [game_ship].nameOffset;
-                        gameShips [gameShip].lifes = data.game_ships [game_ship].lifes,
                         gameShips [gameShip].life = data.game_ships [game_ship].life,
                         gameShips [gameShip].fuel = data.game_ships [game_ship].fuel,
                         gameShips [gameShip].ammo = data.game_ships [game_ship].ammo,
                         gameShips [gameShip].shield = data.game_ships [game_ship].shield,
-                        gameShips [gameShip].score = data.game_ships [game_ship].score, 
+                        gameShips [gameShip].xp = data.game_ships [game_ship].xp;
                         gameShips [gameShip].gunStatus = data.game_ships [game_ship].gunStatus;
                         gameShips [gameShip].wing1Status = data.game_ships [game_ship].wing1Status;
                         gameShips [gameShip].wing2Status = data.game_ships [game_ship].wing2Status;
                         gameShips [gameShip].engine1Status = data.game_ships [game_ship].engine1Status;
                         gameShips [gameShip].engine2Status = data.game_ships [game_ship].engine2Status;
-                        gameShips [gameShip].xp = data.game_ships [game_ship].xp;
                     }
                 }
             }
@@ -164,9 +162,8 @@ function wssOpen ()
             }
             else
             {
-                document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
-                if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
-                else if (gameScreen == "game") document.getElementById ("lifesHud").style.height = "23px";
+                document.getElementById ("scoreHud").style.height = "23px";
+                document.getElementById ("lifesHud").style.height = "23px";
             }
             gameObjects = gameShips.concat (gameItems).concat (gameShots);
             gameObjects.sort ((ship1, ship2) => ship1.z - ship2.z);
@@ -255,18 +252,16 @@ function wssSend ()
                 engine2inc: gameShips [gameShip].engine2inc,
                 shadowOffset: gameShips [gameShip].shadowOffset,
                 nameOffset: gameShips [gameShip].nameOffset,
-                lifes: gameShips [gameShip].lifes,
                 life: gameShips [gameShip].life,
                 fuel: gameShips [gameShip].fuel,
                 ammo: gameShips [gameShip].ammo,
                 shield: gameShips [gameShip].shield,
-                score: gameShips [gameShip].score,
+                xp: gameShips [gameShip].xp,
                 gunStatus: gameShips [gameShip].status.gun,
                 wing1Status: gameShips [gameShip].status.wing1,
                 wing2Status: gameShips [gameShip].status.wing2,
                 engine1Status: gameShips [gameShip].status.engine1,
                 engine2Status: gameShips [gameShip].status.engine2,
-                xp: gameShips [gameShip].xp,
                 time: gameShips [gameShip].time
             }
         ));
@@ -275,5 +270,5 @@ function wssSend ()
 
 function clearUnactive ()
 {
-    gameShips = gameShips.filter (ship => ship.lifes > 0 && Date.now () - ship.time <= 1000);
+    gameShips = gameShips.filter (ship => Date.now () - ship.time <= 1000);
 }
