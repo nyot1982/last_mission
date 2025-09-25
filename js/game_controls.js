@@ -461,32 +461,38 @@ function userActionStop (control, bt_type, bt_code, gameShip)
     }
 }
 
-function stopUserInteractions (player)
+function stopUserInteractions (gamePlayer)
 {
-    var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
-    if (gameModes.findIndex (mode => mode.active == true) == 0 || player == null)
+    for (var player in players)
     {
-        pressed =
+        if (gamePlayer == null || player == gamePlayer)
         {
-            keys:
+            var gameShip = gameShips.findIndex (ship => ship.name == players [player].name);
+            if (gameModes.findIndex (mode => mode.active == true) == 0)
             {
-                99: []
-            },
-            buttons: [],
-            axes: []
-        };
+                pressed =
+                {
+                    keys:
+                    {
+                        99: []
+                    },
+                    buttons: [],
+                    axes: []
+                };
+            }
+            else
+            {
+                if (player == 0 || gameModes.findIndex (mode => mode.active == true) == 3) pressed.keys [players [player].control] = [];
+                pressed.buttons [players [player].control] = [];
+                pressed.axes [players [player].control] = [];
+            }
+            gameShips [gameShip].firing (false);
+            gameShips [gameShip].moving (0);
+            if (gameShips [gameShip].life == 0) gameShips [gameShip].movingZ (0);
+            gameShips [gameShip].strafing (0);
+            gameShips [gameShip].turning (0);
+        }
     }
-    else
-    {
-        if (player == 0 || gameModes.findIndex (mode => mode.active == true) == 3) pressed.keys [players [player].control] = [];
-        pressed.buttons [players [player].control] = [];
-        pressed.axes [players [player].control] = [];
-    }
-    gameShips [gameShip].firing (false);
-    gameShips [gameShip].moving (0);
-    gameShips [gameShip].movingZ (0);
-    gameShips [gameShip].strafing (0);
-    gameShips [gameShip].turning (0);
 }
 
 function mouseMove (e)
