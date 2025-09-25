@@ -383,7 +383,7 @@ function boss (type, x, y)
             ctx.fillRect (this.x - 14, this.y + 20, 28, 7);*/
             for (var gameShot in gameShots)
             {
-                if (gameShots [gameShot].name.substring (0, 5) != "enemy" && gameShots [gameShot].name != "boss")
+                if (gameShots [gameShot].name.substring (0, 6) != "enemy-" && gameShots [gameShot].name != "boss")
                 {
                     if (gameShots [gameShot].x >= this.x - 27 && gameShots [gameShot].x <= this.x - 20 + gameShots [gameShot].speed / 2 && gameShots [gameShot].y >= this.y - 14 && gameShots [gameShot].y <= this.y + 14 && this.z == 50) bossHit (gameShot, 1);
                     else if (gameShots [gameShot].x >= this.x - 14 && gameShots [gameShot].x <= this.x + 14 && gameShots [gameShot].y >= this.y - 27 && gameShots [gameShot].y <= this.y - 20 + gameShots [gameShot].speed / 2 && this.z == 50) bossHit (gameShot, 2);
@@ -396,16 +396,16 @@ function boss (type, x, y)
             {
                 if (this.weapon == 0)
                 {
-                    gameShots.push (new shot ("boss", 4, "black", this.x - this.width, this.y, 28, 3, 10, 0));
-                    gameShots.push (new shot ("boss", 4, "black", this.x - this.width + 28, this.y, 28, 3, 10, 0));
-                    gameShots.push (new shot ("boss", 4, "black", this.x, this.y - this.height, 28, 3, 10, 90));
-                    gameShots.push (new shot ("boss", 4, "black", this.x, this.y - this.height + 28, 28, 3, 10, 90));
-                    gameShots.push (new shot ("boss", 4, "black", this.x + this.width - 28, this.y, 28, 3, 10, 180));
-                    gameShots.push (new shot ("boss", 4, "black", this.x + this.width, this.y, 28, 3, 10, 180));
-                    gameShots.push (new shot ("boss", 4, "black", this.x, this.y + this.height - 28, 28, 3, 10, 270));
-                    gameShots.push (new shot ("boss", 4, "black", this.x, this.y + this.height, 28, 3, 10, 270));
+                    gameShots.push (new shot ("boss", 4, "black", this.x - this.width, this.y, 28, 3, 8, 0));
+                    gameShots.push (new shot ("boss", 4, "black", this.x - this.width + 28, this.y, 28, 3, 8, 0));
+                    gameShots.push (new shot ("boss", 4, "black", this.x, this.y - this.height, 28, 3, 8, 90));
+                    gameShots.push (new shot ("boss", 4, "black", this.x, this.y - this.height + 28, 28, 3, 8, 90));
+                    gameShots.push (new shot ("boss", 4, "black", this.x + this.width - 28, this.y, 28, 3, 8, 180));
+                    gameShots.push (new shot ("boss", 4, "black", this.x + this.width, this.y, 28, 3, 8, 180));
+                    gameShots.push (new shot ("boss", 4, "black", this.x, this.y + this.height - 28, 28, 3, 8, 270));
+                    gameShots.push (new shot ("boss", 4, "black", this.x, this.y + this.height, 28, 3, 8, 270));
                 }
-                else if (this.weapon == 1) gameShots.push (new shot ("boss", 5, "#B2B2B2", this.x + 32 * Math.sin (this.shotHeading * Math.PI / 180), this.y - 32 * Math.cos (this.shotHeading * Math.PI / 180), 4, 4, 8, this.shotHeading));
+                else if (this.weapon == 1) gameShots.push (new shot ("boss", 5, "#B2B2B2", this.x + 32 * Math.sin (this.shotHeading * Math.PI / 180), this.y - 32 * Math.cos (this.shotHeading * Math.PI / 180), 4, 4, 6, this.shotHeading));
                 else if (this.weapon == 2)
                 {
                     var shotHeading = Math.floor (Math.random () * 8) * 45;

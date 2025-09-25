@@ -38,6 +38,11 @@ function enemy (type, x, y, heading)
         this.width = 50;
         this.height = 40;
     }
+    else if (this.type == 7)
+    {
+        this.width = 34;
+        this.height = 32;
+    }
     else if (this.type > 3)
     {
         this.width = 60;
@@ -49,6 +54,11 @@ function enemy (type, x, y, heading)
         this.speed = 4.5;
         this.move = this.speed;
         this.turn = 0;
+        this.life = 10;
+    }
+    else if (this.type == 7)
+    {
+        this.z = 50;
         this.life = 10;
     }
     else
@@ -703,6 +713,57 @@ function enemy (type, x, y, heading)
                 ctx.strokeStyle = "#222";
                 ctx.stroke ();
             }
+            else if (this.type == 7)
+            {
+                ctx.shadowColor = "transparent";
+                ctx.beginPath ();
+                ctx.lineWidth = 4;
+                ctx.arc (0, 0, 8, 0, 2 * Math.PI);
+                ctx.strokeStyle = "#4A4A4A";
+                ctx.stroke ();
+                ctx.fillStyle = "#000";
+                ctx.shadowColor = "#00000044";
+                ctx.fill ();
+                ctx.strokeStyle = "#B2B2B2";
+                ctx.beginPath ();
+                ctx.moveTo (6, 0);
+                ctx.lineTo (17, 0);
+                ctx.stroke ();
+                ctx.beginPath ();
+                ctx.moveTo (-6, 0);
+                ctx.lineTo (-17, 0);
+                ctx.stroke ();
+                ctx.beginPath ();
+                ctx.moveTo (0, 6);
+                ctx.lineTo (0, 16);
+                ctx.stroke ();
+                ctx.beginPath ();
+                ctx.moveTo (0, -6);
+                ctx.lineTo (0, -16);
+                ctx.stroke ();
+                ctx.beginPath ();
+                ctx.moveTo (5, 5);
+                ctx.lineTo (12, 12);
+                ctx.stroke ();
+                ctx.beginPath ();
+                ctx.moveTo (-5, -5);
+                ctx.lineTo (-12, -12);
+                ctx.stroke ();
+                ctx.beginPath ();
+                ctx.moveTo (-5, 5);
+                ctx.lineTo (-12, 12);
+                ctx.stroke ();
+                ctx.beginPath ();
+                ctx.moveTo (5, -5);
+                ctx.lineTo (12, -12);
+                ctx.stroke ();
+                ctx.beginPath ();
+                ctx.lineWidth = 0;
+                ctx.arc (0, 0, 2, 0, 2 * Math.PI);
+                ctx.fillStyle = "#4A4A4A";
+                ctx.shadowColor = "transparent";
+                ctx.fill ();
+            }
             if (this.type < 2)
             {
                 if (this.engineInc)
@@ -720,11 +781,11 @@ function enemy (type, x, y, heading)
 
             for (var gameShot in gameShots)
             {
-                if (gameShots [gameShot].name.substring (0, 5) != "enemy" && gameShots [gameShot].name != "boss")
+                if (gameShots [gameShot].name.substring (0, 6) != "enemy-" && gameShots [gameShot].name != "boss")
                 {
                     var dx = this.x - gameShots [gameShot].x;
                     var dy = this.y - gameShots [gameShot].y;
-                    if ((this.type < 3 && Math.sqrt (dx * dx + dy * dy) < 18) || (this.type == 3 && Math.sqrt (dx * dx + dy * dy) < 24) || (this.type > 3 && Math.sqrt (dx * dx + dy * dy) < 30))
+                    if ((this.type < 3 && Math.sqrt (dx * dx + dy * dy) < 18) || (this.type == 3 && Math.sqrt (dx * dx + dy * dy) < 24) || (this.type > 3 && this.type < 7 && Math.sqrt (dx * dx + dy * dy) < 30) || (this.type == 7 && Math.sqrt (dx * dx + dy * dy) < 17))
                     {
                         var gameShip = gameShips.findIndex (ship => ship.name == gameShots [gameShot].name);
                         gameShots [gameShot].hit = true;
@@ -732,7 +793,6 @@ function enemy (type, x, y, heading)
                         if (this.life == 0)
                         {
                             gameHits.push (new hit ("hit0", this.x, this.y, 40, 2));
-                            gameItems.push (new item (this.type, this.x, this.y));
                             if (gameSound.active)
                             {
                                 gameSound.sounds ["hit0"].stop ();
@@ -743,8 +803,9 @@ function enemy (type, x, y, heading)
                                 enemies--;
                                 if (gameShip > -1) gameShips [gameShip].score += 500;
                             }
-                            else
+                            else if (this.type < 7)
                             {
+                                gameItems.push (new item (this.type, this.x, this.y));
                                 enemies -= 8;
                                 if (gameShip > -1) gameShips [gameShip].score += 1000;
                             }
@@ -759,7 +820,7 @@ function enemy (type, x, y, heading)
                                 gameSound.sounds ["hit1"].stop ();
                                 gameSound.sounds ["hit1"].play ();
                             }
-                            if (players [0].name == gameShots [gameShot].name)
+                            if (players [0].name == gameShots [gameShot].name && this.type < 7)
                             {
                                 if (enemies > 0) enemies--;
                                 if (gameShip > -1) gameShips [gameShip].score += 100;
@@ -770,17 +831,17 @@ function enemy (type, x, y, heading)
             }
             if (this.fire && (gameArea.frame - this.lastShotFrame) >= 50)
             {
-                if (this.weapon == 0) gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.height / 2 + 24) * Math.sin (this.heading * Math.PI / 180), this.y - (this.height / 2 + 24) * Math.cos (this.heading * Math.PI / 180), 24, 3, 12, this.heading));
+                if (this.weapon == 0) gameShots.push (new shot ("enemy-" + this.id, this.weapon, "black", this.x + (this.height / 2 + 24) * Math.sin (this.heading * Math.PI / 180), this.y - (this.height / 2 + 24) * Math.cos (this.heading * Math.PI / 180), 24, 3, 12, this.heading));
                 else if (this.weapon == 4)
                 {
                     if (this.type == 4) var startHeading = -45;
                     else if (this.type == 5) var startHeading = 0;
-                    gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.height / 2 + 28) * Math.sin ((this.heading + startHeading) * Math.PI / 180), this.y - (this.height / 2 + 28) * Math.cos ((this.heading + startHeading) * Math.PI / 180), 28, 3, 10, this.heading + startHeading));
-                    gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.width / 2 + 28) * Math.sin ((this.heading + startHeading + 90) * Math.PI / 180), this.y - (this.width / 2 + 28) * Math.cos ((this.heading + startHeading + 90) * Math.PI / 180), 28, 3, 10, this.heading + startHeading + 90));
-                    gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.height / 2 + 28) * Math.sin ((this.heading + startHeading + 180) * Math.PI / 180), this.y - (this.height / 2 + 28) * Math.cos ((this.heading + startHeading + 180) * Math.PI / 180), 28, 3, 10, this.heading + startHeading + 180));
-                    gameShots.push (new shot ("enemy" + this.id, this.weapon, "black", this.x + (this.width / 2 + 28) * Math.sin ((this.heading + startHeading + 270) * Math.PI / 180), this.y - (this.width / 2 + 28) * Math.cos ((this.heading + startHeading + 270) * Math.PI / 180), 28, 3, 10, this.heading + startHeading + 270));
+                    gameShots.push (new shot ("enemy-" + this.id, this.weapon, "black", this.x + (this.height / 2 + 28) * Math.sin ((this.heading + startHeading) * Math.PI / 180), this.y - (this.height / 2 + 28) * Math.cos ((this.heading + startHeading) * Math.PI / 180), 28, 3, 8, this.heading + startHeading));
+                    gameShots.push (new shot ("enemy-" + this.id, this.weapon, "black", this.x + (this.width / 2 + 28) * Math.sin ((this.heading + startHeading + 90) * Math.PI / 180), this.y - (this.width / 2 + 28) * Math.cos ((this.heading + startHeading + 90) * Math.PI / 180), 28, 3, 8, this.heading + startHeading + 90));
+                    gameShots.push (new shot ("enemy-" + this.id, this.weapon, "black", this.x + (this.height / 2 + 28) * Math.sin ((this.heading + startHeading + 180) * Math.PI / 180), this.y - (this.height / 2 + 28) * Math.cos ((this.heading + startHeading + 180) * Math.PI / 180), 28, 3, 8, this.heading + startHeading + 180));
+                    gameShots.push (new shot ("enemy-" + this.id, this.weapon, "black", this.x + (this.width / 2 + 28) * Math.sin ((this.heading + startHeading + 270) * Math.PI / 180), this.y - (this.width / 2 + 28) * Math.cos ((this.heading + startHeading + 270) * Math.PI / 180), 28, 3, 8, this.heading + startHeading + 270));
                 }
-                else if (this.weapon == 5) gameShots.push (new shot ("enemy" + this.id, this.weapon, "#B2B2B2", this.x + 16 * Math.sin (this.heading * Math.PI / 180), this.y - 16 * Math.cos (this.heading * Math.PI / 180), 4, 4, 8, this.heading));
+                else if (this.weapon == 5) gameShots.push (new shot ("enemy-" + this.id, this.weapon, "#B2B2B2", this.x + 16 * Math.sin (this.heading * Math.PI / 180), this.y - 16 * Math.cos (this.heading * Math.PI / 180), 4, 4, 6, this.heading));
                 this.lastShotFrame = gameArea.frame;
             }
         }
