@@ -1062,19 +1062,25 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.paths.ship.addPath (this.paths.engine2);
                 }
                 ctx.lineWidth = 2;
-                if (this.colors.shipStroke != null) ctx.strokeStyle = this.colors.shipStroke + "CC";
-                else ctx.strokeStyle = this.colors.negative + "CC";
+                if (this.colors.shipStroke != null) var strokeColor = this.colors.shipStroke;
+                else if (this.colors.pattern) var strokeColor = this.colors.shipFill;
+                else var strokeColor = this.colors.negative;
+                ctx.strokeStyle = strokeColor + "CC";
                 ctx.stroke (this.paths.ship);
                 if (this.status.engine1 || this.repairing != null)
                 {
-                    if (this.colors.engine1Stroke != null) ctx.strokeStyle = this.colors.engine1Stroke + "88";
-                    else ctx.strokeStyle = this.colors.shipFill + "88";
+                    if (this.colors.engine1Stroke != null) var engine1StrokeColor = this.colors.engine1Stroke;
+                    else if (this.colors.pattern) var engine1StrokeColor = this.colors.pattern;
+                    else var engine1StrokeColor = this.colors.shipFill;
+                    ctx.strokeStyle = engine1StrokeColor + "88";
                     ctx.stroke (this.paths.engine1);
                 }
                 if (this.status.engine2 || this.repairing != null)
                 {
-                    if (this.colors.engine2Stroke != null) ctx.strokeStyle = this.colors.engine2Stroke + "88";
-                    else ctx.strokeStyle = this.colors.shipFill + "88";
+                    if (this.colors.engine2Stroke != null) var engine2StrokeColor = this.colors.engine2Stroke;
+                    else if (this.colors.pattern) var engine2StrokeColor = this.colors.pattern;
+                    else var engine2StrokeColor = this.colors.shipFill;
+                    ctx.strokeStyle = engine2StrokeColor + "88";
                     ctx.stroke (this.paths.engine2);
                 }
                 if (this.z > 0 && (gameScreen != "skins" || this.colors.skin == skinSel))
@@ -1152,29 +1158,32 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 }
                 if (gameScreen == "game" && gameModal == null) ctx.shadowColor = "#00000066";
                 else ctx.shadowColor = "transparent";
-                if (this.status.engine1)
+                if (this.status.engine1 || this.repairing != null && gameArea.frame % 20 == 0)
                 {
-                    if (this.colors.engine1Fill != null) ctx.fillStyle = this.colors.engine1Fill;
+                    if (!this.status.engine1) ctx.fillStyle = engine1StrokeColor;
+                    else if (this.colors.engine1Fill != null) ctx.fillStyle = this.colors.engine1Fill;
                     else if (this.colors.pattern) ctx.fillStyle = this.colors.shipFill;
                     else ctx.fillStyle = this.colors.negative;
                     ctx.fill (this.paths.engine1);
-                    this.shotsHit ("engine1");
+                    if (this.z == 50) this.shotsHit ("engine1");
                 }
-                if (this.status.engine2)
+                if (this.status.engine2 || this.repairing != null && gameArea.frame % 7 == 0)
                 {
-                    if (this.colors.engine2Fill != null) ctx.fillStyle = this.colors.engine2Fill;
+                    if (!this.status.engine2) ctx.fillStyle = engine2StrokeColor;
+                    else if (this.colors.engine2Fill != null) ctx.fillStyle = this.colors.engine2Fill;
                     else if (this.colors.pattern) ctx.fillStyle = this.colors.shipFill;
                     else ctx.fillStyle = this.colors.negative;
                     ctx.fill (this.paths.engine2);
-                    this.shotsHit ("engine2");
+                    if (this.z == 50) this.shotsHit ("engine2");
                 }
-                if (this.status.gun)
+                if (this.status.gun || this.repairing != null && gameArea.frame % 25 == 0)
                 {
-                    if (this.colors.gunFill != null) ctx.fillStyle = this.colors.gunFill;
+                    if (!this.status.gun) ctx.fillStyle = strokeColor;
+                    else if (this.colors.gunFill != null) ctx.fillStyle = this.colors.gunFill;
                     else if (this.colors.pattern) ctx.fillStyle = this.colors.pattern;
                     else ctx.fillStyle = this.colors.near;
                     ctx.fill (this.paths.gun);
-                    this.shotsHit ("gun");
+                    if (this.z == 50) this.shotsHit ("gun");
                 }
                 if (this.colors.hook1Fill != null && this.colors.hook1Fill != this.colors.shipFill)
                 {
@@ -1188,7 +1197,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 }
                 ctx.fillStyle = this.colors.pattern || this.colors.shipFill;
                 ctx.fill (this.paths.cockpit);
-                this.shotsHit ("cockpit");
+                if (this.z == 50) this.shotsHit ("cockpit");
                 ctx.rotate (45 * Math.PI / 180);
                 ctx.fillStyle = this.colors.lightFill;
                 ctx.shadowColor = "transparent";
@@ -1201,21 +1210,23 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 ctx.rotate (-45 * Math.PI / 180);
                 if (gameScreen == "game" && gameModal == null) ctx.shadowColor = "#00000066";
                 else ctx.shadowColor = "transparent";
-                if (this.status.wing1)
+                if (this.status.wing1 || this.repairing != null && gameArea.frame % 10 == 0)
                 {
-                    if (this.colors.wing1Fill != null) ctx.fillStyle = this.colors.wing1Fill;
+                    if (!this.status.wing1) ctx.fillStyle = strokeColor;
+                    else if (this.colors.wing1Fill != null) ctx.fillStyle = this.colors.wing1Fill;
                     else if (this.colors.pattern) ctx.fillStyle = this.colors.pattern;
                     else ctx.fillStyle = this.colors.near;
                     ctx.fill (this.paths.wing1);
-                    this.shotsHit ("wing1");
+                    if (this.z == 50) this.shotsHit ("wing1");
                 }
-                if (this.status.wing2)
+                if (this.status.wing2 || this.repairing != null && gameArea.frame % 5 == 0)
                 {
-                    if (this.colors.wing2Fill != null) ctx.fillStyle = this.colors.wing2Fill;
+                    if (!this.status.wing2) ctx.fillStyle = strokeColor;
+                    else if (this.colors.wing2Fill != null) ctx.fillStyle = this.colors.wing2Fill;
                     else if (this.colors.pattern) ctx.fillStyle = this.colors.pattern;
                     else ctx.fillStyle = this.colors.near;
                     ctx.fill (this.paths.wing2);
-                    this.shotsHit ("wing2");
+                    if (this.z == 50) this.shotsHit ("wing2");
                 }
                 if (this.shield > 0 && this.z == 50)
                 {
@@ -1332,7 +1343,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.strafe = 0;
                     if (this.ground == "base")
                     {
-                        if (this.repairing == null && (!this.status.gun || !this.status.wing1 || !this.status.wing2 || !this.status.engine1 || !this.status.engine2)) this.repairing = gameArea.frame;
+                        if (this.repairing == null && (!this.status.gun || !this.status.wing1 || !this.status.wing2 || !this.status.engine1 || !this.status.engine2) && (this.status.engine1 || this.status.engine2)) this.repairing = gameArea.frame;
                         else if (this.repairing != null && gameArea.frame - this.repairing == 500)
                         {
                             this.status.gun = true;
