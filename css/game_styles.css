@@ -322,6 +322,7 @@ article p
 #scoreHud
 {
     left: 20px;
+    color: var(--color4);
 }
 #scoreHud svg
 {
@@ -331,7 +332,6 @@ article p
 {
     display: inline-block;
     transition: all 0.5s ease-in-out 0s;
-    color: var(--color4);
 }
 #scoreHud span.change
 {

@@ -449,34 +449,26 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         }
                     }
                 }
-                else
+                else if (gameModes.findIndex (mode => mode.active == true) < 3)
                 {
-                    if (gameModes.findIndex (mode => mode.active == true) == 3 && this.name == players [0].name)
+                    if (gameModes.findIndex (mode => mode.active == true) != 0) players.splice (players.findIndex (player => player.name == this.name), 1);
+                    gameShips.splice (this.idShip, 1);
+                    if (gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length < 2)
                     {
-                        gameShips.splice (this.idShip, 1);
-                        gameOpenModal ("exit", "Game over");
+                        if (gameShips.length == 0) gameOpenModal ("exit", "Game over: Draw game");
+                        else gameOpenModal ("exit", "Game over: " + gameShips [0].name + " wins!");
                     }
-                    else
+                    else if (gameModes.findIndex (mode => mode.active == true) < 2 && gameShips.length == 0)
                     {
-                        if (gameModes.findIndex (mode => mode.active == true) != 0 && gameModes.findIndex (mode => mode.active == true) != 3) players.splice (players.findIndex (player => player.name == this.name), 1);
-                        gameShips.splice (this.idShip, 1);
-                        if (gameModes.findIndex (mode => mode.active == true) == 2 && gameShips.length < 2)
-                        {
-                            if (gameShips.length == 0) gameOpenModal ("exit", "Game over: Draw game");
-                            else gameOpenModal ("exit", "Game over: " + gameShips [0].name + " wins!");
-                        }
-                        else if (gameModes.findIndex (mode => mode.active == true) < 2 && gameShips.length == 0)
-                        {
-                            $("#blackScreen").fadeIn (1000);
-                            setTimeout
-                            (
-                                () =>
-                                {
-                                    gameLoadScreen ("game_over");
-                                },
-                                1000
-                            );
-                        }
+                        $("#blackScreen").fadeIn (1000);
+                        setTimeout
+                        (
+                            () =>
+                            {
+                                gameLoadScreen ("game_over");
+                            },
+                            1000
+                        );
                     }
                 }
             },
@@ -627,7 +619,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             else if (gameModes.findIndex (mode => mode.active == true) == 3)
             {
                 document.getElementById ("scoreHud").style.lineHeight = "23px";
-                document.getElementById ("scoreHud").innerHTML = '<span id="score-' + this.name + '" title="' + this.name + ' XP">' + (this.xp == 10000 ? 100 : this.xp - Math.floor (this.xp / 100) * 100) + '</span>';
+                document.getElementById ("scoreHud").innerHTML = '<div title="' + this.name + ' XP"><span id="score-' + this.name + '">' + (this.xp == 10000 ? 100 : this.xp - Math.floor (this.xp / 100) * 100) + '</span>/100</div>';
             }
             else
             {
@@ -1263,29 +1255,38 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             }
             if (this.name)
             {
+                var textMeasure = 0;
                 ctx.shadowColor = "transparent";
                 if (this.ground != "snow" || this.name == players [0].name)
                 {
-                    ctx.font = "6px PressStart2P";
-                    ctx.textAlign = "center";
                     ctx.textBaseline = "middle";
                     if (this.xp != null)
                     {
-                        ctx.beginPath ();
+                        ctx.font = "5px PressStart2P";
                         textMeasure = ctx.measureText (Math.floor (this.xp / 100));
-                        ctx.rect (this.x - textMeasure.width / 2, this.y - this.height / 2 - this.nameOffset - 10, textMeasure.width, 10);
-                        ctx.fillStyle = this.colors.shipFill;
-                        ctx.fill ();
-                        ctx.fillStyle = this.colors.negative;
-                        ctx.fillText (Math.floor (this.xp / 100), this.x, this.y - this.height / 2 - (this.nameOffset - 6) - 10);
+                        textMeasure = textMeasure.width;      
                     }
-                    ctx.beginPath ();
-                    var textMeasure = ctx.measureText (this.name);
-                    ctx.rect (this.x - textMeasure.width / 2 - 2, this.y - this.height / 2 - this.nameOffset, textMeasure.width + 4, 10);
+                    ctx.textAlign = "center";
+                    ctx.font = "6px PressStart2P";
+                    var nameMeasure = ctx.measureText (this.name);
+                    nameMeasure = nameMeasure.width + textMeasure;
+                    ctx.beginPath ();    
+                    ctx.rect (this.x - nameMeasure / 2 - 2, this.y - this.height / 2 - this.nameOffset, nameMeasure + 4, 10);
                     ctx.fillStyle = this.colors.negative;
                     ctx.fill ();
                     ctx.fillStyle = this.colors.shipFill;
-                    ctx.fillText (this.name, this.x, this.y - this.height / 2 - (this.nameOffset - 6));
+                    ctx.fillText (this.name, this.x + (textMeasure == 0 ? 0 : textMeasure / 2 + 1), this.y - this.height / 2 - (this.nameOffset - 6));
+                    if (this.xp != null)
+                    {
+                        ctx.textAlign = "left";
+                        ctx.font = "5px PressStart2P";
+                        ctx.beginPath ();
+                        ctx.rect (this.x - nameMeasure / 2 - 1, this.y - this.height / 2 - this.nameOffset + 1, textMeasure, 8);
+                        ctx.fillStyle = this.colors.shipFill;
+                        ctx.fill ();
+                        ctx.fillStyle = this.colors.negative;
+                        ctx.fillText (Math.floor (this.xp / 100), this.x - nameMeasure / 2 - 1, this.y - this.height / 2 - this.nameOffset + 5.5);
+                    }
                     if (this.name == players [0].name)
                     {
                         if (this.x > canvasWidth / 2 && this.x < (gameMap.width - canvasWidth) + canvasWidth / 2)
