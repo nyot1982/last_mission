@@ -31,13 +31,21 @@ function mapHud (itemClass, x, y, heading)
     
     if (itemClass == "mapItem") offSetX = 5.5;
     else if (itemClass == "enemyItem") offSetX = 5.65;
-    else if (itemClass == "enemyItem2" || itemClass == "bossItem")
+    else if (itemClass == "enemyItem2" || itemClass == "enemyItem3" || itemClass == "bossItem")
     {
-        offSetX = 5.45;
-        offSetY = 5.5;
+        if (itemClass == "enemyItem3")
+        {
+            offSetX = 3;
+            offSetY = 3.45;
+        }
+        else
+        {
+            offSetX = 5.45;
+            offSetY = 5.5;
+        }
         mapItem.setAttribute ('class', itemClass);
     }
-    if (itemClass != "enemyItem2" && itemClass != "bossItem")
+    if (itemClass != "enemyItem2" && itemClass != "enemyItem3" && itemClass != "bossItem")
     {
         mapItem.setAttribute ('class', 'fa fa-location-arrow ' + itemClass);
         mapItem.style.transform = 'rotate(' + (heading - 45) + 'deg)';

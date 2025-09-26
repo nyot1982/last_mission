@@ -910,7 +910,7 @@ function fetchLoad (cont, param)
                 gameAlert.push (new component ("text", ">>> " + responseJSON ["ok"], "#0C0", 705, 395, "left", 10));
                 changeTab ("alert");
             }
-            else document.getElementById (cont).innerHTML += responseJSON [cont];
+            else if (cont != "xp_save") document.getElementById (cont).innerHTML += responseJSON [cont];
         }
     )
     .catch (error => console.error ("Error! ", error.message));

@@ -827,7 +827,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             this.vitalsHud ("ammo");
             this.vitalsHud ("shield");
         }
-        else if (this.lifes == 0 && !document.getElementById ("multiHuds-" + this.name).style.display && !document.getElementById ("multiHuds-" + this.name).style.opacity)
+        if (this.lifes == 0 && !document.getElementById ("multiHuds-" + this.name).style.display && !document.getElementById ("multiHuds-" + this.name).style.opacity)
         {
             $(document.getElementById ("multiHuds-" + this.name)).fadeOut (1000);
             setTimeout
