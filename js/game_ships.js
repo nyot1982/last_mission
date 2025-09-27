@@ -710,32 +710,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.lifesHud = function ()
     {
         var element = document.getElementById ("lifesHud");
-        if (gameModes.findIndex (mode => mode.active == true) == 3)
-        {
-            if (element.innerHTML == "")
-            {
-                element.style.minWidth = null;
-                element.style.maxWidth = null;
-                element.innerHTML = '<img title="Players in game" src="svgs/ship.svg"/> <span id="numberOfPlayers" title="Number of players">' + gameShips.length + '</span>';
-            }
-            else if (gameShips.length != document.getElementById ("numberOfPlayers").textContent * 1)
-            {
-                if (gameShips.length > document.getElementById ("numberOfPlayers").textContent * 1) document.getElementById ("numberOfPlayers").style.color = "var(--color-7)";
-                else document.getElementById ("numberOfPlayers").style.color = "var(--color-6)";
-                document.getElementById ("numberOfPlayers").className = "change";
-                document.getElementById ("numberOfPlayers").textContent = gameShips.length;
-                setTimeout
-                (
-                    () =>
-                    {
-                        document.getElementById ("numberOfPlayers").style.color = null;
-                        document.getElementById ("numberOfPlayers").className = "";
-                    },
-                    250
-                );
-            }
-        }
-        else if (!document.getElementById ("life0-" + this.name) && this.lifes == 5) 
+        if (!document.getElementById ("life0-" + this.name) && this.lifes == 5) 
         {
             element.style.minWidth = "87px";
             element.style.maxWidth = "294.5px";
@@ -817,7 +792,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
         else if (this.name == players [0].name && gameModes.findIndex (mode => mode.active == true) != 1 && gameModes.findIndex (mode => mode.active == true) != 2)
         {
             this.scoreHud ();
-            this.lifesHud ();
+            if (gameModes.findIndex (mode => mode.active == true) == 0) this.lifesHud ();
             document.getElementById ("headingHud").style = "left: " + (-371.25 - this.heading) + "px;";
             document.getElementById ("zHud").innerHTML = Math.round (this.z * 10) + " m";
             this.speedHud ();

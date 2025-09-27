@@ -396,20 +396,20 @@ function generateGameMap (map)
             gameGround.push (new digital ("6", "red", "white", 503, 295, 1, 0.075));
             gameGround.push (new digital ("7", "black", "yellow", 539, 295, 1, 0.075));
             gameGround.push (new digital ("8", "black", "yellow", 539, 335, 1, 0.075));
-            gameEnemies.push (new enemy (7, 127, 116, 0));
-            gameEnemies.push (new enemy (7, 327, 116, 0));
-            gameEnemies.push (new enemy (7, 527, 116, 0));
-            gameEnemies.push (new enemy (7, 727, 116, 0));
-            gameEnemies.push (new enemy (7, 927, 116, 0));
-            gameEnemies.push (new enemy (7, 127, 266, 0));
-            gameEnemies.push (new enemy (7, 327, 266, 0));
-            gameEnemies.push (new enemy (7, 727, 266, 0));
-            gameEnemies.push (new enemy (7, 927, 266, 0));
-            gameEnemies.push (new enemy (7, 127, 416, 0));
-            gameEnemies.push (new enemy (7, 327, 416, 0));
-            gameEnemies.push (new enemy (7, 527, 416, 0));
-            gameEnemies.push (new enemy (7, 727, 416, 0));
-            gameEnemies.push (new enemy (7, 927, 416, 0));
+            gameEnemies.push (new enemy (7, 110, 100, 0));
+            gameEnemies.push (new enemy (7, 310, 100, 0));
+            gameEnemies.push (new enemy (7, 510, 100, 0));
+            gameEnemies.push (new enemy (7, 710, 100, 0));
+            gameEnemies.push (new enemy (7, 910, 100, 0));
+            gameEnemies.push (new enemy (7, 110, 250, 0));
+            gameEnemies.push (new enemy (7, 310, 250, 0));
+            gameEnemies.push (new enemy (7, 710, 250, 0));
+            gameEnemies.push (new enemy (7, 910, 250, 0));
+            gameEnemies.push (new enemy (7, 110, 400, 0));
+            gameEnemies.push (new enemy (7, 310, 400, 0));
+            gameEnemies.push (new enemy (7, 510, 400, 0));
+            gameEnemies.push (new enemy (7, 710, 400, 0));
+            gameEnemies.push (new enemy (7, 910, 400, 0));
             break;
         case "mode3":
             gameMap =

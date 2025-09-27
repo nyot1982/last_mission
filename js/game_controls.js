@@ -261,7 +261,8 @@ function userActionStart (control, bt_type, bt_code, bt_value, gameShip)
                     {
                         if (gameModes.findIndex (mode => mode.active == true) == 3)
                         {
-                            fetchLoad ("xp_save", "name=" + gameShips [playerId].name + "&xp=" + gameShips [playerId].xp);
+                            gameShip = gameShips.findIndex (ship => ship.name == players [0].name);
+                            fetchLoad ("xp_save", "name=" + gameShips [gameShip].name + "&xp=" + gameShips [gameShip].xp);
                             const data =
                             {
                                 action: "menu",

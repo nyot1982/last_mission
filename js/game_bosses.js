@@ -374,13 +374,6 @@ function boss (type, x, y)
                 }
             }
             ctx.restore ();
-            /*ctx.fillStyle = "#FF0000CC";
-            ctx.fillRect (this.x - 20, this.y - 20, 40, 40);
-            ctx.fillStyle = "#0000FFCC";
-            ctx.fillRect (this.x - 27, this.y - 14, 7, 28);
-            ctx.fillRect (this.x - 14, this.y - 27, 28, 7);
-            ctx.fillRect (this.x + 20, this.y - 14, 7, 28);
-            ctx.fillRect (this.x - 14, this.y + 20, 28, 7);*/
             for (var gameShot in gameShots)
             {
                 if (gameShots [gameShot].name.substring (0, 6) != "enemy-" && gameShots [gameShot].name != "boss")

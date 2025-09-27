@@ -718,53 +718,40 @@ function enemy (type, x, y, heading)
             }
             else if (this.type == 7)
             {
+                ctx.translate  (this.width / 2, this.height / 2);
                 ctx.shadowColor = "transparent";
                 ctx.beginPath ();
                 ctx.lineWidth = 4;
                 ctx.arc (0, 0, 8, 0, 2 * Math.PI);
                 ctx.strokeStyle = "#4A4A4A";
                 ctx.stroke ();
-                ctx.fillStyle = "#000";
                 ctx.shadowColor = "#00000066";
+                ctx.fillStyle = "#000";
                 ctx.fill ();
-                ctx.strokeStyle = "#B2B2B2";
                 ctx.beginPath ();
                 ctx.moveTo (6, 0);
                 ctx.lineTo (17, 0);
-                ctx.stroke ();
-                ctx.beginPath ();
                 ctx.moveTo (-6, 0);
                 ctx.lineTo (-17, 0);
-                ctx.stroke ();
-                ctx.beginPath ();
                 ctx.moveTo (0, 6);
                 ctx.lineTo (0, 16);
-                ctx.stroke ();
-                ctx.beginPath ();
                 ctx.moveTo (0, -6);
                 ctx.lineTo (0, -16);
-                ctx.stroke ();
-                ctx.beginPath ();
                 ctx.moveTo (5, 5);
                 ctx.lineTo (12, 12);
-                ctx.stroke ();
-                ctx.beginPath ();
                 ctx.moveTo (-5, -5);
                 ctx.lineTo (-12, -12);
-                ctx.stroke ();
-                ctx.beginPath ();
                 ctx.moveTo (-5, 5);
                 ctx.lineTo (-12, 12);
-                ctx.stroke ();
-                ctx.beginPath ();
                 ctx.moveTo (5, -5);
                 ctx.lineTo (12, -12);
+                ctx.strokeStyle = "#B2B2B2";
                 ctx.stroke ();
                 ctx.beginPath ();
                 ctx.lineWidth = 0;
                 ctx.arc (0, 0, 2, 0, 2 * Math.PI);
-                ctx.fillStyle = "#4A4A4A";
                 ctx.shadowColor = "transparent";
+                ctx.fillStyle = "#4A4A4A";
                 ctx.fill ();
             }
             if (this.type < 2)
@@ -808,12 +795,12 @@ function enemy (type, x, y, heading)
                             }
                             else if (this.type < 7)
                             {
-                                gameItems.push (new item (this.type, this.x, this.y));
                                 enemies -= 8;
                                 if (gameShip > -1) gameShips [gameShip].score += 1000;
                             }
                             if (enemies < 0) enemies = 0;
                             if (this.type < 3) gameEnemies.push (new enemy (Math.floor (Math.random () * 3), Math.floor (Math.random () * gameMap.width), Math.floor (Math.random () * gameMap.height), Math.floor (Math.random () * 720) - 360));
+                            if (this.type < 7) gameItems.push (new item (this.type, this.x, this.y));
                         }
                         else
                         {

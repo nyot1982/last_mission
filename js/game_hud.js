@@ -22,29 +22,42 @@ function resetHuds ()
     if (gameModes.findIndex (mode => mode.active == true) > -1) gameModeHud (-1);
 }
 
+function usersPlayingHud ()
+{
+    var element = document.getElementById ("lifesHud");
+    if (element.innerHTML == "")
+    {
+        element.style.minWidth = null;
+        element.style.maxWidth = null;
+        element.innerHTML = '<img title="Players in game" src="svgs/ship.svg"/> <span id="usersPlaying" title="Number of players">' + gameShips.length + '</span>';
+    }
+    else if (gameShips.length != document.getElementById ("usersPlaying").textContent * 1)
+    {
+        if (gameShips.length > document.getElementById ("usersPlaying").textContent * 1) document.getElementById ("usersPlaying").style.color = "var(--color-7)";
+        else document.getElementById ("usersPlaying").style.color = "var(--color-6)";
+        document.getElementById ("usersPlaying").className = "change";
+        document.getElementById ("usersPlaying").textContent = gameShips.length;
+        setTimeout
+        (
+            () =>
+            {
+                document.getElementById ("usersPlaying").style.color = null;
+                document.getElementById ("usersPlaying").className = "";
+            },
+            250
+        );
+    }
+}
+
 function mapHud (itemClass, x, y, heading)
 {
     var mapHud = document.getElementById ("mapHud"),
-    mapItem = document.createElement ('div'),
-    offSetX = 5,
-    offSetY = 5;
+        mapItem = document.createElement ('div'),
+        offSetX = 5.45,
+        offSetY = 5.5;
     
-    if (itemClass == "mapItem") offSetX = 5.5;
-    else if (itemClass == "enemyItem") offSetX = 5.65;
-    else if (itemClass == "enemyItem2" || itemClass == "enemyItem3" || itemClass == "bossItem")
-    {
-        if (itemClass == "enemyItem3")
-        {
-            offSetX = 3;
-            offSetY = 3.45;
-        }
-        else
-        {
-            offSetX = 5.45;
-            offSetY = 5.5;
-        }
-        mapItem.setAttribute ('class', itemClass);
-    }
+    if (itemClass == "enemyItem") offSetX = 5.65;
+    else if (itemClass == "enemyItem2" || itemClass == "enemyItem3" || itemClass == "bossItem") mapItem.setAttribute ('class', itemClass);
     if (itemClass != "enemyItem2" && itemClass != "enemyItem3" && itemClass != "bossItem")
     {
         mapItem.setAttribute ('class', 'fa fa-location-arrow ' + itemClass);
