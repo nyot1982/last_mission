@@ -1133,7 +1133,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 }
                 if (gameScreen == "game" && gameModal == null) ctx.shadowColor = "#00000066";
                 else ctx.shadowColor = "transparent";
-                if (this.status.engine1 || this.repairing != null && gameArea.frame % 125 >= 0 && gameArea.frame % 50 < 75)
+                if (this.status.engine1 || this.repairing != null && gameArea.frame % 125 >= 0 && gameArea.frame % 50 < 10)
                 {
                     if (!this.status.engine1) ctx.fillStyle = engine1StrokeColor;
                     else if (this.colors.engine1Fill != null) ctx.fillStyle = this.colors.engine1Fill;
@@ -1142,7 +1142,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     ctx.fill (this.paths.engine1);
                     if (this.z == 50) this.shotsHit ("engine1");
                 }
-                if (this.status.engine2 || this.repairing != null && gameArea.frame % 100 >= 0 && gameArea.frame % 100 < 25)
+                if (this.status.engine2 || this.repairing != null && gameArea.frame % 100 >= 0 && gameArea.frame % 100 < 20)
                 {
                     if (!this.status.engine2) ctx.fillStyle = engine2StrokeColor;
                     else if (this.colors.engine2Fill != null) ctx.fillStyle = this.colors.engine2Fill;
@@ -1151,7 +1151,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     ctx.fill (this.paths.engine2);
                     if (this.z == 50) this.shotsHit ("engine2");
                 }
-                if (this.status.gun || this.repairing != null && gameArea.frame % 75 >= 0 && gameArea.frame % 75 < 50)
+                if (this.status.gun || this.repairing != null && gameArea.frame % 75 >= 0 && gameArea.frame % 75 < 15)
                 {
                     if (!this.status.gun) ctx.fillStyle = strokeColor;
                     else if (this.colors.gunFill != null) ctx.fillStyle = this.colors.gunFill;

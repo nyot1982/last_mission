@@ -56,7 +56,8 @@ function mapHud (itemClass, x, y, heading)
         offSetX = 5.45,
         offSetY = 5.5;
     
-    if (itemClass == "enemyItem") offSetX = 5.65;
+    if (itemClass == "mapItem") offSetX = 6.17;
+    else if (itemClass == "enemyItem") offSetX = 5.65;
     else if (itemClass == "enemyItem2" || itemClass == "enemyItem3" || itemClass == "bossItem") mapItem.setAttribute ('class', itemClass);
     if (itemClass != "enemyItem2" && itemClass != "enemyItem3" && itemClass != "bossItem")
     {
