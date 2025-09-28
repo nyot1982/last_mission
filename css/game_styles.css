@@ -402,7 +402,7 @@ article p
 }
 .huds
 {
-    height: 145px;
+    height: 165px;
     background-color: var(--color10);
     word-spacing: -0.25em;
 }
@@ -914,16 +914,18 @@ article p
 #hudsMulti
 {
     display: none;
-    width: 400px;
+    width: 600px;
+    height: 119px;
 }
 .multiHuds
 {
     display: block;
     width: 285px;
-    margin: 5px 0px;
+    height: 26px;
+    margin: 5px;
     padding: 5px;
     background-color: var(--color5);
-    border-radius: 5px;
+    border-radius: 1em;
 }
 .keys
 {

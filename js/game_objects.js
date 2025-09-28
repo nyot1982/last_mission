@@ -464,6 +464,9 @@ function component (type, src, color, x, y, width, height, max, backColor, rollo
                         ctx.roundRect (this.x - textMeasure.width / 2 - (this.height < 10 ? 4 : 6), this.y - this.height / 2 - (this.height < 10 ? 2 : 4), textMeasure.width + (this.height < 10 ? 8 : 12), this.height + (this.height < 10 ? 4 : 8), 2 * Math.PI);
                         ctx.fillStyle = this.backColor;
                         ctx.fill ();
+                        ctx.lineWidth = 1;
+                        ctx.strokeStyle = this.color + "CC";
+                        ctx.stroke ();
                     }
                     ctx.fillStyle = this.color;
                     if (this.max != null) ctx.fillText (this.src, this.x, this.y + 1, this.max);

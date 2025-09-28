@@ -169,9 +169,9 @@ function changeHuds (multi)
     if (multi)
     {
         document.getElementById ("hudSpeedAltitude").style.display = "none";
-        document.getElementById ("hudWeapons").style.display = "none";
-        document.getElementById ("hudEnemy").innerHTML = "";
-        document.getElementById ("hudVitals").style.display = "none";
+        document.getElementById ("hudEnemy").parentElement.style.display = "none";
+        document.getElementById ("hudVitals").parentElement.style.display = "none";
+        document.getElementById ("hudHeading").parentElement.className = "col center no-nargin";
         document.getElementById ("hudHeading").innerHTML = '<p><b>ENEMY</b></p><div id="enemiesHud"><div id="enemiesHud2" style="width: 270px;"></div></div><p>&nbsp;</p>';
         document.getElementById ("hudsMulti").style.display = "block";
         document.getElementById ("hudsMulti").innerHTML = "";
@@ -179,10 +179,12 @@ function changeHuds (multi)
     else
     {
         document.getElementById ("hudSpeedAltitude").style.display = "block";
-        document.getElementById ("hudWeapons").style.display = "block";
-        document.getElementById ("hudEnemy").innerHTML = '<p>&nbsp;</p><p><b>ENEMY</b></p><div id="enemiesHud"><div id="enemiesHud2"></div></div>';
-        document.getElementById ("hudVitals").style.display = "block";
+        document.getElementById ("hudEnemy").parentElement.style.display = "block";
+        document.getElementById ("hudEnemy").innerHTML = '<p>&nbsp;</p><p><b>ENEMY</b></p><div id="enemiesHud"><div id="enemiesHud2" style="width: 270px;"></div></div>';
+        document.getElementById ("hudVitals").parentElement.style.display = "block";
+        document.getElementById ("hudHeading").parentElement.className = "col center";
         document.getElementById ("hudHeading").innerHTML = '<p><b>HEADING</b></p><div class="turnHud"><div id="headingHud"><div class="e5">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div><div>|</div><div class="e5">SE</div><div>|</div><div class="e1">S</div><div>|</div><div class="e5">SW</div><div>|</div><div class="e1">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div><div>|</div><div class="e5">SE</div><div>|</div><div class="e1">S</div><div>|</div><div class="e5">SW</div><div>|</div><div class="e1">W</div><div>|</div><div class="e5">NW</div><div>|</div><div class="e1">N</div><div>|</div><div class="e5">NE</div><div>|</div><div class="e1">E</div></div></div>';
         document.getElementById ("hudsMulti").style.display = "none";
+        document.getElementById ("hudsMulti").innerHTML = "";
     }
 }
