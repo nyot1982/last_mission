@@ -1,6 +1,6 @@
 var fpsMonitor =
     {
-        timer: 0,
+        time: 0,
         frame: 0,
         fps: 0,
         ms: 0
@@ -672,6 +672,7 @@ var fpsMonitor =
                 }
             );
             this.frame = 0;
+            this.time = 0;
             this.centerPoint = 
             {
                 x: canvasWidth / 2,
@@ -1000,7 +1001,7 @@ function rolloverLoad (text, color)
 
 function updateGameArea ()
 {
-    if (fpsMonitor.timer > 0) fpsHud ("update");
+    if (fpsMonitor.time > 0) fpsHud ("update");
     controls ();
     var mapHud = document.getElementById ("mapHud");
     mapHud.innerHTML = '<table cellspacing="0"><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></table>';

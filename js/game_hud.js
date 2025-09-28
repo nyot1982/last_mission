@@ -1,7 +1,7 @@
 
 function resetHuds ()
 {
-    if (document.getElementById ("hudsMulti").style.display == "block") changeHuds (false);
+    if (document.getElementById ("hudsMulti").style.display == "inline-flex") changeHuds (false);
     menuShip.speedHud ();
     document.getElementById ("headingHud").style.left = "-371.25px";
     document.getElementById ("zHud").innerHTML = "0 m";
@@ -103,7 +103,7 @@ function fpsHud (action)
         {
             $("#fps_monitor").removeClass ("active");
             action = 0;
-            fpsMonitor.timer = 0;
+            fpsMonitor.time = 0;
             fpsMonitor.frame = 0;
             fpsMonitor.fps = 0;
             fpsMonitor.ms = 0;
@@ -114,20 +114,20 @@ function fpsHud (action)
         {
             $("#fps_monitor").addClass ("active");
             action = 1;
-            fpsMonitor.timer = Date.now ();
+            fpsMonitor.time = Date.now ();
             fpsMonitor.frame = gameArea.frame || 0;
         }
         if (typeof (Storage) === "undefined") alert ("This browser does not support local web storage.");
         else localStorage.fpsMonitor = action;
     }
-    else if (action == "update" && Date.now () - fpsMonitor.timer >= 1000)
+    else if (action == "update" && Date.now () - fpsMonitor.time >= 1000)
     {
         fpsMonitor.fps = gameArea.frame - fpsMonitor.frame;
         fpsMonitor.ms = Math.round (1000 / fpsMonitor.fps);
         document.getElementById ("frame_rate").innerHTML = fpsMonitor.fps;
         document.getElementById ("frame_time").innerHTML = fpsMonitor.ms;
         fpsMonitor.frame = gameArea.frame;
-        fpsMonitor.timer = Date.now ();
+        fpsMonitor.time = Date.now ();
     }
 }
 
@@ -169,16 +169,20 @@ function changeHuds (multi)
     if (multi)
     {
         document.getElementById ("hudSpeedAltitude").style.display = "none";
+        document.getElementById ("hudSpeedAltitude").parentElement.className = "col no-margin center";
+        document.getElementById ("hudSpeedAltitude").parentElement.style.width = "600px";
         document.getElementById ("hudEnemy").parentElement.style.display = "none";
         document.getElementById ("hudVitals").parentElement.style.display = "none";
-        document.getElementById ("hudHeading").parentElement.className = "col center no-nargin";
+        document.getElementById ("hudHeading").parentElement.className = "col no-margin center";
         document.getElementById ("hudHeading").innerHTML = '<p><b>ENEMY</b></p><div id="enemiesHud"><div id="enemiesHud2" style="width: 270px;"></div></div><p>&nbsp;</p>';
-        document.getElementById ("hudsMulti").style.display = "block";
+        document.getElementById ("hudsMulti").style.display = "inline-flex";
         document.getElementById ("hudsMulti").innerHTML = "";
     }
     else
     {
         document.getElementById ("hudSpeedAltitude").style.display = "block";
+        document.getElementById ("hudSpeedAltitude").parentElement.className = "col center";
+        document.getElementById ("hudSpeedAltitude").parentElement.style.width = null;
         document.getElementById ("hudEnemy").parentElement.style.display = "block";
         document.getElementById ("hudEnemy").innerHTML = '<p>&nbsp;</p><p><b>ENEMY</b></p><div id="enemiesHud"><div id="enemiesHud2" style="width: 270px;"></div></div>';
         document.getElementById ("hudVitals").parentElement.style.display = "block";

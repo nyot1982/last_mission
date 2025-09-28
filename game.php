@@ -173,7 +173,7 @@
                             <table cellspacing="0"><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></table>
                         </div>
                     </div>
-                    <div class="col center no-margin" style="width: 154px;">
+                    <div class="col no-margin center" style="width: 154px;">
                         <p><b>OPTIONS</b></p>
                         <div class="blackHud">
                             <p><span id="mode" class="fa fa-fw fa-times optionsIcon" title="No game mode selected"></span> <span class="fa fa-caret-left e1"></span> Mode</p>

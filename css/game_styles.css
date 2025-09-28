@@ -914,18 +914,21 @@ article p
 #hudsMulti
 {
     display: none;
-    width: 600px;
-    height: 119px;
+    max-height: 124px;
+    margin: 2.5px 0;
+    flex-wrap: wrap;
+    flex-direction: column;
 }
 .multiHuds
 {
     display: block;
-    width: 285px;
+    width: 295px;
     height: 26px;
-    margin: 5px;
+    margin: 2.5px;
     padding: 5px;
     background-color: var(--color5);
     border-radius: 1em;
+    box-sizing: border-box;
 }
 .keys
 {
