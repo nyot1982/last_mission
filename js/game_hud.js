@@ -124,6 +124,7 @@ function fpsHud (action)
     {
         fpsMonitor.fps = gameArea.frame - fpsMonitor.frame;
         fpsMonitor.ms = Math.round (1000 / fpsMonitor.fps);
+        if (fpsMonitor.ms === Infinity) fpsMonitor.ms = 0;
         document.getElementById ("frame_rate").innerHTML = fpsMonitor.fps;
         document.getElementById ("frame_time").innerHTML = fpsMonitor.ms;
         fpsMonitor.frame = gameArea.frame;

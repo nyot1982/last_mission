@@ -107,7 +107,7 @@ function gamepadDisconnected (e)
 
 function startControl (id_control, control, bt_type, bt_code, bt_value)
 {
-    if (!pressed [bt_type][id_control].includes (bt_code) || bt_type == "axes" && Math.abs (bt_value) > 0.25)
+    if (!pressed [bt_type][id_control].includes (bt_code) || bt_type == "axes")
     {
         if (!pressed [bt_type][id_control].includes (bt_code)) pressed [bt_type][id_control].push (bt_code);
         changeControl (control, id_control);

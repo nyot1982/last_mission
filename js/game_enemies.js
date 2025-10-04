@@ -16,14 +16,16 @@ function enemy (type, x, y, heading)
         this.width = 24;
         this.height = 33;
         this.engine = 0;
-        this.engineInc = true;      
+        this.engineInc = true;
+        this.speed = 4.5;
     }
     else if (this.type == 1)
     {
         this.width = 27;
         this.height = 32;
         this.engine = 0;
-        this.engineInc = true;    
+        this.engineInc = true;
+        this.speed = 6;
     }
     else if (this.type == 2)
     {
@@ -32,6 +34,7 @@ function enemy (type, x, y, heading)
         this.engine = 100;
         this.engineInc = false;
         this.enemyColor = "#B2B2B2";
+        this.speed = 3;
     }
     else if (this.type == 3)
     {
@@ -50,15 +53,14 @@ function enemy (type, x, y, heading)
     }
     if (this.type < 3)
     {
-        this.z = 50;
-        this.speed = 4.5;
+        this.z = 500;
         this.move = this.speed;
         this.turn = 0;
         this.life = 10;
     }
     else if (this.type == 7)
     {
-        this.z = 50;
+        this.z = 500;
         this.life = 10;
     }
     else
@@ -69,7 +71,7 @@ function enemy (type, x, y, heading)
 
     this.firing = function (active)
     {
-        if (this.z == 50) this.fire = active;
+        if (this.z == 500) this.fire = active;
     }
 
     this.turning = function (turn)

@@ -63,8 +63,8 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.engine2max = 4;
     this.engine1inc = engine1inc || true;
     this.engine2inc = engine2inc || true;
-    this.shadowOffset = shadowOffset || (this.z == 50 ? 18 : 1);
-    this.nameOffset = nameOffset || (this.z == 50 ? 16 : 5);
+    this.shadowOffset = shadowOffset || (this.z == 500 ? 18 : 1);
+    this.nameOffset = nameOffset || (this.z == 500 ? 16 : 5);
     this.lifes = lifes || 5;
     this.life = life || 100;
     this.fuel = fuel || 100;
@@ -182,7 +182,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     this.firing = function (active)
     {
         if (gameModal == "menu" || gameScreen == "menu") this.fire = true;
-        else if (gameScreen == "game" && this.z == 50) this.fire = active
+        else if (gameScreen == "game" && this.z == 500) this.fire = active
     }
 
     this.turning = function (turn)
@@ -242,11 +242,11 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
     {
         if (this.moveZ == 0 && this.life > 0)
         {
-            if (this.z == 0 && this.fuel > 0 && this.repairing == null) this.moveZ = 1;
-            else if (this.z == 50)
+            if (this.z == 0 && this.fuel > 0 && this.repairing == null) this.moveZ = 10;
+            else if (this.z == 500)
             {
                 this.fire = false;
-                this.moveZ = -1;
+                this.moveZ = -10;
             }
         }
     }
@@ -306,7 +306,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
 
     this.shotsHit = function (path)
     {
-        if (gameScreen == "game" && gameModal == null && this.z == 50)
+        if (gameScreen == "game" && gameModal == null && this.z == 500)
         {
             for (var gameShot in gameShots)
             {
@@ -794,7 +794,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             this.scoreHud ();
             if (gameModes.findIndex (mode => mode.active == true) == 0) this.lifesHud ();
             document.getElementById ("headingHud").style = "left: " + (-371.25 - this.heading) + "px;";
-            document.getElementById ("zHud").innerHTML = Math.round (this.z * 10) + " m";
+            document.getElementById ("zHud").innerHTML = this.z + " m";
             this.speedHud ();
             this.weaponsHud ();
             this.vitalsHud ("life");
@@ -844,7 +844,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             strHuds += '<div class="ammoHud" title="' + this.name + ' Ammo: ' + this.ammo + '%"><div class="ammoHud2" style="width: ' + (this.ammo * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
             strHuds += '<div class="shieldHud" title="' + this.name + ' Shield: ' + this.shield + '%"><div class="shieldHud2" style="width: ' + (this.shield * 16 / 100) + 'px; background-color: ' + this.colors.near + ';"></div></div> ';
             strHuds += '<div class="fa fa-' + speedIcon + ' multiHud" style="color: ' + this.colors.near + ';" title="' + this.name + ' Speed: ' + (speed * 300) + ' Km/h"></div> ';
-            strHuds += '<div class="fa fa-' + zIcon + ' multiHud" style="color: ' + this.colors.near + ';" title="' + this.name + ' Altitude: ' + (this.z * 10) + ' m"></div> ';
+            strHuds += '<div class="fa fa-' + zIcon + ' multiHud" style="color: ' + this.colors.near + ';" title="' + this.name + ' Altitude: ' + this.z + ' m"></div> ';
             strHuds += '<div class="multiHud2" style="background-color: ' + this.colors.near + ';" title="' + this.name + ' Heading: ' + heading + 'º">' + headingIcon + '</div> ';
             for (var weapon in this.weapons)
             {
@@ -985,7 +985,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 if (gameScreen == "skins" && players [0].skins.findIndex (skin => skin == this.colors.skin) == -1) ctx.globalAlpha = 0.25;
                 else if (this.z < 0) ctx.globalAlpha = 0.5;
                 else ctx.globalAlpha = 1;
-                ctx.transform ((this.z + 50) / 100, 0, 0, (this.z + 50) / 100, (this.width / 2) - (this.width * (this.z + 50) / 100 / 2), (this.height / 2) - (this.height * (this.z + 50) / 100 / 2));
+                ctx.transform ((this.z / 10 + 50) / 100, 0, 0, (this.z / 10 + 50) / 100, (this.width / 2) - (this.width * (this.z / 10 + 50) / 100 / 2), (this.height / 2) - (this.height * (this.z / 10 + 50) / 100 / 2));
                 this.paths = [];
                 this.paths.cockpit = new Path2D ();
                 this.paths.cockpit.rect (9, 13, 10, 1);
@@ -1140,7 +1140,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     else if (this.colors.pattern) ctx.fillStyle = this.colors.shipFill;
                     else ctx.fillStyle = this.colors.negative;
                     ctx.fill (this.paths.engine1);
-                    if (this.z == 50) this.shotsHit ("engine1");
+                    if (this.z == 500) this.shotsHit ("engine1");
                 }
                 if (this.status.engine2 || this.repairing != null && gameArea.frame % 100 >= 0 && gameArea.frame % 100 < 20)
                 {
@@ -1149,7 +1149,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     else if (this.colors.pattern) ctx.fillStyle = this.colors.shipFill;
                     else ctx.fillStyle = this.colors.negative;
                     ctx.fill (this.paths.engine2);
-                    if (this.z == 50) this.shotsHit ("engine2");
+                    if (this.z == 500) this.shotsHit ("engine2");
                 }
                 if (this.status.gun || this.repairing != null && gameArea.frame % 75 >= 0 && gameArea.frame % 75 < 15)
                 {
@@ -1158,7 +1158,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     else if (this.colors.pattern) ctx.fillStyle = this.colors.pattern;
                     else ctx.fillStyle = this.colors.near;
                     ctx.fill (this.paths.gun);
-                    if (this.z == 50) this.shotsHit ("gun");
+                    if (this.z == 500) this.shotsHit ("gun");
                 }
                 if (this.colors.hook1Fill != null && this.colors.hook1Fill != this.colors.shipFill)
                 {
@@ -1172,7 +1172,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 }
                 ctx.fillStyle = this.colors.pattern || this.colors.shipFill;
                 ctx.fill (this.paths.cockpit);
-                if (this.z == 50) this.shotsHit ("cockpit");
+                if (this.z == 500) this.shotsHit ("cockpit");
                 ctx.rotate (45 * Math.PI / 180);
                 ctx.fillStyle = this.colors.lightFill;
                 ctx.shadowColor = "transparent";
@@ -1192,7 +1192,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     else if (this.colors.pattern) ctx.fillStyle = this.colors.pattern;
                     else ctx.fillStyle = this.colors.near;
                     ctx.fill (this.paths.wing1);
-                    if (this.z == 50) this.shotsHit ("wing1");
+                    if (this.z == 500) this.shotsHit ("wing1");
                 }
                 if (this.status.wing2 || this.repairing != null && gameArea.frame % 50 >= 0 && gameArea.frame % 50 < 25)
                 {
@@ -1201,9 +1201,9 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     else if (this.colors.pattern) ctx.fillStyle = this.colors.pattern;
                     else ctx.fillStyle = this.colors.near;
                     ctx.fill (this.paths.wing2);
-                    if (this.z == 50) this.shotsHit ("wing2");
+                    if (this.z == 500) this.shotsHit ("wing2");
                 }
-                if (this.shield > 0 && this.z == 50)
+                if (this.shield > 0 && this.z == 500)
                 {
                     this.paths.shield = new Path2D ();
                     this.paths.shield.arc (14, 19, 30, 0, 2 * Math.PI);
@@ -1299,7 +1299,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     }
                 }
                 this.z += this.moveZ;
-                if (this.z == -50)
+                if (this.z == -500)
                 {
                     this.moveZ = 0;
                     this.life = 0;
@@ -1330,13 +1330,13 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         }
                     }
                 }
-                else if (this.z == 50)
+                else if (this.z == 500)
                 {
                     this.moveZ = 0;
                     if (this.fuel == 0 || !this.status.engine1 && !this.status.engine2)
                     {
                         if (this.name == players [0].name) stopUserInteractions (0);
-                        this.moveZ = -1;
+                        this.moveZ = -10;
                     }
                     else if (this.fuel > 0)
                     {
@@ -1348,7 +1348,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         }
                     }
                 }
-                else if (this.z < 50 && this.moveZ > 0)
+                else if (this.z < 500 && this.moveZ > 0)
                 {
                     this.shadowOffset += (18 / 50);
                     this.nameOffset += (16 / 50);
@@ -1366,7 +1366,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         gameSound.sounds ["hit2"].play ();
                     }
                     if (gameControls [this.idControl] == "gamepad") vibrate (this.idControl, 600);
-                    this.moveZ = -0.25;
+                    this.moveZ = -2.5;
                 }
                 else if (this.z == 0 && (this.ground == "lava" || this.fuel == 0 || !this.status.engine1 && !this.status.engine2))
                 {

@@ -233,16 +233,16 @@ function hit (name, x, y, radius, add)
 
 function item (enemy, x, y)
 {
-    if (enemy == 0) this.type = Math.floor (Math.random () * 9);
+    if (enemy == 0) this.type = Math.floor (Math.random () * 10);
     else if (enemy < 3) this.type = Math.floor (Math.random () * 4);
-    else this.type = Math.floor (Math.random () * 5) + 4;
+    else this.type = Math.floor (Math.random () * 6) + 4;
     this.x = x;
     this.y = y;
     this.z = 500;
     this.taken = false;
     this.radius = 16;
     this.shadowOffset = 18;
-    this.icons = ['heart', 'gas-pump', 'crosshairs', 'shield-halved', 'clock', 'burst', 'P', 'K', 'H'];
+    this.icons = ['solid/heart', 'solid/gas-pump', 'solid/crosshairs', 'solid/shield-halved', 'solid/clock', 'solid/burst', 'extra_life', 'P', 'K', 'H'];
 
     this.update = function ()
     {
@@ -268,8 +268,9 @@ function item (enemy, x, y)
             if (this.type < 7)
             {
                 this.image = new Image ();
-                this.image.src = "svgs/solid/" + this.icons [this.type] + ".svg";
-                ctx.drawImage (this.image, this.x - this.radius / 2, this.y - this.radius / 2, this.radius, this.radius);
+                this.image.src = "svgs/" + this.icons [this.type] + ".svg";
+                if (this.type == 6) ctx.drawImage (this.image, this.x - this.radius / 2 - 1, this.y - this.radius / 2 + 1, this.radius, this.radius);
+                else ctx.drawImage (this.image, this.x - this.radius / 2, this.y - this.radius / 2, this.radius, this.radius);
             }
             else
             {
@@ -298,12 +299,13 @@ function item (enemy, x, y)
                         else if (this.type == 3) var vital = "shield";
                         else if (this.type == 4 && gameShips [gameShip].weapons [gameShips [gameShip].weapon].rate == 1) gameShips [gameShip].weapons [gameShips [gameShip].weapon].rate = 1.5;
                         else if (this.type == 5 && gameShips [gameShip].weapons [gameShips [gameShip].weapon].power == 1) gameShips [gameShip].weapons [gameShips [gameShip].weapon].power++;
-                        else if (this.type > 5 && gameShips [gameShip].weapon != this.type - 5)
+                        else if (this.type == 6 && gameShips [gameShip].lifes < 10) gameShips [gameShip].lifes++;
+                        else if (this.type > 6 && gameShips [gameShip].weapon != this.type - 6)
                         {
                             gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = false;
-                            gameShips [gameShip].weapon = this.type - 5;
+                            gameShips [gameShip].weapon = this.type - 6;
                             gameShips [gameShip].weapons [gameShips [gameShip].weapon].active = true;
-                            gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
+                            if (gameShips [gameShip].weapons [gameShips [gameShip].weapon].power == 0) gameShips [gameShip].weapons [gameShips [gameShip].weapon].power = 1;
                         }
                         if (this.type < 4)
                         {
