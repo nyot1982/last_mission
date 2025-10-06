@@ -136,6 +136,15 @@ function gameLoadScreen (screen)
         document.getElementById ("scoreHud").style.height = "0px";
         document.getElementById ("highScoreHud").style.height = "0px";
         document.getElementById ("lifesHud").style.height = "0px";
+        setTimeout
+        (
+            () =>
+            {
+                $(document.getElementById ("lifesHud")).addClass ("stopAnimation");
+            },
+            400
+        );
+
         if (gameScreen == "intro")
         {
             gameText.push (new component ("type", "YOU ARE AN OUTCAST ......", "white", 385, 150, "left", 10));
@@ -178,8 +187,16 @@ function gameLoadScreen (screen)
                 startPoints [i].ship = players [i].name;
             }
             document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
-            if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
+            if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round (gameShips.length / 2)) + "px";
             else document.getElementById ("lifesHud").style.height = "23px";
+            setTimeout
+            (
+                () =>
+                {
+                    $(document.getElementById ("lifesHud")).removeClass ("stopAnimation");
+                },
+                100
+            );
             if (typeof (Storage) === "undefined") alert ("This browser does not support local web storage.");
             else
             {
@@ -245,6 +262,14 @@ function gameOpenModal (modal, text)
         document.getElementById ("scoreHud").style.height = "0px";
         document.getElementById ("highScoreHud").style.height = "0px";
         document.getElementById ("lifesHud").style.height = "0px";
+        setTimeout
+        (
+            () =>
+            {
+                $(document.getElementById ("lifesHud")).addClass ("stopAnimation");
+            },
+            400
+        );
         modalGround = new ground ("menu", "#000000DD", startPoint.x, startPoint.y, canvasWidth, canvasHeight);
         changeTab ("menu");
     }
@@ -285,14 +310,130 @@ function gameCloseModal ()
     gameModal = null;
     if (gameModes.findIndex (mode => mode.active == true) != 3 || document.getElementById ("highScoreHud").innerHTML.length > 0) document.getElementById ("highScoreHud").style.height = "23px";
     document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
-    if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round ((gameShips.length - 1) / 2)) + "px";
+    if (gameShips.length > 2) document.getElementById ("lifesHud").style.height = (23 * Math.round (gameShips.length / 2)) + "px";
     else document.getElementById ("lifesHud").style.height = "23px";
+    setTimeout
+    (
+        () =>
+        {
+            $(document.getElementById ("lifesHud")).removeClass ("stopAnimation");
+        },
+        100
+    );
     changeTab ("game");
 }
 
 function generateGameMap (map)
 {
     enemies = 270;
+    if (map == "mode1" || map == "mode2")
+    {
+        startPoints =
+        [
+            {
+                ship: null,
+                x: 510,
+                y: 250,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 510,
+                y: 210,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 546,
+                y: 210,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 546,
+                y: 250,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 510,
+                y: 345,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 510,
+                y: 305,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 546,
+                y: 305,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 546,
+                y: 345,
+                z: 0
+            }
+        ];
+    }
+    else
+    {
+        startPoints =
+        [
+            {
+                ship: null,
+                x: 510,
+                y: 250,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 510,
+                y: 210,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 546,
+                y: 210,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 546,
+                y: 250,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 3570,
+                y: 1750,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 3570,
+                y: 1710,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 3606,
+                y: 1710,
+                z: 0
+            },
+            {
+                ship: null,
+                x: 3606,
+                y: 1750,
+                z: 0
+            }
+        ];
+    }
     switch (map)
     {
         case "level1":

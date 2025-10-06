@@ -361,11 +361,9 @@ article p
 #lifesHud
 {
     right: 20px;
-    padding: 0 1em;
 }
 #lifesHud div
 {
-    display: inline-block;
     margin: 0 0.5em;
     min-width: 87.5px;
 }
@@ -392,6 +390,11 @@ article p
     animation: rotation 5.0s linear 0s infinite normal none running;
     transform-style: preserve-3d;
     vertical-align: middle;
+}
+.stopAnimation img,
+.stopAnimation svg
+{
+    animation-duration: 0s !important;
 }
 @keyframes rotation
 {

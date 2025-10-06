@@ -28,7 +28,9 @@ function usersPlayingHud ()
     if (element.innerHTML == "")
     {
         element.style.minWidth = null;
-        element.style.maxWidth = null;
+        element.style.display = null;
+        element.style.gridTemplateColumns = null;
+        element.style.padding = null;
         element.innerHTML = '<img title="Players in game" src="svgs/ship.svg"/> <span id="usersPlaying" title="Number of players">' + gameShips.length + '</span>';
     }
     else if (gameShips.length != document.getElementById ("usersPlaying").textContent * 1)

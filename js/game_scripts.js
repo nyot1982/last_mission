@@ -560,57 +560,7 @@ var fpsMonitor =
             }
         }
     ],
-    startPoints =
-    [
-        {
-            ship: null,
-            x: 510,
-            y: 250,
-            z: 0
-        },
-        {
-            ship: null,
-            x: 510,
-            y: 210,
-            z: 0
-        },
-        {
-            ship: null,
-            x: 546,
-            y: 210,
-            z: 0
-        },
-        {
-            ship: null,
-            x: 546,
-            y: 250,
-            z: 0
-        },
-        {
-            ship: null,
-            x: 3570,
-            y: 1750,
-            z: 0
-        },
-        {
-            ship: null,
-            x: 3570,
-            y: 1710,
-            z: 0
-        },
-        {
-            ship: null,
-            x: 3606,
-            y: 1710,
-            z: 0
-        },
-        {
-            ship: null,
-            x: 3606,
-            y: 1750,
-            z: 0
-        }
-    ],
+    startPoints = [],
     gameModes =
     [
         {
