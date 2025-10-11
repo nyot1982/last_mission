@@ -654,6 +654,7 @@ var fpsMonitor =
         }
     },
     usersPlaying = 0,
+    usersPlayingDetails = 0,
     playersConnecting = 0,
     wss = null;
 
@@ -923,7 +924,14 @@ function submitForm (form)
 
 function changeColor (color)
 {
-    if (document.getElementById ("skin").value == -1) menuShip.changeColor (color);
+    if (document.getElementById ("skin").value == -1)
+    {
+        menuShip.changeColor (color);
+        gameXP [0].backColor = menuShip.colors.negative;
+        gameXP [0].color = menuShip.colors.shipFill;
+        gameXP [1].backColor = menuShip.colors.shipFill;
+        gameXP [1].color = menuShip.colors.negative;
+    }
 }
 
 function changeSkin (skin)

@@ -163,7 +163,8 @@ function wssOpen ()
             else
             {
                 document.getElementById ("scoreHud").style.height = "23px";
-                document.getElementById ("lifesHud").style.height = "23px";
+                if (usersPlayingDetails != 1 && usersPlayingDetails != 2) document.getElementById ("lifesHud").style.height = "23px";
+                else document.getElementById ("lifesHud").style.height = (23 * gameShips.length) + "px";
             }
             gameObjects = gameShips.concat (gameItems).concat (gameShots);
             gameObjects.sort ((ship1, ship2) => ship1.z - ship2.z);

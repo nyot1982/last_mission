@@ -608,7 +608,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
 
     this.shipHuds = function (id, title)
     {
-        if (gameModes.findIndex (mode => mode.active == true) == 0) return '<img id="' + id + '" title="' + title + '" src="svgs/ship.svg"/>';
+        if (gameModes.findIndex (mode => mode.active == true) == 0) return '<img id="' + id + '"' + (title != null ? ' title="' + title + '"' : '') + ' src="svgs/ship.svg"/>';
         else
         {
             if (this.colors.skin)
@@ -638,7 +638,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         '<path fill="' + skins [this.colors.skin].shipFill + '" d="m 8 13 c -1.1 0.8 -2 2.3 -2 3.3 l 0 11.7 l 15 0 l 0 -11.7 c 0 -1 -0.9 -2.5 -2 -3.3 l -11 0 z"/>' +
                         '<path fill="' + skins [this.colors.skin].wing1Fill + '" d="m 4 13 c 0 -2.8 -0.4 -5 -1 -5 c -0.6 0 -1 0.9 -1 2 c 0 1.1 -0.4 2 -1 2 c -0.6 0 -1 3.7 -1 9 c 0 5 0.3 9 0.8 9 c 0.4 0 1.4 -0.9 2.2 -2 l 1 -1.2 z"/>' +
                         '<path fill="' + skins [this.colors.skin].wing2Fill + '" d="m 23 26.8 l 1 1.3 c 0.8 1.1 1.8 2 2.3 2 c 0.4 0 0.7 -4 0.7 -9 c 0 -5.3 -0.4 -9 -1 -9 c -0.5 0 -1 -0.9 -1 -2 c 0 -1.1 -0.5 -2 -1 -2 c -0.5 0 -1 2.3 -1 5 z"/>';
-            return '<svg id="' + id + '" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + this.colors.negative + '; border: solid 2px ' + this.colors.negative + ';"><title>' + title + '</title>' +
+            return '<svg id="' + id + '" version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 30" style="background-color: ' + this.colors.negative + '; border: solid 2px ' + this.colors.negative + ';">' + (title != null ? '<title>' + title + '</title>' : '') +
                     skin + '<path fill="#7b797b" d="m10.3 16.6c-1.3 1.3-2.3 2.8-2.3 3.4 0 0.5 1.1 2.1 2.5 3.5 1.4 1.4 2.7 2.5 3 2.5 0.3 0 1.7-1.1 3-2.5 1.4-1.4 2.5-3 2.5-3.5 0-0.6-1.1-2.1-2.5-3.5-1.4-1.4-2.8-2.5-3.3-2.4-0.4 0-1.7 1.1-3 2.5 z"/></g></svg>';
         }
     }
@@ -729,6 +729,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 element.style.display = null;
                 element.style.gridTemplateColumns = null;
                 element.style.padding = null;
+                element.style.cursor = null;
             }
             else
             {
@@ -736,6 +737,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 element.style.display = "grid";
                 element.style.gridTemplateColumns = "1fr 1fr";
                 element.style.padding = "0 1.5em";
+                element.style.cursor = null;
                 element.innerHTML += '<div id="lifes-' + this.name + '"></div>';
                 element = document.getElementById ("lifes-" + this.name);
             }
@@ -788,7 +790,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             this.scoreHud ();
             if (gameModes.findIndex (mode => mode.active == true) == 0) this.lifesHud ();
             document.getElementById ("headingHud").style = "left: " + (-371.25 - this.heading) + "px;";
-            document.getElementById ("zHud").innerHTML = this.z + " m";
+            document.getElementById ("zHud").innerHTML = Math.round (this.z) + " m";
             this.speedHud ();
             this.weaponsHud ();
             this.vitalsHud ("life");
@@ -1237,7 +1239,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             {
                 var textMeasure = 0;
                 ctx.shadowColor = "transparent";
-                if (this.ground != "snow" || this.name == players [0].name)
+                if (this.ground != "snow" || this.name == players [0].name || this.z > 0)
                 {
                     ctx.textBaseline = "middle";
                     if (this.xp != null)

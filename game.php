@@ -104,7 +104,7 @@
                 </form>
                 <div id="scoreHud" class="floatHuds"></div>
                 <div id="highScoreHud" class="floatHuds"></div>
-                <div id="lifesHud" class="floatHuds"></div>
+                <div id="lifesHud" class="floatHuds" onclick="javascript: if (usersPlayingDetails != 1 && usersPlayingDetails != 2) usersPlayingDetails = 1; else usersPlayingDetails = -1;"></div>
                 <div id="rollover"></div>
                 <div class="cont-cols huds">
                     <div class="col center">
