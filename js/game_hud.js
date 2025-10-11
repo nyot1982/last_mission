@@ -64,7 +64,7 @@ function usersPlayingHud ()
             element.innerHTML = '';
             gameShipsXP = gameShips;
             gameShipsXP.sort ((ship1, ship2) => ship2.xp - ship1.xp);
-            for (var ship in gameShipsXP) element.innerHTML += (ship > 0 ? '<br>' : '') + gameShipsXP [ship].shipHuds ("userPlaying" + ship, null) + ' <span style="color: var(--color1);">' + Math.floor (gameShipsXP [ship].xp / 100) + '</span> <span>' + gameShipsXP [ship].name + '</span>';
+            for (var ship in gameShipsXP) element.innerHTML += (ship > 0 ? '<br>' : '') + gameShipsXP [ship].shipHuds ("userPlaying" + ship, "Ship") + ' <span style="color: var(--color1);" title="Level">' + Math.floor (gameShipsXP [ship].xp / 100) + '</span> <span title="Name">' + gameShipsXP [ship].name + '</span>';
         }
         else if (usersPlayingDetails == -1)
         {
