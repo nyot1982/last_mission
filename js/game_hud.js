@@ -32,7 +32,8 @@ function usersPlayingHud ()
         element.style.gridTemplateColumns = null;
         element.style.padding = null;
         element.style.cursor = "pointer";
-        element.innerHTML = '<img title="Players in game" src="svgs/ship.svg"/> <span id="usersPlaying" title="Number of players">' + gameShips.length + '</span> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: var(--color10); cursor: pointer;"></a>';
+        element.innerHTML = '<img title="Players in game" src="svgs/ship.svg"/> <span id="usersPlaying" title="Number of players">' + gameShips.length + '</span> <a id="mouse_interaction" title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: var(--color10); cursor: pointer;"></a>';
+        usersPlayingDetails = 0;
     }
     else
     {
@@ -54,7 +55,7 @@ function usersPlayingHud ()
         }
         else if (usersPlayingDetails == 1)
         {
-            element.innerHTML = '<span id="usersPlayingDiv"></span> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: var(--color10); cursor: pointer;"></a>';
+            element.innerHTML = '<span id="usersPlayingDiv"></span> <a id="mouse_interaction" title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: var(--color10); cursor: pointer;"></a>';
             element.style.height = (23 * gameShips.length) + "px";
             usersPlayingDetails = 2;
         }
@@ -68,7 +69,7 @@ function usersPlayingHud ()
         }
         else if (usersPlayingDetails == -1)
         {
-            element.innerHTML = '<img title="Players in game" src="svgs/ship.svg"/> <span id="usersPlaying" title="Number of players">' + gameShips.length + '</span> <a title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: var(--color10); cursor: pointer;"></a>';
+            element.innerHTML = '<img title="Players in game" src="svgs/ship.svg"/> <span id="usersPlaying" title="Number of players">' + gameShips.length + '</span> <a id="mouse_interaction" title="Mouse interaction" class="fa fa-mouse fa-beat interaction" style="color: var(--color10); cursor: pointer;"></a>';
             element.style.height = "23px";
             usersPlayingDetails = 0;
         }

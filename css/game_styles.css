@@ -387,14 +387,13 @@ article p
 #lifesHud img,
 #lifesHud svg
 {
-    animation: rotation 5.0s linear 0s infinite normal none running;
     transform-style: preserve-3d;
     vertical-align: middle;
 }
-.stopAnimation img,
-.stopAnimation svg
+.lifesRotate img,
+.lifesRotate svg
 {
-    animation-duration: 0s !important;
+    animation: rotation 5.0s linear 0s infinite normal none running;
 }
 @keyframes rotation
 {

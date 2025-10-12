@@ -140,7 +140,7 @@ function gameLoadScreen (screen)
         (
             () =>
             {
-                $(document.getElementById ("lifesHud")).addClass ("stopAnimation");
+                $(document.getElementById ("lifesHud")).removeClass ("lifesRotate");
             },
             400
         );
@@ -193,7 +193,7 @@ function gameLoadScreen (screen)
             (
                 () =>
                 {
-                    $(document.getElementById ("lifesHud")).removeClass ("stopAnimation");
+                    $(document.getElementById ("lifesHud")).addClass ("lifesRotate");
                 },
                 100
             );
@@ -266,7 +266,8 @@ function gameOpenModal (modal, text)
         (
             () =>
             {
-                $(document.getElementById ("lifesHud")).addClass ("stopAnimation");
+                if (gameModes.findIndex (mode => mode.active == true) == 3) $(document.getElementById ("mouse_interaction")).removeClass ("fa-beat");
+                else $(document.getElementById ("lifesHud")).removeClass ("lifesRotate");
             },
             400
         );
@@ -316,7 +317,8 @@ function gameCloseModal ()
     (
         () =>
         {
-            $(document.getElementById ("lifesHud")).removeClass ("stopAnimation");
+            if (gameModes.findIndex (mode => mode.active == true) == 3) $(document.getElementById ("mouse_interaction")).addClass ("fa-beat");
+            else $(document.getElementById ("lifesHud")).addClass ("lifesRotate");
         },
         100
     );
