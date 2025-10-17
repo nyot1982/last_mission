@@ -797,7 +797,7 @@ function enemy (type, x, y, heading)
                             }
                             else if (this.type < 7)
                             {
-                                enemies -= 8;
+                                enemies -= 4;
                                 if (gameShip > -1) gameShips [gameShip].score += 1000;
                             }
                             if (enemies < 0) enemies = 0;

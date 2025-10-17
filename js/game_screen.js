@@ -539,6 +539,7 @@ function generateGameMap (map)
             gameGround.push (new digital ("6", "red", "white", 503, 295, 1, 0.075));
             gameGround.push (new digital ("7", "black", "yellow", 539, 295, 1, 0.075));
             gameGround.push (new digital ("8", "black", "yellow", 539, 335, 1, 0.075));
+            gameGround.push (new ground ("snow", "white", 0, 300, [200, 350, 0, 0], [400, 500, 500, 300]));
             gameEnemies.push (new enemy (7, 110, 100, 0));
             gameEnemies.push (new enemy (7, 310, 100, 0));
             gameEnemies.push (new enemy (7, 510, 100, 0));
