@@ -302,7 +302,7 @@
                     echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
                     exit ();
                 }
-                $mysqli->query ("INSERT INTO `vars` VALUES (1, 'refresh_token', '0123456789abcdef')");
+                $mysqli->query ("INSERT INTO `vars` VALUES (1, 'refresh_token', 'refresh_token')");
                 if ($mysqli->errno)
                 {
                     echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
