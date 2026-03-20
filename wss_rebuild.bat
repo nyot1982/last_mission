@@ -1,2 +1,2 @@
 cd ws
-npm rebuld
+npm rebuild
