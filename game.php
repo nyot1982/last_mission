@@ -30,50 +30,318 @@
         <script type="text/javascript" src="js/game_bosses.js"></script>
         <script type="text/javascript" src="js/game_objects.js"></script>
         <script type="text/javascript" src="js/game_hud.js"></script>
+    </head>
+    <body>
         <?php
             locale_set_default ('en-ES');
             ini_set ('date.timezone', 'Europe/Madrid');
             date_default_timezone_set ('Europe/Madrid');
-            $mysqli = new mysqli ('localhost', 'nyot', '$P33dM4n1982', 'last_mission');
-            $mysqli->query ("SET NAMES 'utf8'");
-            if ($mysqli->connect_errno) $return ["error"] = 'Error! Conexion has failed: ('.$mysqli->connect_errno.') '.$mysqli->connect_error;
-            else
+            $db_host = 'localhost';
+            $db_user = 'nyot';
+            $db_pass = '$P33dM4n1982';
+            $db_name = 'last_mission';
+            $db_tables = [];
+            $mysqli = new mysqli ($db_host, $db_user, $db_pass);
+            if ($mysqli->connect_errno)
             {
-                $resultado = $mysqli->query ('SELECT * FROM skins ORDER BY id ASC');
-                if ($mysqli->errno) $return ["error"] = 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
-                else
+                echo 'Error! Conexion has failed: ('.$mysqli->connect_errno.') '.$mysqli->connect_error;
+                exit ();
+            }
+            $mysqli->query ("SET NAMES 'utf8'");
+            $mysqli->query ("SET time_zone = '+01:00'");
+            $resultado = $mysqli->query ('SHOW DATABASES LIKE "'.$db_name.'"');
+            if ($mysqli->errno)
+            {
+                echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                exit ();
+            }
+            if ($mysqli->errno)
+            {
+                echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                exit ();
+            }
+            if ($resultado->num_rows == 0)
+            {
+                $resultado->free ();
+                $mysqli->query ('CREATE DATABASE `'.$db_name.'` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci');
+                if ($mysqli->errno)
                 {
-                    echo '<script type="text/javascript">';
-                        while ($skin = $resultado->fetch_assoc ())
-                        {
-                            echo 'skins.push ({
-                                name: '.($skin ['name'] != null ? '"'.$skin ['name'].'"' : 'null').',
-                                shipFill: '.($skin ['ship_fill'] != null ? '"'.$skin ['ship_fill'].'"' : 'null').',
-                                gunFill: '.($skin ['gun_fill'] != null ? '"'.$skin ['gun_fill'].'"' : 'null').',
-                                hook1Fill: '.($skin ['hook1_fill'] != null ? '"'.$skin ['hook1_fill'].'"' : 'null').',
-                                hook2Fill: '.($skin ['hook2_fill'] != null ? '"'.$skin ['hook2_fill'].'"' : 'null').',
-                                wing1Fill: '.($skin ['wing1_fill'] != null ? '"'.$skin ['wing1_fill'].'"' : 'null').',
-                                wing2Fill: '.($skin ['wing2_fill'] != null ? '"'.$skin ['wing2_fill'].'"' : 'null').',
-                                engine1Fill: '.($skin ['engine1_fill'] != null ? '"'.$skin ['engine1_fill'].'"' : 'null').',
-                                engine2Fill: '.($skin ['engine2_fill'] != null ? '"'.$skin ['engine2_fill'].'"' : 'null').',
-                                lightFill: "#7B797B",
-                                shipStroke: '.($skin ['ship_stroke'] != null ? '"'.$skin ['ship_stroke'].'"' : 'null').',
-                                engine1Stroke: '.($skin ['engine1_stroke'] != null ? '"'.$skin ['engine1_stroke'].'"' : 'null').',
-                                engine2Stroke: '.($skin ['engine2_stroke'] != null ? '"'.$skin ['engine2_stroke'].'"' : 'null').',
-                                lightStroke: '.($skin ['light_stroke'] != null ? '"'.$skin ['light_stroke'].'"' : 'null').'
-                            });
-                            ';
-                            if (file_exists ('skins/'.$skin ['id'].'.png')) echo 'skins [skins.length - 1].image = new Image (); skins [skins.length - 1].image.src = "skins/'.$skin ['id'].'.png"; ';
-                            else echo 'skins [skins.length - 1].image = null; ';
-                        }
-                        $resultado->free ();
-                    echo '</script>';
+                    echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                    exit ();
                 }
             }
+            $mysqli->close ();
+            $mysqli = new mysqli ($db_host, $db_user, $db_pass, $db_name);
+            if ($mysqli->connect_errno)
+            {
+                echo 'Error! Conexion has failed: ('.$mysqli->connect_errno.') '.$mysqli->connect_error;
+                exit ();
+            }
+            $mysqli->query ("SET NAMES 'utf8'");
+            $mysqli->query ("SET time_zone = '+01:00'");
+            $resultado = $mysqli->query ('SHOW TABLES');
+            if ($mysqli->errno)
+            {
+                echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                exit ();
+            }
+            if ($resultado->num_rows > 0)
+            {
+                while ($db_table = $resultado->fetch_column()) $db_tables [] = $db_table;
+                $resultado->free ();
+            }
+            if (!in_array ('high_scores', $db_tables))
+            {   
+                $mysqli->query (
+                    'CREATE TABLE `high_scores`
+                    (
+                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                        `name` varchar(999) NOT NULL,
+                        `score` int(11) NOT NULL,
+                        PRIMARY KEY (`id`)
+                    )
+                    ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci'
+                );
+                if ($mysqli->errno)
+                {
+                    echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                    exit ();
+                }
+            }
+            if (!in_array ('players', $db_tables))
+            {  
+                $mysqli->query (
+                    'CREATE TABLE `players`
+                    (
+                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                        `validated` tinyint(1) NOT NULL DEFAULT 0,
+                        `email` varchar(999) NOT NULL,
+                        `name` varchar(11) DEFAULT NULL,
+                        `password` varchar(12) NOT NULL,
+                        `color` varchar(11) NOT NULL,
+                        `skins` varchar(999) NOT NULL,
+                        `xp` int(5) NOT NULL DEFAULT 0,
+                        `game_music` tinyint(1) DEFAULT NULL,
+                        `game_sound` tinyint(1) DEFAULT NULL,
+                        `fps_monitor` tinyint(1) DEFAULT NULL,
+                        `user_actions` varchar(9999) DEFAULT NULL,
+                        PRIMARY KEY (`id`),
+                        UNIQUE KEY `name` (`name`) USING BTREE,
+                        UNIQUE KEY `email` (`email`) USING HASH
+                    )
+                    ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci'
+                );
+                if ($mysqli->errno)
+                {
+                    echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                    exit ();
+                }
+                $mysqli->query (
+                    "INSERT INTO `players` (`id`, `validated`, `email`, `name`, `password`, `color`, `skins`, `xp`, `game_music`, `game_sound`, `fps_monitor`, `user_actions`) VALUES
+                    (1, 1, 'marcpinyot@hotmail.com', 'π·nYoT', '\$P33dM4n1982', 'skin16', '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99', 10000, 0, 0, 0, '[{\"screen\":[\"menu\",\"modal_menu\"],\"action\":\"strafe_up\",\"keyboard\":{\"keys\":[40]},\"gamepad\":{\"buttons\":[13],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"menu\",\"modal_menu\"],\"action\":\"strafe_down\",\"keyboard\":{\"keys\":[38]},\"gamepad\":{\"buttons\":[12],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"menu\",\"modal_menu\"],\"action\":\"fire_menu\",\"keyboard\":{\"keys\":[13,32]},\"gamepad\":{\"buttons\":[0],\"axes\":[]},\"joystick\":{\"buttons\":[0],\"axes\":[]}},{\"screen\":[\"modal_continue\"],\"action\":\"close_continue\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[9,16],\"axes\":[]},\"joystick\":{\"buttons\":[7],\"axes\":[]}},{\"screen\":[\"modal_exit\"],\"action\":\"close_exit\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[9,16],\"axes\":[]},\"joystick\":{\"buttons\":[7],\"axes\":[]}},{\"screen\":[\"modal_menu\"],\"action\":\"close_modal\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[9,16],\"axes\":[]},\"joystick\":{\"buttons\":[7],\"axes\":[]}},{\"screen\":[\"confirm\"],\"action\":\"confirm_yes\",\"keyboard\":{\"keys\":[89]},\"gamepad\":{\"buttons\":[9],\"axes\":[]},\"joystick\":{\"buttons\":[1],\"axes\":[]}},{\"screen\":[\"confirm\"],\"action\":\"confirm_no\",\"keyboard\":{\"keys\":[78]},\"gamepad\":{\"buttons\":[8],\"axes\":[]},\"joystick\":{\"buttons\":[0],\"axes\":[]}},{\"screen\":[\"input\"],\"action\":\"input_change\",\"keyboard\":{\"keys\":[9]},\"gamepad\":{\"buttons\":[],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[]}},{\"screen\":[\"input\"],\"action\":\"input_exit\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[2,8],\"axes\":[]},\"joystick\":{\"buttons\":[2],\"axes\":[]}},{\"screen\":[\"skins\"],\"action\":\"skin_left\",\"keyboard\":{\"keys\":[37]},\"gamepad\":{\"buttons\":[10],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[0]}},{\"screen\":[\"skins\"],\"action\":\"skin_right\",\"keyboard\":{\"keys\":[39]},\"gamepad\":{\"buttons\":[11],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[0]}},{\"screen\":[\"skins\"],\"action\":\"skin_up\",\"keyboard\":{\"keys\":[40]},\"gamepad\":{\"buttons\":[13],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"skins\"],\"action\":\"skin_down\",\"keyboard\":{\"keys\":[38]},\"gamepad\":{\"buttons\":[12],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"skins\"],\"action\":\"unlock_skin\",\"keyboard\":{\"keys\":[13,32]},\"gamepad\":{\"buttons\":[0],\"axes\":[]},\"joystick\":{\"buttons\":[0],\"axes\":[]}},{\"screen\":[\"skins\"],\"action\":\"skins_exit\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[2,8],\"axes\":[]},\"joystick\":{\"buttons\":[2],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"move_front\",\"title\":\"Move forward\",\"editable\":true,\"keyboard\":{\"keys\":[38]},\"gamepad\":{\"buttons\":[6],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"game\"],\"action\":\"move_back\",\"title\":\"Move backward\",\"editable\":true,\"keyboard\":{\"keys\":[40]},\"gamepad\":{\"buttons\":[7],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"game\"],\"action\":\"turn_left\",\"title\":\"Turn left\",\"editable\":true,\"keyboard\":{\"keys\":[37]},\"gamepad\":{\"buttons\":[],\"axes\":[0]},\"joystick\":{\"buttons\":[],\"axes\":[0]}},{\"screen\":[\"game\"],\"action\":\"turn_right\",\"title\":\"Turn right\",\"editable\":true,\"keyboard\":{\"keys\":[39]},\"gamepad\":{\"buttons\":[],\"axes\":[0]},\"joystick\":{\"buttons\":[],\"axes\":[0]}},{\"screen\":[\"game\"],\"action\":\"strafe_left\",\"title\":\"Strafe left\",\"editable\":true,\"keyboard\":{\"keys\":[90]},\"gamepad\":{\"buttons\":[4],\"axes\":[]},\"joystick\":{\"buttons\":[2],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"strafe_right\",\"title\":\"Strafe right\",\"editable\":true,\"keyboard\":{\"keys\":[88]},\"gamepad\":{\"buttons\":[5],\"axes\":[]},\"joystick\":{\"buttons\":[3],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"change_weapon\",\"title\":\"Fire mode\",\"editable\":true,\"keyboard\":{\"keys\":[9]},\"gamepad\":{\"buttons\":[3,8],\"axes\":[]},\"joystick\":{\"buttons\":[1],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"fire\",\"title\":\"Fire\",\"editable\":true,\"keyboard\":{\"keys\":[32]},\"gamepad\":{\"buttons\":[0],\"axes\":[]},\"joystick\":{\"buttons\":[0],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"moveZ\",\"title\":\"Take off / Land\",\"editable\":true,\"keyboard\":{\"keys\":[17]},\"gamepad\":{\"buttons\":[1,2],\"axes\":[]},\"joystick\":{\"buttons\":[6],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"open_modal\",\"title\":\"Menu\",\"editable\":false,\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[9,16],\"axes\":[]},\"joystick\":{\"buttons\":[7],\"axes\":[]}}]'),
+                    (2, 1, 'mpg_2@hotmail.com', 'Player', '\$P33dM4n1982', 'skin13', '13', 114, 0, 1, 0, '[{\"screen\":[\"menu\",\"modal_menu\"],\"action\":\"strafe_up\",\"keyboard\":{\"keys\":[40]},\"gamepad\":{\"buttons\":[13],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"menu\",\"modal_menu\"],\"action\":\"strafe_down\",\"keyboard\":{\"keys\":[38]},\"gamepad\":{\"buttons\":[12],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"menu\",\"modal_menu\"],\"action\":\"fire_menu\",\"keyboard\":{\"keys\":[13,32]},\"gamepad\":{\"buttons\":[0],\"axes\":[]},\"joystick\":{\"buttons\":[0],\"axes\":[]}},{\"screen\":[\"modal_continue\"],\"action\":\"close_continue\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[9,16],\"axes\":[]},\"joystick\":{\"buttons\":[7],\"axes\":[]}},{\"screen\":[\"modal_exit\"],\"action\":\"close_exit\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[9,16],\"axes\":[]},\"joystick\":{\"buttons\":[7],\"axes\":[]}},{\"screen\":[\"modal_menu\"],\"action\":\"close_modal\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[9,16],\"axes\":[]},\"joystick\":{\"buttons\":[7],\"axes\":[]}},{\"screen\":[\"confirm\"],\"action\":\"confirm_yes\",\"keyboard\":{\"keys\":[89]},\"gamepad\":{\"buttons\":[9],\"axes\":[]},\"joystick\":{\"buttons\":[1],\"axes\":[]}},{\"screen\":[\"confirm\"],\"action\":\"confirm_no\",\"keyboard\":{\"keys\":[78]},\"gamepad\":{\"buttons\":[8],\"axes\":[]},\"joystick\":{\"buttons\":[0],\"axes\":[]}},{\"screen\":[\"input\"],\"action\":\"input_change\",\"keyboard\":{\"keys\":[9]},\"gamepad\":{\"buttons\":[],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[]}},{\"screen\":[\"input\"],\"action\":\"input_exit\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[2,8],\"axes\":[]},\"joystick\":{\"buttons\":[2],\"axes\":[]}},{\"screen\":[\"skins\"],\"action\":\"skin_left\",\"keyboard\":{\"keys\":[37]},\"gamepad\":{\"buttons\":[10],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[0]}},{\"screen\":[\"skins\"],\"action\":\"skin_right\",\"keyboard\":{\"keys\":[39]},\"gamepad\":{\"buttons\":[11],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[0]}},{\"screen\":[\"skins\"],\"action\":\"skin_up\",\"keyboard\":{\"keys\":[40]},\"gamepad\":{\"buttons\":[13],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"skins\"],\"action\":\"skin_down\",\"keyboard\":{\"keys\":[38]},\"gamepad\":{\"buttons\":[12],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"skins\"],\"action\":\"unlock_skin\",\"keyboard\":{\"keys\":[13,32]},\"gamepad\":{\"buttons\":[0],\"axes\":[]},\"joystick\":{\"buttons\":[0],\"axes\":[]}},{\"screen\":[\"skins\"],\"action\":\"skins_exit\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[2,8],\"axes\":[]},\"joystick\":{\"buttons\":[2],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"move_front\",\"title\":\"Move forward\",\"editable\":true,\"keyboard\":{\"keys\":[38]},\"gamepad\":{\"buttons\":[6],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"game\"],\"action\":\"move_back\",\"title\":\"Move backward\",\"editable\":true,\"keyboard\":{\"keys\":[40]},\"gamepad\":{\"buttons\":[7],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"game\"],\"action\":\"turn_left\",\"title\":\"Turn left\",\"editable\":true,\"keyboard\":{\"keys\":[37]},\"gamepad\":{\"buttons\":[],\"axes\":[0]},\"joystick\":{\"buttons\":[],\"axes\":[0]}},{\"screen\":[\"game\"],\"action\":\"turn_right\",\"title\":\"Turn right\",\"editable\":true,\"keyboard\":{\"keys\":[39]},\"gamepad\":{\"buttons\":[],\"axes\":[0]},\"joystick\":{\"buttons\":[],\"axes\":[0]}},{\"screen\":[\"game\"],\"action\":\"strafe_left\",\"title\":\"Strafe left\",\"editable\":true,\"keyboard\":{\"keys\":[90]},\"gamepad\":{\"buttons\":[4],\"axes\":[]},\"joystick\":{\"buttons\":[2],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"strafe_right\",\"title\":\"Strafe right\",\"editable\":true,\"keyboard\":{\"keys\":[88]},\"gamepad\":{\"buttons\":[5],\"axes\":[]},\"joystick\":{\"buttons\":[3],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"change_weapon\",\"title\":\"Fire mode\",\"editable\":true,\"keyboard\":{\"keys\":[9]},\"gamepad\":{\"buttons\":[3,8],\"axes\":[]},\"joystick\":{\"buttons\":[1],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"fire\",\"title\":\"Fire\",\"editable\":true,\"keyboard\":{\"keys\":[32]},\"gamepad\":{\"buttons\":[0],\"axes\":[]},\"joystick\":{\"buttons\":[0],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"moveZ\",\"title\":\"Take off / Land\",\"editable\":true,\"keyboard\":{\"keys\":[17]},\"gamepad\":{\"buttons\":[1,2],\"axes\":[]},\"joystick\":{\"buttons\":[6],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"open_modal\",\"title\":\"Menu\",\"editable\":false,\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[9,16],\"axes\":[]},\"joystick\":{\"buttons\":[7],\"axes\":[]}}]'),
+                    (3, 1, 'nyot1982@gmail.com', 'zorron', 'puta', '#ffffff', '', 0, 0, 0, 0, '[{\"screen\":[\"menu\",\"modal_menu\"],\"action\":\"strafe_up\",\"keyboard\":{\"keys\":[40]},\"gamepad\":{\"buttons\":[13],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"menu\",\"modal_menu\"],\"action\":\"strafe_down\",\"keyboard\":{\"keys\":[38]},\"gamepad\":{\"buttons\":[12],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"menu\",\"modal_menu\"],\"action\":\"fire_menu\",\"keyboard\":{\"keys\":[13,32]},\"gamepad\":{\"buttons\":[0],\"axes\":[]},\"joystick\":{\"buttons\":[0],\"axes\":[]}},{\"screen\":[\"modal_continue\"],\"action\":\"close_continue\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[9,16],\"axes\":[]},\"joystick\":{\"buttons\":[7],\"axes\":[]}},{\"screen\":[\"modal_exit\"],\"action\":\"close_exit\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[9,16],\"axes\":[]},\"joystick\":{\"buttons\":[7],\"axes\":[]}},{\"screen\":[\"modal_menu\"],\"action\":\"close_modal\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[9,16],\"axes\":[]},\"joystick\":{\"buttons\":[7],\"axes\":[]}},{\"screen\":[\"confirm\"],\"action\":\"confirm_yes\",\"keyboard\":{\"keys\":[89]},\"gamepad\":{\"buttons\":[9],\"axes\":[]},\"joystick\":{\"buttons\":[1],\"axes\":[]}},{\"screen\":[\"confirm\"],\"action\":\"confirm_no\",\"keyboard\":{\"keys\":[78]},\"gamepad\":{\"buttons\":[8],\"axes\":[]},\"joystick\":{\"buttons\":[0],\"axes\":[]}},{\"screen\":[\"input\"],\"action\":\"input_change\",\"keyboard\":{\"keys\":[9]},\"gamepad\":{\"buttons\":[],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[]}},{\"screen\":[\"input\"],\"action\":\"input_exit\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[2,8],\"axes\":[]},\"joystick\":{\"buttons\":[2],\"axes\":[]}},{\"screen\":[\"skins\"],\"action\":\"skin_left\",\"keyboard\":{\"keys\":[37]},\"gamepad\":{\"buttons\":[14],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[0]}},{\"screen\":[\"skins\"],\"action\":\"skin_right\",\"keyboard\":{\"keys\":[39]},\"gamepad\":{\"buttons\":[15],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[0]}},{\"screen\":[\"skins\"],\"action\":\"skin_up\",\"keyboard\":{\"keys\":[40]},\"gamepad\":{\"buttons\":[13],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"skins\"],\"action\":\"skin_down\",\"keyboard\":{\"keys\":[38]},\"gamepad\":{\"buttons\":[12],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"skins\"],\"action\":\"unlock_skin\",\"keyboard\":{\"keys\":[13,32]},\"gamepad\":{\"buttons\":[0],\"axes\":[]},\"joystick\":{\"buttons\":[0],\"axes\":[]}},{\"screen\":[\"skins\"],\"action\":\"skins_exit\",\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[2,8],\"axes\":[]},\"joystick\":{\"buttons\":[2],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"move_front\",\"title\":\"Move forward\",\"editable\":true,\"keyboard\":{\"keys\":[38]},\"gamepad\":{\"buttons\":[7],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"game\"],\"action\":\"move_back\",\"title\":\"Move backward\",\"editable\":true,\"keyboard\":{\"keys\":[40]},\"gamepad\":{\"buttons\":[6],\"axes\":[]},\"joystick\":{\"buttons\":[],\"axes\":[1]}},{\"screen\":[\"game\"],\"action\":\"turn_left\",\"title\":\"Turn left\",\"editable\":true,\"keyboard\":{\"keys\":[37]},\"gamepad\":{\"buttons\":[],\"axes\":[0,2]},\"joystick\":{\"buttons\":[],\"axes\":[0]}},{\"screen\":[\"game\"],\"action\":\"turn_right\",\"title\":\"Turn right\",\"editable\":true,\"keyboard\":{\"keys\":[39]},\"gamepad\":{\"buttons\":[],\"axes\":[0,2]},\"joystick\":{\"buttons\":[],\"axes\":[0]}},{\"screen\":[\"game\"],\"action\":\"strafe_left\",\"title\":\"Strafe left\",\"editable\":true,\"keyboard\":{\"keys\":[90]},\"gamepad\":{\"buttons\":[4],\"axes\":[]},\"joystick\":{\"buttons\":[2],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"strafe_right\",\"title\":\"Strafe right\",\"editable\":true,\"keyboard\":{\"keys\":[88]},\"gamepad\":{\"buttons\":[5],\"axes\":[]},\"joystick\":{\"buttons\":[3],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"change_weapon\",\"title\":\"Fire mode\",\"editable\":true,\"keyboard\":{\"keys\":[9]},\"gamepad\":{\"buttons\":[3,8],\"axes\":[]},\"joystick\":{\"buttons\":[1],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"fire\",\"title\":\"Fire\",\"editable\":true,\"keyboard\":{\"keys\":[32]},\"gamepad\":{\"buttons\":[0],\"axes\":[]},\"joystick\":{\"buttons\":[0],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"moveZ\",\"title\":\"Take off / Land\",\"editable\":true,\"keyboard\":{\"keys\":[17]},\"gamepad\":{\"buttons\":[1,2],\"axes\":[]},\"joystick\":{\"buttons\":[6],\"axes\":[]}},{\"screen\":[\"game\"],\"action\":\"open_modal\",\"title\":\"Menu\",\"editable\":false,\"keyboard\":{\"keys\":[27]},\"gamepad\":{\"buttons\":[9,16],\"axes\":[]},\"joystick\":{\"buttons\":[7],\"axes\":[]}}]')"
+                );
+                if ($mysqli->errno)
+                {
+                    echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                    exit ();
+                }
+            }
+            if (!in_array ('skins', $db_tables))
+            {  
+                $mysqli->query (
+                    'CREATE TABLE `skins`
+                    (
+                        `id` int(11) NOT NULL,
+                        `name` varchar(999) NOT NULL,
+                        `ship_fill` varchar(999) DEFAULT NULL,
+                        `gun_fill` varchar(999) DEFAULT NULL,
+                        `hook1_fill` varchar(999) DEFAULT NULL,
+                        `hook2_fill` varchar(999) DEFAULT NULL,
+                        `wing1_fill` varchar(999) DEFAULT NULL,
+                        `wing2_fill` varchar(999) DEFAULT NULL,
+                        `engine1_fill` varchar(999) DEFAULT NULL,
+                        `engine2_fill` varchar(999) DEFAULT NULL,
+                        `ship_stroke` varchar(999) DEFAULT NULL,
+                        `engine1_stroke` varchar(999) DEFAULT NULL,
+                        `engine2_stroke` varchar(999) DEFAULT NULL,
+                        `light_stroke` varchar(999) DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    )
+                    ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci'
+                );
+                if ($mysqli->errno)
+                {
+                    echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                    exit ();
+                }
+                $mysqli->query (
+                    "INSERT INTO `skins` (`id`, `name`, `ship_fill`, `gun_fill`, `hook1_fill`, `hook2_fill`, `wing1_fill`, `wing2_fill`, `engine1_fill`, `engine2_fill`, `ship_stroke`, `engine1_stroke`, `engine2_stroke`, `light_stroke`) VALUES
+                    (0, 'Rambo', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (1, 'Jungle', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (2, 'Blood', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (3, 'Water', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (4, 'Urban', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (5, 'Arctic', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (6, 'Desert', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (7, 'Rude Boy', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (8, 'Tiger', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (9, 'Leopard', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (10, 'Cow', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (11, 'Zebra', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (12, 'Giraffe', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (13, 'Bricks', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (14, 'Catalunya', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (15, 'Cuba', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (16, 'Puerto Rico', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (17, 'Jamaica', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (18, 'Spain', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (19, 'USA', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (20, 'Brazil', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#302681'),
+                    (21, 'United Kingdom ', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (22, 'France', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#FFFFFF'),
+                    (23, 'Colombia', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (24, 'Germany', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (25, 'Euskadi', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (26, 'Switzerland', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#FFFFFF'),
+                    (27, 'Argentina', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#DFCAA9'),
+                    (28, 'Macedonia', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#FFFF00'),
+                    (29, 'Japan', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#BE0834'),
+                    (30, 'Nazi', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (31, 'FC Barcelona', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (32, 'Real Madrid', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (33, 'Atlético Madrid', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (34, 'RCD Espanyol', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (35, 'Girona FC', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (36, 'CA Boca Juniors', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (37, 'CA River Plate', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (38, 'América de Cali', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#D81B21'),
+                    (39, 'Paris Saint-Germain', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (40, 'Liverpool FC', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (41, 'Manchester City', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (42, 'FC Bayern München', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (43, 'Borussia Dortmund', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (44, 'AC Milan', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (45, 'FC Inter Milan', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (46, 'SSC Napoli', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (47, 'Paint', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (48, 'Rainbow', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (49, 'Rainbow 2', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (50, 'J Spade', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, '#FF0000', '#FF0000', '#FFFFFF', NULL, NULL, NULL),
+                    (51, 'Q Heart', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, '#000000', '#000000', '#FFFFFF', NULL, NULL, NULL),
+                    (52, 'K Diamond', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, '#000000', '#000000', '#FFFFFF', NULL, NULL, NULL),
+                    (53, 'A Club', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, '#FF0000', '#FF0000', '#FFFFFF', NULL, NULL, NULL),
+                    (54, 'Pool Ball 1', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (55, 'Pool Ball 2', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (56, 'Pool Ball 3', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (57, 'Pool Ball 4', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (58, 'Pool Ball 5', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (59, 'Pool Ball 6', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (60, 'Pool Ball 7', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (61, 'Pool Ball 8', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (62, 'Pool Ball 9', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#FFFFFF66'),
+                    (63, 'Pool Ball 10', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#FFFFFF66'),
+                    (64, 'Pool Ball 11', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#FFFFFF66'),
+                    (65, 'Pool Ball 12', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#FFFFFF66'),
+                    (66, 'Pool Ball 13', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#FFFFFF66'),
+                    (67, 'Pool Ball 14', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#FFFFFF66'),
+                    (68, 'Pool Ball 15', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#FFFFFF66'),
+                    (69, 'X-Wing', '#CCC9B6', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (70, 'Joan Miró', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (71, 'Joan Miró 2', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (72, '5 €', '#4E6253', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#4E6253', NULL, NULL, NULL),
+                    (73, '10 €', '#BB3022', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#BB3022', NULL, NULL, NULL),
+                    (74, '20 €', '#3673AA', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#3673AA', NULL, NULL, NULL),
+                    (75, '50 €', '#6C524D', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#6C524D', NULL, NULL, NULL),
+                    (76, '100 €', '#526346', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#526346', NULL, NULL, NULL),
+                    (77, '200 €', '#94703F', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#94703F', NULL, NULL, NULL),
+                    (78, '500 €', '#523764', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#523764', NULL, NULL, NULL),
+                    (79, 'Pirate', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+                    (80, 'Templar', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, '#000000', '#000000', NULL, NULL, NULL, '#F70E02'),
+                    (81, 'Saint George', '#FFFFFF', NULL, NULL, NULL, NULL, NULL, '#000000', '#000000', NULL, NULL, NULL, '#FA241C'),
+                    (82, 'Batman', '#000000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '#000000'),
+                    (83, 'Joker', '#A6F23A', '#9555CB', NULL, NULL, '#9555CB', '#9555CB', '#A6F23A', '#A6F23A', NULL, NULL, NULL, NULL),
+                    (84, 'Ironman', '#8A1C23', '#BF9B53', '#BF9B53', '#BF9B53', '#8A1C23', '#8A1C23', '#BF9B53', '#BF9B53', '#BF9B53', '#8A1C23', '#8A1C23', NULL),
+                    (85, 'Optimus Prime', '#D60018', '#B5BECF', '#B5BECF', '#B5BECF', '#0849A8', '#0849A8', '#B5BECF', '#B5BECF', '#000000', '#0849A8', '#0849A8', '#82BBDE'),
+                    (86, 'The A Team', '#000000', '#000000', '#E73035', '#E73035', '#000000', '#000000', '#E73035', '#E73035', NULL, NULL, NULL, '#000000'),
+                    (87, 'Taxi', '#000000', '#FFFF00', '#FFFF00', '#FFFF00', '#000000', '#000000', '#FFFF00', '#FFFF00', NULL, NULL, NULL, NULL),
+                    (88, 'Mosso', '#084B96', '#FFFFFF', '#E7091F', '#E7091F', '#084B96', '#084B96', '#FFFFFF', '#FFFFFF', '#000000', NULL, NULL, NULL),
+                    (89, 'Picoleto', '#007A51', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#007A51', '#007A51', '#FFFFFF', '#FFFFFF', '#000000', NULL, NULL, NULL),
+                    (90, 'Fluor Mix', '#FFBB00', '#FF3333', '#FF00CC', '#CC00FF', '#00FF33', '#CCFF00', '#0033FF', '#00CCFF', NULL, NULL, NULL, '#FFFFFF'),
+                    (91, 'Red Velvet', '#9A3942', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#DB3043', '#DB3043', '#FFFFFF', '#FFFFFF', '#000000', NULL, NULL, '#FFFFFF'),
+                    (92, 'Cheese Cake', '#FFFFAA', '#D29D6B', '#B14649', '#B14649', '#FFFFAA', '#FFFFAA', '#B14649', '#B14649', '#000000', NULL, NULL, '#D29D6B'),
+                    (93, 'Ducati MotoGP', '#FF0000', '#800000', '#0000FF', '#0000FF', '#800000', '#800000', '#000000', '#000000', '#FFFFFF', NULL, NULL, '#800000'),
+                    (94, 'Mario', '#135FAA', '#E6221D', '#FCEE00', '#FCEE00', '#E6221D', '#E6221D', '#C23D1C', '#C23D1C', '#FFFFFF', NULL, NULL, '#FFFFFF'),
+                    (95, 'Luigi', '#005794', '#5CA82C', '#FCEE00', '#FCEE00', '#5CA82C', '#5CA82C', '#C23D1C', '#C23D1C', '#FFFFFF', NULL, NULL, '#FFFFFF'),
+                    (96, 'Peach', '#FF99C4', '#FFEA2D', NULL, NULL, '#FFFFFF', '#FFFFFF', '#FF6290', '#FF6290', '#FFFFFF', NULL, NULL, '#42B7FB'),
+                    (97, 'Yoshi', '#FFFFFF', '#5FD549', '#5FD549', '#5FD549', '#5FD549', '#5FD549', '#FD874D', '#FD874D', '#FFFFFF', NULL, NULL, '#EB4635'),
+                    (98, 'Wario', '#BD46AC', '#FFFC35', '#FFFFFF', '#FFFFFF', '#FFFC35', '#FFFC35', '#2F993A', '#2F993A', '#FFFFFF', NULL, NULL, '#5759F3'),
+                    (99, 'Toad', '#FFFFFF', '#FA3231', '#1B19F9', '#1B19F9', '#FDDEAD', '#FDDEAD', '#8E4A36', '#8E4A36', '#FFFFFF', NULL, NULL, '#FFE327')"
+                );
+                if ($mysqli->errno)
+                {
+                    echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                    exit ();
+                }
+            }
+            if (!in_array ('vars', $db_tables))
+            {  
+                $mysqli->query (
+                    'CREATE TABLE `vars`
+                    (
+                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                        `name` varchar(999) NOT NULL,
+                        `value` varchar(999) NOT NULL,
+                        PRIMARY KEY (`id`)
+                    )
+                    ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci'
+                );
+                if ($mysqli->errno)
+                {
+                    echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                    exit ();
+                }
+                $mysqli->query ("INSERT INTO `vars` VALUES (1, 'refresh_token', '1//03J2hc3gQUoYaCgYIARAAGAMSNwF-L9IrWC0JLsie5kGrfHdpsGsE2tKkgmzdla_SI8m8kaFmHO4ZGuaEnh8b-WI018J2HlLwecY')");
+                if ($mysqli->errno)
+                {
+                    echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                    exit ();
+                }
+            }
+            $resultado = $mysqli->query ('SELECT * FROM `skins` ORDER BY `id` ASC');
+            if ($mysqli->errno)
+            {
+                echo 'Error! Query has failed: ('.$mysqli->errno.') '.$mysqli->error;
+                exit ();
+            }
+            echo '<script type="text/javascript">';
+                while ($skin = $resultado->fetch_assoc ())
+                {
+                    echo 'skins.push ({
+                        name: '.($skin ['name'] != null ? '"'.$skin ['name'].'"' : 'null').',
+                        shipFill: '.($skin ['ship_fill'] != null ? '"'.$skin ['ship_fill'].'"' : 'null').',
+                        gunFill: '.($skin ['gun_fill'] != null ? '"'.$skin ['gun_fill'].'"' : 'null').',
+                        hook1Fill: '.($skin ['hook1_fill'] != null ? '"'.$skin ['hook1_fill'].'"' : 'null').',
+                        hook2Fill: '.($skin ['hook2_fill'] != null ? '"'.$skin ['hook2_fill'].'"' : 'null').',
+                        wing1Fill: '.($skin ['wing1_fill'] != null ? '"'.$skin ['wing1_fill'].'"' : 'null').',
+                        wing2Fill: '.($skin ['wing2_fill'] != null ? '"'.$skin ['wing2_fill'].'"' : 'null').',
+                        engine1Fill: '.($skin ['engine1_fill'] != null ? '"'.$skin ['engine1_fill'].'"' : 'null').',
+                        engine2Fill: '.($skin ['engine2_fill'] != null ? '"'.$skin ['engine2_fill'].'"' : 'null').',
+                        lightFill: "#7B797B",
+                        shipStroke: '.($skin ['ship_stroke'] != null ? '"'.$skin ['ship_stroke'].'"' : 'null').',
+                        engine1Stroke: '.($skin ['engine1_stroke'] != null ? '"'.$skin ['engine1_stroke'].'"' : 'null').',
+                        engine2Stroke: '.($skin ['engine2_stroke'] != null ? '"'.$skin ['engine2_stroke'].'"' : 'null').',
+                        lightStroke: '.($skin ['light_stroke'] != null ? '"'.$skin ['light_stroke'].'"' : 'null').'
+                    });
+                    ';
+                    if (file_exists ('skins/'.$skin ['id'].'.png')) echo 'skins [skins.length - 1].image = new Image (); skins [skins.length - 1].image.src = "skins/'.$skin ['id'].'.png"; ';
+                    else echo 'skins [skins.length - 1].image = null; ';
+                }
+                $resultado->free ();
+            echo '</script>';
             if (isset ($mysqli)) $mysqli->close ();
         ?>
-    </head>
-    <body>
         <preloader><div class="spinner"></div></preloader>
         <main>
             <article>
