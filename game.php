@@ -32,6 +32,7 @@
         <script type="text/javascript" src="js/game_hud.js"></script>
     </head>
     <body>
+        <preloader><div class="spinner"></div></preloader>
         <?php
             locale_set_default ('en-ES');
             ini_set ('date.timezone', 'Europe/Madrid');
@@ -342,7 +343,6 @@
             echo '</script>';
             if (isset ($mysqli)) $mysqli->close ();
         ?>
-        <preloader><div class="spinner"></div></preloader>
         <main>
             <article>
                 <form id="players" name="players" action="javascript: void (0);" onsubmit="javascript: submitForm (this);" method="POST">
