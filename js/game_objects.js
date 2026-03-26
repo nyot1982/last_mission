@@ -348,6 +348,12 @@ function component (type, src, color, x, y, width, height, max, backColor, rollo
     this.backColor = backColor;
     this.rollover = rollover || "";
     this.rolloverColor = rolloverColor || "";
+    if (this.rollover != "")
+    {
+        var rollovers = document.getElementById ("rollovers");
+        this.idRollover = rollovers.childElementCount;
+        rollovers.innerHTML += '<div class="rollover" id="rollover_' + this.idRollover + '" style="background-color: ' + (this.rolloverColor || "#FFFFFF") + 'DD; border-color: ' + (this.rolloverColor  || "white" ) + ';">' + this.rollover + '</div>';
+    }
 
     this.update = function (idComponent)
     {
@@ -478,16 +484,19 @@ function component (type, src, color, x, y, width, height, max, backColor, rollo
         }
         if (this.rollover != "")
         {
-            var mouseOver = false;
+            var mouseOver = false,
+                rollover = document.getElementById ("rollover_" + this.idRollover);
+
             if (this.type == "image" && mouse.x >= this.x - this.width / 2 && mouse.x <= this.x + this.width / 2 && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
             else if (this.type == "text" && mouse.x >= this.x && mouse.x <= this.x + textMeasure.width && mouse.y >= this.y - this.height / 2 && mouse.y <= this.y + this.height / 2) mouseOver = true;
             else if (this.type == "traffic" && (ctx.isPointInStroke (this.path, mouse.x, mouse.y) || ctx.isPointInPath (this.path, mouse.x, mouse.y))) mouseOver = true;
-            if (mouseOver) rolloverLoad (this.rollover, this.rolloverColor);
-            else
+            if (mouseOver)
             {
-                var rollover = document.getElementById ("rollover");
-                if (rollover.style.display == "block" && rollover.innerText == this.rollover) rollover.style.display = "none";
+                rollover.style.top = (mouse.y - 18) + "px";
+                rollover.style.left = (mouse.x + 2) + "px";
+                $(rollover).fadeIn (1000);
             }
+            else $(rollover).fadeOut (1000);
         }
         if (gameModal == "menu" || gameScreen == "menu")
         {

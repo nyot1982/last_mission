@@ -373,7 +373,6 @@
                 <div id="scoreHud" class="floatHuds"></div>
                 <div id="highScoreHud" class="floatHuds"></div>
                 <div id="lifesHud" class="floatHuds" onclick="javascript: if (usersPlayingDetails != 1 && usersPlayingDetails != 2) usersPlayingDetails = 1; else usersPlayingDetails = -1;"></div>
-                <div id="rollover"></div>
                 <div class="cont-cols huds">
                     <div class="col center">
                         <div id="hudSpeedAltitude">
@@ -601,6 +600,7 @@
                         <div id="gameTab-joystick" class="tabContent cont-cols margin-1 toggle"></div>
                     </div>
                 </div>
+                <div id="rollovers"></div>
                 <div id="blackScreen"></div>
             </article>
         </main>

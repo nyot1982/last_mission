@@ -1347,7 +1347,7 @@ input[type="submit"]:hover
     background-color: var(--color6);
     transition: all 0.5s ease 0s;
 }
-#rollover
+.rollover
 {
     position: absolute;
     display: none;

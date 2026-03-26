@@ -944,19 +944,6 @@ function changeSkin (skin)
     gameXP [1].color = menuShip.colors.negative;
 } 
 
-function rolloverLoad (text, color)
-{
-    var rollover = document.getElementById ("rollover");
-    if (color != null) rollover.style.backgroundColor = color + "DD";
-    else ctx.fillStyle = rollover.style.backgroundColor = "#FFFFFFDD";
-    if (color != null) rollover.style.borderColor = color;
-    else rollover.style.borderColor = "white";
-    rollover.innerHTML = text;
-    rollover.style.top = (mouse.y - 18) + "px";
-    rollover.style.left = (mouse.x + 2) + "px";
-    rollover.style.display = "block";
-}
-
 function updateGameArea ()
 {
     if (fpsMonitor.time > 0) fpsHud ("update");

@@ -995,14 +995,17 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 this.paths.hook2.rect (21, 19, 2, 8);
                 if (this.colors.hook1Fill == null || this.colors.hook1Fill == this.colors.shipFill) this.paths.cockpit.addPath (this.paths.hook1);
                 if (this.colors.hook2Fill == null || this.colors.hook2Fill == this.colors.shipFill) this.paths.cockpit.addPath (this.paths.hook2);
-                this.paths.ship = new Path2D ();
-                this.paths.ship.addPath (this.paths.cockpit);
+                ctx.lineWidth = 2;
+                if (this.colors.shipStroke != null) var strokeColor = this.colors.shipStroke;
+                else var strokeColor = this.colors.negative;
+                ctx.strokeStyle = strokeColor + "CC";
+                ctx.stroke (this.paths.cockpit)
                 if (this.status.gun || this.repairing != null)
                 {
                     this.paths.gun = new Path2D ();
                     this.paths.gun.roundRect (13, 1, 2, 7, 1);
                     this.paths.gun.roundRect (11, 7, 6, 7, 2);
-                    this.paths.ship.addPath (this.paths.gun);
+                    ctx.stroke (this.paths.gun);
                 }
                 if (this.status.wing1 || this.repairing != null)
                 {
@@ -1010,7 +1013,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.paths.wing1.roundRect (3, 9, 2, 6, 2);
                     this.paths.wing1.roundRect (1, 13, 4, 16, 2);
                     this.paths.wing1.roundRect (1, 26, 2, 5, 2);
-                    this.paths.ship.addPath (this.paths.wing1);
+                    ctx.stroke (this.paths.wing1);
                 }
                 if (this.status.wing2 || this.repairing != null)
                 {
@@ -1018,38 +1021,22 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                     this.paths.wing2.roundRect (23, 9, 2, 6, 2);
                     this.paths.wing2.roundRect (23, 13, 4, 16, 2);
                     this.paths.wing2.roundRect (25, 26, 2, 5, 2);
-                    this.paths.ship.addPath (this.paths.wing2);
+                    ctx.stroke (this.paths.wing2);
                 }
                 if (this.status.engine1 || this.repairing != null)
                 {
                     this.paths.engine1 = new Path2D ();
                     this.paths.engine1.roundRect (7, 29, 4, 2, 1);
-                    this.paths.ship.addPath (this.paths.engine1);
-                }
-                if (this.status.engine2 || this.repairing != null)
-                {
-                    this.paths.engine2 = new Path2D ();
-                    this.paths.engine2.roundRect (17, 29, 4, 2, 1);
-                    this.paths.ship.addPath (this.paths.engine2);
-                }
-                ctx.lineWidth = 2;
-                if (this.colors.shipStroke != null) var strokeColor = this.colors.shipStroke;
-                //else if (this.colors.pattern) var strokeColor = this.colors.shipFill;
-                else var strokeColor = this.colors.negative;
-                ctx.strokeStyle = strokeColor + "CC";
-                ctx.stroke (this.paths.ship);
-                if (this.status.engine1 || this.repairing != null)
-                {
                     if (this.colors.engine1Stroke != null) var engine1StrokeColor = this.colors.engine1Stroke;
-                    //else if (this.colors.pattern) var engine1StrokeColor = this.colors.pattern;
                     else var engine1StrokeColor = this.colors.shipFill;
                     ctx.strokeStyle = engine1StrokeColor + "88";
                     ctx.stroke (this.paths.engine1);
                 }
                 if (this.status.engine2 || this.repairing != null)
                 {
+                    this.paths.engine2 = new Path2D ();
+                    this.paths.engine2.roundRect (17, 29, 4, 2, 1);
                     if (this.colors.engine2Stroke != null) var engine2StrokeColor = this.colors.engine2Stroke;
-                    //else if (this.colors.pattern) var engine2StrokeColor = this.colors.pattern;
                     else var engine2StrokeColor = this.colors.shipFill;
                     ctx.strokeStyle = engine2StrokeColor + "88";
                     ctx.stroke (this.paths.engine2);
@@ -1203,7 +1190,6 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 {
                     this.paths.shield = new Path2D ();
                     this.paths.shield.arc (14, 19, 30, 0, 2 * Math.PI);
-                    this.paths.ship.addPath (this.paths.shield);
                     ctx.shadowColor = "#00000022";
                     ctx.beginPath ();
                     ctx.lineWidth = 4;

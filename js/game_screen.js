@@ -39,7 +39,7 @@ function gameLoadScreen (screen)
     gameConfirm = [];
     idTypeAct = 0;
     gameModal = null;
-    document.getElementById ("rollover").style.display = "none";
+    document.getElementById ("rollovers").innerHTML = "";
     document.getElementById ("players").style.display = "none";
     document.getElementById ("player").style.display = "none";
     document.getElementById ("sign").style.display = "none";
