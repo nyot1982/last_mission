@@ -346,12 +346,13 @@ function component (type, src, color, x, y, width, height, max, backColor, rollo
     this.height = height;
     this.max = max;
     this.backColor = backColor;
-    this.rollover = rollover || "";
-    this.rolloverColor = rolloverColor || "";
-    if (this.rollover != "")
+    this.rollover = rollover;
+    this.rolloverColor = rolloverColor;
+    if (this.rollover != null)
     {
         var rollovers = document.getElementById ("rollovers");
-        this.idRollover = rollovers.childElementCount;
+        if (this.rollover == "") this.idRollover = "traffic";
+        else this.idRollover = rollovers.childElementCount;
         rollovers.innerHTML += '<div class="rollover" id="rollover_' + this.idRollover + '" style="background-color: ' + (this.rolloverColor || "#FFFFFF") + 'DD; border-color: ' + (this.rolloverColor  || "white" ) + ';">' + this.rollover + '</div>';
     }
 
@@ -379,11 +380,6 @@ function component (type, src, color, x, y, width, height, max, backColor, rollo
         }
         else if (this.type == "traffic")
         {
-            this.path = new Path2D ();
-            this.path.roundRect (this.x - this.width / 2, this.y - this.height / 2, this.width, this.height, 2 * Math.PI);
-            ctx.fillStyle = "#888";
-            ctx.fill (this.path);
-
             if (wss != null && wss.readyState == WebSocket.OPEN)
             {
                 this.traffic = ["#300", "#330", "#0C0"];
@@ -391,8 +387,8 @@ function component (type, src, color, x, y, width, height, max, backColor, rollo
                 this.rolloverColor = "#00CC00";
                 if (gameText [gameText.length - 1].type == "traffic")
                 {
-                    gameText.push (new component ("image", "svgs/user.svg", "", 661, 295, 10, 10, null, null, "Players in game", "#FFA500"));
-                    gameText.push (new component ("text", "usersPlaying", "orange", 670, 295, "left", 10, null, null, "Number of players", "#FFA500"));
+                    gameText.push (new component ("image", "svgs/user.svg", "", 661, 295, 10, 10, null, null, "Number of players in game", "#FFA500"));
+                    gameText.push (new component ("text", "usersPlaying", "orange", 670, 295, "left", 10, null, null, "Number of players in game", "#FFA500"));
                 }
             }
             else
@@ -420,6 +416,14 @@ function component (type, src, color, x, y, width, height, max, backColor, rollo
                     gameText.pop ();
                 }
             }
+            var rollover = document.getElementById ("rollover_" + this.idRollover);
+            rollover.innerHTML = this.rollover;
+            rollover.style.borderColor = this.rolloverColor;
+            rollover.style.backgroundColor = this.rolloverColor+ "DD";
+            this.path = new Path2D ();
+            this.path.roundRect (this.x - this.width / 2, this.y - this.height / 2, this.width, this.height, 2 * Math.PI);
+            ctx.fillStyle = "#888";
+            ctx.fill (this.path);
             ctx.lineWidth = 1;
             ctx.strokeStyle = "#333";
             ctx.beginPath ();
@@ -482,7 +486,7 @@ function component (type, src, color, x, y, width, height, max, backColor, rollo
                 }
             }
         }
-        if (this.rollover != "")
+        if (this.rollover != null)
         {
             var mouseOver = false,
                 rollover = document.getElementById ("rollover_" + this.idRollover);

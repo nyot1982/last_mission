@@ -83,7 +83,7 @@ function gameLoadScreen (screen)
         gameText.push (new component ("text", "FPS Monitor", "white", 575, gameText [6].y + 25, "left", 10));
         gameText.push (new component ("text", "High Scores", "white", 575, gameText [7].y + 25, "left", 10));
         gameText.push (new component ("text", "Remake by Marc Pinyot Gascón  1986-2024", "white", canvasWidth / 2, 445, "center", 10));
-        gameText.push (new component ("traffic", "", "", 645, 295, 12, 28));
+        gameText.push (new component ("traffic", "", "", 645, 295, 12, 28, null, null, ""));
         menuShip = new ship (null, playerColors [0], 450, gameText [0].y + 15, 500, 90);
         if (gameScreen == "menu")
         {
