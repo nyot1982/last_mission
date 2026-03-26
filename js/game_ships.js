@@ -687,7 +687,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                 () =>
                 {
                     document.getElementById ("score-" + this.name + "-div").remove ();
-                    document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
+                    if (gameModal == null) document.getElementById ("scoreHud").style.height = (23 * gameShips.length) + "px";
                 },
                 1000
             );
@@ -760,7 +760,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                             if (gameShips.length == 0) element.style.height = "0px";
                             else
                             {
-                                element.style.height = "23px";
+                                if (gameModal == null) element.style.height = "23px";
                                 if (gameShips.length == 1)
                                 {
                                     element.style.minWidth = "87.5px";
