@@ -660,7 +660,7 @@ var fpsMonitor =
 
 $(document).ready (function ()
 {
-    //$("preloader").fadeOut (1000);
+    $("preloader").fadeOut (1000);
     if (typeof (Storage) === "undefined") alert ("This browser does not support local web storage.");
     else
     {
