@@ -199,6 +199,7 @@ function changeHuds (multi)
         document.getElementById ("hudSpeedAltitude").style.display = "none";
         document.getElementById ("hudSpeedAltitude").parentElement.className = "col no-margin center";
         document.getElementById ("hudSpeedAltitude").parentElement.style.width = "600px";
+        document.getElementById ("hudEnemy").innerHTML = '';
         document.getElementById ("hudEnemy").parentElement.style.display = "none";
         document.getElementById ("hudVitals").parentElement.style.display = "none";
         document.getElementById ("hudHeading").parentElement.className = "col no-margin center";
