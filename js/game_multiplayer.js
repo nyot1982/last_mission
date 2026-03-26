@@ -63,7 +63,7 @@ function wssOpen ()
             for (var i = 0; i < players [0].skins.length; i++) form.elements [2].innerHTML += '<option value="' + players [0].skins [i] + '"' + (players [0].skins [i] == players [0].skin ? ' selected' : '') + '>' + skins [players [0].skins [i]].name + '</option>';
             form.elements [4].value = players [0].xp;
             menuShip.changeColor (players [0].color || playerColors [0]);
-            gameXP.push (new component ("text", Math.floor (players [0].xp / 100), menuShip.colors.shipFill, menuShip.x, menuShip.y - 50, "center", 10, null, menuShip.colors.negative));
+            gameXP.push (new component ("text", "Level: " + Math.floor (players [0].xp / 100), menuShip.colors.shipFill, menuShip.x, menuShip.y - 50, "center", 10, null, menuShip.colors.negative));
             gameXP.push (new component ("text", (players [0].xp == 10000 ? 100 : players [0].xp - Math.floor (players [0].xp / 100) * 100) + "/100 XP", menuShip.colors.negative, menuShip.x, menuShip.y - 30, "center", 8, null, menuShip.colors.shipFill));
             changeTab ("input");
             menuShip.turning (-1);
