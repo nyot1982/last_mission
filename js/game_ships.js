@@ -1225,7 +1225,7 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
             {
                 var textMeasure = 0;
                 ctx.shadowColor = "transparent";
-                if (this.z > 0 || this.ground != "snow")
+                if (this.name == players [0].name || this.z > 0 || this.ground != "snow")
                 {
                     ctx.textBaseline = "middle";
                     if (this.xp != null)
