@@ -32,7 +32,7 @@
         <script type="text/javascript" src="js/game_hud.js"></script>
     </head>
     <body>
-        <preloader><div class="spinner"></div></preloader>
+        <preloader><div class="spinner"></div><div id="preloader-db"></div></preloader>
         <?php
             locale_set_default ('en-ES');
             ini_set ('date.timezone', 'Europe/Madrid');
@@ -63,6 +63,7 @@
             }
             if ($resultado->num_rows == 0)
             {
+                echo '<script type="text/javascript">document.getElementById ("preloader-db").innerHTML += "<div>Creating database \''.$db_name.'\'...</div>";</script>';
                 $resultado->free ();
                 $mysqli->query ('CREATE DATABASE `'.$db_name.'` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci');
                 if ($mysqli->errno)
@@ -93,6 +94,7 @@
             }
             if (!in_array ('high_scores', $db_tables))
             {   
+                echo '<script type="text/javascript">document.getElementById ("preloader-db").innerHTML += "<div>Creating table \'high_scores\'...</div>";</script>';
                 $mysqli->query (
                     'CREATE TABLE `high_scores`
                     (
@@ -111,6 +113,7 @@
             }
             if (!in_array ('players', $db_tables))
             {  
+                echo '<script type="text/javascript">document.getElementById ("preloader-db").innerHTML += "<div>Creating table \'players\'...</div>";</script>';
                 $mysqli->query (
                     'CREATE TABLE `players`
                     (
@@ -151,6 +154,7 @@
             }
             if (!in_array ('skins', $db_tables))
             {  
+                echo '<script type="text/javascript">document.getElementById ("preloader-db").innerHTML += "<div>Creating table \'skins\'...</div>";</script>';
                 $mysqli->query (
                     'CREATE TABLE `skins`
                     (
@@ -287,7 +291,8 @@
                 }
             }
             if (!in_array ('vars', $db_tables))
-            {  
+            {
+                echo '<script type="text/javascript">document.getElementById ("preloader-db").innerHTML += "<div>Creating table \'vars\'...</div>";</script>';
                 $mysqli->query (
                     'CREATE TABLE `vars`
                     (
