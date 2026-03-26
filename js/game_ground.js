@@ -244,11 +244,8 @@ function ground (type, color, x, y, width, height)
                     x: gameShips [gameShip].x,
                     y: gameShips [gameShip].y
                 }
-                if (gameShips [gameShip].name == players [0].name)
-                {
-                    if (gameArea.centerPoint.x > canvasWidth / 2 && gameArea.centerPoint.x < (gameMap.width - canvasWidth) + canvasWidth / 2) pos.x -= gameArea.centerPoint.x - canvasWidth / 2;
-                    if (gameArea.centerPoint.y > canvasHeight / 2 && gameArea.centerPoint.y < (gameMap.height - canvasHeight) + canvasHeight / 2) pos.y -= gameArea.centerPoint.y - canvasHeight / 2;
-                }
+                if (gameArea.centerPoint.x > canvasWidth / 2 && gameArea.centerPoint.x < (gameMap.width - canvasWidth) + canvasWidth / 2) pos.x -= gameArea.centerPoint.x - canvasWidth / 2;
+                if (gameArea.centerPoint.y > canvasHeight / 2 && gameArea.centerPoint.y < (gameMap.height - canvasHeight) + canvasHeight / 2) pos.y -= gameArea.centerPoint.y - canvasHeight / 2;
                 if (ctx.isPointInPath (pos.x, pos.y)) gameShips [gameShip].ground = this.type;
             }
         }
