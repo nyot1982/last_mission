@@ -758,7 +758,18 @@ function ship (name, color, x, y, z, heading, moveSpeed, strafeSpeed, fire, weap
                         else if (gameScreen == "game")
                         {
                             if (gameShips.length == 0) element.style.height = "0px";
-                            else element.style.height = "23px";
+                            else
+                            {
+                                element.style.height = "23px";
+                                if (gameShips.length == 1)
+                                {
+                                    element.style.minWidth = "87.5px";
+                                    element.style.display = null;
+                                    element.style.gridTemplateColumns = null;
+                                    element.style.padding = null;
+                                    element.style.cursor = null;
+                                }
+                            }
                         }
                     }
                 },
